@@ -223,6 +223,24 @@
             </repositories>
         </profile>
         <profile>
+            <id>local</id>
+            <properties>
+                <db.host>localhost</db.host>
+                <db.username>root</db.username>
+                <db.password>123456</db.password>
+                <schema.name>mall</schema.name>
+                <schema.user>mall</schema.user>
+                <schema.password>mall123</schema.password>
+            </properties>
+            <repositories>
+                <repository>
+                    <id>127.0.0.1</id>
+                    <name>Maven Repository</name>
+                    <url>http://127.0.0.1:8081/nexus/content/groups/public/</url>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
             <id>jenkins</id>
             <properties>
                 <db.host>localhost</db.host>
