@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * Description : 商品表的
  * Version 1.0
  */
-public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor {
+public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor {
 
 }

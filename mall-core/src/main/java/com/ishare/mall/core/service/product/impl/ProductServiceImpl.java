@@ -38,6 +38,11 @@ public class ProductServiceImpl implements ProductService {
         return page;
     }
 
+    @Override
+    public Product getOne(Integer id) {
+        return productRepository.getOne(id);
+    }
+
     public static Logger getLog() {
         return log;
     }

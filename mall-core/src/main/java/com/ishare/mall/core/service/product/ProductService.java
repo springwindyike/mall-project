@@ -13,6 +13,8 @@ import java.util.Map;
  * Description:
  * Version 1.0
  */
-public interface ProductService {
-    public Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest);
+public abstract interface ProductService {
+    public abstract Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest);
+
+    public abstract Product getOne(Integer id);
 }
