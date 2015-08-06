@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -38,8 +35,9 @@ public class ProductResource {
      * @return
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Product get(Integer id) {
+    public Product get(@PathVariable("id") Integer id) {
         Product product = new Product();
+        log.debug("debug {id} " + String.valueOf(id));
         product.setId(id);
         return product;
     }

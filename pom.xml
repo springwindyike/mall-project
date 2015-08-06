@@ -212,7 +212,7 @@
                 <db.password>123456</db.password>
                 <schema.name>mall</schema.name>
                 <schema.user>mall</schema.user>
-                <schema.password>mall123</schema.password>
+                <schema.password>123456</schema.password>
             </properties>
             <repositories>
                 <repository>
@@ -230,7 +230,7 @@
                 <db.password>123456</db.password>
                 <schema.name>mall</schema.name>
                 <schema.user>mall</schema.user>
-                <schema.password>mall123</schema.password>
+                <schema.password>123456</schema.password>
             </properties>
             <repositories>
                 <repository>

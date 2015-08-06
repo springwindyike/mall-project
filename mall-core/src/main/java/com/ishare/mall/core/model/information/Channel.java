@@ -88,13 +88,13 @@ public class Channel extends BaseEntity {
     /**
      * 一对多该供应商下所有的成员
      */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "member")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel")
     private Set<Member> members = Sets.newConcurrentHashSet();
 
     /**
      * 一对多该供应商下所有的产品
      */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "member")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel")
     private Set<Product> products = Sets.newConcurrentHashSet();
 
     public Integer getId() {

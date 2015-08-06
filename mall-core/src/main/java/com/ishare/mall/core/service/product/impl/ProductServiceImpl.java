@@ -28,7 +28,7 @@ import java.util.Map;
 public class ProductServiceImpl implements ProductService {
     private final static Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
     @Override
     public Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest) {
         Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
