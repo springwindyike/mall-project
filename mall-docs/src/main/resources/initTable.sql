@@ -2,7 +2,7 @@
 SQLyog Ultimate v11.24 (32 bit)
 MySQL - 5.6.21-log : Database - mall
 *********************************************************************
-*/
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -35,7 +35,7 @@ CREATE TABLE `t_brand` (
 
 /*Data for the table `t_brand` */
 
-insert into `t_brand` (`id`, `brand_address_city`, `brand_address_country`, `brand_address_detail`, `brand_address_district`, `brand_logo_url`, `brand_name`, `brand_address_province`) values('1','ÆäËû','ÆäËû','ÆäËû','ÆäËû','ÆäËû','ÆäËû','ÆäËû');
+insert into `t_brand` (`id`, `brand_address_city`, `brand_address_country`, `brand_address_detail`, `brand_address_district`, `brand_logo_url`, `brand_name`, `brand_address_province`) values('1','å…¶ä»–','å…¶ä»–','å…¶ä»–','å…¶ä»–','å…¶ä»–','å…¶ä»–','å…¶ä»–');
 
 /*Table structure for table `t_channel` */
 
@@ -67,7 +67,7 @@ CREATE TABLE `t_channel` (
 
 /*Data for the table `t_channel` */
 
-insert into `t_channel` (`id`, `channel_app_id`, `channel_app_secret`, `channel_business_scale`, `channel_address_city`, `channel_code`, `channel_address_country`, `member_create_by`, `channel_create_time`, `channel_address_detail`, `channel_address_district`, `channel_industry`, `channel_link_name`, `channel_link_phone`, `channel_name`, `channel_phone`, `channel_address_province`, `channel_token`, `member_update_by`, `channel_update_time`) values('1','123','123','100-2000','³É¶¼','1001001','ÖĞ¹ú','admin','2015-08-07 09:35:53','·õ»¯Ô°','¸ßĞÂÇø','µçÉÌ','ÒóÁÖ','15928972087','·ÇÇşµÀÓÃ»§×é','15928972087','ËÄ´¨','123456','admin','2015-08-07 09:37:00');
+insert into `t_channel` (`id`, `channel_app_id`, `channel_app_secret`, `channel_business_scale`, `channel_address_city`, `channel_code`, `channel_address_country`, `member_create_by`, `channel_create_time`, `channel_address_detail`, `channel_address_district`, `channel_industry`, `channel_link_name`, `channel_link_phone`, `channel_name`, `channel_phone`, `channel_address_province`, `channel_token`, `member_update_by`, `channel_update_time`) values('1','123','123','100-2000','æˆéƒ½','1001001','ä¸­å›½','admin','2015-08-07 09:35:53','å­µåŒ–å›­','é«˜æ–°åŒº','ç”µå•†','æ®·æ—','15928972087','éæ¸ é“ç”¨æˆ·ç»„','15928972087','å››å·','123456','admin','2015-08-07 09:37:00');
 
 /*Table structure for table `t_logistics` */
 
@@ -365,7 +365,7 @@ CREATE TABLE `t_product_type` (
   CONSTRAINT `FK_aejs232tqamdnw311e1i0qjf4` FOREIGN KEY (`type_parent_id`) REFERENCES `t_product_type` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert into `t_product_type` (`id`, `type_code`, `type_name`, `type_note`, `type_parent_id`) values('1','1','ÆäËû','ÆäËû',NULL);
+insert into `t_product_type` (`id`, `type_code`, `type_name`, `type_note`, `type_parent_id`) values('1','1','å…¶ä»–','å…¶ä»–',NULL);
 
 /*Data for the table `t_product_type` */
 
