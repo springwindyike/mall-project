@@ -1,9 +1,12 @@
 package com.ishare.mall.restful;
 
+import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.product.ProductService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.old.model.Customer;
 import com.ishare.mall.utils.Servlets;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +35,13 @@ public class ProductResource {
     /**
      * 通过商品ID获取单个商品信息  格式 /products/{id} GET
      * @param id
-     * @return
+     * @return ProductDTO
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Product get(@PathVariable("id") Integer id) {
-        Product product = new Product();
-        log.debug("debug {id} " + String.valueOf(id));
-        product.setId(id);
-        return product;
+    public ProductDTO get(@PathVariable("id") Integer id) {
+        Product product = productService.getOne(id);
+        ProductDTO productDTO = (ProductDTO) MapperUtils.map(product, ProductDTO.class);
+        return productDTO;
     }
 
     /**
@@ -68,15 +70,27 @@ public class ProductResource {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<Product> get(final HttpServletRequest request) {
 
-        int currentPage = Integer.valueOf(request.getParameter("page"));
-
-        int pageSize = Integer.valueOf(request.getParameter("rows"));
+        int currentPage = 1;
+        int pageSize = 15;
+        if (StringUtils.isNotEmpty(request.getParameter("page"))) {
+            currentPage = Integer.valueOf(request.getParameter("page"));
+            if (currentPage <= 0) {
+                currentPage = 1;
+            }
+        }
+        if (StringUtils.isNotEmpty(request.getParameter("pageSize"))) {
+            pageSize = Integer.valueOf(request.getParameter("pageSize"));
+            if (pageSize <= 0) {
+                pageSize = 15;
+            }
+        }
 
         PageRequest pageRequest = new PageRequest(currentPage - 1, pageSize, Sort.Direction.DESC, "id");
 
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 
         log.debug("searchParams: {}", searchParams);
+
         Page<Product> result = productService.search(searchParams, pageRequest);
 
         log.debug("result {}", result.getContent());

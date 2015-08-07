@@ -20,7 +20,7 @@ public class Member extends BaseEntity {
     /**平台登录账号**/
     @Id
     @Column(name = "member_account")
-    private String login;
+    private String account;
     /**平台登录密码**/
     @Column(name = "member_password")
     private String password;
@@ -55,12 +55,12 @@ public class Member extends BaseEntity {
     @Column(length = 6, nullable = false)
     private MemberType memberType;
 
-    public String getLogin() {
-        return login;
+    public String getAccount() {
+        return account;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {

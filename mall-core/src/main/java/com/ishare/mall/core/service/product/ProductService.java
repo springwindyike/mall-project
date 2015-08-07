@@ -14,6 +14,7 @@ import java.util.Map;
  * Version 1.0
  */
 public abstract interface ProductService {
+
     public abstract Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest);
 
     public abstract Product getOne(Integer id);

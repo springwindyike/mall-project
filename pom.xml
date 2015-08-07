@@ -40,6 +40,9 @@
         <commons-beanutils.version>1.9.2</commons-beanutils.version>
         <commons-codec.version>1.9</commons-codec.version>
         <joda-time.version>2.6</joda-time.version>
+        <orika.version>1.4.6</orika.version>
+        <jackson-mapper-asl.version>1.9.9</jackson-mapper-asl.version>
+        <jaxb-api.version>2.2.7</jaxb-api.version>
     </properties>
 
     <dependencyManagement>
@@ -127,7 +130,15 @@
                 <artifactId>joda-time</artifactId>
                 <version>${joda-time.version}</version>
             </dependency>
+            <dependency>
+                <groupId>ma.glasnost.orika</groupId>
+                <artifactId>orika-core</artifactId>
+                <version>${orika.version}</version>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
+        <!-- Mapping -->
+
     </dependencyManagement>
 
     <build>

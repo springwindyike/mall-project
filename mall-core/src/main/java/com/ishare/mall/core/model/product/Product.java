@@ -1,12 +1,15 @@
 package com.ishare.mall.core.model.product;
 
+import com.google.common.collect.Sets;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_NAME;
 
@@ -70,25 +73,37 @@ public class Product extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "product_update_time")
     private Date updateTime;
+    //默认的图片地址 冗余
+    @Column(name = "default_img_url")
+    private String defaultImageUrl;
+    @JsonIgnore
     //创建者
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "product_create_by")
     private Member createBy;
     //更新者
+    @JsonIgnore
     @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "product_update_by")
     private Member updateBy;
 
+    @JsonIgnore
     @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "product_brand_id")
     private Brand brand;//品牌
 
+    @JsonIgnore
     @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "product_channel_id")
     private Channel channel;
+
+    @JsonIgnore
     @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "product_type_id")
     private ProductType type;
+
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REFRESH, CascadeType.REMOVE})
+    private Set<ProductStyle> productStyles = Sets.newConcurrentHashSet();
 
     public Integer getId() {
         return id;
@@ -242,7 +257,6 @@ public class Product extends BaseEntity {
         this.brand = brand;
     }
 
-
     public String getTypeCode() {
         return typeCode;
     }
@@ -267,6 +281,22 @@ public class Product extends BaseEntity {
         this.channel = channel;
     }
 
+    public String getDefaultImageUrl() {
+        return defaultImageUrl;
+    }
+
+    public void setDefaultImageUrl(String defaultImageUrl) {
+        this.defaultImageUrl = defaultImageUrl;
+    }
+
+    public Set<ProductStyle> getProductStyles() {
+        return productStyles;
+    }
+
+    public void setProductStyles(Set<ProductStyle> productStyles) {
+        this.productStyles = productStyles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -282,4 +312,5 @@ public class Product extends BaseEntity {
     public int hashCode() {
         return id.hashCode();
     }
+
 }

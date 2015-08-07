@@ -27,6 +27,9 @@
         <jetty.version>8.1.16.v20140903</jetty.version>
         <cxf.version>2.7.5</cxf.version>
         <annotation-version>1.2</annotation-version>
+        <json.version>1.1.41</json.version>
+        <jackson-mapper-asl.version>1.9.9</jackson-mapper-asl.version>
+        <jaxb-api.version>2.2.7</jaxb-api.version>
 
         <!-- jdbc driver -->
         <jdbc.driver.groupId>mysql</jdbc.driver.groupId>
@@ -212,9 +215,14 @@
             <version>2.6.6</version>
         </dependency>
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.8</version>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson-mapper-asl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb-api.version}</version>
         </dependency>
         <!-- security end -->
     </dependencies>
