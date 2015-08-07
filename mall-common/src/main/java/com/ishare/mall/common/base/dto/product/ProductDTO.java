@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * Created by YinLin on 2015/8/7.
- * Description:
+ * Description: productDTO
  * Version 1.0
  */
 @JsonAutoDetect

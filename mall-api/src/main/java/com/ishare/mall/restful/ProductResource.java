@@ -4,7 +4,6 @@ import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-import com.ishare.mall.old.model.Customer;
 import com.ishare.mall.utils.Servlets;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 /**
