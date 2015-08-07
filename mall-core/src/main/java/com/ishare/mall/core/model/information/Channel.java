@@ -74,14 +74,12 @@ public class Channel extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "channel_update_time")
     private Date updateTime;
-    //创建者
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
-    @JoinColumn(name = "channel_create_by")
-    private Member createBy;
-    //更新者
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
-    @JoinColumn(name = "channel_update_by")
-    private Member updateBy;
+    /**创建者**/
+    @Column(name = "member_create_by")
+    private String createBy;
+    /**更新者**/
+    @Column(name = "member_update_by")
+    private String updateBy;
     /**经营类别**/
     @Column(name = "channel_industry")
     private String industry;
@@ -233,27 +231,43 @@ public class Channel extends BaseEntity {
         this.updateTime = updateTime;
     }
 
-    public Member getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Member createBy) {
-        this.createBy = createBy;
-    }
-
-    public Member getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Member updateBy) {
-        this.updateBy = updateBy;
-    }
-
     public String getIndustry() {
         return industry;
     }
 
     public void setIndustry(String industry) {
         this.industry = industry;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Set<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<Member> members) {
+        this.members = members;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

@@ -19,7 +19,7 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 public class Member extends BaseEntity {
     /**平台登录账号**/
     @Id
-    @Column(name = "member_login")
+    @Column(name = "member_account")
     private String login;
     /**平台登录密码**/
     @Column(name = "member_password")

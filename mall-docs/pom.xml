@@ -63,10 +63,14 @@
                              driver="${jdbc.driver}" onerror="continue" encoding="UTF-8">
                             <classpath refid="maven.test.classpath"/>
                             <transaction src="${basedir}/target/classes/init.sql"/>
+                            <transaction src="${basedir}/target/classes/initTable.sql"/>
+                            <!--
+                            <transaction src="${basedir}/target/classes/init.sql"/>
                             <transaction src="${basedir}/target/classes/system_tables.sql"/>
                             <transaction src="${basedir}/target/classes/system_data.sql"/>
                             <transaction src="${basedir}/target/classes/eshop_tables.sql"/>
                             <transaction src="${basedir}/target/classes/eshop_data_test.sql"/>
+                            -->
                         </sql>
                     </target>
                 </configuration>

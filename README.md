@@ -1,10 +1,12 @@
-陶瓷网
+享买购物平台Api
 ===
 ###目录说明
-* eshop-web 陶瓷网购物网站，只包含本工程需要的Controller和页面代码
-* eshop-admin 陶瓷网管理后台，只包含本工程需要的Controller和页面代码
-* eshop-service 平台公用代码，包括数据库、对外服务接口等
-
+* mall-api 享买购物平台，只包含本工程需要的API,对外服务接口
+* mall-manage 享买购物平台管理后台，只包含本工程需要的Controller和页面代码
+* mall-center 享买购物平台，包括会员申请中心
+* mall-core 平台核心代码，包括数据库、对外服务接口等
+* mall-common 平台公用代码
+* mall-docs 平台文档等
 ####技术文档
 * [Spring Framework Reference Documentation](http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/)
 * [Spring Data JPA - Reference Documentation](http://docs.spring.io/spring-data/jpa/docs/1.8.1.RELEASE/reference/html/)
