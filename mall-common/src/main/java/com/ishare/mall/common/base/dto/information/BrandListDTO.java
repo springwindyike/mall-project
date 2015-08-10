@@ -1,11 +1,13 @@
 package com.ishare.mall.common.base.dto.information;
 
+import com.ishare.mall.common.base.object.BaseObject;
+
 /**
  * Created by YinLin on 2015/8/7.
  * Description:品牌列表DTO
  * Version 1.0
  */
-public class BrandListDTO {
+public class BrandListDTO implements BaseObject {
     //ID
     private Integer id;
     //名字

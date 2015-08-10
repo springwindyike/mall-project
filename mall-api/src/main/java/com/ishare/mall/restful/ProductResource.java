@@ -86,7 +86,7 @@ public class ProductResource {
      * @param request http请求
      * @return 返回结果
      */
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<ProductListDTO> get(final HttpServletRequest request) {
 
         int offset = 1;
