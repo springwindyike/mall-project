@@ -2,7 +2,7 @@ package com.ishare.mall.common.base.dto.information;
 
 /**
  * Created by YinLin on 2015/8/7.
- * Description:
+ * Description : 详细信息DTO
  * Version 1.0
  */
 public class BrandDetailDTO {
