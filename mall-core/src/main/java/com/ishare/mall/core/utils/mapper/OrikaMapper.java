@@ -40,6 +40,9 @@ public class OrikaMapper extends ConfigurableMapper {
         otherDealField.add("brandId");
         otherDealField.add("channelId");
         otherDealField.add("typeId");
+        otherDealField.add("brandName");
+        otherDealField.add("channelName");
+        otherDealField.add("typeName");
         for (Field field : fields) {
             if (!otherDealField.contains(field.getName())) {
                 classMapBuilder.field(field.getName(), field.getName());
@@ -48,8 +51,11 @@ public class OrikaMapper extends ConfigurableMapper {
         classMapBuilder.field("createBy.account", "createByAccount");
         classMapBuilder.field("updateBy.account", "updateByAccount");
         classMapBuilder.field("brand.id", "brandId");
+        classMapBuilder.field("brand.name", "brandName");
         classMapBuilder.field("channel.id", "channelId");
+        classMapBuilder.field("channel.name", "channelName");
         classMapBuilder.field("type.id", "typeId");
+        classMapBuilder.field("type.name", "typeName");
         mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 

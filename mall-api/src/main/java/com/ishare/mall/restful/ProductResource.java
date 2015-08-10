@@ -6,13 +6,17 @@ import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.utils.Servlets;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -31,14 +35,19 @@ public class ProductResource {
     private ProductService productService;
     /**
      * 通过商品ID获取单个商品信息  格式 /products/{id} GET
-     * @param id
-     * @return ProductDTO
+     * @param id 商品ID
+     * @return ProductDTO 返回的数据对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ProductDTO get(@PathVariable("id") Integer id) {
-        Product product = productService.getOne(id);
-        ProductDTO productDTO = (ProductDTO) MapperUtils.map(product, ProductDTO.class);
-        return productDTO;
+    public ProductDTO get(@NotEmpty @PathVariable("id") Integer id) {
+        //用findOne立即加载实体对象
+        Product product = productService.findOne(id);
+        if (product != null) {
+            //转换为接口输出数据对象DTO 映射规则需要自己添加
+            ProductDTO productDTO = (ProductDTO) MapperUtils.map(product, ProductDTO.class);
+            return productDTO;
+        }
+        return null;
     }
 
     /**
@@ -94,7 +103,5 @@ public class ProductResource {
 
         return result;
     }
-
-
 
 }

@@ -3,8 +3,6 @@ package com.ishare.mall.core.service.product.impl;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.ProductRepository;
 import com.ishare.mall.core.service.product.ProductService;
-import com.ishare.mall.old.model.Customer;
-import com.ishare.mall.old.repository.CustomerRepository;
 import com.ishare.mall.old.utils.DynamicSpecifications;
 import com.ishare.mall.old.utils.SearchFilter;
 import org.slf4j.Logger;
@@ -39,8 +37,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getOne(Integer id) {
-        return productRepository.getOne(id);
+    public Product findOne(Integer id) {
+        return productRepository.findOne(id);
     }
 
     public static Logger getLog() {

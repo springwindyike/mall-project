@@ -3,8 +3,6 @@ package com.ishare.mall.core.service.product;
 import com.ishare.mall.core.model.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -17,5 +15,5 @@ public abstract interface ProductService {
 
     public abstract Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest);
 
-    public abstract Product getOne(Integer id);
+    public abstract Product findOne(Integer id);
 }

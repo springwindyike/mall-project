@@ -3,7 +3,6 @@ package com.ishare.mall.common.base.dto.product;
 import com.ishare.mall.common.base.object.BaseObject;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 /**
@@ -53,9 +52,15 @@ public class ProductDTO implements BaseObject {
 
     private Integer brandId;//品牌
 
+    private String brandName;//品牌名字
+
     private Integer channelId;
 
+    private String channelName;//渠道名字
+
     private Integer typeId;
+
+    private String typeName;//商品类型名字
 
     public Integer getId() {
         return id;
@@ -231,5 +236,29 @@ public class ProductDTO implements BaseObject {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }
