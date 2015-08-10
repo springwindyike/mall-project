@@ -8,7 +8,6 @@ import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.utils.Servlets;
 import com.ishare.mall.utils.page.PageUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,23 +88,7 @@ public class ProductResource {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<ProductListDTO> get(final HttpServletRequest request) {
 
-        int offset = 1;
-        int limit = 15;
-        if (StringUtils.isNotEmpty(request.getParameter(OFFSET))) {
-            offset = Integer.valueOf(request.getParameter(OFFSET));
-            if (offset <= 0) {
-                offset = 1;
-            }
-        }
-
-        if (StringUtils.isNotEmpty(request.getParameter(LIMIT))) {
-            limit = Integer.valueOf(request.getParameter(LIMIT));
-            if (limit <= 0) {
-                limit = 15;
-            }
-        }
-
-        PageRequest pageRequest = new PageRequest(offset - 1, limit, Sort.Direction.DESC, "id");
+        PageRequest pageRequest = Servlets.getPageRequest(request, Sort.Direction.DESC, "id");
 
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 

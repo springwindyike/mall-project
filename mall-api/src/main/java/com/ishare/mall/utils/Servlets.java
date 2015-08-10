@@ -4,15 +4,21 @@ import com.google.common.base.Charsets;
 import com.google.common.net.HttpHeaders;
 import com.ishare.mall.core.utils.filter.Collections3;
 import com.ishare.mall.core.utils.filter.Encodes;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.Map.Entry;
+
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 
 /**
@@ -193,5 +199,30 @@ public class Servlets {
     public static String encodeHttpBasic(String userName, String password) {
         String encode = userName + ":" + password;
         return "Basic " + Encodes.encodeBase64(encode.getBytes());
+    }
+
+    /**
+     * 获取page
+     * @param request
+     * @param direction
+     * @param properties
+     * @return
+     */
+    public static PageRequest getPageRequest(HttpServletRequest request, Sort.Direction direction, String... properties) {
+        int offset = 1;
+        int limit = 15;
+        if (StringUtils.isNotEmpty(request.getParameter(OFFSET))) {
+            offset = Integer.valueOf(request.getParameter(OFFSET));
+            if (offset <= 0) {
+                offset = 1;
+            }
+        }
+        if (StringUtils.isNotEmpty(request.getParameter(LIMIT))) {
+            limit = Integer.valueOf(request.getParameter(LIMIT));
+            if (limit <= 0) {
+                limit = 15;
+            }
+        }
+        return new PageRequest(offset - 1, limit, direction, properties);
     }
 }
