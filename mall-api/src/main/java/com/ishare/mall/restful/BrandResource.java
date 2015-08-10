@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
@@ -68,8 +67,8 @@ public class BrandResource {
 
     /**
      * 根据条件查询商品
-     * @param request
-     * @return
+     * @param request http request
+     * @return 返回查询结果
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<BrandListDTO> search(final HttpServletRequest request) {
@@ -101,10 +100,6 @@ public class BrandResource {
         log.debug("result {}", result.getContent());
 
         return PageUtils.mapper(result, pageRequest, BrandListDTO.class);
-    }
-
-    public List<BrandListDTO> get() {
-        return null;
     }
 
     public static Logger getLog() {
