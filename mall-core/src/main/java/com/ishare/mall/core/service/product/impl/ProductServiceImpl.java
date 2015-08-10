@@ -1,7 +1,7 @@
 package com.ishare.mall.core.service.product.impl;
 
 import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.repository.ProductRepository;
+import com.ishare.mall.core.repository.product.ProductRepository;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.old.utils.DynamicSpecifications;
 import com.ishare.mall.old.utils.SearchFilter;
