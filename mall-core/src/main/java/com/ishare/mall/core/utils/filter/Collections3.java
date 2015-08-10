@@ -1,4 +1,4 @@
-package com.ishare.mall.old.utils;
+package com.ishare.mall.core.utils.filter;
 
 /**
  * Created by dongqi on 15/7/24.

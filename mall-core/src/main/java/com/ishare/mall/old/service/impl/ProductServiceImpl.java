@@ -1,5 +1,6 @@
 package com.ishare.mall.old.service.impl;
 
+import com.ishare.mall.core.repository.product.ProductRepository;
 import com.ishare.mall.old.model.Product;
 import com.ishare.mall.old.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

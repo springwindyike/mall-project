@@ -1,4 +1,4 @@
-package com.ishare.mall.old.utils;
+package com.ishare.mall.core.utils.filter;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;

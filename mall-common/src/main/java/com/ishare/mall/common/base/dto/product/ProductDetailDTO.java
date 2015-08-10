@@ -11,7 +11,7 @@ import java.util.Date;
  * Version 1.0
  */
 @JsonAutoDetect
-public class ProductDTO implements BaseObject {
+public class ProductDetailDTO implements BaseObject {
     private Integer id;
     //货号
     private String code;

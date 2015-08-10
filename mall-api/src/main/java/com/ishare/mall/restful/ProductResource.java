@@ -1,7 +1,7 @@
 package com.ishare.mall.restful;
 
 import com.google.common.collect.Maps;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductListDTO;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.product.ProductService;
@@ -42,15 +42,15 @@ public class ProductResource {
     /**
      * 通过商品ID获取单个商品信息  格式 /products/{id} GET
      * @param id 商品ID
-     * @return ProductDTO 返回的数据对象
+     * @return ProductDetailDTO 返回的数据对象
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ProductDTO get(@NotEmpty @PathVariable("id") Integer id) {
+    public ProductDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
         //用findOne立即加载实体对象
         Product product = productService.findOne(id);
         if (product != null) {
             //转换为接口输出数据对象DTO 映射规则需要自己添加
-            return (ProductDTO) MapperUtils.map(product, ProductDTO.class);
+            return (ProductDetailDTO) MapperUtils.map(product, ProductDetailDTO.class);
         }
         return null;
     }

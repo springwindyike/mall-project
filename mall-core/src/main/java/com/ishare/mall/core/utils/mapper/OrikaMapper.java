@@ -1,7 +1,7 @@
 
 package com.ishare.mall.core.utils.mapper;
 
-import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.core.model.product.Product;
 
 import ma.glasnost.orika.MapperFactory;
@@ -27,7 +27,7 @@ public class OrikaMapper extends ConfigurableMapper {
 
 	@Override
 	public void configure(MapperFactory mapperFactory) {
-		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Product.class, ProductDTO.class));
+		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Product.class, ProductDetailDTO.class));
 	    this.registerProductClassMap(mapperFactory);
     }
 
@@ -36,8 +36,8 @@ public class OrikaMapper extends ConfigurableMapper {
 	 * @param mapperFactory
 	 */
 	private void registerProductClassMap(MapperFactory mapperFactory) {
-        ClassMapBuilder<Product, ProductDTO> classMapBuilder = mapperFactory.classMap(Product.class, ProductDTO.class);
-        Field[] fields = ProductDTO.class.getDeclaredFields();
+        ClassMapBuilder<Product, ProductDetailDTO> classMapBuilder = mapperFactory.classMap(Product.class, ProductDetailDTO.class);
+        Field[] fields = ProductDetailDTO.class.getDeclaredFields();
         Set<String> otherDealField = new HashSet<String>();
         otherDealField.add("createByAccount");
         otherDealField.add("updateByAccount");

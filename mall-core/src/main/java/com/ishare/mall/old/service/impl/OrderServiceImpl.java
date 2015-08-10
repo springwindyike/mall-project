@@ -1,10 +1,10 @@
 package com.ishare.mall.old.service.impl;
 
-import com.ishare.mall.old.utils.SearchFilter;
+import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.old.model.Order;
 import com.ishare.mall.old.repository.OrderRepository;
 import com.ishare.mall.old.service.OrderService;
-import com.ishare.mall.old.utils.DynamicSpecifications;
+import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
