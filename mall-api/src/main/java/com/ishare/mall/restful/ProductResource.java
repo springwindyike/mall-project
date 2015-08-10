@@ -48,11 +48,8 @@ public class ProductResource {
     public ProductDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
         //用findOne立即加载实体对象
         Product product = productService.findOne(id);
-        if (product != null) {
-            //转换为接口输出数据对象DTO 映射规则需要自己添加
-            return (ProductDetailDTO) MapperUtils.map(product, ProductDetailDTO.class);
-        }
-        return null;
+        //转换为接口输出数据对象DTO 映射规则需要自己添加
+        return (ProductDetailDTO) MapperUtils.map(product, ProductDetailDTO.class);
     }
 
     /**

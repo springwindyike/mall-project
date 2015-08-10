@@ -37,10 +37,7 @@ public class BrandResource {
     public BrandDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
         //用findOne立即加载实体对象
         Brand brand = brandService.findOne(id);
-        if (brand != null) {
-            //转换为接口输出数据对象DTO 映射规则需要自己添加
-            return (BrandDetailDTO) MapperUtils.map(brand, BrandDetailDTO.class);
-        }
-        return null;
+        //转换为接口输出数据对象DTO 映射规则需要自己添加
+        return (BrandDetailDTO) MapperUtils.map(brand, BrandDetailDTO.class);
     }
 }
