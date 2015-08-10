@@ -241,6 +241,9 @@
                 <configuration>
                     <port>8000</port>
                     <path>/api</path>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <finalName>mall-api</finalName>
+                    <server>tomcat7</server>
                 </configuration>
             </plugin>
             <plugin>

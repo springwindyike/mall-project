@@ -1,5 +1,6 @@
 package com.ishare.mall.restful;
 
+import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductListDTO;
 import com.ishare.mall.core.model.product.Product;
@@ -15,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -52,49 +50,57 @@ public class ProductResource {
     }
 
     /**
-     * 通过当前页和每页数量获取商品列表 格式 /products/{currentPage}/{pageSize} GET
-     * @param currentPage
-     * @param pageSize
-     * @return
+     * 通过当前页和每页数量获取商品列表 格式 /products/offset/{offset}/limit/{limit} GET
+     * @param offset 分页下标
+     * @param limit 分页size
+     * @return 返回ProductListDTO
      */
-    @RequestMapping(value = "/{currentPage}/{pageSize}", method = RequestMethod.GET)
-    public Page<ProductListDTO> get(@NotEmpty @PathVariable("currentPage")Integer currentPage, @NotEmpty @PathVariable("pageSize")Integer pageSize) {
-        PageRequest pageRequest = new PageRequest(currentPage - 1, pageSize, Sort.Direction.DESC, "id");
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
+    public Page<ProductListDTO> get(@NotEmpty @PathVariable("offset")Integer offset, @NotEmpty @PathVariable("limit")Integer limit) {
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         Page<Product> result = productService.search(null, pageRequest);
-        Page<ProductListDTO> resultList = PageUtils.mapper(result, pageRequest, ProductListDTO.class);
-        return resultList;
+        return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
     }
 
     /**
      * 通过品牌id获取当前商品列表 格式/products/{currentPage}/{pageSize}/brand/{brandId} GET
-     * @param currentPage 当前页
-     * @param pageSize 每页数据
+     * @param offset 当前页
+     * @param limit 每页数据
      * @param name 品牌名字
-     * @return
+     * @return 返回list
      */
-    @RequestMapping(value = "/{currentPage}/{pageSize}/brand/{name}", method = RequestMethod.GET)
-    public Page<Product> get(Integer currentPage, Integer pageSize, String name) {
-        return  null;
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/brand/{name}", method = RequestMethod.GET)
+    public Page<ProductListDTO> get(@NotEmpty @PathVariable("offset")Integer offset, @NotEmpty @PathVariable("limit")Integer limit, @NotEmpty @PathVariable("name")String name) {
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        Map<String, Object> searchParams = Maps.newConcurrentMap();
+        searchParams.put("LIKE_brand.name", name);
+        Page<Product> result = productService.search(searchParams, pageRequest);
+        return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public Page<Product> get(final HttpServletRequest request) {
-        int currentPage = 1;
-        int pageSize = 15;
-        if (StringUtils.isNotEmpty(request.getParameter("page"))) {
-            currentPage = Integer.valueOf(request.getParameter("page"));
-            if (currentPage <= 0) {
-                currentPage = 1;
+    /**
+     * search
+     * @param request
+     * @return 返回结果
+     */
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public Page<ProductListDTO> get(final HttpServletRequest request) {
+        int offset = 1;
+        int limit = 15;
+        if (StringUtils.isNotEmpty(request.getParameter("offset"))) {
+            offset = Integer.valueOf(request.getParameter("offset"));
+            if (offset <= 0) {
+                offset = 1;
             }
         }
-        if (StringUtils.isNotEmpty(request.getParameter("pageSize"))) {
-            pageSize = Integer.valueOf(request.getParameter("pageSize"));
-            if (pageSize <= 0) {
-                pageSize = 15;
+        if (StringUtils.isNotEmpty(request.getParameter("limit"))) {
+            limit = Integer.valueOf(request.getParameter("limit"));
+            if (limit <= 0) {
+                limit = 15;
             }
         }
 
-        PageRequest pageRequest = new PageRequest(currentPage - 1, pageSize, Sort.Direction.DESC, "id");
+        PageRequest pageRequest = new PageRequest(offset - 1, limit, Sort.Direction.DESC, "id");
 
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 
@@ -104,7 +110,7 @@ public class ProductResource {
 
         log.debug("result {}", result.getContent());
 
-        return result;
+        return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
     }
 
 }
