@@ -61,6 +61,8 @@ public class ProductDTO implements BaseObject {
     private Integer typeId;
 
     private String typeName;//商品类型名字
+    //默认样式图片
+    private String defaultImageUrl;
 
     public Integer getId() {
         return id;
@@ -260,5 +262,13 @@ public class ProductDTO implements BaseObject {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getDefaultImageUrl() {
+        return defaultImageUrl;
+    }
+
+    public void setDefaultImageUrl(String defaultImageUrl) {
+        this.defaultImageUrl = defaultImageUrl;
     }
 }

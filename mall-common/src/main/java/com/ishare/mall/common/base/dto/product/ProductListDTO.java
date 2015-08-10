@@ -15,7 +15,7 @@ public class ProductListDTO implements BaseObject {
     //商品价格
     private Float sellPrice;
     //默认样式图片
-    private String imageUrl;
+    private String defaultImageUrl;
 
     public Integer getId() {
         return id;
@@ -41,11 +41,11 @@ public class ProductListDTO implements BaseObject {
         this.sellPrice = sellPrice;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getDefaultImageUrl() {
+        return defaultImageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setDefaultImageUrl(String defaultImageUrl) {
+        this.defaultImageUrl = defaultImageUrl;
     }
 }
