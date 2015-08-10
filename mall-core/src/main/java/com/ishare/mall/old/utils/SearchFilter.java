@@ -62,6 +62,6 @@ public class SearchFilter {
     }
 
     public enum Operator {
-        EQ, LIKE, GT, LT, GTE, LTE
+        EQ, LIKE, START, END, GT, LT, GTE, LTE
     }
 }

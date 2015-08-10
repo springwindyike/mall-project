@@ -16,10 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -56,7 +62,7 @@ public class ProductResource {
      * @return 返回ProductListDTO
      */
     @RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
-    public Page<ProductListDTO> get(@NotEmpty @PathVariable("offset")Integer offset, @NotEmpty @PathVariable("limit")Integer limit) {
+    public Page<ProductListDTO> get(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit) {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         Page<Product> result = productService.search(null, pageRequest);
         return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
@@ -70,7 +76,7 @@ public class ProductResource {
      * @return 返回list
      */
     @RequestMapping(value = "/offset/{offset}/limit/{limit}/brand/{name}", method = RequestMethod.GET)
-    public Page<ProductListDTO> get(@NotEmpty @PathVariable("offset")Integer offset, @NotEmpty @PathVariable("limit")Integer limit, @NotEmpty @PathVariable("name")String name) {
+    public Page<ProductListDTO> get(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_brand.name", name);
@@ -80,21 +86,23 @@ public class ProductResource {
 
     /**
      * search
-     * @param request
+     * @param request http请求
      * @return 返回结果
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public Page<ProductListDTO> get(final HttpServletRequest request) {
+
         int offset = 1;
         int limit = 15;
-        if (StringUtils.isNotEmpty(request.getParameter("offset"))) {
-            offset = Integer.valueOf(request.getParameter("offset"));
+        if (StringUtils.isNotEmpty(request.getParameter(OFFSET))) {
+            offset = Integer.valueOf(request.getParameter(OFFSET));
             if (offset <= 0) {
                 offset = 1;
             }
         }
-        if (StringUtils.isNotEmpty(request.getParameter("limit"))) {
-            limit = Integer.valueOf(request.getParameter("limit"));
+
+        if (StringUtils.isNotEmpty(request.getParameter(LIMIT))) {
+            limit = Integer.valueOf(request.getParameter(LIMIT));
             if (limit <= 0) {
                 limit = 15;
             }

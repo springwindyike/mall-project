@@ -10,8 +10,16 @@ import java.util.List;
 
 /**
  * Created by dongqi on 15/7/24.
+ * update by YinLin
  */
 public class DynamicSpecifications {
+    /**
+     * search 过滤器
+     * @param filters
+     * @param entityClazz
+     * @param <T>
+     * @return
+     */
     public static <T> Specification<T> bySearchFilter(final Collection<SearchFilter> filters, final Class<T> entityClazz) {
         //update by yinlin
         if (filters == null || filters.size() == 0) return null;
@@ -38,6 +46,11 @@ public class DynamicSpecifications {
                             case LIKE:
                                 predicates.add(builder.like(expression, "%" + filter.value + "%"));
                                 break;
+                            case START:
+                                predicates.add(builder.like(expression, filter.value + "%"));
+                                break;
+                            case END:
+                                predicates.add(builder.like(expression, "%" + filter.value));
                             case GT:
                                 predicates.add(builder.greaterThan(expression, (Comparable) filter.value));
                                 break;
