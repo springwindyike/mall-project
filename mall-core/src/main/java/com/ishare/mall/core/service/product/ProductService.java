@@ -16,4 +16,5 @@ public abstract interface ProductService {
     public abstract Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest);
 
     public abstract Product findOne(Integer id);
+
 }

@@ -16,7 +16,11 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Created by YinLin on 2015/8/7.
+ * Description: 具体的mapper接口实现
+ * Version 1.0
+ */
 public class OrikaMapper extends ConfigurableMapper {
 
     private static final Logger log = LoggerFactory.getLogger(OrikaMapper.class);

@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class DynamicSpecifications {
     public static <T> Specification<T> bySearchFilter(final Collection<SearchFilter> filters, final Class<T> entityClazz) {
+        //update by yinlin
+        if (filters == null || filters.size() == 0) return null;
+
         return new Specification<T>() {
             @Override
             public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {

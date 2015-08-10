@@ -1,10 +1,12 @@
 package com.ishare.mall.restful;
 
 import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductListDTO;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.utils.Servlets;
+import com.ishare.mall.utils.page.PageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
@@ -44,8 +46,7 @@ public class ProductResource {
         Product product = productService.findOne(id);
         if (product != null) {
             //转换为接口输出数据对象DTO 映射规则需要自己添加
-            ProductDTO productDTO = (ProductDTO) MapperUtils.map(product, ProductDTO.class);
-            return productDTO;
+            return (ProductDTO) MapperUtils.map(product, ProductDTO.class);
         }
         return null;
     }
@@ -57,8 +58,11 @@ public class ProductResource {
      * @return
      */
     @RequestMapping(value = "/{currentPage}/{pageSize}", method = RequestMethod.GET)
-    public Page<Product> get(Integer currentPage, Integer pageSize) {
-        return null;
+    public Page<ProductListDTO> get(@NotEmpty @PathVariable("currentPage")Integer currentPage, @NotEmpty @PathVariable("pageSize")Integer pageSize) {
+        PageRequest pageRequest = new PageRequest(currentPage - 1, pageSize, Sort.Direction.DESC, "id");
+        Page<Product> result = productService.search(null, pageRequest);
+        Page<ProductListDTO> resultList = PageUtils.mapper(result, pageRequest, ProductListDTO.class);
+        return resultList;
     }
 
     /**
@@ -75,7 +79,6 @@ public class ProductResource {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<Product> get(final HttpServletRequest request) {
-
         int currentPage = 1;
         int pageSize = 15;
         if (StringUtils.isNotEmpty(request.getParameter("page"))) {

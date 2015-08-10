@@ -27,6 +27,9 @@ public class SearchFilter {
      * searchParams中key的格式为OPERATOR_FIELDNAME
      */
     public static Map<String, SearchFilter> parse(Map<String, Object> searchParams) {
+
+        if (searchParams == null) return null;
+
         Map<String, SearchFilter> filters = Maps.newHashMap();
 
         for (Map.Entry<String, Object> entry : searchParams.entrySet()) {

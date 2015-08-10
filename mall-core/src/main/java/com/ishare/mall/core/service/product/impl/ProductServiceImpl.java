@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest) {
         Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-        Specification<Product> spec = DynamicSpecifications.bySearchFilter(filters.values(), Product.class);
+        Specification<Product> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Product.class);
         Page<Product> page = productRepository.findAll(spec, pageRequest);
         log.debug("filters: {}, total: {}, content: {}", filters, page.getTotalElements(), page.getContent());
         return page;
