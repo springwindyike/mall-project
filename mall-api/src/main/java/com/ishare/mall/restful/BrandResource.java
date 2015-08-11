@@ -72,7 +72,7 @@ public class BrandResource {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public Page<BrandListDTO> search(final HttpServletRequest request) {
 
-        PageRequest pageRequest = Servlets.getPageRequest(request, Sort.Direction.DESC, "id");
+        PageRequest pageRequest = PageUtils.getPageRequest(request, Sort.Direction.DESC, "id");
 
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 
