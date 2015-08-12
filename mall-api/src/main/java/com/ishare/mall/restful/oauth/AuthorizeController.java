@@ -44,7 +44,6 @@ public class AuthorizeController {
     @RequestMapping(value = "/authorize", method = RequestMethod.POST)
     public Object authorize(Model model, HttpServletRequest request) throws URISyntaxException {
         try {
-
             OAuthAuthzRequest oauthRequest = new OAuthAuthzRequest(request);
             //检查传入的客户端id是否正确
             if (!oAuthService.checkClientId(oauthRequest.getClientId())) {
