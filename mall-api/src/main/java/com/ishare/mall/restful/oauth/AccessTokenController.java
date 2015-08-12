@@ -18,6 +18,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
 import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_CODE_DESCRIPTION;
 /**
  * Created by YinLin on 2015/8/11.
- * Description :
+ * Description : accessToken获取
  * Version 1.0
  */
 @RestController
@@ -39,7 +40,7 @@ public class AccessTokenController {
     @Autowired
     private OAuthService oAuthService;
 
-    @RequestMapping("/accessToken")
+    @RequestMapping(value = "/accessToken", method = RequestMethod.POST)
     public HttpEntity token(HttpServletRequest request)
             throws URISyntaxException, OAuthSystemException {
         try {

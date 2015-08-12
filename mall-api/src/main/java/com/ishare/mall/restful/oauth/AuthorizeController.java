@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +41,7 @@ public class AuthorizeController {
     @Autowired
     private MemberService memberService;
 
-    @RequestMapping("/authorize")
+    @RequestMapping(value = "/authorize", method = RequestMethod.POST)
     public Object authorize(Model model, HttpServletRequest request) throws URISyntaxException {
         try {
 
