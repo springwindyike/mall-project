@@ -21,6 +21,9 @@ public interface ResourceConstant {
     interface OAUTH {
         //token过期时间
         Long EXPIRE_IN = 3600L;
+        //客户端认证错误信息
         String INVALID_CLIENT_DESCRIPTION = "客户端验证失败，如错误的client_id/client_secret。";
+        //授权码错误
+        String INVALID_CODE_DESCRIPTION = "客户端Code码错误！";
     }
 }

@@ -1,6 +1,5 @@
 package com.ishare.mall.restful.oauth;
 
-import com.ishare.mall.common.base.constant.ResourceConstant;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
@@ -26,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_CLIENT_DESCRIPTION;
+
 /**
  * Created by YinLin on 2015/8/11.
  * Description : Oauth2 接口 token认证接口
@@ -49,7 +50,7 @@ public class AuthorizeController {
                 OAuthResponse response =
                         OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
                                 .setError(OAuthError.TokenResponse.INVALID_CLIENT)
-                                .setErrorDescription(ResourceConstant.OAUTH.INVALID_CLIENT_DESCRIPTION)
+                                .setErrorDescription(INVALID_CLIENT_DESCRIPTION)
                                 .buildJSONMessage();
                 return new ResponseEntity(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
             }
