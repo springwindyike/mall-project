@@ -1,19 +1,25 @@
 package com.ishare.mall.restful.oauth;
 
+import com.ishare.mall.common.base.constant.ResourceConstant;
+import com.ishare.mall.core.service.member.MemberService;
+import com.ishare.mall.core.service.oauth.OAuthService;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
 import org.apache.oltu.oauth2.as.request.OAuthAuthzRequest;
 import org.apache.oltu.oauth2.as.response.OAuthASResponse;
 import org.apache.oltu.oauth2.common.OAuth;
+import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,9 +33,29 @@ import java.net.URISyntaxException;
  */
 @Controller
 public class AuthorizeController {
+
+    @Autowired
+    private OAuthService oAuthService;
+    @Autowired
+    private MemberService memberService;
+
+    @RequestMapping("/authorize")
     public Object authorize(Model model, HttpServletRequest request) throws URISyntaxException {
         try {
+
             OAuthAuthzRequest oauthRequest = new OAuthAuthzRequest(request);
+            //检查传入的客户端id是否正确
+            if (!oAuthService.checkClientId(oauthRequest.getClientId())) {
+                OAuthResponse response =
+                        OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                                .setError(OAuthError.TokenResponse.INVALID_CLIENT)
+                                .setErrorDescription(ResourceConstant.OAUTH.INVALID_CLIENT_DESCRIPTION)
+                                .buildJSONMessage();
+                return new ResponseEntity(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+            }
+            //获取客户端account 手机号
+            String account = request.getParameter("account");
+            //这里需要用memberService检测 如果没有就创建 检测account合法性
             //生成授权码
             String authorizationCode = null;
             //responseType目前仅支持CODE，另外还有TOKEN
@@ -37,7 +63,7 @@ public class AuthorizeController {
             if (responseType.equals(ResponseType.CODE.toString())) {
                 OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
                 authorizationCode = oauthIssuerImpl.authorizationCode();
-                //oAuthService.addAuthCode(authorizationCode, username);
+                oAuthService.addAuthCode(authorizationCode, account);
             }
             //进行OAuth响应构建
             OAuthASResponse.OAuthAuthorizationResponseBuilder builder =
