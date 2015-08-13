@@ -38,6 +38,11 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.ishare.mall</groupId>
+            <artifactId>mall-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

@@ -10,5 +10,5 @@ import com.ishare.mall.core.model.information.Channel;
 public interface ChannelService {
     Channel findOne(Integer id);
     Channel findByAppId(String appId);
-    Channel finaByAppSecret(String appSecret);
+    Channel findByAppSecret(String appSecret);
 }

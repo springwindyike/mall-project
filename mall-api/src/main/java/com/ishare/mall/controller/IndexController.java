@@ -1,8 +1,13 @@
 package com.ishare.mall.controller;
 
 import com.google.common.collect.Lists;
+import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.service.information.ChannelService;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +22,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/index")
 public class IndexController {
+    @Autowired
+    private ChannelService channelService;
     @RequestMapping(value = "get", method = RequestMethod.GET)
     @ResponseBody
     public String get() {
@@ -43,5 +50,15 @@ public class IndexController {
             products.add(product);
         }
         return products;
+    }
+    @RequestMapping(value = "/channels/a/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Channel getByA(@NotEmpty @PathVariable("id")String appId) {
+        return channelService.findByAppId(appId);
+    }
+    @RequestMapping(value = "/channels/s/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Channel getBys(@NotEmpty @PathVariable("id")String appId) {
+        return channelService.findByAppSecret(appId);
     }
 }

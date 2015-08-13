@@ -36,8 +36,8 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Channel finaByAppSecret(String appSecret) {
-        List<Channel> channels = channelRepository.finaByAppSecret(appSecret);
+    public Channel findByAppSecret(String appSecret) {
+        List<Channel> channels = channelRepository.findByAppSecret(appSecret);
         if (channels == null || channels.size() == 0) return null;
         return channels.get(0);
     }

@@ -1,10 +1,8 @@
 package com.ishare.mall.core.repository.information;
 
-import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -14,8 +12,8 @@ import java.util.List;
  * Version 1.0
  */
 public interface ChannelRepository extends JpaRepository<Channel, Integer>, JpaSpecificationExecutor {
-    @Query("SELECT c FROM Channel WHERE c.appId = ?1")
+    //@Query("SELECT c FROM t_channel c WHERE c.appId=?1")
     List<Channel> findByAppId(String appId);
-    @Query("SELECT c FROM Channel WHERE c.appSecret = ?1")
-    List<Channel> finaByAppSecret(String appSecret);
+    //@Query("SELECT c FROM t_channel c WHERE c.appSecret=?1")
+    List<Channel> findByAppSecret(String appSecret);
 }

@@ -68,6 +68,6 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public boolean checkClientSecret(String clientSecret) {
-        return channelService.finaByAppSecret(clientSecret) != null;
+        return channelService.findByAppSecret(clientSecret) != null;
     }
 }
