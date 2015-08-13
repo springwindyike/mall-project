@@ -41,7 +41,7 @@ public class AuthorizeController {
     @Autowired
     private MemberService memberService;
 
-    @RequestMapping(value = "/authorize", method = RequestMethod.POST)
+    @RequestMapping(value = "/authorize", method = RequestMethod.GET)
     public Object authorize(Model model, HttpServletRequest request) throws URISyntaxException {
         try {
             OAuthAuthzRequest oauthRequest = new OAuthAuthzRequest(request);
