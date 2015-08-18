@@ -62,6 +62,6 @@ public class SearchFilter {
     }
 
     public enum Operator {
-        EQ, LIKE, START, END, GT, LT, GTE, LTE
+        EQ, LIKE, START, END, GT, LT, GTE, LTE ,NEQ//等于,like,%前， %后，大于,小于，大于等于，小于等于
     }
 }

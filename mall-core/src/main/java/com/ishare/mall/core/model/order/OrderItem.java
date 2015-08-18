@@ -1,10 +1,21 @@
 package com.ishare.mall.core.model.order;
 
-import com.ishare.mall.core.model.base.BaseEntity;
-
-import javax.persistence.*;
-
 import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_ITEM_NAME;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.ishare.mall.core.model.base.BaseEntity;
+import com.ishare.mall.core.status.OrderItemSort;
+import com.ishare.mall.core.status.OrderItemState;
 
 /**
  * Created by YinLin on 2015/7/31.
@@ -34,9 +45,23 @@ public class OrderItem extends BaseEntity {
     /* 产品样式ID */
     @Column(nullable = false, name = "item_product_style_id")
     private Integer styleId;
-    /** 产品图片地址 */
+    /* 产品图片地址 */
     @Column(nullable = false, name = "item_product_image_url")
     private String imageUrl;
+    /* 产品状态 */
+    @Enumerated(EnumType.STRING)
+    @Column(length=16, nullable = true, name = "item_state")
+    private OrderItemState state;
+   
+    /* 购买者*/
+    @Column(length=16, nullable = true, name = "create_by")
+    private String createBy;
+    	
+    /*退换货标记*/
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true, name = "item_exchange_or_back")
+    private OrderItemSort exchangeOrBack;
+    
     /* 所属订单 */
     @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
     @JoinColumn(name="order_id")
@@ -109,7 +134,23 @@ public class OrderItem extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public Order getOrder() {
+    public OrderItemState getState() {
+		return state;
+	}
+    
+	public void setState(OrderItemState state) {
+		this.state = state;
+	}
+	
+	public OrderItemSort getExchangeOrBack() {
+		return exchangeOrBack;
+	}
+	
+	public void setExchangeOrBack(OrderItemSort exchangeOrBack) {
+		this.exchangeOrBack = exchangeOrBack;
+	}
+	
+	public Order getOrder() {
         return order;
     }
     public void setOrder(Order order) {

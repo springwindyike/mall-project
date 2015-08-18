@@ -2,8 +2,11 @@ package com.ishare.mall.controller;
 
 import com.google.common.collect.Lists;
 import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.service.order.OrderService;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,8 @@ import java.util.List;
 public class IndexController {
     @Autowired
     private ChannelService channelService;
+    @Autowired
+    private OrderService orderService;
     @RequestMapping(value = "get", method = RequestMethod.GET)
     @ResponseBody
     public String get() {
@@ -60,5 +65,10 @@ public class IndexController {
     @ResponseBody
     public Channel getBys(@NotEmpty @PathVariable("id")String appId) {
         return channelService.findByAppSecret(appId);
+    }
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Order getOrder(@NotEmpty @PathVariable("id") String orderId) {
+    	return orderService.findOne(orderId);
     }
 }
