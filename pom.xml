@@ -248,11 +248,11 @@
         <profile>
             <id>local</id>
             <properties>
-                <db.host>localhost</db.host>
+                <db.host>10.23.23.116</db.host>
                 <db.username>root</db.username>
                 <db.password>root</db.password>
                 <schema.name>mall</schema.name>
-                <schema.user>mall</schema.user>
+                <schema.user>root</schema.user>
                 <schema.password>123456</schema.password>
             </properties>
             <repositories>

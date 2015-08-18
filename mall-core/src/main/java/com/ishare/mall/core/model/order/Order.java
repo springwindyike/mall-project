@@ -22,13 +22,13 @@ public class Order  {
     @Id @Column(length = 14, name = "order_id")
     private String orderId;
     /* 创建订单者 */
-    @ManyToOne(cascade = CascadeType.REFRESH, optional=false)
-    @JoinColumn(name = "order_create_by")
-    private Member createBy;
+    
+    @Column(name = "order_create_by")
+    private String createBy;
     /**更新订单者**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional=false)
-    @JoinColumn(name = "order_update_by")
-    private Member updateBy;
+    
+    @Column(name = "order_update_by")
+    private String updateBy;
     /* 订单创建时间 */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable=false, name = "order_create_time")
