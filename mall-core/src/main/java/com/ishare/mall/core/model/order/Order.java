@@ -1,10 +1,12 @@
 package com.ishare.mall.core.model.order;
 
+import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PaymentWay;
 
 import javax.persistence.*;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,6 +82,11 @@ public class Order  {
     /**客服留言**/
     @OneToMany(mappedBy = "order", cascade=CascadeType.REMOVE)
     private Set<OrderMessage> orderMessages = new HashSet<OrderMessage>();
+    /**各个订单对应的渠道**/
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
+    @JoinColumn(name="channel_id")
+    private Channel channel;
+    
     public Order(){}
 
     public OrderState getState() {
@@ -140,7 +147,16 @@ public class Order  {
         this.items.add(item);
         item.setOrder(this);
     }
-    @Override
+    
+    public Channel getChannel() {
+		return channel;
+	}
+
+	public void setChannel(Channel channel) {
+		this.channel = channel;
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
