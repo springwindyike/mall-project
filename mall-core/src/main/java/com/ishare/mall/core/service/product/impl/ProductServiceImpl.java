@@ -1,10 +1,8 @@
 package com.ishare.mall.core.service.product.impl;
 
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.repository.product.ProductRepository;
-import com.ishare.mall.core.service.product.ProductService;
-import com.ishare.mall.core.utils.filter.DynamicSpecifications;
-import com.ishare.mall.core.utils.filter.SearchFilter;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
+import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.repository.product.ProductRepository;
+import com.ishare.mall.core.service.product.ProductService;
+import com.ishare.mall.core.utils.filter.DynamicSpecifications;
+import com.ishare.mall.core.utils.filter.SearchFilter;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -44,4 +46,11 @@ public class ProductServiceImpl implements ProductService {
     public static Logger getLog() {
         return log;
     }
+
+	@Override
+	public Product findByCode(String code) {
+    List<Product> products = productRepository.findByCode(code);
+    if (products == null || products.size() == 0) return null;
+    return products.get(0);
+	}
 }

@@ -42,11 +42,8 @@ public class ProductTypeResource {
      */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ProductType detail(@NotEmpty @PathVariable("id") Integer id) {
-		System.out.println(id);
 		//用findOne立即加载实体对象
 		ProductType productType = productTypeService.findOne(id);
-		if (productType != null)
-		log.debug(productType.toString());
 		return productType;	 
 	 }
    

@@ -52,6 +52,19 @@ public class ProductResource {
     }
 
     /**
+     * 通过商品编号获取单个商品信息  格式 /products/{id} GET
+     * @param id 商品ID
+     * @return ProductDetailDTO 返回的数据对象
+     */
+	@RequestMapping(value = "code/{code}", method = RequestMethod.GET)
+	public ProductDetailDTO getByCode(@NotEmpty @PathVariable("code") String code) {
+		//用findOne立即加载实体对象
+		Product product = productService.findByCode(code);
+		//转换为接口输出数据对象DTO 映射规则需要自己添加
+		return (ProductDetailDTO) MapperUtils.map(product, ProductDetailDTO.class);
+    }
+    
+    /**
      * 通过当前页和每页数量获取商品列表 格式 /products/offset/{offset}/limit/{limit} GET
      * @param offset 分页下标
      * @param limit 分页size
@@ -80,6 +93,38 @@ public class ProductResource {
         return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
     }
 
+    /**
+     * 通过类别id获取当前商品列表 格式/products/{currentPage}/{pageSize}/type/{typeId} GET
+     * @param offset 当前页
+     * @param limit 每页数据
+     * @param name 类别名称
+     * @return 返回list
+     */
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/type/{name}", method = RequestMethod.GET)
+    public Page<ProductListDTO> list(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        Map<String, Object> searchParams = Maps.newConcurrentMap();
+        searchParams.put("LIKE_type.name", name);
+        Page<Product> result = productService.search(searchParams, pageRequest);
+        return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
+    }
+
+    /**
+    * 通过类别id获取当前商品列表 格式/products/{currentPage}/{pageSize}/type/{typeId} GET
+    * @param offset 当前页
+    * @param limit 每页数据
+    * @param name 产品名字（关键字）
+    * @return 返回list
+    */
+   @RequestMapping(value = "/offset/{offset}/limit/{limit}/name/{name}", method = RequestMethod.GET)
+   public Page<ProductListDTO> listByName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
+       PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+       Map<String, Object> searchParams = Maps.newConcurrentMap();
+       searchParams.put("LIKE_name", name);
+       Page<Product> result = productService.search(searchParams, pageRequest);
+       return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
+   }
+    
     /**
      * search
      * @param request http请求
