@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductListDTO;
 import com.ishare.mall.core.model.order.OrderItem;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.status.OrderItemSort;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.utils.page.PageUtils;
 
 /**
@@ -32,7 +35,7 @@ import com.ishare.mall.utils.page.PageUtils;
  * Version 1.0
  */
 @RestController
-@RequestMapping("/returnproducts")
+@RequestMapping("/orderitems")
 public class OrderItemResource {
 
     private static final Logger log = LoggerFactory.getLogger(OrderItemResource.class);
@@ -41,6 +44,13 @@ public class OrderItemResource {
     @Autowired
     private OrderItemService productReturnService;
     
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public OrderItemDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
+        //用findOne立即加载实体对象
+    	OrderItem orderItem = productReturnService.findOne(id);
+        //转换为接口输出数据对象DTO 映射规则需要自己添加
+        return (OrderItemDetailDTO) MapperUtils.map(orderItem, OrderItemDetailDTO.class);
+    }
     
     /**
      * 通过电话号码获取所有退换货商品列表 格式/offset/{offset}/limit/{limit}/{phone} GET

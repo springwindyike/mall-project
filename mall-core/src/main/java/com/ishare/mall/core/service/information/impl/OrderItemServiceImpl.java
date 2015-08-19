@@ -43,4 +43,10 @@ public class OrderItemServiceImpl implements OrderItemService {
         return log;
     }
 
+	@Override
+	public OrderItem findOne(Integer id) {
+		// TODO Auto-generated method stub
+		return orderItemRepository.findOne(id);
+	}
+
 }
