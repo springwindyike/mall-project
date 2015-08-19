@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +29,8 @@ import com.ishare.mall.core.service.order.OrderService;
 @RequestMapping("/orders")
 public class OrderResource {
 	
-    @Autowired
-    private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
     /**
      * 添加订单
      */
@@ -71,6 +73,20 @@ public class OrderResource {
 		Order order = orderService.findOne(id);
 		return order;
     }
-	
-	
+    
+    /**
+     *  平台销售总额统计
+     */
+    @RequestMapping(value = "summeryMoney", method = RequestMethod.GET)
+    @ResponseBody
+    public float summeryMoney() {
+    	List <Order> orderList = orderService.findTotalSales();
+    	float summery = 0.0f;
+    			for(Order order: orderList) {
+    				 summery += order.getTotalPrice();
+    			}
+    			return summery;
+  
+    }
+
 }

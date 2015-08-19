@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.order.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.ishare.mall.core.utils.filter.SearchFilter;
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
+	
 	@Autowired
 	private OrderRepository orderRepository;
 	@Override
@@ -31,5 +33,10 @@ public class OrderServiceImpl implements OrderService {
 		Page<Order> page = orderRepository.findAll(spec, pageRequest);
 		return page;
     }
+
+	public List<Order> findTotalSales() {
+
+		return orderRepository.findAll();
+	}
 
 }
