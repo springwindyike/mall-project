@@ -43,10 +43,10 @@ public class OrderItemResource {
     
     
     /**
-     * 通过品牌id获取当前商品列表 格式/products/{currentPage}/{pageSize}/brand/{brandId} GET
+     * 通过电话号码获取所有退换货商品列表 格式/offset/{offset}/limit/{limit}/{phone} GET
      * @param offset 当前页
      * @param limit 每页数据
-     * @param name 品牌名字
+     * @param phone 电话号码
      * @return 返回list
      */
     @RequestMapping(value = "/offset/{offset}/limit/{limit}/{phone}", method = RequestMethod.GET)
