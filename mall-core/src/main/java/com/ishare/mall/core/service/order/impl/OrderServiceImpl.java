@@ -1,5 +1,7 @@
 package com.ishare.mall.core.service.order.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +13,17 @@ import com.ishare.mall.core.service.order.OrderService;
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
+	
 	@Autowired
 	private OrderRepository orderRepository;
 	@Override
 	public Order findOne(String id) {
 		return orderRepository.findOne(id);
+	}
+	@Override
+	public List<Order> findTotalSales() {
+		// TODO Auto-generated method stub
+		return orderRepository.findAll();
 	}
 
 }
