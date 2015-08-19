@@ -76,6 +76,9 @@ public class Product extends BaseEntity {
     //默认的图片地址 冗余
     @Column(name = "default_img_url")
     private String defaultImageUrl;
+    //库存
+    @Column(name = "product_inventory")
+    private Integer inventory;
     @JsonIgnore
     //创建者
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
@@ -297,7 +300,15 @@ public class Product extends BaseEntity {
         this.productStyles = productStyles;
     }
 
-    @Override
+    public Integer getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Integer inventory) {
+		this.inventory = inventory;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

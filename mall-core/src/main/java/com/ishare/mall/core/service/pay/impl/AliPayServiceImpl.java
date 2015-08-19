@@ -1,7 +1,19 @@
 package com.ishare.mall.core.service.pay.impl;
 
+import com.ishare.mall.common.base.constant.PayConstant;
 import com.ishare.mall.core.service.pay.AliPayService;
+import com.ishare.mall.core.utils.pay.AlipayCore;
+import com.ishare.mall.core.utils.pay.MD5;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static com.ishare.mall.common.base.constant.CommonConstant.CharSet.UTF8;
 
 /**
  * Created by YinLin on 2015/8/14.
@@ -10,15 +22,41 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AliPayServiceImpl implements AliPayService {
+
+    private final static Logger log = LoggerFactory.getLogger(AliPayServiceImpl.class);
+
     @Override
     public String create() {
         return null;
     }
 
+    @Value(PayConstant.AliPay.GATE_WAY_URL)
+    private String gatewayUrl;
+
+    @Value(PayConstant.AliPay.PARTNER)
+    private String partner;
+
+    @Value(PayConstant.AliPay.KEY)
+    private String key;
+
+    @Value(PayConstant.AliPay.NOTIFY_URL)
+    private String notifyUrl;
+
+    @Value(PayConstant.AliPay.REFUND_NOTIFY_URL)
+    private String refundNotifyUrl;
+
+    @Value(PayConstant.AliPay.SELLER_EMAIL)
+    private String sellerEmail;
+
+    @Value(PayConstant.AliPay.RSA_PUBLIC_KEY)
+    private String rsaPublicKey;
+
+    @Value(PayConstant.AliPay.RSA_PRIVATE_KEY)
+    private String rsaKey;
+
     private String buildPayForm() {
         return null;
     }
-
 
     /**
      * 建立请求，以表单HTML形式构造（默认）
@@ -28,35 +66,53 @@ public class AliPayServiceImpl implements AliPayService {
      * @param strButtonName 确认按钮显示文字
      * @return 提交表单HTML文本
      */
-//    private String buildRequest(Map<String, String> sParaTemp,
-//                                String strMethod, String strButtonName) {
-//        // 待请求参数数组
-//        Map<String, String> sPara = buildRequestPara(sParaTemp);
-//        List<String> keys = new ArrayList<String>(sPara.keySet());
-//
-//        StringBuffer sbHtml = new StringBuffer();
-//
-//        sbHtml
-//                .append("<form target=\"_self\" id=\"alipaysubmit\" name=\"alipaysubmit\" action=\""
-//                        + gatewayUrl
-//                        + "_input_charset="
-//                        + INPUT_CHARSET
-//                        + "\" method=\"" + strMethod + "\">");
-//
-//        for (int i = 0; i < keys.size(); i++) {
-//            String name = (String) keys.get(i);
-//            String value = (String) sPara.get(name);
-//
-//            sbHtml.append("<input type=\"hidden\" name=\"" + name
-//                    + "\" value=\"" + value + "\"/>");
-//        }
-//
-//        // submit按钮控件请不要含有name属性
-//        sbHtml.append("<input type=\"submit\" value=\"" + strButtonName
-//                + "\" style=\"display:none;\"></form>");
-//        sbHtml
-//                .append("<script>document.forms['alipaysubmit'].submit();</script>");
-//        logger.debug(sbHtml.toString());
-//        return sbHtml.toString();
-//    }
+    private String buildRequest(Map<String, String> sParaTemp,
+                                String strMethod, String strButtonName) {
+        // 待请求参数数组
+        Map<String, String> sPara = this.buildRequestParameter(sParaTemp);
+        List<String> keys = new ArrayList<String>(sPara.keySet());
+        StringBuffer sbHtml = new StringBuffer();
+        sbHtml.append("<form target=\"_self\" id=\"alipaysubmit\" name=\"alipaysubmit\" action=\""
+                + gatewayUrl
+                + "_input_charset="
+                + UTF8
+                + "\" method=\"" + strMethod + "\">");
+
+        for (int i = 0; i < keys.size(); i++) {
+            String name = (String) keys.get(i);
+            String value = (String) sPara.get(name);
+            sbHtml.append("<input type=\"hidden\" name=\"" + name
+                    + "\" value=\"" + value + "\"/>");
+        }
+        // submit按钮控件请不要含有name属性
+        sbHtml.append("<input type=\"submit\" value=\"" + strButtonName
+                + "\" style=\"display:none;\"></form>");
+        sbHtml.append("<script>document.forms['alipaysubmit'].submit();</script>");
+        log.debug(sbHtml.toString());
+        return sbHtml.toString();
+    }
+
+    private Map<String, String> buildRequestParameter(Map<String, String> parameter) {
+        // 除去数组中的空值和签名参数
+        Map<String, String> sPara = AlipayCore.paraFilter(parameter);
+        // 生成签名结果
+        String mySign = this.buildRequestMySign(sPara);
+        //签名结果与签名方式加入请求提交参数数组
+        sPara.put("sign", mySign);
+
+        sPara.put("sign_type", PayConstant.AliPay.SIGN_TYPE);
+        return sPara;
+    }
+
+    /**
+     * 生成
+     * @param sPara
+     * @return
+     */
+    private String buildRequestMySign(Map<String, String > sPara) {
+        String preStr = AlipayCore.createLinkString(sPara);
+        String mySign = "";
+        mySign = MD5.sign(preStr, key, UTF8);
+        return mySign;
+    }
 }

@@ -65,6 +65,7 @@ public class OrikaMapper extends ConfigurableMapper {
 
 	@Override
 	public void configureFactoryBuilder(DefaultMapperFactory.Builder builder) {
+		
 	}
 
     public static Logger getLog() {

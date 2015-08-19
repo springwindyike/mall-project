@@ -93,4 +93,11 @@ public class ProductType extends BaseEntity {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
+	@Override
+	public String toString() {
+		return "ProductType [id=" + id + ", name=" + name + ", code=" + code
+				+ ", note=" + note + "]";
+	}
+    
 }
