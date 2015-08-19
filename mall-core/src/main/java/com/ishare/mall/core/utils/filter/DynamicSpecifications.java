@@ -63,6 +63,9 @@ public class DynamicSpecifications {
                             case LTE:
                                 predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) filter.value));
                                 break;
+                            case NEQ:
+                            			predicates.add(builder.notEqual(expression, (Comparable) filter.value));
+                            			break;
                         }
                     }
 
