@@ -1,20 +1,23 @@
 
 package com.ishare.mall.core.utils.mapper;
 
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.core.model.product.Product;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
+import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.model.product.Product;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -27,8 +30,10 @@ public class OrikaMapper extends ConfigurableMapper {
 
 	@Override
 	public void configure(MapperFactory mapperFactory) {
+		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Member.class, MemberDetailDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Product.class, ProductDetailDTO.class));
 	    this.registerProductClassMap(mapperFactory);
+	    this.registerMemberClassMap(mapperFactory);
     }
 
 	/**
@@ -63,6 +68,19 @@ public class OrikaMapper extends ConfigurableMapper {
         mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 
+	private void registerMemberClassMap(MapperFactory mapperFactory) {
+		 ClassMapBuilder<Member, MemberDetailDTO>classMapBuilder = mapperFactory.classMap(Member.class, MemberDetailDTO.class);
+		  Field[] fields = MemberDetailDTO.class.getDeclaredFields();
+		  Set<String> otherDealField = new HashSet<String>();
+		  otherDealField.add("channelId");
+		  for (Field field : fields) {
+	            if (!otherDealField.contains(field.getName())) {
+	                classMapBuilder.field(field.getName(), field.getName());
+	            }
+	        }
+		  classMapBuilder.field("channel.id", "channelId");
+		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+	}
 	@Override
 	public void configureFactoryBuilder(DefaultMapperFactory.Builder builder) {
 		
