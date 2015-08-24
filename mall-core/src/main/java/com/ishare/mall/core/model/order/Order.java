@@ -1,12 +1,10 @@
 package com.ishare.mall.core.model.order;
 
 import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PaymentWay;
 
 import javax.persistence.*;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -186,5 +184,91 @@ public class Order  {
         return true;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
 
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Float getPayableFee() {
+        return payableFee;
+    }
+
+    public void setPayableFee(Float payableFee) {
+        this.payableFee = payableFee;
+    }
+
+    public Boolean getPaymentState() {
+        return paymentState;
+    }
+
+    public void setPaymentState(Boolean paymentState) {
+        this.paymentState = paymentState;
+    }
+
+    public String getLockMember() {
+        return lockMember;
+    }
+
+    public void setLockMember(String lockMember) {
+        this.lockMember = lockMember;
+    }
+
+    public Set<OrderMessage> getOrderMessages() {
+        return orderMessages;
+    }
+
+    public void setOrderMessages(Set<OrderMessage> orderMessages) {
+        this.orderMessages = orderMessages;
+    }
+
+    public String getExpressOrder() {
+        return expressOrder;
+    }
+
+    public void setExpressOrder(String expressOrder) {
+        this.expressOrder = expressOrder;
+    }
+
+    public String getExpressId() {
+        return expressId;
+    }
+
+    public void setExpressId(String expressId) {
+        this.expressId = expressId;
+    }
 }
