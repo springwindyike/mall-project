@@ -64,7 +64,7 @@ public class AuthorizeController {
             if (responseType.equals(ResponseType.CODE.toString())) {
                 OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
                 authorizationCode = oauthIssuerImpl.authorizationCode();
-                oAuthService.addAuthCode(authorizationCode, account);
+                oAuthService.addAuthCode(authorizationCode, account, oauthRequest.getClientId());
             }
             //进行OAuth响应构建
             OAuthASResponse.OAuthAuthorizationResponseBuilder builder =
