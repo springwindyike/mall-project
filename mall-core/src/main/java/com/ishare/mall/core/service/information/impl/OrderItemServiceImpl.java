@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.information.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -45,8 +46,12 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 	@Override
 	public OrderItem findOne(Integer id) {
-		// TODO Auto-generated method stub
 		return orderItemRepository.findOne(id);
+	}
+
+	@Override
+	public List<OrderItem> createNewOrderItems(List<OrderItem> orderItemsList) {
+		return orderItemRepository.save(orderItemsList);
 	}
 
 }

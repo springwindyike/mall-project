@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
 import java.util.List;
 
 import com.ishare.mall.core.model.order.Order;
@@ -15,4 +16,8 @@ public interface OrderService {
 	Order findOne(String id);
 
 	List<Order> findTotalSales();
+	
+	List<Order> findByCreateBy(String createBy);
+	
+	Order createNewOrder(Order order);
 }

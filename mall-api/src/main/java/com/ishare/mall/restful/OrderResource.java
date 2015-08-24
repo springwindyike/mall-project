@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
@@ -18,17 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.service.order.OrderService;
 
@@ -42,7 +39,7 @@ import com.ishare.mall.core.service.order.OrderService;
 public class OrderResource {
 	
 	@Autowired
-	private OrderService orderService;
+	private static OrderService orderService;
 	@Autowired
 	private OAuthService oAuthService;
     /**
@@ -107,6 +104,39 @@ public class OrderResource {
 		return order;
     }
     
+	@RequestMapping(value = "/createBy/{createBy}/accessToken/{accessToken}", method = RequestMethod.GET)
+	@ResponseBody
+	public Object listByCreateBy(@NotEmpty @PathVariable("createBy") String createBy, @NotEmpty @PathVariable("accessToken") String accessToken) throws OAuthSystemException {
+		if (!oAuthService.checkAccessToken(accessToken)) {  
+			// 如果不存在/过期了，返回未验证错误，需重新验证  
+			OAuthResponse response = OAuthRSResponse  
+			        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)  
+			        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)  
+			        .buildHeaderMessage();
+	    
+			return response;  
+		}  
+		//用findOne立即加载实体对象
+		List<Order> orderList = orderService.findByCreateBy(createBy);
+		return orderList;
+    }
+	
+	@RequestMapping(value = "/accessToken/{accessToken}/addOrder", method = RequestMethod.POST)
+	@ResponseBody
+	public Object addOrder(@NotEmpty @PathVariable("accessToken") String accessToken, @ModelAttribute("orderAttribute") Order order) throws OAuthSystemException {
+		if (!oAuthService.checkAccessToken(accessToken)) {  
+			// 如果不存在/过期了，返回未验证错误，需重新验证  
+			OAuthResponse response = OAuthRSResponse  
+			        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)  
+			        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)  
+			        .buildHeaderMessage();
+	    
+			return response;  
+		}  
+		//用findOne立即加载实体对象
+		return orderService.createNewOrder(order);
+    }
+	
     /**
      *  平台销售总额统计
      */
@@ -122,4 +152,12 @@ public class OrderResource {
   
     }
 
+	public static void main(String[] args) {
+		Order order = new Order();
+		order.getChannel();
+		order.getDeliverFee();
+		order.getNote();
+		orderService.createNewOrder(order);
+	}
+    
 }

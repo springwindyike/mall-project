@@ -6,9 +6,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.order.OrderItem;
-import com.ishare.mall.core.model.product.Product;
 
 /**
  * Created by liaochenglei on 2015/8/18.
@@ -17,7 +15,7 @@ import com.ishare.mall.core.model.product.Product;
  */
 public abstract interface OrderItemService {
 
-	 public abstract OrderItem findOne(Integer id);
-    public abstract Page<OrderItem> search(Map<String, Object> searchParams, PageRequest pageRequest);
-
+	public abstract OrderItem findOne(Integer id);
+	public abstract Page<OrderItem> search(Map<String, Object> searchParams, PageRequest pageRequest);
+	List<OrderItem> createNewOrderItems(List<OrderItem> orderItemsList);
 }

@@ -1,5 +1,7 @@
 package com.ishare.mall.core.service.order.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
@@ -22,6 +26,8 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	@Autowired
+	private GeneratedOrderIdRepository generatedOrderIdRepository;
 	@Override
 	public Order findOne(String id) {
 		return orderRepository.findOne(id);
@@ -38,5 +44,35 @@ public class OrderServiceImpl implements OrderService {
 
 		return orderRepository.findAll();
 	}
-
+	
+	@Override
+	public List<Order> findByCreateBy(String createBy) {
+	    List<Order> order = orderRepository.findByCreateBy(createBy);
+	    if (order == null || order.size() == 0) return null;
+	    return order;
+	}
+	
+	@Override
+	public Order createNewOrder(Order order) {
+		Date current=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		String date=sdf.format(current);
+		GeneratedOrderId generatedOrderId = generatedOrderIdRepository.findOne(date);
+		if(null == generatedOrderId){
+			GeneratedOrderId go = new GeneratedOrderId();
+			go.setId(date);
+			go.setOrderId(1);
+			generatedOrderIdRepository.save(go);
+			String orderIdStr = String.format("%06d", go.getOrderId());     
+			order.setOrderId(date + orderIdStr);
+			return orderRepository.save(order);
+		}
+		generatedOrderId.setOrderId(generatedOrderId.getOrderId()+1);
+		generatedOrderIdRepository.save(generatedOrderId);
+		String orderIdStr = String.format("%06d",generatedOrderId.getOrderId()+1);     
+		order.setOrderId(date + orderIdStr);
+		return orderRepository.save(order);
+		
+	}
+	
 }

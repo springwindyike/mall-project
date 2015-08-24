@@ -1,17 +1,27 @@
 package com.ishare.mall.core.model.order;
 
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.status.OrderState;
-import com.ishare.mall.core.status.PaymentWay;
-
-import javax.persistence.*;
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.status.OrderState;
+import com.ishare.mall.core.status.PaymentWay;
 
 /**
  * Created by YinLin on 2015/7/31.
@@ -95,7 +105,15 @@ public class Order  {
     
     public Order(){}
 
-    public OrderState getState() {
+    public String getOrderId() {
+				return orderId;
+			}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public OrderState getState() {
         return state;
     }
     public void setState(OrderState state) {

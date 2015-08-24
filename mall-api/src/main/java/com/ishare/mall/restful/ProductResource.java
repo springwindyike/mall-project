@@ -78,14 +78,14 @@ public class ProductResource {
     }
 
     /**
-     * 通过品牌id获取当前商品列表 格式/products/{currentPage}/{pageSize}/brand/{brandId} GET
+     * 通过品牌名称获取当前商品列表 格式/products/{currentPage}/{pageSize}/brand/{name} GET
      * @param offset 当前页
      * @param limit 每页数据
      * @param name 品牌名字
      * @return 返回list
      */
     @RequestMapping(value = "/offset/{offset}/limit/{limit}/brand/{name}", method = RequestMethod.GET)
-    public Page<ProductListDTO> get(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
+    public Page<ProductListDTO> listByBrandName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_brand.name", name);
@@ -94,23 +94,55 @@ public class ProductResource {
     }
 
     /**
-     * 通过类别id获取当前商品列表 格式/products/{currentPage}/{pageSize}/type/{typeId} GET
+     * 通过品牌id获取当前商品列表 格式/products/{currentPage}/{pageSize}/brandId/{brandId} GET
+     * @param offset 当前页
+     * @param limit 每页数据
+     * @param name 品牌名字
+     * @return 返回list
+     */
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/brandId/{brandId}", method = RequestMethod.GET)
+    public Page<ProductListDTO> listByBrandId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("brandId")String brandId) {
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        Map<String, Object> searchParams = Maps.newConcurrentMap();
+        searchParams.put("LIKE_brand.id", brandId);
+        Page<Product> result = productService.search(searchParams, pageRequest);
+        return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
+    }
+    
+    /**
+     * 通过类别名称获取当前商品列表 格式/products/{currentPage}/{pageSize}/type/{name} GET
      * @param offset 当前页
      * @param limit 每页数据
      * @param name 类别名称
      * @return 返回list
      */
     @RequestMapping(value = "/offset/{offset}/limit/{limit}/type/{name}", method = RequestMethod.GET)
-    public Page<ProductListDTO> list(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
+    public Page<ProductListDTO> listByTypeName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_type.name", name);
         Page<Product> result = productService.search(searchParams, pageRequest);
         return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
     }
+    
+    /**
+     * 通过类别Id获取当前商品列表 格式/products/{currentPage}/{pageSize}/typeId/{typeId} GET
+     * @param offset 当前页
+     * @param limit 每页数据
+     * @param name 类别名称
+     * @return 返回list
+     */
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/typeId/{typeId}", method = RequestMethod.GET)
+    public Page<ProductListDTO> listByTypeId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("typeId")String typeId) {
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        Map<String, Object> searchParams = Maps.newConcurrentMap();
+        searchParams.put("LIKE_type.id", typeId);
+        Page<Product> result = productService.search(searchParams, pageRequest);
+        return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
+    }
 
     /**
-    * 通过类别id获取当前商品列表 格式/products/{currentPage}/{pageSize}/type/{typeId} GET
+    * 通过品名字（关键字）获取当前商品列表 格式/products/{currentPage}/{pageSize}/name/{name} GET
     * @param offset 当前页
     * @param limit 每页数据
     * @param name 产品名字（关键字）
