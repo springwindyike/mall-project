@@ -88,7 +88,7 @@ public class AccessTokenController {
             OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
             final String accessToken = oauthIssuerImpl.accessToken();
             oAuthService.addAccessToken(accessToken,
-                    oAuthService.getAccountByAuthCode(authCode));
+                    oAuthService.getAccountByAuthCode(authCode), oauthRequest.getClientId());
 
             //生成OAuth响应
             OAuthResponse response = OAuthASResponse

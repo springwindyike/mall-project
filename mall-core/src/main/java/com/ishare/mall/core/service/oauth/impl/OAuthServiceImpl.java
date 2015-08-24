@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.oauth.impl;
 
+import com.ishare.mall.common.base.dto.oauth.OAuthObject;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,20 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public void addAuthCode(String authCode, String account) {
-        this.cache.put(authCode, account);
+    public void addAuthCode(String authCode, String account, String clientId) {
+        OAuthObject authObject = new OAuthObject();
+        authObject.setAccessCode(authCode);
+        authObject.setAccount(account);
+        authObject.setClientId(clientId);
+        this.cache.put(authCode, authObject);
     }
 
     @Override
-    public void addAccessToken(String accessToken, String account) {
+    public void addAccessToken(String accessToken, String account, String clientId) {
+        OAuthObject authObject = new OAuthObject();
+        authObject.setAccount(accessToken);
+        authObject.setAccount(account);
+        authObject.setClientId(clientId);
         this.cache.put(accessToken, account);
     }
 
@@ -48,12 +57,14 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public String getAccountByAuthCode(String authCode) {
-        return (String)cache.get(authCode).get();
+        OAuthObject authObject = (OAuthObject)cache.get(authCode).get();
+        return authObject == null? null : authObject.getAccount();
     }
 
     @Override
     public String getAccountByAccessToken(String accessToken) {
-        return (String)cache.get(accessToken).get();
+        OAuthObject authObject = (OAuthObject)cache.get(accessToken).get();
+        return authObject == null? null : authObject.getAccount();
     }
 
     @Override
