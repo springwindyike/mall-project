@@ -57,19 +57,7 @@
 	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
-	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-		<property name="interceptors">
-			<list>
-				<ref bean="openEntityManagerInViewInterceptor" />
-			</list>
-		</property>
-	</bean>
-	<bean name="openEntityManagerInViewInterceptor"
-		  class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor">
-		<property name="entityManagerFactory">
-			<ref bean="entityManagerFactory" />
-		</property>
-	</bean>
+
 	<jpa:repositories base-package="com.ishare.mall" transaction-manager-ref="jpaTransactionManager" entity-manager-factory-ref="entityManagerFactory"/>
 	<!-- 读取配置文件 -->
 	<context:property-placeholder ignore-unresolvable="true" location="classpath*:/application.properties" />
