@@ -86,6 +86,12 @@ public class Order  {
     @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
     @JoinColumn(name="channel_id")
     private Channel channel;
+  
+    @Column(name = "express_order",nullable=false)
+    private String expressOrder;//快递单号
+    
+    @Column(name = "express_id", nullable=false,length=12)
+    private String expressId;//快递代号
     
     public Order(){}
 
