@@ -42,12 +42,12 @@ public class OrderItemResource {
     @Autowired
     private ProductService productService;
     @Autowired
-    private OrderItemService productReturnService;
+    private OrderItemService orderItemService;
     
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public OrderItemDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
         //用findOne立即加载实体对象
-    	OrderItem orderItem = productReturnService.findOne(id);
+    	OrderItem orderItem = orderItemService.findOne(id);
         //转换为接口输出数据对象DTO 映射规则需要自己添加
         return (OrderItemDetailDTO) MapperUtils.map(orderItem, OrderItemDetailDTO.class);
     }
@@ -65,7 +65,7 @@ public class OrderItemResource {
          Map<String, Object> searchParams = Maps.newConcurrentMap();
          searchParams.put("EQ_createBy",phone);
          //searchParams.put("NEQ_exchangeOrBack", OrderItemSort.BACK);
-         Page<OrderItem> result = productReturnService.search(searchParams, pageRequest);
+         Page<OrderItem> result = orderItemService.search(searchParams, pageRequest);
         return PageUtils.mapper(result, pageRequest, OrderItemDetailDTO.class);
          //return null;
     }
