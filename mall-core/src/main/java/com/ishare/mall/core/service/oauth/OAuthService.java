@@ -11,14 +11,14 @@ public interface OAuthService {
      * @param authCode
      * @param account
      */
-    void addAuthCode(String authCode, String account);
+    void addAuthCode(String authCode, String account, String clientId);
 
     /**
      * 添加 accessToken
      * @param accessToken
      * @param account
      */
-    void addAccessToken(String accessToken, String account);
+    void addAccessToken(String accessToken, String account, String clientId);
 
     /**
      * 检测authCode
