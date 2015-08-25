@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class TestTemplate {
 
     public static final Logger log = LoggerFactory.getLogger(TestTemplate.class);
+    @Autowired
+    protected ApplicationContext context;
 
     public final int PAGE_SIZE = 5;
 
