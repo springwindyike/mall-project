@@ -1,14 +1,5 @@
 package com.ishare.mall.test.repository;
 
-import java.awt.event.ItemEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Set;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderContactInfo;
@@ -20,6 +11,11 @@ import com.ishare.mall.core.status.Gender;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PaymentWay;
 import com.ishare.mall.test.RepositoryTestTemplate;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Zhangzhaoxin on 2015/8/25.
@@ -56,11 +52,11 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 				String date=sdf.format(current);
 				GeneratedOrderId generatedOrderId = orderIdRepository.findOne(date);
 				if(null == generatedOrderId){
-					GeneratedOrderId go = new GeneratedOrderId();
-					go.setId(date);
-					go.setOrderId(1);
-					orderIdRepository.save(go);
-					String orderIdStr = String.format("%06d", go.getOrderId());     
+					generatedOrderId = new GeneratedOrderId();
+					generatedOrderId.setId(date);
+					generatedOrderId.setOrderId(1);
+					orderIdRepository.save(generatedOrderId);
+					String orderIdStr = String.format("%06d", generatedOrderId.getOrderId());
 					order.setOrderId(date + orderIdStr);
 					repository.save(order);
 				}
