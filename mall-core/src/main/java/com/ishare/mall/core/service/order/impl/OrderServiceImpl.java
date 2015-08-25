@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 		generatedOrderId.setOrderId(generatedOrderId.getOrderId()+1);
 		generatedOrderIdRepository.save(generatedOrderId);
-		String orderIdStr = String.format("%06d",generatedOrderId.getOrderId()+1);     
+		String orderIdStr = String.format("%06d",generatedOrderId.getOrderId()+1);
 		order.setOrderId(date + orderIdStr);
 		return orderRepository.save(order);
 		

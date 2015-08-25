@@ -21,7 +21,7 @@ public abstract class RepositoryTestTemplate extends TestTemplate {
     /**
      * 测试 新增 方法
      */
-    @Rollback(value = true)
+    @Rollback(value = false)
     @Test
     public abstract void testCreate();
 
