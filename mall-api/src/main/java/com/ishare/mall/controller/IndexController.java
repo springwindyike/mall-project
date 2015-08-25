@@ -6,7 +6,6 @@ import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.order.OrderService;
-
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,7 +65,7 @@ public class IndexController {
     public Channel getBys(@NotEmpty @PathVariable("id")String appId) {
         return channelService.findByAppSecret(appId);
     }
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
+   @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Order getOrder(@NotEmpty @PathVariable("id") String orderId) {
     	return orderService.findOne(orderId);
