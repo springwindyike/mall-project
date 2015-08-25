@@ -34,6 +34,13 @@ public class PaymentResource {
     private AliPayService aliPayService;
     @Autowired
     private OrderService orderService;
+
+    /**
+     * 支付接口
+     * @param model
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/pay",method = {RequestMethod.POST, RequestMethod.GET})
     public Object pay(Model model,HttpServletRequest request) {
         String token = request.getParameter("token");
@@ -64,18 +71,24 @@ public class PaymentResource {
         if (order.getState() != OrderState.WAIT_PAYMENT) {
 
         }
-        AliPayDTO aliPayDTO = new AliPayDTO();
+        AliPayDTO aliPayDTO = this.createAliPayDTO(token, order);
 
         aliPayService.create(aliPayDTO);
         return null;
     }
 
-
+    /**
+     * 创建支付DTO
+     * @param token
+     * @param order
+     * @return
+     */
     private AliPayDTO createAliPayDTO(String token, Order order) {
         AliPayDTO aliPayDTO = new AliPayDTO();
         aliPayDTO.setAmount(new BigDecimal(order.getPayableFee()));
         aliPayDTO.setOrderID(order.getOrderId());
         aliPayDTO.setGoodsName(order.getOrderId());
+        aliPayDTO.setReturnUrl("127.0.0.1");
         return  aliPayDTO;
     }
 }
