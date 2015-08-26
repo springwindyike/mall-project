@@ -11,7 +11,7 @@
 
     <description>Spring公共配置</description>
 
-    <context:property-placeholder ignore-resource-not-found="true" location="classpath*:/*.properties "/>
+    <context:property-placeholder ignore-resource-not-found="true" location="classpath*:*/*.properties "/>
 
     <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
     <context:component-scan base-package="com.ishare"/>
@@ -62,6 +62,6 @@
         <property name="timeBetweenEvictionRunsMillis" value="60000"/>
         <property name="minEvictableIdleTimeMillis" value="600000"/>
     </bean>
-    <util:properties id="aliPaySettings" location="classpath:/pay.properties" />
+    <util:properties id="aliPaySettings" location="classpath:pay/pay.properties" />
     <import resource="classpath:spring-config-cache.xml"/>
 </beans>
