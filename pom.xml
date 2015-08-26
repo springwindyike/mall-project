@@ -25,15 +25,13 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
         <java.version>1.7</java.version>
-
         <spring.version>4.1.7.RELEASE</spring.version>
         <spring.jpa.version>1.8.1.RELEASE</spring.jpa.version>
         <hibernate.version>4.3.10.Final</hibernate.version>
         <tomcat.version>8.0.24</tomcat.version>
         <mysql.version>5.1.36</mysql.version>
-
         <jackson.version>2.4.6</jackson.version>
-        <aspectj.version>1.7.4</aspectj.version>
+        <aspectj.version>1.8.1</aspectj.version>
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
         <commons-lang3.version>3.4</commons-lang3.version>
@@ -43,6 +41,21 @@
         <orika.version>1.4.6</orika.version>
         <jackson-mapper-asl.version>1.9.9</jackson-mapper-asl.version>
         <jaxb-api.version>2.2.7</jaxb-api.version>
+        <guava.version>18.0</guava.version>
+        <junit.version>4.12</junit.version>
+        <oauth2.version>1.0.0</oauth2.version>
+        <httpclient.version>3.1</httpclient.version>
+        <httpcomponents.version>4.5</httpcomponents.version>
+        <shiro.version>1.2.2</shiro.version>
+        <ehcache.version>2.6.6</ehcache.version>
+        <!--<hibernate.version>4.3.5.Final</hibernate.version>-->
+        <hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
+        <hibernate-search.version>4.2.0.Final</hibernate-search.version>
+
+        <!-- jdbc driver -->
+        <jdbc.driver.groupId>mysql</jdbc.driver.groupId>
+        <jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
+        <jdbc.driver.version>5.1.30</jdbc.driver.version>
     </properties>
 
     <dependencyManagement>
@@ -102,7 +115,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>18.0</version>
+                <version>${guava.version}</version>
             </dependency>
 
             <!-- connection pool -->
@@ -122,7 +135,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -140,24 +153,109 @@
             <dependency>
                 <groupId>org.apache.oltu.oauth2</groupId>
                 <artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
-                <version>1.0.0</version>
+                <version>${oauth2.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.oltu.oauth2</groupId>
                 <artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
-                <version>1.0.0</version>
+                <version>${oauth2.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-httpclient</groupId>
                 <artifactId>commons-httpclient</artifactId>
-                <version>3.1</version>
+                <version>${httpclient.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5</version>
+                <version>${httpcomponents.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-ehcache</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache-core</artifactId>
+                <version>${ehcache.version}</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>2.0.0</version>
+                <scope>test</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.6</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- logging begin -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!-- 代码直接调用log4j会被桥接到slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!-- 代码直接调用common-logging会被桥接到slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!-- 代码直接调用java.util.logging会被桥接到slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.bgee.log4jdbc-log4j2</groupId>
+                <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+                <version>1.15</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!-- logging end -->
         </dependencies>
         <!-- Mapping -->
 
