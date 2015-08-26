@@ -49,7 +49,8 @@
 			
 	<!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL-->	
 	<mvc:default-servlet-handler/>
-	
+	<!-- Static resources -->
+	<mvc:resources mapping="/resources/**" location="/resources/"/>
 	<!-- 定义无需Controller的url<->view直接映射
 	<mvc:view-controller path="/a" view-name="/system/index"/>
 	-->
@@ -61,8 +62,7 @@
 				<prop key="java.lang.Throwable">error/500</prop>
             </props>  
 		</property>  
-    </bean> 
-    
+    </bean>
     <!-- 自定义拦截链配置
     <mvc:interceptors>
         <mvc:interceptor>
