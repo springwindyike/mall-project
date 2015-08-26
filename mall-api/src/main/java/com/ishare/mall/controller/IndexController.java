@@ -7,6 +7,8 @@ import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.order.OrderService;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/index")
 public class IndexController {
+    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
     @Autowired
     private ChannelService channelService;
     @Autowired
@@ -69,5 +72,15 @@ public class IndexController {
     @ResponseBody
     public Order getOrder(@NotEmpty @PathVariable("id") String orderId) {
     	return orderService.findOne(orderId);
+    }
+    @RequestMapping(value = "/test")
+    @ResponseBody
+    public Object test(TestForm form) {
+        if (form != null) {
+            log.debug(form.getId());
+            log.debug(form.getName());
+            log.debug(form.getGender().getName());
+        }
+        return form;
     }
 }

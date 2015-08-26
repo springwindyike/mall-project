@@ -74,4 +74,7 @@
         </mvc:interceptor>
     </mvc:interceptors>
 	-->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+
+	</bean>
 </beans>
