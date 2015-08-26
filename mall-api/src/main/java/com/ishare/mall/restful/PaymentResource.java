@@ -81,6 +81,10 @@ public class PaymentResource {
         return "pay/pay";
     }
 
+    public Object back() {
+        return null;
+    }
+
     /**
      * 创建支付DTO
      * @param token
