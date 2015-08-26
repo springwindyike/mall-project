@@ -7,6 +7,8 @@ import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.service.pay.AliPayService;
 import com.ishare.mall.core.status.OrderState;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,9 @@ import java.math.BigDecimal;
 @Controller
 @RequestMapping("/payment")
 public class PaymentResource {
+
+    private static final Logger log = LoggerFactory.getLogger(PaymentResource.class);
+
     @Autowired
     private OAuthService oAuthService;
     @Autowired
@@ -68,10 +73,11 @@ public class PaymentResource {
         if (order.getState() != OrderState.WAIT_PAYMENT) {
 
         }
-        //AliPayDTO aliPayDTO = this.createAliPayDTO(token, order);
+        AliPayDTO aliPayDTO = this.createAliPayDTO("", order);
 
-        //aliPayService.create(aliPayDTO);
-        model.addAttribute("returnContent","Hello word");
+        String payForm = aliPayService.create(aliPayDTO);
+        model.addAttribute("returnContent", payForm);
+        log.debug(payForm);
         return "pay/pay";
     }
 
