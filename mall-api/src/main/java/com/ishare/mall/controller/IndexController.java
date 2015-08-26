@@ -65,7 +65,7 @@ public class IndexController {
     public Channel getBys(@NotEmpty @PathVariable("id")String appId) {
         return channelService.findByAppSecret(appId);
     }
-   @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Order getOrder(@NotEmpty @PathVariable("id") String orderId) {
     	return orderService.findOne(orderId);

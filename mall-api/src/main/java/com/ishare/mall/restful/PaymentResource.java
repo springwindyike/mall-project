@@ -7,10 +7,6 @@ import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.service.pay.AliPayService;
 import com.ishare.mall.core.status.OrderState;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.oltu.oauth2.common.error.OAuthError;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.message.OAuthResponse;
-import org.apache.oltu.oauth2.rs.response.OAuthRSResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
 /**
@@ -26,7 +21,8 @@ import java.math.BigDecimal;
  * Description : 支付接口相关
  * Version 1.0
  */
-@Controller("/payment")
+@Controller
+@RequestMapping("/payment")
 public class PaymentResource {
     @Autowired
     private OAuthService oAuthService;
@@ -42,22 +38,23 @@ public class PaymentResource {
      * @return
      */
     @RequestMapping(value = "/pay",method = {RequestMethod.POST, RequestMethod.GET})
-    public Object pay(Model model,HttpServletRequest request) {
-        String token = request.getParameter("token");
-        if (token == null || !oAuthService.checkAccessToken(token)) {
-           // 如果不存在/过期了，返回未验证错误，需重新验证
-            OAuthResponse response = null;
-            try {
-                response = OAuthRSResponse
-                .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-                .setError(OAuthError.ResourceResponse.INVALID_TOKEN)
-                .buildHeaderMessage();
-            } catch (OAuthSystemException e) {
-                e.printStackTrace();
-            }
-            return response;
-        }
-        String id = request.getParameter("id");
+    public Object pay(Model model, HttpServletRequest request) {
+//        String token = request.getParameter("token");
+//        if (token == null || !oAuthService.checkAccessToken(token)) {
+//           // 如果不存在/过期了，返回未验证错误，需重新验证
+//            OAuthResponse response = null;
+//            try {
+//                response = OAuthRSResponse
+//                .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+//                .setError(OAuthError.ResourceResponse.INVALID_TOKEN)
+//                .buildHeaderMessage();
+//            } catch (OAuthSystemException e) {
+//                e.printStackTrace();
+//            }
+//            return response;
+//        }
+        String id = "20150825000003";//request.getParameter("id");
+        System.out.println(id);
         //订单ID未传
         if (!StringUtils.isNotEmpty(id)) {
             return null;
@@ -71,10 +68,11 @@ public class PaymentResource {
         if (order.getState() != OrderState.WAIT_PAYMENT) {
 
         }
-        AliPayDTO aliPayDTO = this.createAliPayDTO(token, order);
+        //AliPayDTO aliPayDTO = this.createAliPayDTO(token, order);
 
-        aliPayService.create(aliPayDTO);
-        return null;
+        //aliPayService.create(aliPayDTO);
+        model.addAttribute("returnContent","Hello word");
+        return "pay/pay";
     }
 
     /**
