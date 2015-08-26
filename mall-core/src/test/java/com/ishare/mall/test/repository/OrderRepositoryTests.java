@@ -7,10 +7,12 @@ import com.ishare.mall.core.model.order.OrderDeliverInfo;
 import com.ishare.mall.core.repository.information.ChannelRepository;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
+import com.ishare.mall.core.status.DeliverWay;
 import com.ishare.mall.core.status.Gender;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PaymentWay;
 import com.ishare.mall.test.RepositoryTestTemplate;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -78,8 +80,8 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 			order.setExpressOrder("11111111111");
 			order.setLockMember(null);
 			order.setNote("note..note..note..");
-			order.setOrderContactInfo(null);
-			order.setOrderDeliverInfo(new OrderDeliverInfo());
+			order.setOrderContactInfo(buildOrderContactInfo());
+			order.setOrderDeliverInfo(buildOrderDeliverInfo());
 			order.setPayableFee((float) 150);
 			order.setPaymentState(false);
 			order.setPaymentWay(PaymentWay.NET);
@@ -106,6 +108,25 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 			orderContactInfo.setProvince("province");	
 			orderContactInfo.setTel("12345678");
 			return orderContactInfo;
+		}
+		
+		public OrderDeliverInfo buildOrderDeliverInfo() {
+			OrderDeliverInfo orderDeliverInfo = new OrderDeliverInfo();
+			orderDeliverInfo.setCity("city");
+			orderDeliverInfo.setCountry("country");
+			orderDeliverInfo.setDeliverWay(DeliverWay.EMS);
+			orderDeliverInfo.setDetail("detail");
+			orderDeliverInfo.setDistrict("district");
+			orderDeliverInfo.setEmail("email");
+			orderDeliverInfo.setGender(Gender.MAN);
+			orderDeliverInfo.setMobile("mobile");
+			orderDeliverInfo.setPostalCode("610000");
+			orderDeliverInfo.setProvince("province");
+			orderDeliverInfo.setRecipients("recipients");
+			orderDeliverInfo.setRequirement("requirement");
+			orderDeliverInfo.setTel("tel");
+			
+			return orderDeliverInfo;
 		}
 
     @Override

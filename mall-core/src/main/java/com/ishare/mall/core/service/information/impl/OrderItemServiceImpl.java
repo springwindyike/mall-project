@@ -12,9 +12,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ishare.mall.core.form.AddOrderItemForm;
+import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.repository.information.OrderItemRepository;
+import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.service.information.OrderItemService;
+import com.ishare.mall.core.status.OrderItemSort;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 
@@ -30,6 +34,8 @@ public class OrderItemServiceImpl implements OrderItemService {
     private static final Logger log = LoggerFactory.getLogger(OrderItemServiceImpl.class);
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public Page<OrderItem> search(Map<String, Object> searchParams, PageRequest pageRequest) {
@@ -54,4 +60,33 @@ public class OrderItemServiceImpl implements OrderItemService {
 		return orderItemRepository.save(orderItemsList);
 	}
 
+	@Override
+	public OrderItem createNewOrderItem(AddOrderItemForm orderItems) {
+		Order order = orderRepository.findOne(orderItems.getOrderId());
+		if(null == order){
+//			OrderService orderService = new OrderServiceImpl();
+//			Order newOrder = buildOrder(orderItems);
+//			orderService.createNewOrder(order);
+			return null;
+		}
+		OrderItem newOrderItem = new OrderItem();
+		newOrderItem.setAmount(orderItems.getAmount());
+		newOrderItem.setExchangeOrBack(OrderItemSort.BACK);
+		newOrderItem.setId(orderItems.getId());
+		newOrderItem.setImageUrl(orderItems.getImageUrl());
+		newOrderItem.setOrder(order);
+		newOrderItem.setProductId(orderItems.getProductId());
+		newOrderItem.setProductName(orderItems.getProductName());
+		newOrderItem.setProductPrice(orderItems.getProductPrice());
+		newOrderItem.setState(orderItems.getState());
+		newOrderItem.setStyleId(orderItems.getStyleId());
+		newOrderItem.setStyleName(orderItems.getStyleName());
+		return orderItemRepository.save(newOrderItem);
+	}
+
+//	public Order buildOrder(AddOrderItemForm orderItems) {
+//		Order newOrder = new Order();
+//		orderItems.
+//		return newOrder;
+//	}
 }
