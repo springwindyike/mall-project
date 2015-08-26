@@ -62,6 +62,6 @@
         <property name="timeBetweenEvictionRunsMillis" value="60000"/>
         <property name="minEvictableIdleTimeMillis" value="600000"/>
     </bean>
-    <util:properties id="aliPaySettings" location="classpath:*/pay.properties" />
+    <util:properties id="aliPaySettings" location="classpath:/pay.properties" />
     <import resource="classpath:spring-config-cache.xml"/>
 </beans>
