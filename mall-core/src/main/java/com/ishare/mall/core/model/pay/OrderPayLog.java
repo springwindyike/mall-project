@@ -19,6 +19,8 @@ public class OrderPayLog {
     @Id
     @GeneratedValue
     private Integer id;
+    @Column(name = "pay_order_id")
+    private String orderId;
     @Column(name = "pay_channel_id")
     private Integer channelId;
     @Enumerated(EnumType.STRING)
@@ -111,5 +113,13 @@ public class OrderPayLog {
 
     public void setFinishTime(Date finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }
