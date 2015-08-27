@@ -9,4 +9,6 @@ import com.ishare.mall.core.model.pay.OrderPayLog;
  */
 public interface OrderPayLogService {
     OrderPayLog findByOrderId(String orderId);
+    OrderPayLog save(OrderPayLog orderPayLog);
+    OrderPayLog updateForProcess(OrderPayLog orderPayLog);
 }

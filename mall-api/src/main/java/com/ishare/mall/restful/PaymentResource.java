@@ -3,10 +3,13 @@ package com.ishare.mall.restful;
 import com.ishare.mall.common.base.dto.pay.AliPayDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.pay.OrderPayLog;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.service.pay.AliPayService;
+import com.ishare.mall.core.service.pay.OrderPayLogService;
 import com.ishare.mall.core.status.OrderState;
+import com.ishare.mall.core.status.PayType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +42,8 @@ public class PaymentResource {
     private AliPayService aliPayService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderPayLogService orderPayLogService;
 
     /**
      * 支付接口
@@ -120,7 +125,10 @@ public class PaymentResource {
                 (notify.getTrade_status().equals("TRADE_FINISHED") ||
                  notify.getTrade_status().equals("TRADE_SUCCESS")))
             {
+                OrderPayLog payLog = orderPayLogService.findByOrderId(notify.getOut_trade_no());
+                if (payLog != null && payLog.getPayType().equals(PayType.NEW)) {
 
+                }
             }
         }
 
