@@ -2,6 +2,8 @@ package com.ishare.mall.core.service.pay.impl;
 
 import com.ishare.mall.common.base.constant.PayConstant;
 import com.ishare.mall.common.base.dto.pay.AliPayDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
+import com.ishare.mall.common.base.dto.pay.AliRefundNotifyDTO;
 import com.ishare.mall.core.service.pay.AliPayService;
 import com.ishare.mall.core.utils.pay.AlipayCore;
 import com.ishare.mall.core.utils.pay.MD5;
@@ -9,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,4 +131,42 @@ public class AliPayServiceImpl implements AliPayService {
         mySign = MD5.sign(preStr, key, UTF8);
         return mySign;
     }
+
+    /**
+     * 去阿里验证id是否有效
+     * @param notify 支付验证
+     * @param refund 退款验证
+     * @return
+     */
+    @Override
+    public boolean verifyNotifyUrl(AliPayNotifyDTO notify, AliRefundNotifyDTO refund) {
+        // 首先验证notify ID是否有效
+        RestTemplate restTemplate = new RestTemplate();
+        String verifyNotifyUrl = "https://mapi.alipay.com/gateway.do?service={notify_verify}&partner={partner}&notify_id={notify_id}";
+        String notifyId = "";
+        if(null != notify){
+            notifyId = notify.getNotify_id();
+        }else if(null != refund){
+            notifyId = refund.getNotify_id();
+        }
+        String verifyNotify = restTemplate.getForObject(verifyNotifyUrl,String.class, "notify_verify", partner, notifyId);
+        if (verifyNotify == null || !"true".equals(verifyNotify)) {
+            log.info("notify from aliPay, notify verify failure, verifyNotify={}, notify={}", new Object[]{verifyNotify, notifyId});
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean verifyNotifySign(Map<String, String> params, String sign) {
+        // 过滤空值、sign与sign_type参数
+        Map<String, String> sParaNew = AlipayCore.paraFilter(params);
+        // 获取待签名字符串
+        String preSignStr = AlipayCore.createLinkString(sParaNew);
+        // 获得签名验证结果
+        boolean isSign = false;
+        isSign = MD5.verify(preSignStr, sign, key, UTF8);
+        return isSign;
+    }
+
 }

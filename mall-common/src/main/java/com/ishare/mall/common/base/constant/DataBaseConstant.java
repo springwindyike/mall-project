@@ -49,5 +49,7 @@ public interface DataBaseConstant {
         //物流信息表
         String TABLE_LOGISTICS_NAME = Common.TABLE_PRE + "logistics";
 
+        String TABLE_ORDER_PAY_LOG_NAME = TABLE_ORDER_NAME + "_pay_log";
+
     }
 }

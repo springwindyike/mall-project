@@ -1,6 +1,7 @@
 package com.ishare.mall.restful;
 
 import com.ishare.mall.common.base.dto.pay.AliPayDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.service.order.OrderService;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by YinLin on 2015/8/24.
@@ -81,7 +85,45 @@ public class PaymentResource {
         return "pay/pay";
     }
 
-    public Object back() {
+    /**
+     * 阿里支付回调
+     * @return
+     */
+    @RequestMapping(value = "/pay/notify", method = RequestMethod.POST)
+    public Object payNotify(AliPayNotifyDTO notify, HttpServletRequest request) {
+        if(!aliPayService.verifyNotifyUrl(notify, null)) {
+            return null;
+        }
+        // 获取支付宝POST过来反馈信息
+        Map<String, String> params = new HashMap<String, String>();
+        Map requestParams = request.getParameterMap();
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
+            }
+            // 乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
+            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
+            params.put(name, valueStr);
+        }
+        //如果校验码为空
+        if (StringUtils.isBlank(notify.getSign())) {
+            log.info("notify from aliPay, sign is null, notify={}, params={}",
+                    new Object[]{notify, params});
+            return null;
+        }
+
+        if (aliPayService.verifyNotifySign(params, notify.getSign())) {
+            if (!StringUtils.isBlank(notify.getSign()) &&
+                (notify.getTrade_status().equals("TRADE_FINISHED") ||
+                 notify.getTrade_status().equals("TRADE_SUCCESS")))
+            {
+
+            }
+        }
+
         return null;
     }
 
