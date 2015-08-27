@@ -121,10 +121,7 @@ public class PaymentResource {
             return null;
         }
         if (aliPayService.verifyNotifySign(params, notify.getSign())) {
-            if (!StringUtils.isBlank(notify.getSign()) &&
-                (notify.getTrade_status().equals("TRADE_FINISHED") ||
-                 notify.getTrade_status().equals("TRADE_SUCCESS")))
-            {
+            if (isPaySuccess(notify)) {
                 OrderPayLog payLog = orderPayLogService.findByOrderId(notify.getOut_trade_no());
                 if (payLog != null && payLog.getPayType().equals(PayType.NEW)) {
                     payLog.setAmount(new BigDecimal(notify.getTotal_fee()));
@@ -152,5 +149,14 @@ public class PaymentResource {
         aliPayDTO.setGoodsName(order.getOrderId());
         aliPayDTO.setReturnUrl("127.0.0.1");
         return  aliPayDTO;
+    }
+
+    /**
+     * 简单验证支付是否成功
+     * @param notify
+     * @return
+     */
+    private boolean isPaySuccess(AliPayNotifyDTO notify) {
+        return !StringUtils.isBlank(notify.getTrade_status()) && (notify.getTrade_status().equals("TRADE_FINISHED") || notify.getTrade_status().equals("TRADE_SUCCESS"));
     }
 }
