@@ -2,6 +2,7 @@ package com.ishare.mall.restful;
 
 import com.ishare.mall.common.base.dto.pay.AliPayDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
+import com.ishare.mall.core.form.order.PayForm;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.pay.OrderPayLog;
 import com.ishare.mall.core.service.oauth.OAuthService;
@@ -10,16 +11,21 @@ import com.ishare.mall.core.service.pay.AliPayService;
 import com.ishare.mall.core.service.pay.OrderPayLogService;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PayType;
+import com.ishare.mall.utils.Servlets;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,11 +55,19 @@ public class PaymentResource {
     /**
      * 支付接口
      * @param model
-     * @param request
+     * @param payForm
      * @return
      */
     @RequestMapping(value = "/pay",method = {RequestMethod.POST, RequestMethod.GET})
-    public Object pay(Model model, HttpServletRequest request) {
+    public Object pay(Model model, @Valid PayForm payForm, BindingResult br, HttpServletResponse response) {
+        if (br.hasErrors()) {
+            log.debug(br.toString());
+            for (ObjectError objectError : br.getAllErrors()) {
+                log.debug(objectError.getDefaultMessage());
+            }
+            model.addAttribute("error", br.getAllErrors());
+            Servlets.responseJson(response, "{不能为空}");
+        }
 //        String token = request.getParameter("token");
 //        if (token == null || !oAuthService.checkAccessToken(token)) {
 //           // 如果不存在/过期了，返回未验证错误，需重新验证
@@ -85,10 +99,14 @@ public class PaymentResource {
         }
         AliPayDTO aliPayDTO = this.createAliPayDTO("", order);
 
-        String payForm = aliPayService.create(aliPayDTO);
-        model.addAttribute("returnContent", payForm);
-        log.debug(payForm);
+        String payFormHtml = aliPayService.create(aliPayDTO);
+        model.addAttribute("returnContent", payFormHtml);
+        log.debug(payFormHtml);
         return "pay/pay";
+    }
+
+    public String payPage() {
+        return "";
     }
 
     /**
@@ -128,7 +146,9 @@ public class PaymentResource {
                     payLog.setTansId(notify.getTrade_no());
                     payLog.setUpdateTime(new Date());
                     log.warn("pay from pc and pay by blank amount payment={}", "支付宝");
+                    //更新支付log状态
                     orderPayLogService.updateForProcess(payLog);
+                    //设置支付完成
                     orderService.payComplete(notify.getOut_trade_no());
                 }
             }
