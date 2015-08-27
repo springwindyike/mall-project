@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -119,7 +120,6 @@ public class PaymentResource {
                     new Object[]{notify, params});
             return null;
         }
-
         if (aliPayService.verifyNotifySign(params, notify.getSign())) {
             if (!StringUtils.isBlank(notify.getSign()) &&
                 (notify.getTrade_status().equals("TRADE_FINISHED") ||
@@ -127,11 +127,15 @@ public class PaymentResource {
             {
                 OrderPayLog payLog = orderPayLogService.findByOrderId(notify.getOut_trade_no());
                 if (payLog != null && payLog.getPayType().equals(PayType.NEW)) {
-
+                    payLog.setAmount(new BigDecimal(notify.getTotal_fee()));
+                    payLog.setTansId(notify.getTrade_no());
+                    payLog.setUpdateTime(new Date());
+                    log.warn("pay from pc and pay by blank amount payment={}", "支付宝");
+                    orderPayLogService.updateForProcess(payLog);
+                    orderService.payComplete(notify.getOut_trade_no());
                 }
             }
         }
-
         return null;
     }
 

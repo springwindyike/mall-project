@@ -42,6 +42,8 @@ public class OrderPayLog {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable=false, name = "pay_log_finish_time")
     private Date finishTime;
+    @Column(name = "pay_log_tans_id")
+    private String tansId;
 
     public Integer getId() {
         return id;
@@ -121,5 +123,13 @@ public class OrderPayLog {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getTansId() {
+        return tansId;
+    }
+
+    public void setTansId(String tansId) {
+        this.tansId = tansId;
     }
 }
