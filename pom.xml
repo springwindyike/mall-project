@@ -34,6 +34,7 @@
         <aspectj.version>1.8.1</aspectj.version>
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
+        <logback.ext.version>0.1.2</logback.ext.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-beanutils.version>1.9.2</commons-beanutils.version>
         <commons-codec.version>1.9</commons-codec.version>
@@ -219,6 +220,11 @@
                 <version>${logback.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.logback-extensions</groupId>
+                <artifactId>logback-ext-spring</artifactId>
+                <version>${logback.ext.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
@@ -250,6 +256,24 @@
                 <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
                 <version>1.15</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.0.15</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.json-lib</groupId>
+                <artifactId>json-lib</artifactId>
+                <version>2.4</version>
+                <classifier>jdk15</classifier>
             </dependency>
             <!-- logging end -->
         </dependencies>

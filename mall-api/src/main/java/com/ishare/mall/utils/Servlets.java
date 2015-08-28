@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -193,6 +195,27 @@ public class Servlets {
     public static String encodeHttpBasic(String userName, String password) {
         String encode = userName + ":" + password;
         return "Basic " + Encodes.encodeBase64(encode.getBytes());
+    }
+
+    /**
+     * 返回JSON
+     * @param response
+     */
+    public static void responseJson(HttpServletResponse response, Object responseJsonObject) {
+        //JSONObject jsonObject = JSONObject.fromString(responseJsonObject);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            out.append("ID不能为空");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
     }
 
 }

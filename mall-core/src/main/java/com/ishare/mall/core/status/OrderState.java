@@ -12,8 +12,6 @@ public enum OrderState {
     WAIT_CONFIRM {public String getName(){return "待审核";}},
     /** 等待付款 */
     WAIT_PAYMENT {public String getName(){return "等待付款";}},
-    /** 正在配货 */
-    ADMEASUREMENT {public String getName(){return "正在配货";}},
     /** 等待发货 */
     WAIT_DELIVER {public String getName(){return "等待发货";}},
     /** 已发货 */

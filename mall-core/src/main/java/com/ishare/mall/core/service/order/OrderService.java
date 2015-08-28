@@ -1,13 +1,11 @@
 package com.ishare.mall.core.service.order;
 
-import java.util.Map;
-
+import com.ishare.mall.core.model.order.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
-
-import com.ishare.mall.core.model.order.Order;
+import java.util.Map;
 
 public interface OrderService {
 	
@@ -20,4 +18,10 @@ public interface OrderService {
 	List<Order> findByCreateBy(String createBy);
 	
 	Order createNewOrder(Order order);
+
+	/**
+	 * 支付完成设置状态为等待发货状态
+	 * @return
+	 */
+	Order payComplete(String orderId);
 }
