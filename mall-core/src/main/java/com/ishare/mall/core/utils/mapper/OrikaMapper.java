@@ -15,8 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
 
 /**
@@ -32,8 +34,10 @@ public class OrikaMapper extends ConfigurableMapper {
 	public void configure(MapperFactory mapperFactory) {
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Member.class, MemberDetailDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Product.class, ProductDetailDTO.class));
+		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Order.class, OrderDetailDTO.class));
 	    this.registerProductClassMap(mapperFactory);
 	    this.registerMemberClassMap(mapperFactory);
+	    this.registerOrderClassMap(mapperFactory);
     }
 
 	/**
@@ -79,6 +83,25 @@ public class OrikaMapper extends ConfigurableMapper {
 	            }
 	        }
 		  classMapBuilder.field("channel.id", "channelId");
+		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+	}
+	
+	private void registerOrderClassMap(MapperFactory mapperFactory) {
+		 ClassMapBuilder<Order, OrderDetailDTO>classMapBuilder = mapperFactory.classMap(Order.class, OrderDetailDTO.class);
+		  Field[] fields = OrderDetailDTO.class.getDeclaredFields();
+		  Set<String> otherDealField = new HashSet<String>();
+		  otherDealField.add("channelId");
+		  otherDealField.add("orderDeliverInfoId");
+		  otherDealField.add("orderContactInfoId");
+
+		  for (Field field : fields) {
+	            if (!otherDealField.contains(field.getName())) {
+	                classMapBuilder.field(field.getName(), field.getName());
+	            }
+	        }
+		  classMapBuilder.field("channel.id", "channelId");
+		  classMapBuilder.field("orderDeliverInfo.id", "orderDeliverInfoId");
+		  classMapBuilder.field("orderContactInfo.id", "orderContactInfoId");
 		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	@Override
