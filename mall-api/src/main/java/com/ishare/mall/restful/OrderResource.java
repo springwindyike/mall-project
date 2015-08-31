@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.ishare.mall.common.base.dto.order.OrderTotalDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.service.oauth.OAuthService;
@@ -148,14 +148,22 @@ public class OrderResource {
      */
     @RequestMapping(value = "summeryMoney", method = RequestMethod.GET)
     @ResponseBody
-    public float summeryMoney() {
+    public Object summeryMoney() {
+    	System.out.println(orderService);
     	List <Order> orderList = orderService.findTotalSales();
-    	float summery = 0.0f;
-    			for(Order order: orderList) {
-    				 summery += order.getTotalPrice();
-    			}
-    			return summery;
-  
-    }
+    	if (orderList!=null){
+
+        	float summery = 0.0f;
+        			for(Order order: orderList) {
+        				 summery += order.getTotalPrice();
+        			}
+        			OrderTotalDTO ot = new OrderTotalDTO();
+        			ot.setTotalMoney(summery);
+        			return ot;
+      
+        } else{
+        	return null;
+        }
+    	}
 
 }

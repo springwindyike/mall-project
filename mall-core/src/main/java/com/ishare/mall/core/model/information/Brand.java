@@ -20,25 +20,25 @@ public class Brand extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**品牌名字**/
-    @Column(name = "brand_name")
+    @Column(name = "brand_name",length = 50)
     private String name;
     /**品牌logo地址**/
-    @Column(name = "brand_logo_url")
+    @Column(name = "brand_logo_url",length = 200)
     private String logoUrl;
     //国家
-    @Column(name = "brand_address_country")
+    @Column(name = "brand_address_country",length = 10)
     private String country;
     //省
-    @Column(name = "brand_address_province")
+    @Column(name = "brand_address_province",length = 21)
     private String province;
     //市
-    @Column(name = "brand_address_city")
+    @Column(name = "brand_address_city",length = 15)
     private String city;
     //县 区
-    @Column(name = "brand_address_district")
+    @Column(name = "brand_address_district",length = 15)
     private String district;
     //详细街道
-    @Column(name = "brand_address_detail")
+    @Column(name = "brand_address_detail",length = 50)
     private String detail;
     /**
      * 一对多所有的该品牌下所有的商品

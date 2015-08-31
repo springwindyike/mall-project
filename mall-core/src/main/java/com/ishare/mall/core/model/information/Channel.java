@@ -36,64 +36,64 @@ public class Channel extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**供货商名字**/
-    @Column(name = "channel_name")
+    @Column(name = "channel_name",length = 30)
     private String name;
 
     /**应用ID**/
-    @Column(name = "channel_app_id")
+    @Column(name = "channel_app_id",length = 50)
     private String appId;
     /**应用秘钥**/
-    @Column(name = "channel_app_secret")
+    @Column(name = "channel_app_secret",length = 50)
     private String appSecret;
     /**token**/
-    @Column(name = "channel_token")
+    @Column(name = "channel_token",length =50)
     private String token;
     //国家
-    @Column(name = "channel_address_country")
+    @Column(name = "channel_address_country",length = 10)
     private String country;
     //省
-    @Column(name = "channel_address_province")
+    @Column(name = "channel_address_province",length = 21)
     private String province;
     //市
-    @Column(name = "channel_address_city")
+    @Column(name = "channel_address_city",length = 15)
     private String city;
     //县 区
-    @Column(name = "channel_address_district")
+    @Column(name = "channel_address_district",length = 15)
     private String district;
     //详细街道
-    @Column(name = "channel_address_detail")
+    @Column(name = "channel_address_detail",length = 50)
     private String detail;
     /**联系电话**/
-    @Column(name = "channel_phone")
+    @Column(name = "channel_phone",length = 11)
     private String phone;
     /**邮政编码**/
-    @Column(name = "channel_code")
+    @Column(name = "channel_code",length = 6)
     private String code;
     /**联系人姓名**/
-    @Column(name = "channel_link_name")
+    @Column(name = "channel_link_name",length = 15)
     private String linkName;
     /**联系人电话**/
-    @Column(name = "channel_link_phone")
+    @Column(name = "channel_link_phone",length = 11)
     private String linkPhone;
     /**公司营业规模**/
-    @Column(name = "channel_business_scale")
+    @Column(name = "channel_business_scale",length = 7)
     private String businessScale;
     //创建时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "channel_create_time")
+    @Column(name = "channel_create_time",length = 20)
     private Date createTime;
     //更新时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "channel_update_time")
+    @Column(name = "channel_update_time",length = 20)
     private Date updateTime;
     /**创建者**/
-    @Column(name = "member_create_by")
+    @Column(name = "member_create_by",length = 15)
     private String createBy;
     /**更新者**/
-    @Column(name = "member_update_by")
+    @Column(name = "member_update_by",length = 15)
     private String updateBy;
     /**经营类别**/
-    @Column(name = "channel_industry")
+    @Column(name = "channel_industry",length = 51)
     private String industry;
     /**
      * 一对多该供应商下所有的成员

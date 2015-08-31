@@ -37,15 +37,15 @@ public class Order implements BaseObject {
     private String orderId;
     /* 创建订单者 */
     
-    @Column(name = "order_create_by")
+    @Column(name = "order_create_by",length = 15)
     private String createBy;
     /**更新订单者**/
     
-    @Column(name = "order_update_by")
+    @Column(name = "order_update_by",length = 15)
     private String updateBy;
     /* 订单创建时间 */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "order_create_time")
+    @Column(nullable=false, name = "order_create_time",length = 20)
     private Date createTime = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,16 +56,16 @@ public class Order implements BaseObject {
     @Column(length=16, nullable = false, name = "order_state")
     private OrderState state;
     /* 商品总金额 */
-    @Column(nullable = false, name = "order_product_total_price")
+    @Column(nullable = false, name = "order_product_total_price",length = 9)
     private Float productTotalPrice = 0f;
     /* 配送费 */
-    @Column(nullable = false, name = "order_deliver_fee")
+    @Column(nullable = false, name = "order_deliver_fee",length = 7)
     private Float deliverFee = 0f;
     /* 订单总金额 */
-    @Column(nullable = false, name = "order_total_price")
+    @Column(nullable = false, name = "order_total_price",length = 9)
     private Float totalPrice= 0f;
     /* 应付款(实际需要支付的费用) */
-    @Column(nullable=false, name = "order_payable_fee")
+    @Column(nullable=false, name = "order_payable_fee",length = 9)
     private Float payableFee = 0f;
     /* 顾客附言 */
     @Column(length = 100, name = "order_note")
@@ -75,7 +75,7 @@ public class Order implements BaseObject {
     @Column(length=20, nullable=false, name = "order_payment_way")
     private PaymentWay paymentWay;
     /* 支付状态 */
-    @Column(nullable=false, name = "order_payment_state")
+    @Column(nullable=false, name = "order_payment_state",length = 5)
     private Boolean paymentState = false;
     /* 订单配送信息 */
     @OneToOne(cascade = CascadeType.ALL)
@@ -99,10 +99,10 @@ public class Order implements BaseObject {
     @JoinColumn(name="channel_id")
     private Channel channel;
   
-    @Column(name = "express_order",nullable=false)
+    @Column(name = "express_order",nullable=false,length = 15)
     private String expressOrder;//快递单号
     
-    @Column(name = "express_id", nullable=false,length=12)
+    @Column(name = "express_id", nullable=false,length=15)
     private String expressId;//快递代号
     
     public Order(){}

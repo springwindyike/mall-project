@@ -19,32 +19,32 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 public class Member extends BaseEntity {
     /**平台登录账号**/
     @Id
-    @Column(name = "member_account")
+    @Column(name = "member_account",length = 50)
     private String account;
     /**平台登录密码**/
-    @Column(name = "member_password")
+    @Column(name = "member_password",length = 50)
     private String password;
     /**所属渠道**/
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "channel_id")
     private Channel channel;
     /**成员名称**/
-    @Column(name = "member_name")
+    @Column(name = "member_name",length = 27)
     private String name;
     /**创建时间**/
-    @Column(name = "member_create_time")
+    @Column(name = "member_create_time",length = 20)
     private Date createTime;
     /**更新时间**/
-    @Column(name = "member_update_time")
+    @Column(name = "member_update_time",length = 20)
     private Date updateTime;
     /**创建者**/
-    @Column(name = "member_create_by")
+    @Column(name = "member_create_by",length = 50)
     private String createBy;
     /**更新者**/
-    @Column(name = "member_update_by")
+    @Column(name = "member_update_by",length = 50)
     private String updateBy;
     /**是否可用**/
-    @Column(name = "member_use")
+    @Column(name = "member_use",length = 5)
     private boolean use;
     /**性别要求**/
     @Enumerated(EnumType.STRING)

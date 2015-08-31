@@ -17,8 +17,8 @@ import com.ishare.mall.core.status.DeliverWay;
 import com.ishare.mall.core.status.Gender;
 
 /**
- * Created by YinLin on 2015/8/10.
- * Description:品牌接口
+ * Created by liaochenglei on 2015/8/25.
+ * Description:收货地址管理
  * Version 1.0
  */
 @RestController
@@ -37,7 +37,6 @@ public class DeliverResource {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Object save(@ModelAttribute("orderDeliverInfoAttribute") OrderDeliverInfo odi) {
-        //用findOne立即加载实体对象
     	OrderDeliverInfo orderDeliverInfo = deliverService.save(odi);
     	QueryResult qr = new QueryResult();
     	if (orderDeliverInfo != null) {
@@ -78,5 +77,6 @@ public class DeliverResource {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public void delete(@NotEmpty @PathVariable("id") Integer id){
     	 deliverService.delete(id);
+    	 
     }
 }

@@ -21,10 +21,10 @@ public class ProductStyle extends BaseEntity {
     @Column(length = 32, nullable = false, name = "product_style_name")
     private String name;
     /**图片地址**/
-    @Column(length=160,nullable=false, name = "product_image_url")
+    @Column(length=200,nullable=false, name = "product_image_url")
     private String imageUrl;
     /**是否可见**/
-    @Column(nullable = false, name = "product_style_visible")
+    @Column(nullable = false, name = "product_style_visible",length = 5)
     private Boolean visible = Boolean.TRUE;
     /**所属产品**/
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
@@ -32,11 +32,11 @@ public class ProductStyle extends BaseEntity {
     private Product product;
     //创建时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "product_create_time")
+    @Column(name = "product_create_time",length = 20)
     private Date createTime;
     //更新时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "product_update_time")
+    @Column(name = "product_update_time",length = 20)
     private Date updateTime;
     //创建者
     @ManyToOne(cascade= CascadeType.REFRESH, optional=false)
