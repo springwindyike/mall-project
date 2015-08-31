@@ -1,17 +1,17 @@
-package com.ishare.mall.common.base.dto.error;
+package com.ishare.mall.common.base.dto.success;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 
 /**
  * Created by YinLin on 2015/8/31.
- * Description :
+ * Description : 成功返回DTO
  * Version 1.0
  */
-public class ErrorDTO<T extends Object> extends GenericDTO {
+public class SuccessDTO <T extends Object> extends GenericDTO {
 
     private Integer code;
 
-    private  T message;
+    private T message;
 
     public Integer getCode() {
         return code;
