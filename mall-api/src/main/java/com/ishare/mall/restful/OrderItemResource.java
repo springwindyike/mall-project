@@ -54,7 +54,7 @@ public class OrderItemResource {
 			@Autowired
 			private OAuthService oAuthService;
     
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/accessToken/{accessToken}", method = RequestMethod.GET)
     public OrderItemDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
         //用findOne立即加载实体对象
     	OrderItem orderItem = orderItemService.findOne(id);
@@ -97,7 +97,7 @@ public class OrderItemResource {
 			ErrorMessage error = new ErrorMessage();
 			error.setErrorCode(100001);
 			error.setMsg(ResponseMessage.findByValue(100001).toString());
-			return error;  
+			return error;
 		}
 		return orderItem;
     }
