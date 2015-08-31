@@ -23,11 +23,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.ishare.mall.common.base.dto.order.OrderTotalDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
+import com.ishare.mall.utils.page.PageUtils;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -39,7 +41,7 @@ import com.ishare.mall.core.service.order.OrderService;
 public class OrderResource {
 	
 	@Autowired
-	private static OrderService orderService;
+	private OrderService orderService;
 	@Autowired
 	private OAuthService oAuthService;
     /**
@@ -78,8 +80,9 @@ public class OrderResource {
 			return response;  
 		}  
 		//用findOne立即加载实体对象
-		Page<Order> result = orderService.search(null, pageRequest);
-		return result;
+		
+    Page<Order> result = orderService.search(null, pageRequest);
+    return PageUtils.mapper(result, pageRequest, OrderDetailDTO.class);
     }
 
     /**
@@ -101,14 +104,15 @@ public class OrderResource {
 		}  
 		//用findOne立即加载实体对象
 		Order order = orderService.findOne(id);
-		return order;
+		return (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
     }
     
-	@RequestMapping(value = "/createBy/{createBy}/accessToken/{accessToken}", method = RequestMethod.GET)
+	@RequestMapping(value = "/offset/{offset}/limit/{limit}/createBy/{createBy}/accessToken/{accessToken}", method = RequestMethod.GET)
 	@ResponseBody
-	public Object listByCreateBy(@NotEmpty @PathVariable("createBy") String createBy, @NotEmpty @PathVariable("accessToken") String accessToken) throws OAuthSystemException {
+	public Object listByCreateBy(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("createBy") String createBy, @NotEmpty @PathVariable("accessToken") String accessToken) throws OAuthSystemException {
+		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
 		if (!oAuthService.checkAccessToken(accessToken)) {  
-			// 如果不存在/过期了，返回未验证错误，需重新验证  
+			// 如果不存在/过期了，返回未验证错误，需重新验证
 			OAuthResponse response = OAuthRSResponse  
 			        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)  
 			        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)  
@@ -117,8 +121,8 @@ public class OrderResource {
 			return response;  
 		}  
 		//用findOne立即加载实体对象
-		List<Order> orderList = orderService.findByCreateBy(createBy);
-		return orderList;
+		 Page<Order> result = orderService.search(null, pageRequest);
+    return PageUtils.mapper(result, pageRequest, OrderDetailDTO.class);
     }
 	
 	@RequestMapping(value = "/accessToken/{accessToken}/addOrder", method = RequestMethod.POST)
@@ -131,10 +135,12 @@ public class OrderResource {
 			        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)  
 			        .buildHeaderMessage();
 	    
-			return response;  
+			return response;
 		}  
 		//用findOne立即加载实体对象
-		return orderService.createNewOrder(order);
+//		return orderService.createNewOrder(order);
+		Order newOrder = orderService.createNewOrder(order);
+		return (OrderDetailDTO) MapperUtils.map(newOrder, OrderDetailDTO.class);
     }
 	
     /**

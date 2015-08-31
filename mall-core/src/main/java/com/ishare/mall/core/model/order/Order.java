@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.ishare.mall.common.base.object.BaseObject;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PaymentWay;
@@ -30,7 +31,7 @@ import com.ishare.mall.core.status.PaymentWay;
  * Version 1.0
  */
 @Entity(name = TABLE_ORDER_NAME)
-public class Order  {
+public class Order implements BaseObject {
     /* 订单号 年份+月+日+当天订单总数*/
     @Id @Column(length = 14, name = "order_id")
     private String orderId;
