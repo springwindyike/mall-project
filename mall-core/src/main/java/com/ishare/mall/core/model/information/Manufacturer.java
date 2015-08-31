@@ -17,22 +17,22 @@ public class Manufacturer extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**厂商名字**/
-    @Column(name = "fact_name")
+    @Column(name = "fact_name",length = 30)
     private String name;
     //国家
-    @Column(name = "fact_address_country")
+    @Column(name = "fact_address_country",length = 10)
     private String country;
     //省
-    @Column(name = "fact_address_province")
+    @Column(name = "fact_address_province",length = 21)
     private String province;
     //市
-    @Column(name = "fact_address_city")
+    @Column(name = "fact_address_city",length = 15)
     private String city;
     //县 区
-    @Column(name = "fact_address_district")
+    @Column(name = "fact_address_district",length = 15)
     private String district;
     //详细街道
-    @Column(name = "fact_address_detail")
+    @Column(name = "fact_address_detail",length = 50)
     private String detail;
 
     public String getName() {

@@ -54,6 +54,9 @@ public class OrderItemResource {
 			@Autowired
 			private OAuthService oAuthService;
     
+			  /**
+		     * 退换货详情
+		     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public OrderItemDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
         //用findOne立即加载实体对象

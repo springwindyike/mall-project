@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ishare.mall.common.base.dto.channel.ChannelDTO;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.order.OrderService;
@@ -38,13 +39,15 @@ public class ChannelResource {
  
     @RequestMapping(value = "summeryMoney/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public float summeryMoney(@NotEmpty @PathVariable("id") Integer id) {
+    public ChannelDTO summeryMoney(@NotEmpty @PathVariable("id") Integer id) {
     	Set <Order> orderList = channelService.findAllOrderByChannelId(id);
     	float summery = 0.0f;
     			for(Order order: orderList) {
     				 summery += order.getTotalPrice();
     			}
-    			return summery;
-  
+    			ChannelDTO cdto = new ChannelDTO();
+    			cdto.setChannelId(id);
+    			cdto.setTotalMoney(summery);
+    			return cdto;
     }
 }

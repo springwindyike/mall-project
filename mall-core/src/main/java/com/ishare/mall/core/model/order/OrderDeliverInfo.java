@@ -21,19 +21,19 @@ public class OrderDeliverInfo extends BaseEntity {
 	@Column(length = 25, nullable = false, name = "deliver_recipients")
 	private String recipients;
 	//国家
-	@Column(name = "deliver_address_country")
+	@Column(name = "deliver_address_country",length = 10)
 	private String country;
 	//省
-	@Column(name = "deliver_address_province")
+	@Column(name = "deliver_address_province",length = 21)
 	private String province;
 	//市
-	@Column(name = "deliver_address_city")
+	@Column(name = "deliver_address_city",length = 15)
 	private String city;
 	//县 区
-	@Column(name = "deliver_address_district")
+	@Column(name = "deliver_address_district",length = 15)
 	private String district;
 	//详细街道
-	@Column(name = "deliver_address_detail")
+	@Column(name = "deliver_address_detail",length = 50)
 	private String detail;
 	/* 电子邮箱 */
 	@Column(length = 20, name = "deliver_email")

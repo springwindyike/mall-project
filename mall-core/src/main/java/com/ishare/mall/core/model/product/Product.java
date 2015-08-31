@@ -24,60 +24,60 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     //货号
-    @Column(name = "product_code")
+    @Column(name = "product_code",length = 15)
     private String code;
     //物品名字
-    @Column(name = "product_name")
+    @Column(name = "product_name",length = 27)
     private String name;
     //物品类型 便于search 10010010001
-    @Column(name = "product_type_code")
+    @Column(name = "product_type_code",length = 15)
     private String typeCode;
     //物品
-    @Column(name = "product_model")
+    @Column(name = "product_model",length = 25)
     private String model;
     //商品进价
-    @Column(name = "product_base_price")
+    @Column(name = "product_base_price",length = 8)
     private Float basePrice;
     //市场价格
-    @Column(name = "product_market_price")
+    @Column(name = "product_market_price",length = 8)
     private Float marketPrice;
     //卖出价格
-    @Column(name = "product_sell_price")
+    @Column(name = "product_sell_price",length = 8)
     private Float sellPrice;
     //商品重量 单位（g）
-    @Column(name = "product_weight")
+    @Column(name = "product_weight",length = 6)
     private Integer weight;
     //描述
-    @Column(name = "product_description")
+    @Column(name = "product_description",length = 150)
     private String description;
     //购买须知
-    @Column(name = "product_buy_explain")
+    @Column(name = "product_buy_explain",length = 150)
     private String buyExplain;
     //是否可见
-    @Column(name = "product_visible")
+    @Column(name = "product_visible",length = 5)
     private Boolean visible = true;
     //点击人气
-    @Column(name = "product_click_count")
+    @Column(name = "product_click_count",length = 7)
     private Integer clickCount = 1;
     //卖出人气
-    @Column(name = "product_sell_count")
+    @Column(name = "product_sell_count",length = 7)
     private Integer sellCount = 0;
     //是否推荐
-    @Column(name = "product_commend")
+    @Column(name = "product_commend",length = 5)
     private Boolean commend = Boolean.FALSE;
     //创建时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "product_create_time")
+    @Column(name = "product_create_time",length = 20)
     private Date createTime;
     //更新时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "product_update_time")
+    @Column(name = "product_update_time",length = 20)
     private Date updateTime;
     //默认的图片地址 冗余
-    @Column(name = "default_img_url")
+    @Column(name = "default_img_url",length = 200)
     private String defaultImageUrl;
     //库存
-    @Column(name = "product_inventory")
+    @Column(name = "product_inventory",length = 6)
     private Integer inventory;
     @JsonIgnore
     //创建者

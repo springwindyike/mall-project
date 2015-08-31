@@ -15,17 +15,17 @@ public class Logistics extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(name = "logistics_name")
+    @Column(name = "logistics_name",length = 27)
     private String name;//物流公司名称
-    @Column(name = "logistics_contact_name")
+    @Column(name = "logistics_contact_name",length = 15)
     private String contact;//联系人姓名
-    @Column(name = "logistics_contact_tel")
+    @Column(name = "logistics_contact_tel",length = 11)
     private String tel;//联系电话
-    @Column(name = "logistics_type")
+    @Column(name = "logistics_type",length = 9)
     private String type;//物流类型：快递、物流、
-    @Column(name = "logistics_query_url")
+    @Column(name = "logistics_query_url",length = 200)
     private String query;//查询地址
-    @Column(name = "logistics_official_url")
+    @Column(name = "logistics_official_url",length = 50)
     private String url;//官网地址
 
     public Integer getId() {

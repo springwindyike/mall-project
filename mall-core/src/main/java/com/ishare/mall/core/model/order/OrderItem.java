@@ -31,22 +31,22 @@ public class OrderItem extends BaseEntity {
     @Column(length = 50,nullable = false, name = "item_product_name")
     private String productName;
     /* 产品id */
-    @Column(nullable = false, name = "item_product_id")
+    @Column(nullable = false, name = "item_product_id",length = 25)
     private Integer productId;
     /* 产品销售价 */
-    @Column(nullable = false, name = "item_product_price")
+    @Column(nullable = false, name = "item_product_price",length = 8)
     private Float productPrice = 0f;
     /* 购买数量 */
-    @Column(nullable = false, name = "item_product_amount")
+    @Column(nullable = false, name = "item_product_amount",length = 3)
     private Integer amount = 1;
     /* 产品样式 */
     @Column(length = 30, nullable = false, name = "item_product_style_name")
     private String styleName;
     /* 产品样式ID */
-    @Column(nullable = false, name = "item_product_style_id")
+    @Column(nullable = false, name = "item_product_style_id",length = 50)
     private Integer styleId;
     /* 产品图片地址 */
-    @Column(nullable = false, name = "item_product_image_url")
+    @Column(nullable = false, name = "item_product_image_url",length = 200)
     private String imageUrl;
     /* 产品状态 */
     @Enumerated(EnumType.STRING)
@@ -59,7 +59,7 @@ public class OrderItem extends BaseEntity {
     	
     /*退换货标记*/
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true, name = "item_exchange_or_back")
+    @Column(nullable = true, name = "item_exchange_or_back",length = 6)
     private OrderItemSort exchangeOrBack;
     
     /* 所属订单 */

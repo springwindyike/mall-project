@@ -23,15 +23,15 @@ public class ProductImage extends BaseEntity {
     @JoinColumn(name = "product_style_id")
     private ProductStyle productStyle;
     /**图片地址**/
-    @Column(length = 160, nullable = false, name = "product_image_url")
+    @Column(length = 200, nullable = false, name = "product_image_url")
     private String url;
     //创建时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "product_create_time")
+    @Column(name = "product_create_time",length = 20)
     private Date createTime;
     //更新时间
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "product_update_time")
+    @Column(name = "product_update_time",length = 20)
     private Date updateTime;
     //创建者
     @ManyToOne(cascade= CascadeType.REFRESH, optional=false)

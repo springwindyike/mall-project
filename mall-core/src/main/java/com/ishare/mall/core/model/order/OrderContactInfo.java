@@ -19,19 +19,19 @@ public class OrderContactInfo extends BaseEntity {
 	@Column(length = 25, nullable = false, name = "order_buyer_name")
 	private String buyerName;
 	//国家
-	@Column(name = "order_buyer_address_country")
+	@Column(name = "order_buyer_address_country",length = 10)
 	private String country;
 	//省
-	@Column(name = "order_buyer_address_province")
+	@Column(name = "order_buyer_address_province",length = 21)
 	private String province;
 	//市
-	@Column(name = "order_buyer_address_city")
+	@Column(name = "order_buyer_address_city",length = 15)
 	private String city;
 	//县 区
-	@Column(name = "order_buyer_address_district")
+	@Column(name = "order_buyer_address_district",length = 15)
 	private String district;
 	//详细街道
-	@Column(name = "order_buyer_address_detail")
+	@Column(name = "order_buyer_address_detail",length = 50)
 	private String detail;
 	/* 电子邮箱 */
 	@Column(length = 40, name = "order_buyer_email")

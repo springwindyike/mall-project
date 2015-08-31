@@ -15,7 +15,7 @@ public class GeneratedOrderId {
 	@Id
 	@Column(length = 5)
 	private String id;
-	@Column(nullable = false, name = "order_id")
+	@Column(nullable = false, name = "order_id",length = 14)
 	private Integer orderId = 0;
 
 	public String getId() {

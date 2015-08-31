@@ -19,30 +19,30 @@ public class OrderPayLog {
     @Id
     @GeneratedValue
     private Integer id;
-    @Column(name = "pay_order_id")
+    @Column(name = "pay_order_id",length = 14)
     private String orderId;
-    @Column(name = "pay_channel_id")
+    @Column(name = "pay_channel_id",length = 15)
     private Integer channelId;
     @Enumerated(EnumType.STRING)
     @Column(length=7, nullable = false, name = "pay_cost_type")
     private CostType costType;
-    @Column(name = "pay_member_account")
+    @Column(name = "pay_member_account",length = 15)
     private String account;
-    @Column(name = "pay_amount")
+    @Column(name = "pay_amount",length = 3)
     private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     @Column(length=7, nullable = false, name = "pay_log_type")
     private PayType payType;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "pay_log_create_time")
+    @Column(nullable=false, name = "pay_log_create_time",length = 20)
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "pay_log_update_time")
+    @Column(nullable=false, name = "pay_log_update_time",length = 20)
     private Date updateTime;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "pay_log_finish_time")
+    @Column(nullable=false, name = "pay_log_finish_time",length = 20)
     private Date finishTime;
-    @Column(name = "pay_log_tans_id")
+    @Column(name = "pay_log_tans_id",length = 15)
     private String tansId;
 
     public Integer getId() {
