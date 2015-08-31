@@ -29,10 +29,15 @@ public class RestfulMocTemple extends TestTemplate {
         mockMvc = MockMvcBuilders.standaloneSetup(brandResource).build();
     }
     @Test
-    public void testView() throws Exception {
+    public void testBrandDetailView() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/brands/1").contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
         Assert.assertNull(result.getModelAndView());
     }
-
+    @Test
+    public void testBrandListView() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/brands/offset/1/limit/5}").contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
+        Assert.assertNull(result.getModelAndView());
+    }
 }
