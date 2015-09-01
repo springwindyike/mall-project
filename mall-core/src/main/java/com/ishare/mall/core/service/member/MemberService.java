@@ -8,5 +8,23 @@ import com.ishare.mall.core.model.member.Member;
  * Version 1.0
  */
 public interface MemberService {
-	public abstract Member findOne(String id);
+	/**
+	 * 通过账号ID查找
+	 * @param id
+	 * @return
+	 */
+	Member findOne(String id);
+
+	/**
+	 * 检测账号是否存在，并创建
+	 * @param id
+	 * @return
+	 */
+	Member checkAndCreateById(String id, Integer channelId);
+
+	/**
+	 * @param mobile
+	 * @return
+	 */
+	Member findByMobile(String mobile);
 }

@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.ishare.mall.restful.ChannelResource;
+import com.ishare.mall.restful.DeliverResource;
 import com.ishare.test.TestTemplate;
 
 /**
@@ -20,14 +20,14 @@ import com.ishare.test.TestTemplate;
  * Version 1.0
  */
 
-public class ChannelRestfulMocTemple extends TestTemplate {
+public class DeliverRestfulMocTemple extends TestTemplate {
     @Autowired
-    private ChannelResource channelResource;
+    private DeliverResource deliverResource;
 
     private MockMvc mockMvc;
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(channelResource).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(deliverResource).build();
     }
     @Test
     public void channelTestSummeryMoney() throws Exception {

@@ -21,6 +21,9 @@ public class Member extends BaseEntity {
     @Id
     @Column(name = "member_account",length = 50)
     private String account;
+    /**第三方手机号**/
+    @Column(name = "member_mobile", length = 11)
+    private String mobile;
     /**平台登录密码**/
     @Column(name = "member_password",length = 50)
     private String password;
@@ -141,5 +144,13 @@ public class Member extends BaseEntity {
 
     public void setSex(Gender sex) {
         this.sex = sex;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
