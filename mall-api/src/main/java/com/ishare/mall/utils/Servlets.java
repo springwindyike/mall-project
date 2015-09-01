@@ -4,9 +4,11 @@ import com.google.common.base.Charsets;
 import com.google.common.net.HttpHeaders;
 import com.ishare.mall.core.utils.filter.Collections3;
 import com.ishare.mall.core.utils.filter.Encodes;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -202,7 +204,7 @@ public class Servlets {
      * @param response
      */
     public static void responseJson(HttpServletResponse response, Object responseJsonObject) {
-        //JSONObject jsonObject = JSONObject.fromString(responseJsonObject);
+        JSONObject jsonObject = JSONObject.fromObject(responseJsonObject);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         PrintWriter out = null;
@@ -216,6 +218,25 @@ public class Servlets {
                 out.close();
             }
         }
+    }
+
+    public static void responseHttpJson(HttpServletResponse response, ResponseEntity responseEntity) {
+        JSONObject jsonObject = JSONObject.fromObject(responseEntity.getBody());
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(responseEntity.getStatusCode().value());
+        response.setContentType("application/json; charset=utf-8");
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            out.append(jsonObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
+
     }
 
 }
