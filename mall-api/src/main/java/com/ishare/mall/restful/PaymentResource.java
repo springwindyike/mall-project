@@ -1,5 +1,7 @@
 package com.ishare.mall.restful;
 
+import com.google.common.collect.Lists;
+import com.ishare.mall.common.base.dto.error.ErrorDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.form.order.PayForm;
@@ -13,6 +15,10 @@ import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PayType;
 import com.ishare.mall.utils.Servlets;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.oltu.oauth2.common.error.OAuthError;
+import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import org.apache.oltu.oauth2.common.message.OAuthResponse;
+import org.apache.oltu.oauth2.rs.response.OAuthRSResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by YinLin on 2015/8/24.
@@ -66,24 +69,29 @@ public class PaymentResource {
                 log.debug(objectError.getDefaultMessage());
             }
             model.addAttribute("error", br.getAllErrors());
-            Servlets.responseJson(response, "{不能为空}");
+
+            ErrorDTO<List<String>> errorDTO = new ErrorDTO<>();
+            List<String> errorList = Lists.newArrayList();
+            errorDTO.setMessage(errorList);
+            for (ObjectError error : br.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+            Servlets.responseJson(response, errorDTO);
         }
-//        String token = request.getParameter("token");
-//        if (token == null || !oAuthService.checkAccessToken(token)) {
-//           // 如果不存在/过期了，返回未验证错误，需重新验证
-//            OAuthResponse response = null;
-//            try {
-//                response = OAuthRSResponse
-//                .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-//                .setError(OAuthError.ResourceResponse.INVALID_TOKEN)
-//                .buildHeaderMessage();
-//            } catch (OAuthSystemException e) {
-//                e.printStackTrace();
-//            }
-//            return response;
-//        }
-        String id = "20150825000003";//request.getParameter("id");
-        System.out.println(id);
+        if (payForm.getToken() == null || !oAuthService.checkAccessToken(payForm.getToken())) {
+           // 如果不存在/过期了，返回未验证错误，需重新验证
+            OAuthResponse responseObject = null;
+            try {
+                responseObject = OAuthRSResponse
+                .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+                .setError(OAuthError.ResourceResponse.INVALID_TOKEN)
+                .buildHeaderMessage();
+            } catch (OAuthSystemException e) {
+                e.printStackTrace();
+            }
+            Servlets.responseJson(response, responseObject);;
+        }
+        String id = payForm.getOrderId();
         //订单ID未传
         if (!StringUtils.isNotEmpty(id)) {
             return null;
