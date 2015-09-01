@@ -22,7 +22,7 @@ public class OAuthServiceImpl implements OAuthService {
     @Autowired
     private ChannelService channelService;
 
-
+    @Autowired
     public OAuthServiceImpl(CacheManager cacheManager) {
         this.cache = cacheManager.getCache("code-cache");
     }
