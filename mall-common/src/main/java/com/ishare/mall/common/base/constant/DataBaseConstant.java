@@ -19,37 +19,43 @@ public interface DataBaseConstant {
      */
     interface Table {
         //商品表
-        String TABLE_PRODUCT_NAME = Common.TABLE_PRE + "product";
+        String TABLE_PRODUCT_NAME                       = Common.TABLE_PRE + "product";
         //商品样式表
-        String TABLE_PRODUCT_STYLE_NAME = TABLE_PRODUCT_NAME + "_style";
+        String TABLE_PRODUCT_STYLE_NAME                 = TABLE_PRODUCT_NAME + "_style";
         //商品样式图片表
-        String TABLE_PRODUCT_STYLE_IMAGE_NAME = TABLE_PRODUCT_STYLE_NAME + "_image";
+        String TABLE_PRODUCT_STYLE_IMAGE_NAME           = TABLE_PRODUCT_STYLE_NAME + "_image";
         //商品类型表
-        String TABLE_PRODUCT_TYPE_NAME = TABLE_PRODUCT_NAME + "_type";
+        String TABLE_PRODUCT_TYPE_NAME                  = TABLE_PRODUCT_NAME + "_type";
         //品牌表
-        String TABLE_BRAND_NAME   = Common.TABLE_PRE + "brand";
+        String TABLE_BRAND_NAME                         = Common.TABLE_PRE + "brand";
         //厂商表
-        String TABLE_MANUFACTURER_NAME = Common.TABLE_PRE + "manufacturer";
+        String TABLE_MANUFACTURER_NAME                  = Common.TABLE_PRE + "manufacturer";
         //渠道
-        String TABLE_CHANNEL_NAME = Common.TABLE_PRE + "channel";
+        String TABLE_CHANNEL_NAME                       = Common.TABLE_PRE + "channel";
         //成员 or 操作员
-        String TABLE_MEMBER_NAME = Common.TABLE_PRE + "member";
+        String TABLE_MEMBER_NAME                        = Common.TABLE_PRE + "member";
         //订单表
-        String TABLE_ORDER_NAME = Common.TABLE_PRE + "order";
+        String TABLE_ORDER_NAME                         = Common.TABLE_PRE + "order";
         //订单号表
-        String TABLE_ORDER_ID_NAME = TABLE_ORDER_NAME + "_id";
+        String TABLE_ORDER_ID_NAME                      = TABLE_ORDER_NAME + "_id";
         //订单附加信息表
-        String TABLE_ORDER_MESSAGE_NAME = TABLE_ORDER_NAME + "_message";
+        String TABLE_ORDER_MESSAGE_NAME                 = TABLE_ORDER_NAME + "_message";
         //订单明细项表
-        String TABLE_ORDER_ITEM_NAME = TABLE_ORDER_NAME + "_item";
+        String TABLE_ORDER_ITEM_NAME                    = TABLE_ORDER_NAME + "_item";
         //订单订购者信息表
-        String TABLE_ORDER_CONTACT_INFO_NAME = TABLE_ORDER_NAME + "_contact_info";
+        String TABLE_ORDER_CONTACT_INFO_NAME            = TABLE_ORDER_NAME + "_contact_info";
         //订单收货人信息表
-        String TABLE_ORDER_DELIVER_INFO_NAME = TABLE_ORDER_NAME + "_deliver_info";
+        String TABLE_ORDER_DELIVER_INFO_NAME            = TABLE_ORDER_NAME + "_deliver_info";
         //物流信息表
-        String TABLE_LOGISTICS_NAME = Common.TABLE_PRE + "logistics";
-
-        String TABLE_ORDER_PAY_LOG_NAME = TABLE_ORDER_NAME + "_pay_log";
+        String TABLE_LOGISTICS_NAME                     = Common.TABLE_PRE + "logistics";
+        //支付日志
+        String TABLE_ORDER_PAY_LOG_NAME                 = TABLE_ORDER_NAME + "_pay_log";
+        //角色
+        String TABLE_ROLE_NAME                          = Common.TABLE_PRE + "role";
+        //详细权限
+        String TABLE_PERMISSION_NAME                    = Common.TABLE_PRE + "permission";
+        //中间表
+        String TABLE_MEMBER_ROLE_NAME                   = TABLE_MEMBER_NAME + "_role";
 
     }
 }
