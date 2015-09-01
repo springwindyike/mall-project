@@ -36,8 +36,8 @@ public class RestfulMocTemple extends TestTemplate {
     }
     @Test
     public void testBrandListView() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/brands/offset/1/limit/5}").contentType(MediaType.APPLICATION_JSON)
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/brands/offset/1/limit/5").contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
-        Assert.assertNull(result.getModelAndView());
+        Assert.assertNotNull(result.getResponse().getContentAsString());
     }
 }

@@ -101,7 +101,7 @@ public class ProductResource {
      * @return 返回list
      */
     @RequestMapping(value = "/offset/{offset}/limit/{limit}/brandId/{brandId}", method = RequestMethod.GET)
-    public Page<ProductListDTO> listByBrandId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("brandId")String brandId) {
+    public Page<ProductListDTO> listByBrandId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("brandId")Integer brandId) {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_brand.id", brandId);
