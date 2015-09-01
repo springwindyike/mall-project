@@ -16,9 +16,6 @@
         <module>mall-docs</module>
         <module>mall-center</module>
         <module>mall-bizapp</module>
-        <module>mall-bizapp-member</module>
-        <module>mall-bizapp-product</module>
-        <module>mall-bizapp-channel</module>
     </modules>
 
     <properties>
