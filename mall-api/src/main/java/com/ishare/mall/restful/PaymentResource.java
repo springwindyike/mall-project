@@ -7,6 +7,7 @@ import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.form.order.PayForm;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.pay.OrderPayLog;
+import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.service.pay.AliPayService;
@@ -56,6 +57,8 @@ public class PaymentResource {
     private OrderService orderService;
     @Autowired
     private OrderPayLogService orderPayLogService;
+    @Autowired
+    private ChannelService channelService;
 
     /**
      * 支付接口
@@ -104,9 +107,12 @@ public class PaymentResource {
         }
         //订单状态不是等待支付
         if (order.getState() != OrderState.WAIT_PAYMENT) {
-
+            ErrorDTO<String> errorDTO = new ErrorDTO<>();
+            errorDTO.setCode(HttpServletResponse.SC_BAD_REQUEST);
+            errorDTO.setMessage("订单不是等待支付状态");
+            Servlets.responseHttpJson(response, new ResponseEntity(errorDTO, HttpStatus.valueOf(HttpServletResponse.SC_BAD_REQUEST)));
         }
-        AliPayDTO aliPayDTO = this.createAliPayDTO("", order);
+        AliPayDTO aliPayDTO = this.createAliPayDTO(payForm.getToken(), order);
 
         String payFormHtml = aliPayService.create(aliPayDTO);
         model.addAttribute("returnContent", payFormHtml);
