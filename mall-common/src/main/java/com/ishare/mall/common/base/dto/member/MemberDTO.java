@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonAutoDetect
 public class MemberDTO extends GenericDTO {
 
+    private static final long serialVersionUID = 1L;
+
     private String account;
 
     private String password;

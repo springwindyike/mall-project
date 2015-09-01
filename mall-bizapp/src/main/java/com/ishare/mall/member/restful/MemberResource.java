@@ -4,6 +4,7 @@ import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +21,11 @@ public class MemberResource {
     @RequestMapping(value = "login", method = RequestMethod.POST, headers = "Accept=application/xml, application/json", produces = {
             "application/json", "application/xml"}, consumes = {
             "application/json", "application/xml"})
-    public MemberLoginResultDTO login(MemberDTO memberDTO) {
+    public MemberLoginResultDTO login(@RequestBody MemberDTO memberDTO) {
         log.debug(memberDTO.toString());
         MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
+        memberLoginResultDTO.setCode(200);
+        memberLoginResultDTO.setSuccess(true);
         memberLoginResultDTO.setMemberDTO(memberDTO);
         return memberLoginResultDTO;
     }

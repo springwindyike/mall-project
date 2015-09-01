@@ -3,7 +3,6 @@ package com.ishare.mall.center.controller;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
-import com.ishare.mall.core.form.center.login.LoginForm;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import org.slf4j.Logger;
@@ -40,19 +39,20 @@ public class IndexController extends BaseController {
     }
     @RequestMapping(value = "/index")
     public String index(){
-        return "center/index/login";
+        return "index/login";
     }
 
     @RequestMapping(value = "/login")
-    public String login(LoginForm loginForm) {
+    public String login() {
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setAccount("admin");
         memberDTO.setPassword("123");
+        log.debug(memberDTO.toString());
         ResponseEntity<MemberLoginResultDTO> resultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultDTO = restTemplate.postForEntity("localhost:8888/bizapp/member/login", memberDTO, MemberLoginResultDTO.class);
+        resultDTO = restTemplate.postForEntity("http://127.0.0.1:8888/app/member/login", memberDTO, MemberLoginResultDTO.class);
         MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
         log.debug(memberLoginResultDTO.toString());
-        return "center/index/login";
+        return "index/login";
     }
 }
