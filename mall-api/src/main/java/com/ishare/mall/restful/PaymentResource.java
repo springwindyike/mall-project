@@ -22,6 +22,8 @@ import org.apache.oltu.oauth2.rs.response.OAuthRSResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -69,8 +71,8 @@ public class PaymentResource {
                 log.debug(objectError.getDefaultMessage());
             }
             model.addAttribute("error", br.getAllErrors());
-
             ErrorDTO<List<String>> errorDTO = new ErrorDTO<>();
+            errorDTO.setCode(HttpServletResponse.SC_ACCEPTED);
             List<String> errorList = Lists.newArrayList();
             errorDTO.setMessage(errorList);
             for (ObjectError error : br.getAllErrors()) {
@@ -92,14 +94,13 @@ public class PaymentResource {
             Servlets.responseJson(response, responseObject);;
         }
         String id = payForm.getOrderId();
-        //订单ID未传
-        if (!StringUtils.isNotEmpty(id)) {
-            return null;
-        }
         Order order = orderService.findOne(id);
         //订单不存在
         if (order == null) {
-            return null;
+            ErrorDTO<String> errorDTO = new ErrorDTO<>();
+            errorDTO.setCode(HttpServletResponse.SC_NOT_FOUND);
+            errorDTO.setMessage("订单不存在");
+            Servlets.responseHttpJson(response, new ResponseEntity(errorDTO, HttpStatus.valueOf(HttpServletResponse.SC_NOT_FOUND)));
         }
         //订单状态不是等待支付
         if (order.getState() != OrderState.WAIT_PAYMENT) {

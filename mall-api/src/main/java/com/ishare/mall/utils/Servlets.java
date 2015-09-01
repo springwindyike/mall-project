@@ -210,7 +210,7 @@ public class Servlets {
         PrintWriter out = null;
         try {
             out = response.getWriter();
-            out.append("ID不能为空");
+            out.append(jsonObject.toString());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
