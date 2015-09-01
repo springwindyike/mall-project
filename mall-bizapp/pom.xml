@@ -16,21 +16,6 @@
             <artifactId>mall-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.ishare.mall</groupId>
-            <artifactId>mall-bizapp-channel</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ishare.mall</groupId>
-            <artifactId>mall-bizapp-member</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ishare.mall</groupId>
-            <artifactId>mall-bizapp-channel</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
     </dependencies>
     <build>
         <resources>
