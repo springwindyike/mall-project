@@ -8,7 +8,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath*:/applicationContext.xml
+            classpath*:spring/core.spring.xml
         </param-value>
     </context-param>
     <context-param>
@@ -66,9 +66,19 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>*.dhtml</url-pattern>
     </servlet-mapping>
-
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/center/404/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/center/500/500.jsp</location>
+    </error-page>
+    <welcome-file-list>
+        <welcome-file>/index.dhtml</welcome-file>
+    </welcome-file-list>
 
     <!-- session过期时间 -->
     <session-config>
