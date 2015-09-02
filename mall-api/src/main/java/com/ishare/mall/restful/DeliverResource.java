@@ -37,6 +37,7 @@ public class DeliverResource {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Object save(@ModelAttribute("orderDeliverInfoAttribute") OrderDeliverInfo odi) {
+		log.debug("Here...");
     	OrderDeliverInfo orderDeliverInfo = deliverService.save(odi);
     	QueryResult qr = new QueryResult();
     	if (orderDeliverInfo != null) {
