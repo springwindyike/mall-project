@@ -13,18 +13,21 @@ public interface MemberService {
 	 * @param id
 	 * @return
 	 */
-	Member findOne(String id);
+	Member findOne(Integer id);
 
 	/**
 	 * 检测账号是否存在，并创建
-	 * @param id
+	 * @param account
 	 * @return
 	 */
-	Member checkAndCreateById(String id, Integer channelId);
+	Member checkAndCreateByAccount(String account, Integer channelId);
 
 	/**
 	 * @param mobile
 	 * @return
 	 */
 	Member findByMobile(String mobile);
+
+	Member findByAccount(String account);
+
 }

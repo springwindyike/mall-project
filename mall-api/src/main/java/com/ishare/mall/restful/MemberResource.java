@@ -43,7 +43,7 @@ public class MemberResource {
     
     /**
      * 通过accessToken获取到ID查询出memeber信息
-  * @param id
+  * @param accessToken
   * @return Member 返回的数据对象
 	 */
 	@RequestMapping(value = "/accessToken/{accessToken}", method = RequestMethod.GET) 
@@ -59,7 +59,8 @@ public class MemberResource {
 			return response;  
 		}  
 	String id = oAuthService.getAccountByAccessToken(accessToken);
-		 Member member = memberService.findOne(id);
+		Integer account = Integer.valueOf(id);
+		 Member member = memberService.findOne(account);
 		 return (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
     }
 
