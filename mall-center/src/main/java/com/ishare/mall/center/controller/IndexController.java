@@ -44,7 +44,7 @@ public class IndexController extends BaseController {
         log.debug(memberDTO.toString());
         ResponseEntity<MemberLoginResultDTO> resultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultDTO = restTemplate.postForEntity("http://127.0.0.1:8888/app/member/login", memberDTO, MemberLoginResultDTO.class);
+        resultDTO = restTemplate.postForEntity(bizAppUrl + "/member/login", memberDTO, MemberLoginResultDTO.class);
         MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
         log.debug(memberLoginResultDTO.toString());
         return "index/login";
