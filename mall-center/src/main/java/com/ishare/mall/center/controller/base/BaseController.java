@@ -8,11 +8,18 @@ import org.springframework.beans.factory.annotation.Value;
  * Version 1.0
  */
 public class BaseController {
+
     //核心APP地址
     @Value("#{settings['biz.app.url']}")
     protected String bizAppUrl;
 
-    protected String buildBizAppURI(String path) {
-        return bizAppUrl + path;
+    /**
+     * 基础的path和apiPath
+     * @param moduleRequestMapping
+     * @param apiRequestMapping
+     * @return
+     */
+    protected String buildBizAppURI(String moduleRequestMapping, String apiRequestMapping) {
+        return bizAppUrl + moduleRequestMapping + apiRequestMapping;
     }
 }

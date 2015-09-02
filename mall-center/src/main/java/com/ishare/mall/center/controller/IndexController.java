@@ -48,7 +48,7 @@ public class IndexController extends BaseController {
         log.debug(memberDTO.toString());
         ResponseEntity<MemberLoginResultDTO> resultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.LOGIN), memberDTO, MemberLoginResultDTO.class);
+        resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_LOGIN), memberDTO, MemberLoginResultDTO.class);
         MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
         log.debug(memberLoginResultDTO.toString());
         return CenterViewConstant.Index.LOGIN;
