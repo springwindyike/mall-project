@@ -1,6 +1,9 @@
 package com.ishare.mall.center.controller;
 
 import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
 import org.slf4j.Logger;
@@ -31,12 +34,13 @@ public class IndexController extends BaseController {
     public Object result(Model m) {
         return m;
     }
-    @RequestMapping(value = "/index")
+
+    @RequestMapping(value = CenterURIConstant.Index.INDEX)
     public String index(){
-        return "index/login";
+        return CenterViewConstant.Index.LOGIN;
     }
 
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = CenterURIConstant.Index.LOGIN)
     public String login() {
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setAccount("admin");
@@ -44,9 +48,9 @@ public class IndexController extends BaseController {
         log.debug(memberDTO.toString());
         ResponseEntity<MemberLoginResultDTO> resultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultDTO = restTemplate.postForEntity(bizAppUrl + "/member/login", memberDTO, MemberLoginResultDTO.class);
+        resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.LOGIN), memberDTO, MemberLoginResultDTO.class);
         MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
         log.debug(memberLoginResultDTO.toString());
-        return "index/login";
+        return CenterViewConstant.Index.LOGIN;
     }
 }

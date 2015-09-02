@@ -11,4 +11,8 @@ public class BaseController {
     //核心APP地址
     @Value("#{settings['biz.app.url']}")
     protected String bizAppUrl;
+
+    protected String buildBizAppURI(String path) {
+        return bizAppUrl + path;
+    }
 }
