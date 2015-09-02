@@ -3,11 +3,8 @@ package com.ishare.mall.center.controller;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
-import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.core.service.member.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,10 +26,6 @@ public class IndexController extends BaseController {
         return log;
     }
 
-    @Autowired
-    private MemberService memberService;
-    @Autowired
-    private ChannelService channelService;
     @RequestMapping("/res")
     @ResponseBody
     public Object result(Model m) {
