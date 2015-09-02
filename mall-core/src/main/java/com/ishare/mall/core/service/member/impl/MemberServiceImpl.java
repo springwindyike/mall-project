@@ -8,6 +8,8 @@ import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.repository.member.MemberRepository;
 import com.ishare.mall.core.service.member.MemberService;
 
+import java.util.List;
+
 /**
  * Created by YinLin on 2015/8/12.
  * Description :
@@ -21,13 +23,13 @@ public class MemberServiceImpl implements MemberService {
 	private MemberRepository memberRepository;
 
 	@Override
-	public Member findOne(String id) {
+	public Member findOne(Integer id) {
 		return memberRepository.findOne(id);
 	}
 
 	@Override
-	public Member checkAndCreateById(String id, Integer channelId) {
-		Member member = this.findOne(id);
+	public Member checkAndCreateByAccount(String account, Integer channelId) {
+		Member member = this.findByAccount(account);
 
 		return null;
 	}
@@ -35,6 +37,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member findByMobile(String mobile) {
 		return null;
+	}
+
+	@Override
+	public Member findByAccount(String account) {
+		List<Member> members = memberRepository.findByAccount(account);
+		return members != null && members.size() > 0 ? members.get(0) : null;
 	}
 
 }
