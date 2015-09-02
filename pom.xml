@@ -15,6 +15,7 @@
         <module>mall-manage</module>
         <module>mall-docs</module>
         <module>mall-center</module>
+        <module>mall-bizapp</module>
     </modules>
 
     <properties>

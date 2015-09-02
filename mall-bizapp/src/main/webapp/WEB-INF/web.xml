@@ -3,11 +3,12 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    <display-name>center</display-name>
+    <display-name>Business App</display-name>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath*:spring-mvc.xml
+            classpath*:spring/core.spring.xml
         </param-value>
     </context-param>
     <context-param>
@@ -17,6 +18,13 @@
     <!--spring ApplicationContext 载入 -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>logbackConfigLocation</param-name>
+        <param-value>classpath:logback.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
     </listener>
 
     <!-- Filter 定义 -->
@@ -37,6 +45,19 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <!--JPA Lazy-->
+    <filter>
+        <filter-name>openEntityManagerInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+        <init-param>
+            <param-name>entityManagerFactoryBeanName</param-name>
+            <param-value>entityManagerFactory</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>openEntityManagerInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!-- spring mvc Servlet -->
     <servlet>
@@ -45,31 +66,19 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                /WEB-INF/spring-mvc.xml
+                /WEB-INF/mvc-dispatcher-servlet.xml
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
-        <url-pattern>*.dhtml</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <welcome-file-list>
-        <welcome-file>/index.dhtml</welcome-file>
-    </welcome-file-list>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/views/center/404/404.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/WEB-INF/views/center/500/500.jsp</location>
-    </error-page>
 
     <!-- session过期时间 -->
     <session-config>
         <session-timeout>20</session-timeout>
     </session-config>
-
 </web-app>

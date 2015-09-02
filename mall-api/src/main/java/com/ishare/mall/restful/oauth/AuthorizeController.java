@@ -57,6 +57,7 @@ public class AuthorizeController {
             //获取客户端account 手机号
             String account = request.getParameter("account");
             //这里需要用memberService检测 如果没有就创建 检测account合法性
+
             //生成授权码
             String authorizationCode = null;
             //responseType目前仅支持CODE，另外还有TOKEN

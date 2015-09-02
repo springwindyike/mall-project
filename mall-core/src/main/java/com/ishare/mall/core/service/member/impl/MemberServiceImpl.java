@@ -17,13 +17,24 @@ import com.ishare.mall.core.service.member.MemberService;
 @Transactional
 public class MemberServiceImpl implements MemberService {
 
-@Autowired
-private MemberRepository memberRepository;
+	@Autowired
+	private MemberRepository memberRepository;
 
 	@Override
 	public Member findOne(String id) {
-		// TODO Auto-generated method stub
 		return memberRepository.findOne(id);
+	}
+
+	@Override
+	public Member checkAndCreateById(String id, Integer channelId) {
+		Member member = this.findOne(id);
+
+		return null;
+	}
+
+	@Override
+	public Member findByMobile(String mobile) {
+		return null;
 	}
 
 }
