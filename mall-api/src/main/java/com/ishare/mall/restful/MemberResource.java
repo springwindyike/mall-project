@@ -1,7 +1,10 @@
 package com.ishare.mall.restful;
 
-import javax.servlet.http.HttpServletResponse;
-
+import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.service.member.MemberService;
+import com.ishare.mall.core.service.oauth.OAuthService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
@@ -14,11 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.service.oauth.OAuthService;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by YinLin on 2015/8/5.
@@ -55,14 +54,13 @@ public class MemberResource {
 			        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)  
 			        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)  
 			        .buildHeaderMessage();
-	    
-			return response;  
-		}  
-	String id = oAuthService.getAccountByAccessToken(accessToken);
-		Integer account = Integer.valueOf(id);
-		 Member member = memberService.findOne(account);
-		 return (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
-    }
+
+			return response;
+		}
+		String account = oAuthService.getAccountByAccessToken(accessToken);
+		Member member = memberService.findByAccount(account);
+		return MapperUtils.map(member, MemberDetailDTO.class);
+	}
 
     public Member update() {
         return null;
