@@ -59,4 +59,22 @@ public class ProductRestfulMocTemple extends TestTemplate {
 	            .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
 	    Assert.assertNotNull(result.getResponse().getContentAsString());
 	}
+	@Test
+	public void testProductListFindByTypeName() throws Exception {
+	    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/offset/1/limit/1/type/男装").characterEncoding("UTF-8").contentType(MediaType.APPLICATION_JSON)
+	            .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
+	    Assert.assertNotNull(result.getResponse().getContentAsString());
+	}
+	@Test
+	public void testProductListFindByTypeId() throws Exception {
+	    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/offset/1/limit/1/typeId/1").characterEncoding("UTF-8").contentType(MediaType.APPLICATION_JSON)
+	            .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
+	    Assert.assertNotNull(result.getResponse().getContentAsString());
+	}
+	@Test
+	public void testProductListFindByName() throws Exception {
+	    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/offset/1/limit/1/name/鞋").characterEncoding("UTF-8").contentType(MediaType.APPLICATION_JSON)
+	            .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
+	    Assert.assertNotNull(result.getResponse().getContentAsString());
+	}
 }
