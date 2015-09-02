@@ -1,7 +1,12 @@
 package com.ishare.mall.common.base.dto.channel;
 
-import com.ishare.mall.common.base.object.BaseObject;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import com.ishare.mall.common.base.object.BaseObject;
+@XmlRootElement
+@JsonAutoDetect
 public class ChannelDTO implements BaseObject {
 	
 	/**
