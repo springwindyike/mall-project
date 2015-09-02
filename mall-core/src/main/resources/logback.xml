@@ -25,9 +25,6 @@
 	<logger name="com.ishare.mall" level="DEBUG">
 		<appender-ref ref="console" />
 	</logger>
-	<logger name="com.ishare" level="DEBUG">
-		<appender-ref ref="console" />
-	</logger>
 
 	<!--log4jdbc -->
 	<logger name="jdbc.sqltiming" level="DEBUG"/>
