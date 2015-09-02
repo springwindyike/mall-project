@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Controller
 public class IndexController extends BaseController {
+
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
     public static Logger getLog() {
