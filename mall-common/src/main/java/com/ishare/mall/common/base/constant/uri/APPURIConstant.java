@@ -7,6 +7,7 @@ package com.ishare.mall.common.base.constant.uri;
  */
 public interface APPURIConstant {
     interface Member {
-        String LOGIN = "login";
+        String REQUEST_MAPPING   = "/member";
+        String REQUEST_MAPPING_LOGIN    =  "/login";
     }
 }

@@ -6,6 +6,9 @@ package com.ishare.mall.common.base.constant;
  * Version 1.0
  */
 public interface CommonConstant {
+    interface Common {
+       String SLASH = "/";
+    }
     //字符集
     interface CharSet {
         String UTF8 = "utf-8";

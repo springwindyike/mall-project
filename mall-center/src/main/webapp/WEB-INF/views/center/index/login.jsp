@@ -7,10 +7,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<link href="resources/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="resources/scripts/test.js">
+</script>
 <head>
-    <title></title>
+    <title>Hello</title>
 </head>
 <body>
-  <div><H1>Hello</H1></div>
+  <div>
+    <H1>Hello</H1>
+  </div>
 </body>
 </html>

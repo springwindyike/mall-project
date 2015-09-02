@@ -1,5 +1,6 @@
 package com.ishare.mall.member.restful;
 
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
 import org.slf4j.Logger;
@@ -15,12 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
  * Version 1.0
  */
 @RestController
-@RequestMapping("/member")
+@RequestMapping(APPURIConstant.Member.REQUEST_MAPPING)
 public class MemberResource {
     private static final Logger log = LoggerFactory.getLogger(MemberResource.class);
-    @RequestMapping(value = "login", method = RequestMethod.POST, headers = "Accept=application/xml, application/json", produces = {
-            "application/json", "application/xml"}, consumes = {
-            "application/json", "application/xml"})
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_LOGIN,
+                    method = RequestMethod.POST, headers = "Accept=application/xml, application/json",
+                    produces = {"application/json", "application/xml"},
+                    consumes = {"application/json", "application/xml"})
     public MemberLoginResultDTO login(@RequestBody MemberDTO memberDTO) {
         log.debug(memberDTO.toString());
         MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
