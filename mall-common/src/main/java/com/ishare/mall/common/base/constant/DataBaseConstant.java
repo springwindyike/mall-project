@@ -56,6 +56,10 @@ public interface DataBaseConstant {
         String TABLE_PERMISSION_NAME                    = Common.TABLE_PRE + "permission";
         //中间表
         String TABLE_MEMBER_ROLE_NAME                   = TABLE_MEMBER_NAME + "_role";
+        //属性表
+        String TABLE_ATTRIBUTE_NAME                     = Common.TABLE_PRE + "attribute";
+        //商品属性表
+        String TABLE_PRODUCT_ATTRIBUTE_NAME             = TABLE_PRODUCT_NAME + "_attribute";
 
     }
 }

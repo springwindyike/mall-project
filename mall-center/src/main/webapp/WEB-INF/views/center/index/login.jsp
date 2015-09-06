@@ -32,23 +32,23 @@
 <div class="header"></div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
-    <form class="form form-horizontal" action="index.html" method="post">
+    <form class="form form-horizontal" action="login.dhtml" method="post">
       <div class="row cl">
         <label class="form-label col-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-8">
-          <input id="" name="" type="text" placeholder="账户" class="input-text size-L">
+          <input id="" name="account" type="text" placeholder="账户" class="input-text size-L">
         </div>
       </div>
       <div class="row cl">
         <label class="form-label col-3"><i class="Hui-iconfont">&#xe60e;</i></label>
         <div class="formControls col-8">
-          <input id="" name="" type="password" placeholder="密码" class="input-text size-L">
+          <input id="" name="password" type="password" placeholder="密码" class="input-text size-L">
         </div>
       </div>
       <div class="row cl">
         <div class="formControls col-8 col-offset-3">
-          <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-          <img src="resources/images/VerifyCode.aspx.png"> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>
+          <input class="input-text size-L" type="text" placeholder="验证码" name="verifycode" style="width:150px;">
+           <img id="imgObj" alt="验证码" src="verifycode.dhtml" /><a href="#" onclick="changeImg()">看不清，换一张</a> </div>
       </div>
       <div class="row">
         <div class="formControls col-8 col-offset-3">
@@ -70,6 +70,24 @@
 <script type="text/javascript" src="resources/scripts/jquery.min.js"></script> 
 <script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
 <script>
+function changeImg() { 
+    var imgSrc = $("#imgObj"); 
+    var src = imgSrc.attr("src"); 
+    imgSrc.attr("src", chgUrl(src)); 
+} 
+//时间戳     
+//为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳     
+function chgUrl(url) { 
+    var timestamp = (new Date()).valueOf(); 
+    url = url.substring(0, 17); 
+    if ((url.indexOf("&") >= 0)) { 
+        url = url + "×tamp=" + timestamp; 
+    } else { 
+        url = url + "?timestamp=" + timestamp;
+    } 
+    return url;
+} 
+
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
