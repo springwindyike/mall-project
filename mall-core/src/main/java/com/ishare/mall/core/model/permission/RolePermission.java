@@ -14,7 +14,9 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 @Entity
 @Table(name = TABLE_ROLE_PERMISSION)
 public class RolePermission extends BaseEntity {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "role_id")
     private Role role;
@@ -37,5 +39,13 @@ public class RolePermission extends BaseEntity {
 
     public void setPermission(Permission permission) {
         this.permission = permission;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
