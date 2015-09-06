@@ -1,6 +1,6 @@
-享买购物平台Api
+享买购物平台API
 ===
-###目录说明
+### 目录说明
 * mall-api 享买购物平台，只包含本工程需要的API,对外服务接口
 * mall-manage 享买购物平台管理后台，只包含本工程需要的Controller和页面代码
 * mall-center 享买购物平台，包括会员申请中心
@@ -8,7 +8,8 @@
 * mall-core 平台核心代码，包括数据库、对外服务接口等
 * mall-common 平台公用代码
 * mall-docs 平台文档等
-####技术文档
+
+#### 技术文档
 * [Spring Framework Reference Documentation](http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/)
 * [Spring Data JPA - Reference Documentation](http://docs.spring.io/spring-data/jpa/docs/1.8.1.RELEASE/reference/html/)
 * [EasyUI Documentation](http://www.jeasyui.com/documentation/index.php)
@@ -23,10 +24,11 @@
 * [Google网页代理](https://github.com/sxyx2008/DevArticles/issues/99) 方便搜资料，百度确实太难用了
 
 * [Markdown 语法说明](http://wowubuntu.com/markdown/)
+* [爬虫文档](http://webmagic.io/docs/zh/)
 
-####安装命令
+#### 安装命令
     mvn clean resources:resources antrun:run package -Pdev -DskipTests=true
 
-####初始化数据库
+#### 初始化数据库
     mvn clean resources:resources antrun:run -Pdev
 或者运行eshop-docs下面的refresh-db.sh
