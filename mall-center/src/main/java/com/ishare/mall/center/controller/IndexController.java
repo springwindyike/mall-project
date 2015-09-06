@@ -32,6 +32,7 @@ public class IndexController extends BaseController {
     @RequestMapping("/res")
     @ResponseBody
     public Object result(Model m) {
+    	System.out.println("________________");
         return m;
     }
 

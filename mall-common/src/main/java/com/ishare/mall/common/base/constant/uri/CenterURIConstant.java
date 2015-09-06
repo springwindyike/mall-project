@@ -6,6 +6,9 @@ package com.ishare.mall.common.base.constant.uri;
  * Version 1.0
  */
 public interface CenterURIConstant {
+	
+	String VERIFYCODE = "verifycode";
+	
     interface Index {
         //首页
         String INDEX = "index";

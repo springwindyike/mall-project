@@ -48,7 +48,7 @@
       <div class="row cl">
         <div class="formControls col-8 col-offset-3">
           <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-          <img src="resources/images/VerifyCode.aspx.png"> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>
+           <img id="imgObj" alt="验证码" src="verifycode.dhtml" /><a href="#" onclick="changeImg()">看不清，换一张</a> </div>
       </div>
       <div class="row">
         <div class="formControls col-8 col-offset-3">
@@ -70,6 +70,24 @@
 <script type="text/javascript" src="resources/scripts/jquery.min.js"></script> 
 <script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
 <script>
+function changeImg() { 
+    var imgSrc = $("#imgObj"); 
+    var src = imgSrc.attr("src"); 
+    imgSrc.attr("src", chgUrl(src)); 
+} 
+//时间戳     
+//为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳     
+function chgUrl(url) { 
+    var timestamp = (new Date()).valueOf(); 
+    url = url.substring(0, 17); 
+    if ((url.indexOf("&") >= 0)) { 
+        url = url + "×tamp=" + timestamp; 
+    } else { 
+        url = url + "?timestamp=" + timestamp; 
+    } 
+    return url; 
+} 
+
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
