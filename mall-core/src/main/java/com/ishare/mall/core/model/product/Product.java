@@ -105,9 +105,6 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "product_type_id")
     private ProductType type;
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REFRESH, CascadeType.REMOVE})
-    private Set<ProductStyle> productStyles = Sets.newConcurrentHashSet();
-
     public Integer getId() {
         return id;
     }
@@ -290,14 +287,6 @@ public class Product extends BaseEntity {
 
     public void setDefaultImageUrl(String defaultImageUrl) {
         this.defaultImageUrl = defaultImageUrl;
-    }
-
-    public Set<ProductStyle> getProductStyles() {
-        return productStyles;
-    }
-
-    public void setProductStyles(Set<ProductStyle> productStyles) {
-        this.productStyles = productStyles;
     }
 
     public Integer getInventory() {
