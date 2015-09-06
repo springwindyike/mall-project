@@ -28,6 +28,13 @@ public interface MemberService {
 	 */
 	Member findByMobile(String mobile);
 
+	/**
+	 * \
+	 * 根据account查询
+	 *
+	 * @param account
+	 * @return
+	 */
 	Member findByAccount(String account);
 
 }
