@@ -54,4 +54,10 @@ public class DeliverRestfulMocTemple extends TestTemplate {
                 .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
         Assert.assertEquals(200, result.getResponse().getStatus());
     }
+    
+    @Test
+    public void accessTokenTestAdd() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/accessToken").contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print()).andReturn();
+        Assert.assertEquals(200, result.getResponse().getStatus());}
 }

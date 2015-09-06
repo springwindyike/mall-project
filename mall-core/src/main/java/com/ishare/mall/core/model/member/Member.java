@@ -17,8 +17,11 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  */
 @Entity(name = TABLE_MEMBER_NAME)
 public class Member extends BaseEntity {
-    /**平台登录账号**/
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    /**平台登录账号**/
     @Column(name = "member_account",length = 50)
     private String account;
     /**第三方手机号**/
@@ -152,5 +155,13 @@ public class Member extends BaseEntity {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

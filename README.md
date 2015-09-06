@@ -4,6 +4,7 @@
 * mall-api 享买购物平台，只包含本工程需要的API,对外服务接口
 * mall-manage 享买购物平台管理后台，只包含本工程需要的Controller和页面代码
 * mall-center 享买购物平台，包括会员申请中心
+* mall-bizapp 享买购物平台，对内核心API
 * mall-core 平台核心代码，包括数据库、对外服务接口等
 * mall-common 平台公用代码
 * mall-docs 平台文档等

@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.ishare.mall.core.model.member.Member;
 
-public interface MemberRepository extends JpaRepository<Member, String>, JpaSpecificationExecutor {
+import java.util.List;
+
+public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpecificationExecutor {
+	List<Member> findByAccount(String account);
 }
 
