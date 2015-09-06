@@ -53,4 +53,9 @@ public class IndexController extends BaseController {
         log.debug(memberLoginResultDTO.toString());
         return CenterViewConstant.Index.LOGIN;
     }
+    
+    @RequestMapping(value = CenterURIConstant.Index.ADD_PRODUCT)
+    public String addProduct() {
+        return CenterViewConstant.Index.ADD_PRODUCT;
+    }
 }

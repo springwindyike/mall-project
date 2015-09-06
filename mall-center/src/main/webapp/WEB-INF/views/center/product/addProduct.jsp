@@ -19,10 +19,7 @@
 <link href="lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
 <link href="lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
 <link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
+<link href='${pageContext.request.contextPath}/resources/css/style.css' rel='stylesheet' type='text/css' />
 <title>新增图片</title>
 </head>
 <body>
