@@ -1,12 +1,13 @@
 package com.ishare.mall.core.service.member.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.repository.member.MemberRepository;
 import com.ishare.mall.core.service.member.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,4 +46,14 @@ public class MemberServiceImpl implements MemberService {
 		return members != null && members.size() > 0 ? members.get(0) : null;
 	}
 
+	public Page<Member> findByChannelId(Integer channelId, PageRequest pageRequest) {
+		Page<Member> page = memberRepository.findByChannelId(channelId, pageRequest);
+		return page;
+	}
+
+
+	public List findByRolId(Integer rolId, PageRequest pageRequest) {
+		Page<Member> page = memberRepository.findByRolId(rolId, pageRequest);
+		return null;
+	}
 }
