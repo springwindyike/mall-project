@@ -22,7 +22,7 @@ public class UserRoleDao extends HibernateDao<UserRole, Integer>{
 	 * @param roleId
 	 */
 	public void deleteUR(Integer userId,Integer roleId){
-		String hql="delete UserRole ur where ur.user.id=?0 and ur.role.id=?1";
+		String hql="delete MemberRole ur where ur.user.id=?0 and ur.role.id=?1";
 		batchExecute(hql, userId,roleId);
 	}
 	
@@ -33,7 +33,7 @@ public class UserRoleDao extends HibernateDao<UserRole, Integer>{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Integer> findRoleIds(Integer userId){
-		String hql="select ur.role.id from UserRole ur where ur.user.id=?0";
+		String hql="select ur.role.id from MemberRole ur where ur.user.id=?0";
 		Query query= createQuery(hql, userId);
 		return query.list();
 	}

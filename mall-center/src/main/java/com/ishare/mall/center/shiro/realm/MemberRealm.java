@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Created by YinLin on 2015/9/6.
- * Description :
+ * Description : member认证相关
  * Version 1.0
  */
 public class MemberRealm extends AuthorizingRealm {

@@ -59,7 +59,7 @@ public class UserRoleService extends BaseService<UserRole, Integer> {
 	 * 
 	 * @param userId
 	 * @param roleId
-	 * @return UserRole
+	 * @return MemberRole
 	 */
 	private UserRole getUserRole(Integer userId, Integer roleId) {
 		UserRole ur = new UserRole();

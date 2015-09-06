@@ -26,9 +26,6 @@ public class Role extends BaseEntity {
     /**角色名称**/
     @Column(name = "role_name")
     private String name;
-    /**权限**/
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "role",fetch = FetchType.LAZY)
-    private Set<Permission> permissions = Sets.newConcurrentHashSet();
     /**权限组**/
     @ManyToMany
     @JoinTable(name = TABLE_MEMBER_ROLE_NAME, joinColumns = {@JoinColumn(name="role_id")}, inverseJoinColumns = {@JoinColumn(name = "member_account")})
@@ -48,14 +45,6 @@ public class Role extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<Permission> permissions) {
-        this.permissions = permissions;
     }
 
     public Set<Member> getMembers() {
