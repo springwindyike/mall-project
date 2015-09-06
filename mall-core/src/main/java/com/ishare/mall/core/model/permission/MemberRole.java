@@ -15,6 +15,9 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 @Entity
 @Table(name = TABLE_MEMBER_ROLE_NAME)
 public class MemberRole extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -36,5 +39,13 @@ public class MemberRole extends BaseEntity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
