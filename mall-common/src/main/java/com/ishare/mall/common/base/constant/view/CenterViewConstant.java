@@ -9,5 +9,6 @@ public interface CenterViewConstant {
     //首页 view
     interface Index {
         String LOGIN = "index/login";
+        String ADD_PRODUCT ="product/addProduct";
     }
 }
