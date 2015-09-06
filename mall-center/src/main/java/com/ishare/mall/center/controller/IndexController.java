@@ -32,6 +32,7 @@ public class IndexController extends BaseController {
     @RequestMapping("/res")
     @ResponseBody
     public Object result(Model m) {
+    	System.out.println("________________");
         return m;
     }
 
@@ -52,5 +53,10 @@ public class IndexController extends BaseController {
         MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
         log.debug(memberLoginResultDTO.toString());
         return CenterViewConstant.Index.LOGIN;
+    }
+    
+    @RequestMapping(value = CenterURIConstant.Index.ADD_PRODUCT)
+    public String addProduct() {
+        return CenterViewConstant.Index.ADD_PRODUCT;
     }
 }
