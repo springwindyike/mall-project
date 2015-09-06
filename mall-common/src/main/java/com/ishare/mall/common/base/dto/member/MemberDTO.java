@@ -19,6 +19,8 @@ public class MemberDTO extends GenericDTO {
     private String account;
 
     private String password;
+    
+    private String verifycode;
 
     public String getAccount() {
         return account;
@@ -35,4 +37,13 @@ public class MemberDTO extends GenericDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public String getVerifycode() {
+		return verifycode;
+	}
+
+	public void setVerifycode(String verifycode) {
+		this.verifycode = verifycode;
+	}
+    
 }

@@ -31,8 +31,8 @@ public class CodeController extends BaseController {
 	private int height = 40;// 定义图片的height
 	private int codeCount = 6;// 定义图片上显示验证码的个数
 	private int xx = 12;//字母间距
-	private int fontHeight = 20;
-	private int codeY = 28;
+	private int fontHeight = 20;//字号
+	private int codeY = 28;//y轴偏移
 	char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
 			'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
 			'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };

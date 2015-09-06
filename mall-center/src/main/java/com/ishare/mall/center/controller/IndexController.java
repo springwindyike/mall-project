@@ -1,19 +1,27 @@
 package com.ishare.mall.center.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
+
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
+import com.ishare.mall.core.model.order.Order;
 
 /**
  * Created by YinLin on 2015/8/13.
@@ -41,11 +49,20 @@ public class IndexController extends BaseController {
         return CenterViewConstant.Index.LOGIN;
     }
 
-    @RequestMapping(value = CenterURIConstant.Index.LOGIN)
+    @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.GET)
     public String login() {
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setAccount("admin");
-        memberDTO.setPassword("123");
+        return CenterViewConstant.Index.LOGIN;
+    }
+    
+    @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.POST)
+    public String login(HttpSession session, @ModelAttribute("memberAttribute") MemberDTO memberDTO) {
+    	System.out.println(memberDTO.getVerifycode());
+	    	 if (!(memberDTO.getVerifycode().equalsIgnoreCase(session.getAttribute("code").toString()))) {  //忽略验证码大小写
+	    		 	System.out.println("验证码不正确");
+	    	}else {
+	    		System.out.println("验证码正确");
+				}
+        
         log.debug(memberDTO.toString());
         ResponseEntity<MemberLoginResultDTO> resultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
