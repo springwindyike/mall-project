@@ -361,6 +361,11 @@
                 <version>3.12</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>3.12</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.xbean</groupId>
                 <artifactId>xbean-spring</artifactId>
                 <version>4.3</version>
@@ -528,6 +533,17 @@
                 <version>1.17</version>
             </dependency>
 
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20141113</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
