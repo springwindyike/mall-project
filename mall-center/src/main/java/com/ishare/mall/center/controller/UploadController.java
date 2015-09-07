@@ -1,22 +1,13 @@
 package com.ishare.mall.center.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.ishare.mall.center.controller.base.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.baidu.ueditor.ActionEnter;
-import com.ishare.mall.center.controller.base.BaseController;
-import com.ishare.mall.center.form.product.AddProductForm;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -39,15 +30,15 @@ public class UploadController extends BaseController {
             response.setContentType("application/json");              
             String rootPath = request.getSession().getServletContext().getRealPath("/");
 
-            try {/*
-                    String exec = new ActionEnter(request, rootPath).exec();
-                    PrintWriter writer = response.getWriter();
-                    writer.write(exec);
-                    writer.flush();
-                    writer.close();
-            */} catch (IOException e) {
-                    e.printStackTrace();
-            }
+//            try {
+//                    String exec = new ActionEnter(request, rootPath).exec();
+//                    PrintWriter writer = response.getWriter();
+//                    writer.write(exec);
+//                    writer.flush();
+//                    writer.close();
+//            } catch (IOException e) {
+//                    e.printStackTrace();
+//            }
             
     }
 }
