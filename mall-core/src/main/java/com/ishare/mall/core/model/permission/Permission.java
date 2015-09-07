@@ -19,10 +19,6 @@ public class Permission {
     @Column(name = "permission_name")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
-    @JoinColumn(name = "role_id")
-    private Role role;
-
     public Integer getId() {
         return id;
     }
@@ -39,11 +35,4 @@ public class Permission {
         this.name = name;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

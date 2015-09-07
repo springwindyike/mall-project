@@ -2,6 +2,8 @@ package com.ishare.mall.common.base.dto.member;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -21,6 +23,12 @@ public class MemberDTO extends GenericDTO {
     private String password;
     
     private String verifycode;
+
+    private Page<MemberDetailDTO> page;
+
+    private PageRequest pageRequest;
+
+    private Integer channelId;
 
     public String getAccount() {
         return account;
@@ -45,5 +53,32 @@ public class MemberDTO extends GenericDTO {
 	public void setVerifycode(String verifycode) {
 		this.verifycode = verifycode;
 	}
-    
+
+    public Page<MemberDetailDTO> getPage() {
+        return page;
+    }
+
+    public void setPage(Page<MemberDetailDTO> page) {
+        this.page = page;
+    }
+
+    public PageRequest getPageRequest() {
+        return pageRequest;
+    }
+
+    public void setPageRequest(PageRequest pageRequest) {
+        this.pageRequest = pageRequest;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 }
