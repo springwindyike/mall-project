@@ -20,13 +20,12 @@
 </head>
 <body>
 <div class="pd-20">
-	<form action="" method="post" class="form form-horizontal" id="form-article-add">
-	   <c:url var="saveUrl" value="/addProduct" />
-    <form:form modelAttribute="productAttribute" action="${saveUrl }">
+	 <c:url var="saveUrl" value="/addProduct" />
+    <form:form modelAttribute="productAttribute" action="${saveUrl}" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>产品标题：</label>
 			<div class="formControls col-10">
-			<form:input type="text" class="input-text" value="" placeholder="" id="" name="">
+			<form:input type="text" class="input-text" value="" placeholder="" id="" path="productName"/>
 			</div>
 		</div>
 		<div class="row cl">
@@ -42,74 +41,14 @@
 				</span> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-2">产品规格：</label>
-			<div class="formControls col-10">
-		 <form:input type="text" name="" id="" placeholder="输入长度" value="" class="input-text" style=" width:25%">
-				MM
-				<input type="text" name="" id="" placeholder="输入宽度" value="" class="input-text" style=" width:25%">
-				MM
-					<form:input type="text" name="" id="" placeholder="输入高度" value="" class="input-text" style=" width:25%">
-				MM </div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-2">产地：</label>
-			<div class="formControls col-10">
-					<form:input type="text" name="" id="" placeholder="" value="" class="input-text">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-2">材质：</label>
+			<label class="form-label col-2">产品进价：</label>
 			<div class="formControls col-4">
-					<form:input type="text" name="" id="" placeholder="" value="" class="input-text">
-			</div>
-			<label class="form-label col-2">所属供应商：</label>
-			<div class="formControls col-4">
-					<form:input type="text" name="" id="" placeholder="" value="" class="input-text">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-2">价格计算单位：</label>
-			<div class="formControls col-4"> <span class="select-box">
-				<select class="select">
-					<option>请选择</option>
-					<option value="1">件</option>
-					<option value="2">斤</option>
-					<option value="3">KG</option>
-					<option value="4">吨</option>
-					<option value="5">套</option>
-				</select>
-				</span> </div>
-			<label class="form-label col-2">产品重量：</label>
-			<div class="formControls col-4">
-					<form:input type="text" name="" id="" placeholder="" value="" class="input-text" style="width:90%">
-				kg</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-2">产品展示价格：</label>
-			<div class="formControls col-4">
-			<form:input type="text" name="" id="" placeholder="" value="" class="input-text" style="width:90%">
+			<form:input type="text" path="basePrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
 				元</div>
 			<label class="form-label col-2">市场价格：</label>
 			<div class="formControls col-4">
-					<form:input type="text" name="" id="" placeholder="" value="" class="input-text" style="width:90%">
+					<form:input type="text" path="marketPrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
 				元</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-2">成本价格：</label>
-			<div class="formControls col-4">
-				<form:input type="text" name="" id="" placeholder="" value="" class="input-text" style="width:90%">
-				元</div>
-			<label class="form-label col-2">最低销售价格：</label>
-			<div class="formControls col-4">
-					<form:input type="text" name="" id="" placeholder="" value="" class="input-text" style="width:90%">
-				元</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-2">产品摘要：</label>
-			<div class="formControls col-10">
-				<form:textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,200)"></textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
-			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-2">缩略图：</label>
@@ -151,11 +90,10 @@
 		<div class="row cl">
 			<div class="col-10 col-offset-2">
 				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
-				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
 				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>
-	</form>
+</form:form>
 </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 

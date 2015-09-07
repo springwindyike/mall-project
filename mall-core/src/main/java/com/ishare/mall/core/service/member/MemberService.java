@@ -1,6 +1,8 @@
 package com.ishare.mall.core.service.member;
 
 import com.ishare.mall.core.model.member.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * Created by YinLin on 2015/8/12.
@@ -29,12 +31,28 @@ public interface MemberService {
 	Member findByMobile(String mobile);
 
 	/**
-	 * \
+	 *
 	 * 根据account查询
 	 *
 	 * @param account
 	 * @return
 	 */
 	Member findByAccount(String account);
+
+	/**
+	 * 根据channel id查询所有的member
+	 *
+	 * @param channelId
+	 * @return
+	 */
+	Page<Member> findByChannelId(Integer channelId, PageRequest pageRequest);
+
+	/**
+	 * 根据rol id 查询所有的member
+	 *
+	 * @param rolId
+	 * @return
+	 */
+	Page<Member> findByRoleId(Integer rolId, PageRequest pageRequest);
 
 }

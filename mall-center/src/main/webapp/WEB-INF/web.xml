@@ -38,9 +38,8 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- shiro 安全过滤器 -->
-    <!--
-    <filter>
+  <!-- shiro 安全过滤器 -->
+    <!-- <filter>
         <filter-name>shiroFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <async-supported>true</async-supported>
@@ -54,8 +53,8 @@
         <filter-name>shiroFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
--->
+    </filter-mapping> -->
+ -->
     <!-- spring mvc Servlet -->
     <servlet>
         <servlet-name>springServlet</servlet-name>
