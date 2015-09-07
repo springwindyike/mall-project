@@ -9,8 +9,9 @@ public interface APPURIConstant {
     interface Member {
         String REQUEST_MAPPING   = "/member";
         String REQUEST_MAPPING_LOGIN    =  "/login";
-        String REQUEST_MAPPING_FIND_BY_ROL_ID = "/findMemberByRolId";
-        String REQUEST_MAPPING_FIND_BY_channel_ID = "/findByChannelId";
+        String REQUEST_MAPPING_FIND_BY_ROL_ID = "/findMemberByRoleId";
+        String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        String REQUEST_MAPPING_FIND_BY_ACCOUNT = "/findByAccount";
     }
 
     //权限
