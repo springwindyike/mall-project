@@ -22,8 +22,6 @@ public class MemberDTO extends GenericDTO {
 
     private String password;
 
-    private String verifycode;
-
     private Page<MemberDetailDTO> page;
 
     private PageRequest pageRequest;
@@ -53,14 +51,6 @@ public class MemberDTO extends GenericDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
-	public String getVerifycode() {
-		return verifycode;
-	}
-
-	public void setVerifycode(String verifycode) {
-		this.verifycode = verifycode;
-	}
 
     public Page<MemberDetailDTO> getPage() {
         return page;
@@ -99,7 +89,6 @@ public class MemberDTO extends GenericDTO {
     }
 
     public void setMemberDetailDTO(MemberDetailDTO memberDetailDTO) {
-
         this.memberDetailDTO = memberDetailDTO;
     }
 }

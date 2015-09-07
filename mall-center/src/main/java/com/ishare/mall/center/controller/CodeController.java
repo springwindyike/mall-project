@@ -1,8 +1,9 @@
 package com.ishare.mall.center.controller;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
@@ -38,15 +39,15 @@ public class CodeController extends BaseController {
 			'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
 	@RequestMapping(value = CenterURIConstant.VERIFYCODE)
-	public void getCode(HttpServletRequest req, HttpServletResponse resp)
+	public void getCode(HttpServletRequest req, HttpServletResponse resp)	
 			throws IOException {
 
 		// 定义图像buffer
 		BufferedImage buffImg = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
-		// Graphics2D gd = buffImg.createGraphics();
-		// Graphics2D gd = (Graphics2D) buffImg.getGraphics();
-		Graphics gd = buffImg.getGraphics();
+		 Graphics2D gd = buffImg.createGraphics();
+		 gd = (Graphics2D) buffImg.getGraphics();
+//		Graphics gd = buffImg.getGraphics();
 		// 创建一个随机数生成器类
 		Random random = new Random();
 		// 将图像填充为白色
@@ -63,12 +64,14 @@ public class CodeController extends BaseController {
 		gd.drawRect(0, 0, width - 1, height - 1);
 
 		// 随机产生40条干扰线，使图象中的认证码不易被其它程序探测到。
-		gd.setColor(Color.BLACK);
+//		gd.setColor(Color.BLACK);
+		float lineWidth = 3.0f;
 		for (int i = 0; i < 40; i++) {
 			int x = random.nextInt(width);
 			int y = random.nextInt(height);
 			int xl = random.nextInt(12);
 			int yl = random.nextInt(12);
+			gd.setStroke(new BasicStroke(lineWidth));
 			gd.drawLine(x, y, x + xl, y + yl);
 		}
 

@@ -1,6 +1,7 @@
 package com.ishare.mall.center.controller;
 
 import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.center.form.login.LoginForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
@@ -52,21 +53,24 @@ public class IndexController extends BaseController {
     }
     
     @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.POST)
-    public String login(HttpSession session, @ModelAttribute("memberAttribute") MemberDTO memberDTO) {
-    	System.out.println(memberDTO.getVerifycode());
-	    	 if (!(memberDTO.getVerifycode().equalsIgnoreCase(session.getAttribute("code").toString()))) {  //忽略验证码大小写
+    public String login(HttpSession session, @ModelAttribute("loginAttribute") LoginForm loginForm) {
+    	System.out.println(loginForm.getVerifyCode());
+	    	 if (!(loginForm.getVerifyCode().equalsIgnoreCase(session.getAttribute("code").toString()))) {  //忽略验证码大小写
 	    		 	System.out.println("验证码不正确");
+	    		 	return CenterViewConstant.Index.LOGIN;
 	    	}else {
 	    		System.out.println("验证码正确");
+	    		MemberDTO memberDTO = new MemberDTO();
+	    		memberDTO.setAccount(loginForm.getAccount());
+	    		memberDTO.setPassword(loginForm.getPassword());
+	    		log.debug(memberDTO.toString());
+	    		ResponseEntity<MemberLoginResultDTO> resultDTO = null;
+	    		RestTemplate restTemplate = new RestTemplate();
+	    		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_LOGIN), memberDTO, MemberLoginResultDTO.class);
+	    		MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
+	    		log.debug(memberLoginResultDTO.toString());
+	    		return CenterViewConstant.Index.INDEX;
 				}
-        
-        log.debug(memberDTO.toString());
-        ResponseEntity<MemberLoginResultDTO> resultDTO = null;
-        RestTemplate restTemplate = new RestTemplate();
-        resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_LOGIN), memberDTO, MemberLoginResultDTO.class);
-        MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
-        log.debug(memberLoginResultDTO.toString());
-        return CenterViewConstant.Index.LOGIN;
     }
     @RequestMapping(value ="test")
     public String test() {
