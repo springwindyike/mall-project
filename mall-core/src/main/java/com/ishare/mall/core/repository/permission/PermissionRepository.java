@@ -9,10 +9,10 @@ import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/7.
- * Description :
+ * Description : 权限表DAO
  * Version 1.0
  */
 public interface PermissionRepository extends JpaRepository<Permission, Integer>, JpaSpecificationExecutor {
-    @Query("SELECT p FROM Permission p, RolePermission rp, MemberRole mr WHERE mr.member.id=?1 AND p.id = rp.permission.id AND rp.role.id = mr.role.id")
+    @Query("SELECT p FROM Permission p, RolePermission rp, MemberRole mr WHERE mr.member.id=?1 AND rp.role.id = mr.role.id AND p.id = rp.permission.id")
     List<Permission> queryByMemberId(Integer memberId);
 }
