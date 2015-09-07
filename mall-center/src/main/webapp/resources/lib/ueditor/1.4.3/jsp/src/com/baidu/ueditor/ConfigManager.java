@@ -171,7 +171,9 @@ public final class ConfigManager {
 	}
 	
 	private String getConfigPath () {
-		return this.parentPath + File.separator + ConfigManager.configFileName;
+	/*	return this.parentPath + File.separator + ConfigManager.configFileName;*/
+		   //I modify this, because it is not suit for our porject.
+        return this.rootPath +  File.separator + "resources" + File.separator + "upload"+ConfigManager.configFileName;
 	}
 
 	private String[] getArray ( String key ) {

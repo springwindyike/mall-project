@@ -126,7 +126,7 @@ $(function(){
 		swf: 'lib/webuploader/0.1.5/Uploader.swf',
 	
 		// 文件接收服务端。
-		server: 'http://lib.h-ui.net/webuploader/0.1.5/server/fileupload.php',
+		server: 'http://localhost:8100/center/ueditor/dispatch.dhtml',
 	
 		// 选择文件的按钮。可选。
 		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -370,7 +370,7 @@ $(function(){
             swf: 'lib/webuploader/0.1.5/Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
-            server: 'http://lib.h-ui.net/webuploader/0.1.5/server/fileupload.php',
+            server: 'http://localhost:8100/center/ueditor/dispatch.dhtml',
             // runtimeOrder: 'flash',
 
             // accept: {
@@ -480,7 +480,7 @@ $(function(){
                         img = $('<img src="'+src+'">');
                         $wrap.empty().append( img );
                     } else {
-                        $.ajax('lib/webuploader/0.1.5/server/preview.php', {
+                        $.ajax('http://localhost:8100/center/ueditor/dispatch.dhtml', {
                             method: 'POST',
                             data: src,
                             dataType:'json'
