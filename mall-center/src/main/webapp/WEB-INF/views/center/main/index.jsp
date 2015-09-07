@@ -13,7 +13,8 @@
 <link href="resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
-<link href="resources/skin/default/skin.css" rel="stylesheet" type="text/css" id="skin" />
+<link href="resources/skin/default/skin.css" rel="stylesheet" type="text/css"/>
+
 <!-- <LINK rel="Bookmark" href="/favicon.ico" >
 <LINK rel="Shortcut Icon" href="/favicon.ico" /> -->
 

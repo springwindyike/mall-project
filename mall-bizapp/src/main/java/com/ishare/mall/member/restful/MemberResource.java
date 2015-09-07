@@ -3,6 +3,7 @@ package com.ishare.mall.member.restful;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
+import com.ishare.mall.common.base.dto.member.MemberLoginDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.service.member.MemberService;
@@ -42,29 +43,29 @@ public class MemberResource {
                     method = RequestMethod.POST, headers = "Accept=application/xml, application/json",
                     produces = {"application/json", "application/xml"},
                     consumes = {"application/json", "application/xml"})
-    public MemberLoginResultDTO login(@RequestBody MemberDTO memberDTO) {
-    	
-    			Member member = memberService.findByAccount(memberDTO.getAccount());
+    public MemberLoginResultDTO login(@RequestBody MemberLoginDTO memberLoginDTO) {
+    				log.debug(memberLoginDTO.toString());
+    			Member member = memberService.findByAccount(memberLoginDTO.getAccount());
     			MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
     			if(null != member){
-    					if(memberDTO.getPassword().equals(member.getPassword())){
+    					if(memberLoginDTO.getPassword().equals(member.getPassword())){
     						MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
 			        memberLoginResultDTO.setCode(200);
 			        memberLoginResultDTO.setSuccess(true);
-			        memberLoginResultDTO.setMemberDTO(memberDTO);
+			        memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
     					}else {
     						MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
 			        memberLoginResultDTO.setCode(200);
 			        memberLoginResultDTO.setSuccess(false);
 			        memberLoginResultDTO.setMessage("密码错误。");
-			        memberLoginResultDTO.setMemberDTO(memberDTO);
+			        memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
 						}
     			}else {
 					MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
         memberLoginResultDTO.setCode(200);
         memberLoginResultDTO.setSuccess(false);
         memberLoginResultDTO.setMessage("账号不存在。");
-        memberLoginResultDTO.setMemberDTO(memberDTO);
+        memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
     					
 					}
     	

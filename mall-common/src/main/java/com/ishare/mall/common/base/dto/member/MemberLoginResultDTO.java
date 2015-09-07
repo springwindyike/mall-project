@@ -22,7 +22,7 @@ public class MemberLoginResultDTO extends GenericDTO {
 
     private String message;
 
-    private MemberDTO memberDTO;
+    private MemberLoginDTO memberLoginDTO;
 
     public boolean isSuccess() {
         return success;
@@ -48,11 +48,12 @@ public class MemberLoginResultDTO extends GenericDTO {
         this.message = message;
     }
 
-    public MemberDTO getMemberDTO() {
-        return memberDTO;
-    }
+	public MemberLoginDTO getMemberLoginDTO() {
+		return memberLoginDTO;
+	}
 
-    public void setMemberDTO(MemberDTO memberDTO) {
-        this.memberDTO = memberDTO;
-    }
+	public void setMemberLoginDTO(MemberLoginDTO memberLoginDTO) {
+		this.memberLoginDTO = memberLoginDTO;
+	}
+
 }
