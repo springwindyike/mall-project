@@ -11,16 +11,16 @@ import java.util.List;
  * Version 1.0
  */
 public class MemberPermissionDTO extends GenericDTO {
-    private Integer id;
-    private String account;
-    private String name;
-    List<PermissionDTO> permissionDTOs;
+	List<PermissionDTO> permissionDTOs;
+	private Integer id;
+	private String account;
+	private String name;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 }

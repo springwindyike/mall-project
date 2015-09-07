@@ -12,10 +12,10 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpecificationExecutor {
 	List<Member> findByAccount(String account);
 
-	@Query("SELECT  t FROM t_member t WHERE t.channel.id = ?0")
+	@Query("SELECT  m FROM Member m WHERE m.channel.id = ?1")
 	Page<Member> findByChannelId(Integer channelId, Pageable pageable);
 
-//	@Query("SELECT t FROM t_member t LEFT JOIN t_member_role m ON t.id = m.member.id WHERE m.role.id = ?0 ")
-//	Page<Member> findByRolId(Integer rolId, Pageable pageable);
+	@Query("SELECT m FROM Member m, MemberRole mr WHERE mr.role.id=?1 AND m.id = mr.member.id")
+	Page<Member> findByRoleId(Integer roleId, Pageable pageable);
 }
 

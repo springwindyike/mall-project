@@ -16,5 +16,6 @@ import java.util.List;
  */
 public interface MemberRoleRepository extends JpaRepository<MemberRole, Integer>, JpaSpecificationExecutor {
     Page<MemberRole> findByRoleId(Integer roleId, Pageable pageable);
+
     List<MemberRole> findByMember(Member member);
 }

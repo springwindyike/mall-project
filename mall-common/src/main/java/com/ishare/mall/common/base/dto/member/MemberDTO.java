@@ -34,6 +34,10 @@ public class MemberDTO extends GenericDTO {
 
     private MemberDetailDTO memberDetailDTO;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     public String getAccount() {
         return account;
     }
@@ -96,9 +100,5 @@ public class MemberDTO extends GenericDTO {
 
     public void setMemberDetailDTO(MemberDetailDTO memberDetailDTO) {
         this.memberDetailDTO = memberDetailDTO;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 }

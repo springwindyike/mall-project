@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(APPURIConstant.Permission.REQUEST_MAPPING)
 public class PermissionResource {
 
-    @RequestMapping(value = "/permissions/{account}", method = RequestMethod.GET,
-            headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
-    public MemberPermissionDTO getMemberAllPermissions(@NotEmpty @PathVariable("account") String account) {
-        return null;
-    }
+	@RequestMapping(value = "/permissions/{account}", method = RequestMethod.GET,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json", "application/xml"},
+			consumes = {"application/json", "application/xml"})
+	public MemberPermissionDTO getMemberAllPermissions(@NotEmpty @PathVariable("account") String account) {
+		return null;
+	}
 }

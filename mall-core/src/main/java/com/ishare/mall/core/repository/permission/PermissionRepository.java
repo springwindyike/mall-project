@@ -13,6 +13,6 @@ import java.util.List;
  * Version 1.0
  */
 public interface PermissionRepository extends JpaRepository<Permission, Integer>, JpaSpecificationExecutor {
-    @Query("SELECT p FROM Permission p, RolePermission rp, MemberRole mr WHERE mr.member.id=?1 AND rp.role.id = mr.role.id AND p.id = rp.permission.id")
-    List<Permission> queryByMemberId(Integer memberId);
+	@Query("SELECT p FROM Permission p, RolePermission rp, MemberRole mr WHERE mr.member.id=?1 AND rp.role.id = mr.role.id AND p.id = rp.permission.id")
+	List<Permission> queryByMemberId(Integer memberId);
 }

@@ -52,8 +52,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
-	public List findByRolId(Integer rolId, PageRequest pageRequest) {
-		//Page<Member> page = memberRepository.findByRolId(rolId, pageRequest);
-		return null;
+	public Page<Member> findByRoleId(Integer rolId, PageRequest pageRequest) {
+		Page<Member> page = memberRepository.findByRoleId(rolId, pageRequest);
+		return page;
 	}
 }

@@ -4,8 +4,6 @@ import com.ishare.mall.core.model.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
-
 /**
  * Created by YinLin on 2015/8/12.
  * Description :
@@ -55,6 +53,6 @@ public interface MemberService {
 	 * @param rolId
 	 * @return
 	 */
-	List findByRolId(Integer rolId, PageRequest pageRequest);
+	Page<Member> findByRoleId(Integer rolId, PageRequest pageRequest);
 
 }
