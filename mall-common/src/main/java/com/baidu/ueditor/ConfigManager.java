@@ -59,6 +59,7 @@ public final class ConfigManager {
 		try {
 			return new ConfigManager(rootPath, contextPath, uri);
 		} catch ( Exception e ) {
+			e.printStackTrace();
 			return null;
 		}
 		
@@ -165,7 +166,8 @@ public final class ConfigManager {
 	}
 	
 	private String getConfigPath () {
-		return this.parentPath + File.separator + ConfigManager.configFileName;
+		System.out.println(this.parentPath + File.separator +"webapp" + File.separator + "resources" + File.separator + ConfigManager.configFileName);
+		return "E:\\workspace\\ishare\\mall-center\\src\\main\\webapp" + File.separator + "resources" + File.separator +"lib" + File.separator + "ueditor" + File.separator + ConfigManager.configFileName;
 	}
 
 	private String[] getArray ( String key ) {
