@@ -12,4 +12,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_ROL_ID = "/findMemberByRolId";
         String REQUEST_MAPPING_FIND_BY_channel_ID = "/findByChannelId";
     }
+    //权限
+    interface Permission {
+        String REQUEST_MAPPING      = "/permission";
+    }
 }

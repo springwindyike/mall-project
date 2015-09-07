@@ -97,4 +97,8 @@ public class MemberDTO extends GenericDTO {
     public void setMemberDetailDTO(MemberDetailDTO memberDetailDTO) {
         this.memberDetailDTO = memberDetailDTO;
     }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 }
