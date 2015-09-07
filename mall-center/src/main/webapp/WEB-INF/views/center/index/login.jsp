@@ -46,7 +46,7 @@
       </div>
       <div class="row cl">
         <div class="formControls col-8 col-offset-3">
-          <input class="input-text size-L" type="text" placeholder="验证码" name="verifycode" style="width:150px;">
+          <input class="input-text size-L" type="text" placeholder="验证码" name="verifyCode" style="width:150px;">
            <img id="imgObj" alt="验证码" src="verifycode.dhtml" /><a href="#" onclick="changeImg()">看不清，换一张</a> </div>
       </div>
       <div class="row">

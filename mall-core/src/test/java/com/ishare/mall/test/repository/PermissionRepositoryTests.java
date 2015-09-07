@@ -14,38 +14,39 @@ import java.util.List;
  * Version 1.0
  */
 public class PermissionRepositoryTests extends RepositoryTestTemplate {
-    @Autowired
-    private PermissionRepository permissionRepository;
-    @Override
-    public void setUp() {
+	@Autowired
+	private PermissionRepository permissionRepository;
 
-    }
+	@Override
+	public void setUp() {
 
-    @Override
-    public void tearDown() {
+	}
 
-    }
+	@Override
+	public void tearDown() {
 
-    @Override
-    public void testCreate() {
+	}
 
-    }
+	@Override
+	public void testCreate() {
 
-    @Override
-    public void testRetrieve() {
-        List<Permission> permissions = permissionRepository.queryByMemberId(1);
-        Permission permission = permissions.get(0);
-        log.debug(permission.getName());
-        Assert.assertTrue(permissions.size() == 1);
-    }
+	}
 
-    @Override
-    public void testUpdate() {
+	@Override
+	public void testRetrieve() {
+		List<Permission> permissions = permissionRepository.queryByMemberId(1);
+		Permission permission = permissions.get(0);
+		log.debug(permission.getName());
+		Assert.assertTrue(permissions.size() == 1);
+	}
 
-    }
+	@Override
+	public void testUpdate() {
 
-    @Override
-    public void testDelete() {
+	}
 
-    }
+	@Override
+	public void testDelete() {
+
+	}
 }

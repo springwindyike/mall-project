@@ -13,5 +13,5 @@ import java.util.Set;
  * Version 1.0
  */
 public interface RolePermissionRepository extends JpaRepository<RolePermission, Integer>, JpaSpecificationExecutor {
-    Set<RolePermission> findByRole(Role role);
+	Set<RolePermission> findByRole(Role role);
 }

@@ -15,7 +15,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description:成员
  * Version 1.0
  */
-@Entity(name = TABLE_MEMBER_NAME)
+@Entity
+@Table(name = TABLE_MEMBER_NAME)
 public class Member extends BaseEntity {
 
     @Id

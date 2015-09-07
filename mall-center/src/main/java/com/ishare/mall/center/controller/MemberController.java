@@ -43,9 +43,38 @@ public class MemberController extends BaseController {
 		memberDTO.setPageRequest(pageRequest);
 		ResponseEntity<MemberDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
+		//log.debug(MemberDetailDTO.toString());
+		return memberDTOResult.getPage();
+	}
+
+	@RequestMapping(value = "/offset/{offset}/limit/{limit}/roleId/{roleId}", method = RequestMethod.GET)
+	public Page<MemberDetailDTO> findByRoleId(@NotEmpty @PathVariable(OFFSET) Integer offset, @NotEmpty @PathVariable(LIMIT) Integer limit, @NotEmpty @PathVariable("roleId") Integer roleId) {
+		MemberDTO memberDTO = new MemberDTO();
+		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+		memberDTO.setRoleId(roleId);
+		memberDTO.setPageRequest(pageRequest);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ROL_ID), memberDTO, MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
 		//log.debug(MemberDetailDTO.toString());
 		return memberDTOResult.getPage();
+	}
+
+	/**
+	 * @param account
+	 * @return
+	 */
+	@RequestMapping(value = "findByAccount/{account}")
+	public MemberDetailDTO findByAccount(@NotEmpty @PathVariable("account") String account) {
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setAccount(account);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
+		return memberDTOResult.getMemberDetailDTO();
 	}
 }

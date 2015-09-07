@@ -38,8 +38,7 @@ public class PermissionServiceImpl implements PermissionService {
     public List<Permission> findByAccount(String account) {
         Member member = memberService.findByAccount(account);
         if (member == null) return null;
-        List<Permission> permissions = permissionRepository.queryByMemberId(member.getId());
-        return permissions;
+        return permissionRepository.queryByMemberId(member.getId());
     }
 
     public static Logger getLog() {

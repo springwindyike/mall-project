@@ -9,15 +9,15 @@ import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(APPURIConstant.Member.REQUEST_MAPPING)
 public class MemberResource {
+	
     private static final Logger log = LoggerFactory.getLogger(MemberResource.class);
     @Autowired
     private MemberService memberService;
@@ -42,11 +43,36 @@ public class MemberResource {
                     produces = {"application/json", "application/xml"},
                     consumes = {"application/json", "application/xml"})
     public MemberLoginResultDTO login(@RequestBody MemberDTO memberDTO) {
-        log.debug(memberDTO.toString());
-        MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
+    	
+    			Member member = memberService.findByAccount(memberDTO.getAccount());
+    			MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
+    			if(null != member){
+    					if(memberDTO.getPassword().equals(member.getPassword())){
+    						MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+			        memberLoginResultDTO.setCode(200);
+			        memberLoginResultDTO.setSuccess(true);
+			        memberLoginResultDTO.setMemberDTO(memberDTO);
+    					}else {
+    						MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+			        memberLoginResultDTO.setCode(200);
+			        memberLoginResultDTO.setSuccess(false);
+			        memberLoginResultDTO.setMessage("密码错误。");
+			        memberLoginResultDTO.setMemberDTO(memberDTO);
+						}
+    			}else {
+					MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
         memberLoginResultDTO.setCode(200);
-        memberLoginResultDTO.setSuccess(true);
+        memberLoginResultDTO.setSuccess(false);
+        memberLoginResultDTO.setMessage("账号不存在。");
         memberLoginResultDTO.setMemberDTO(memberDTO);
+    					
+					}
+    	
+//        log.debug(memberDTO.toString());
+//        MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
+//        memberLoginResultDTO.setCode(200);
+//        memberLoginResultDTO.setSuccess(true);
+//        memberLoginResultDTO.setMemberDTO(memberDTO);
         return memberLoginResultDTO;
     }
 
@@ -55,14 +81,18 @@ public class MemberResource {
      *
      * @return Page<MemberDetailDTO>
      */
-    @RequestMapping(value = "findMemberByRolId", method = RequestMethod.GET,
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ROL_ID,
+            method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public MemberDTO findMemberByRolId(@RequestBody MemberDTO memberDTO) {
-        //PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
-        // List accountList =
-        return null;
+
+        PageRequest pageRequest = memberDTO.getPageRequest();
+        Integer rolId = memberDTO.getRoleId();
+        Page<Member> result = memberService.findByRoleId(rolId, pageRequest);
+        memberDTO.setPage(PageUtils.mapper(result, pageRequest, MemberDetailDTO.class));
+        return memberDTO;
     }
 
     /**
@@ -70,7 +100,10 @@ public class MemberResource {
      *
      * @return Page<MemberDetailDTO>
      */
-    @RequestMapping(value = "findByChannelId", method = RequestMethod.GET)
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
     public MemberDTO findByChannelId(@RequestBody MemberDTO memberDTO) {
         PageRequest pageRequest = memberDTO.getPageRequest();
         Integer channelId = memberDTO.getChannelId();
@@ -80,17 +113,19 @@ public class MemberResource {
     }
 
     /**
-     * 通过accessToken获取到ID查询出memeber信息
+     * 通过account查询出memeber信息
      *
-     * @param account
+     * @param memberDTO
      * @return Member 返回的数据对象
      */
-    @RequestMapping(value = "/{account}", method = RequestMethod.GET,
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public Object detail(@NotEmpty @PathVariable("account") String account) throws OAuthSystemException {
-        Member member = memberService.findByAccount(account);
-        return MapperUtils.map(member, MemberDetailDTO.class);
+    public MemberDTO findByAccount(@RequestBody MemberDTO memberDTO) {
+        Member member = memberService.findByAccount(memberDTO.getAccount());
+        MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+        memberDTO.setMemberDetailDTO(memberDetailDTO);
+        return memberDTO;
     }
 }
