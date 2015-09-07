@@ -1,7 +1,12 @@
 package com.ishare.mall.center.controller;
 
-import javax.servlet.http.HttpSession;
-
+import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
+import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.ishare.mall.center.controller.base.BaseController;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
-import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by YinLin on 2015/8/13.
@@ -66,6 +66,17 @@ public class IndexController extends BaseController {
         resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_LOGIN), memberDTO, MemberLoginResultDTO.class);
         MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
         log.debug(memberLoginResultDTO.toString());
+        return CenterViewConstant.Index.LOGIN;
+    }
+    @RequestMapping(value ="test")
+    public String test() {
+        log.debug("here");
+        ResponseEntity<MemberPermissionDTO> resultDTO = null;
+        RestTemplate restTemplate = new RestTemplate();
+        log.debug(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940");
+        resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940", MemberPermissionDTO.class);
+        MemberPermissionDTO memberPermissionDTO = resultDTO.getBody();
+        log.debug(memberPermissionDTO.toString());
         return CenterViewConstant.Index.LOGIN;
     }
 }
