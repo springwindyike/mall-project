@@ -2,17 +2,36 @@ package com.ishare.mall.crawler.jd;
 
 import com.google.common.collect.Sets;
 
+import javax.persistence.*;
 import java.util.Set;
 
 /**
  * Created by dongqi on 15/9/7.
  */
+@Entity
+@Table(name = "spider_jd_category")
 public class JDCategory {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
     private String link;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private JDCategory parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<JDCategory> children = Sets.newHashSet();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -30,6 +49,14 @@ public class JDCategory {
         this.link = link;
     }
 
+    public JDCategory getParent() {
+        return parent;
+    }
+
+    public void setParent(JDCategory parent) {
+        this.parent = parent;
+    }
+
     public Set<JDCategory> getChildren() {
         return children;
     }
@@ -39,29 +66,9 @@ public class JDCategory {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        JDCategory that = (JDCategory) o;
-
-        if (!name.equals(that.name)) return false;
-        return !(link != null ? !link.equals(that.link) : that.link != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + (link != null ? link.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "JDCategory{" +
                 "name='" + name + '\'' +
-                ", link='" + link + '\'' +
                 ", children=" + children +
                 '}';
     }
