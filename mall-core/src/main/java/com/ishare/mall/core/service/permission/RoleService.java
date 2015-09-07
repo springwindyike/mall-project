@@ -1,6 +1,6 @@
 package com.ishare.mall.core.service.permission;
 
-import com.ishare.mall.core.model.permission.Permission;
+import com.ishare.mall.core.model.permission.Role;
 
 import java.util.List;
 
@@ -9,12 +9,11 @@ import java.util.List;
  * Description :
  * Version 1.0
  */
-public interface PermissionService {
+public interface RoleService {
     /**
-     * 通过用户账户获取用户所有的权限
+     * 通过用户账户得到用户所有的角色
      * @param account
      * @return
      */
-    List<Permission> findByAccount(String account);
-
+    List<Role> findByAccount(String account);
 }

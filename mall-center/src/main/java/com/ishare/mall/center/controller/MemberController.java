@@ -43,7 +43,7 @@ public class MemberController extends BaseController {
 		memberDTO.setPageRequest(pageRequest);
 		ResponseEntity<MemberDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ROL_ID), memberDTO, MemberDTO.class);
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
 		//log.debug(MemberDetailDTO.toString());
 		return memberDTOResult.getPage();
@@ -68,13 +68,13 @@ public class MemberController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "findByAccount/{account}")
-	public String findByAccount(@NotEmpty @PathVariable("account") String account) {
+	public MemberDetailDTO findByAccount(@NotEmpty @PathVariable("account") String account) {
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
 		ResponseEntity<MemberDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ROL_ID), memberDTO, MemberDTO.class);
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
-		return null;
+		return memberDTOResult.getMemberDetailDTO();
 	}
 }

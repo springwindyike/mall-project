@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+    String context = request.getContextPath();
+    pageContext.setAttribute("context_", context);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -17,6 +21,10 @@
 <link href="${pageContext.request.contextPath}/resources/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
 <link href='${pageContext.request.contextPath}/resources/css/style.css' rel='stylesheet' type='text/css' />
 <title>新增图片</title>
+    <script type="text/javascript">
+        var context_ = '${context_}/';
+        alert(context_);
+    </script>
 </head>
 <body>
 <div class="pd-20">
@@ -102,7 +110,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/icheck/jquery.icheck.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/Validform/5.3.2/Validform.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/webuploader/0.1.5/webuploader.min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/ueditor.config.js?1"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/zh-cn.js"></script>
@@ -126,7 +134,7 @@ $(function(){
 		swf: 'lib/webuploader/0.1.5/Uploader.swf',
 	
 		// 文件接收服务端。
-		server: 'http://lib.h-ui.net/webuploader/0.1.5/server/fileupload.php',
+		server: 'http://localhost:8100/center/ueditor/dispatch.dhtml',
 	
 		// 选择文件的按钮。可选。
 		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -370,7 +378,7 @@ $(function(){
             swf: 'lib/webuploader/0.1.5/Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
-            server: 'http://lib.h-ui.net/webuploader/0.1.5/server/fileupload.php',
+            server: 'http://localhost:8100/center/ueditor/dispatch.dhtml',
             // runtimeOrder: 'flash',
 
             // accept: {
@@ -480,7 +488,7 @@ $(function(){
                         img = $('<img src="'+src+'">');
                         $wrap.empty().append( img );
                     } else {
-                        $.ajax('lib/webuploader/0.1.5/server/preview.php', {
+                        $.ajax('http://localhost:8100/center/ueditor/dispatch.dhtml', {
                             method: 'POST',
                             data: src,
                             dataType:'json'
@@ -776,6 +784,7 @@ $(function(){
 })( jQuery );
 
 $(function(){
+
 	var ue = UE.getEditor('editor');
 });
 </script>

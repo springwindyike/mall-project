@@ -1,15 +1,5 @@
 package com.ishare.mall.member.restful;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
@@ -20,6 +10,15 @@ import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -83,7 +82,11 @@ public class MemberResource {
      *
      * @return Page<MemberDetailDTO>
      */
-    @RequestMapping(value = "findMemberByRolId", method = RequestMethod.GET)
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ROL_ID,
+            method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
     public MemberDTO findMemberByRolId(@RequestBody MemberDTO memberDTO) {
 
         PageRequest pageRequest = memberDTO.getPageRequest();
@@ -98,7 +101,10 @@ public class MemberResource {
      *
      * @return Page<MemberDetailDTO>
      */
-    @RequestMapping(value = "findByChannelId", method = RequestMethod.GET)
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
     public MemberDTO findByChannelId(@RequestBody MemberDTO memberDTO) {
         PageRequest pageRequest = memberDTO.getPageRequest();
         Integer channelId = memberDTO.getChannelId();
@@ -113,7 +119,10 @@ public class MemberResource {
      * @param memberDTO
      * @return Member 返回的数据对象
      */
-    @RequestMapping(value = "findByAccount", method = RequestMethod.GET)
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
     public MemberDTO findByAccount(@RequestBody MemberDTO memberDTO) {
         Member member = memberService.findByAccount(memberDTO.getAccount());
         MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
