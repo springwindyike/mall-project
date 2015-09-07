@@ -17,4 +17,8 @@ public interface APPURIConstant {
     interface Permission {
         String REQUEST_MAPPING = "/permission";
     }
+    //角色
+    interface Role {
+        String REQUEST_MAPPING = "/role";
+    }
 }

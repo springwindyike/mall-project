@@ -1,6 +1,5 @@
 package com.ishare.mall.member.restful;
 
-import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.permission.PermissionDTO;
@@ -26,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping(APPURIConstant.Permission.REQUEST_MAPPING)
 public class PermissionResource {
+
     private static final Logger log = LoggerFactory.getLogger(PermissionResource.class);
 
     @Autowired
@@ -33,8 +33,8 @@ public class PermissionResource {
 
     /**
      * 通过用户账号获取所有的用户权限
-     * @param account
-     * @return
+     * @param account 用户账户
+     * @return 返回 MemberPermissionDTO JSON
      */
     @RequestMapping(value       = "/{account}",
                     method      = RequestMethod.GET,
@@ -47,10 +47,8 @@ public class PermissionResource {
         MemberPermissionDTO memberPermissionDTO = new MemberPermissionDTO();
         memberPermissionDTO.setAccount(account);
         if (permissions != null && permissions.size() > 0) {
-            List<PermissionDTO> permissionDTOs = Lists.newArrayList();
             //强制转换DTO
-            permissionDTOs = (List<PermissionDTO>) MapperUtils.mapAsList(permissions, PermissionDTO.class);
-            memberPermissionDTO.setPermissionDTOs(permissionDTOs);
+            memberPermissionDTO.setPermissionDTOs((List<PermissionDTO>) MapperUtils.mapAsList(permissions, PermissionDTO.class));
         }
         log.debug(memberPermissionDTO.toString());
         return memberPermissionDTO;
