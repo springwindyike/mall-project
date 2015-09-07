@@ -4,7 +4,7 @@ import com.ishare.mall.common.base.object.BaseObject;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
+import javax.persistence.MappedSuperclass;
 
 /**
  * Created by YinLin on 2015/7/31.

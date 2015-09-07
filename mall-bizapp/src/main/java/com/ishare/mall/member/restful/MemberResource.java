@@ -9,14 +9,15 @@ import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -55,14 +56,14 @@ public class MemberResource {
      *
      * @return Page<MemberDetailDTO>
      */
-    @RequestMapping(value = "findMemberByRolId", method = RequestMethod.GET,
-            headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
+    @RequestMapping(value = "findMemberByRolId", method = RequestMethod.GET)
     public MemberDTO findMemberByRolId(@RequestBody MemberDTO memberDTO) {
-        //PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
-        // List accountList =
-        return null;
+
+        PageRequest pageRequest = memberDTO.getPageRequest();
+        Integer rolId = memberDTO.getRoleId();
+        Page<Member> result = memberService.findByRoleId(rolId, pageRequest);
+        memberDTO.setPage(PageUtils.mapper(result, pageRequest, MemberDetailDTO.class));
+        return memberDTO;
     }
 
     /**
@@ -80,17 +81,16 @@ public class MemberResource {
     }
 
     /**
-     * 通过accessToken获取到ID查询出memeber信息
+     * 通过account查询出memeber信息
      *
-     * @param account
+     * @param memberDTO
      * @return Member 返回的数据对象
      */
-    @RequestMapping(value = "/{account}", method = RequestMethod.GET,
-            headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
-    public Object detail(@NotEmpty @PathVariable("account") String account) throws OAuthSystemException {
-        Member member = memberService.findByAccount(account);
-        return MapperUtils.map(member, MemberDetailDTO.class);
+    @RequestMapping(value = "findByAccount", method = RequestMethod.GET)
+    public MemberDTO findByAccount(@RequestBody MemberDTO memberDTO) {
+        Member member = memberService.findByAccount(memberDTO.getAccount());
+        MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+        memberDTO.setMemberDetailDTO(memberDetailDTO);
+        return memberDTO;
     }
 }

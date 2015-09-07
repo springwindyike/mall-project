@@ -21,7 +21,7 @@ public class MemberDTO extends GenericDTO {
     private String account;
 
     private String password;
-    
+
     private String verifycode;
 
     private Page<MemberDetailDTO> page;
@@ -29,6 +29,14 @@ public class MemberDTO extends GenericDTO {
     private PageRequest pageRequest;
 
     private Integer channelId;
+
+    private Integer roleId;
+
+    private MemberDetailDTO memberDetailDTO;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public String getAccount() {
         return account;
@@ -78,7 +86,20 @@ public class MemberDTO extends GenericDTO {
         this.channelId = channelId;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public MemberDetailDTO getMemberDetailDTO() {
+        return memberDetailDTO;
+    }
+
+    public void setMemberDetailDTO(MemberDetailDTO memberDetailDTO) {
+
+        this.memberDetailDTO = memberDetailDTO;
     }
 }
