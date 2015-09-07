@@ -15,7 +15,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpe
 	@Query("SELECT  t FROM t_member t WHERE t.channel.id = ?0")
 	Page<Member> findByChannelId(Integer channelId, Pageable pageable);
 
-	@Query("SELECT t FROM t_member t LEFT JOIN t_member_role m ON t.id = m.member.id WHERE m.role.id = ?0 ")
-	Page<Member> findByRolId(Integer rolId, Pageable pageable);
+//	@Query("SELECT t FROM t_member t LEFT JOIN t_member_role m ON t.id = m.member.id WHERE m.role.id = ?0 ")
+//	Page<Member> findByRolId(Integer rolId, Pageable pageable);
 }
 

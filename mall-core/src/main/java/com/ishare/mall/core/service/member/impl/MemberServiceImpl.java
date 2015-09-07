@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 
 
 	public List findByRolId(Integer rolId, PageRequest pageRequest) {
-		Page<Member> page = memberRepository.findByRolId(rolId, pageRequest);
+		//Page<Member> page = memberRepository.findByRolId(rolId, pageRequest);
 		return null;
 	}
 }
