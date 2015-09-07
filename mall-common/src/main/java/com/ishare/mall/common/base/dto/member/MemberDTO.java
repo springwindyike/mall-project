@@ -32,6 +32,9 @@ public class MemberDTO extends GenericDTO {
 
     private MemberDetailDTO memberDetailDTO;
 
+    private int offset;
+    private int limit;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -90,5 +93,21 @@ public class MemberDTO extends GenericDTO {
 
     public void setMemberDetailDTO(MemberDetailDTO memberDetailDTO) {
         this.memberDetailDTO = memberDetailDTO;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }

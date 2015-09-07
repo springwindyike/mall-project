@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -88,7 +89,9 @@ public class MemberResource {
             consumes = {"application/json", "application/xml"})
     public MemberDTO findMemberByRolId(@RequestBody MemberDTO memberDTO) {
 
-        PageRequest pageRequest = memberDTO.getPageRequest();
+        int offset = memberDTO.getOffset();
+        int limit = memberDTO.getLimit();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
         Integer rolId = memberDTO.getRoleId();
         Page<Member> result = memberService.findByRoleId(rolId, pageRequest);
         memberDTO.setPage(PageUtils.mapper(result, pageRequest, MemberDetailDTO.class));
@@ -105,7 +108,9 @@ public class MemberResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public MemberDTO findByChannelId(@RequestBody MemberDTO memberDTO) {
-        PageRequest pageRequest = memberDTO.getPageRequest();
+        int offset = memberDTO.getOffset();
+        int limit = memberDTO.getLimit();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
         Integer channelId = memberDTO.getChannelId();
         Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
         memberDTO.setPage(PageUtils.mapper(result, pageRequest, MemberDetailDTO.class));
