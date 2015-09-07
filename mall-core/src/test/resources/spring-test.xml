@@ -63,5 +63,5 @@
         <property name="minEvictableIdleTimeMillis" value="600000"/>
     </bean>
     <util:properties id="aliPaySettings" location="classpath:pay/pay.properties" />
-    <import resource="classpath:spring-config-cache.xml"/>
+    <import resource="classpath:spring/spring-config-cache.xml"/>
 </beans>

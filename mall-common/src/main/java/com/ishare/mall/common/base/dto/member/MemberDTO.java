@@ -77,4 +77,8 @@ public class MemberDTO extends GenericDTO {
     public void setChannelId(Integer channelId) {
         this.channelId = channelId;
     }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 }
