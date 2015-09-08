@@ -14,10 +14,10 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css"/>
     <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css"/>
-    <link href="${pageContext.request.contextPath}/resources/lib/icheck/icheck.css" rel="stylesheet" type="text/css"/>
-    <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet"
+    <link href="${pageContext.request.contextPath}/resources/css/icheck.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/resources/css/iconfont.css" rel="stylesheet"
           type="text/css"/>
-    <link href="${pageContext.request.contextPath}/resources/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet"
+    <link href="${pageContext.request.contextPath}/resources/css/webuploader.css" rel="stylesheet"
           type="text/css"/>
     <link href='${pageContext.request.contextPath}/resources/css/style.css' rel='stylesheet' type='text/css'/>
     <title>用户管理</title>
@@ -88,13 +88,14 @@
         </table>
     </div>
 </div>
-<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="lib/layer/1.9.3/layer.js"></script>
-<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
-<script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="js/H-ui.js"></script>
-<script type="text/javascript" src="js/H-ui.admin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/layer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/laypage.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/WdatePicker.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/resources/scripts/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
     $(function () {
         $('.table-sort').dataTable({
