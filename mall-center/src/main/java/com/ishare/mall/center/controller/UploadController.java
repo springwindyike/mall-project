@@ -32,8 +32,6 @@ public class UploadController extends BaseController {
     @RequestMapping("/dispatch")
     public void config(HttpServletRequest request,  HttpServletResponse response, String action) {
             String rootPath = request.getSession().getServletContext().getRealPath("/");
-        //rootPath += "resources/upload/";
-            System.out.println(rootPath);
             try {
                     String exec = new ActionEnter(request, rootPath).exec();
                     PrintWriter writer = response.getWriter();
