@@ -48,12 +48,12 @@ public class MemberLoginResultDTO extends GenericDTO {
         this.message = message;
     }
 
-	public MemberLoginDTO getMemberLoginDTO() {
-		return memberLoginDTO;
-	}
+    public MemberLoginDTO getMemberLoginDTO() {
+        return memberLoginDTO;
+    }
 
-	public void setMemberLoginDTO(MemberLoginDTO memberLoginDTO) {
-		this.memberLoginDTO = memberLoginDTO;
-	}
+    public void setMemberLoginDTO(MemberLoginDTO memberLoginDTO) {
+        this.memberLoginDTO = memberLoginDTO;
+    }
 
 }
