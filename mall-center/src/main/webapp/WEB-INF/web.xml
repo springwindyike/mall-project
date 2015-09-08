@@ -73,7 +73,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>/index.dhtml</welcome-file>
+        <welcome-file>/login.dhtml</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
