@@ -10,10 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
  * Description :
  * Version 1.0
  */
-@RestController
+@Controller
 @RequestMapping(APPURIConstant.Member.REQUEST_MAPPING)
 public class MemberController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(MemberController.class);
@@ -36,19 +36,19 @@ public class MemberController extends BaseController {
 	 *
 	 * @return Page<MemberDetailDTO>
 	 */
-	@RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.POST)
+	@RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
 	public String findByChannelId(@NotEmpty @PathVariable(OFFSET) Integer offset,
 								  @NotEmpty @PathVariable(LIMIT) Integer limit, HttpServletRequest request) {
-		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setLimit(limit);
-		memberDTO.setOffset(offset);
+//		MemberDTO memberDTO = new MemberDTO();
+//		memberDTO.setLimit(limit);
+//		memberDTO.setOffset(offset);
 		//PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
 		//memberDTO.setChannelId(channelId);
 		//memberDTO.setPageRequest(pageRequest);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
+//		ResponseEntity<MemberDTO> resultDTO = null;
+//		RestTemplate restTemplate = new RestTemplate();
+//		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
+//		MemberDTO memberDTOResult = resultDTO.getBody();
 		//log.debug(MemberDetailDTO.toString());
 		return CenterViewConstant.Member.MEMBER_LIST;
 	}

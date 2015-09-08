@@ -15,9 +15,9 @@ public interface CenterViewConstant {
     interface Product {
     	 String ADD_PRODUCT ="product/addProduct";
     }
-    
+
     interface Main {
-    	String MAIN = "main/index";
+        String MAIN = "main/index";
     }
 
     interface Member {

@@ -15,21 +15,21 @@ import java.util.Map;
  */
 public final class ConfigManager {
 
-	private final String rootPath;
-	private final String originalPath;
-	private final String contextPath;
 	private static final String configFileName = "config.json";
-	private String parentPath = null;
-	private JSONObject jsonConfig = null;
 	// 涂鸦上传filename定义
 	private final static String SCRAWL_FILE_NAME = "scrawl";
 	// 远程图片抓取filename定义
 	private final static String REMOTE_FILE_NAME = "remote";
+	private final String rootPath;
+	private final String originalPath;
+	private final String contextPath;
+	private String parentPath = null;
+	private JSONObject jsonConfig = null;
 	
 	/*
 	 * 通过一个给定的路径构建一个配置管理器， 该管理器要求地址路径所在目录下必须存在config.properties文件
 	 */
-	private ConfigManager ( String rootPath, String contextPath, String uri ) throws FileNotFoundException, IOException {
+	private ConfigManager(String rootPath, String contextPath, String uri) throws IOException {
 		
 		rootPath = rootPath.replace( "\\", "/" );
 		
@@ -143,8 +143,8 @@ public final class ConfigManager {
 		return conf;
 		
 	}
-	
-	private void initEnv () throws FileNotFoundException, IOException {
+
+	private void initEnv() throws IOException {
 		
 		File file = new File( this.originalPath );
 		
