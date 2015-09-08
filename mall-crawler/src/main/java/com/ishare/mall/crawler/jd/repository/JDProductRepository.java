@@ -1,9 +1,9 @@
-package com.ishare.mall.crawler.jd;
+package com.ishare.mall.crawler.jd.repository;
 
+import com.ishare.mall.crawler.jd.model.JDProduct;
 import org.springframework.data.repository.CrudRepository;
 
-/**
- * Created by dongqi on 15/9/7.
- */
 public interface JDProductRepository extends CrudRepository<JDProduct, Long> {
+
+    JDProduct findByCode(String code);
 }

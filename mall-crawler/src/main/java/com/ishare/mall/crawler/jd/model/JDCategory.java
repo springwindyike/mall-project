@@ -1,4 +1,4 @@
-package com.ishare.mall.crawler.jd;
+package com.ishare.mall.crawler.jd.model;
 
 import com.google.common.collect.Sets;
 

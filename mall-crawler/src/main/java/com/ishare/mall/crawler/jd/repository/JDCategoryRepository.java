@@ -1,5 +1,6 @@
-package com.ishare.mall.crawler.jd;
+package com.ishare.mall.crawler.jd.repository;
 
+import com.ishare.mall.crawler.jd.model.JDCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -3,6 +3,8 @@ package com.ishare.mall.crawler.jd;
 import com.google.common.collect.Lists;
 import com.ishare.mall.crawler.jd.processor.JDCategoryPageProcessor;
 import com.ishare.mall.crawler.jd.processor.JDListPageProcessor;
+import com.ishare.mall.crawler.jd.processor.JDPageProcessor;
+import com.ishare.mall.crawler.jd.repository.JDCategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class JDCrawler {
     @Autowired
     JDListPageProcessor jdListPageProcessor;
     @Autowired
+    JDPageProcessor jdPageProcessor;
+    @Autowired
     JDCategoryRepository jdCategoryRepository;
     @Autowired
     JDPipeline jdPipeline;
@@ -41,23 +45,36 @@ public class JDCrawler {
 
         log.info("开始");
 
-//        spider = Spider.create(jdCategoryPageProcessor);
-//        spider.addUrl("http://www.jd.com/allSort.aspx");
-//        spider.addPipeline(jdPipeline);
-//        spider.thread(5);
-//        spider.run();
-
+        /*
+        spider = Spider.create(jdCategoryPageProcessor);
+        spider.addUrl("http://www.jd.com/allSort.aspx");
+        spider.addPipeline(jdPipeline);
+        spider.thread(5);
+        spider.run();
+        */
         List<SpiderListener> listeners = Lists.newArrayList();
         listeners.add(listener);
 
-        List<JDCategory> categoryList = jdCategoryRepository.findByLinkNotNullAndParentNotNull();
-        log.debug("{}", categoryList.size());
+        //List<JDCategory> categoryList = jdCategoryRepository.findByLinkNotNullAndParentNotNull();
+        //log.debug("{}", categoryList.size());
+        /*
         spider = Spider.create(jdListPageProcessor);
         spider.addPipeline(jdPipeline);
         spider.addUrl("http://list.jd.com/670-677-683.html");
         spider.setSpiderListeners(listeners);
         spider.thread(5);
         spider.run();
+        */
+        spider = Spider.create(jdPageProcessor);
+        spider.addPipeline(jdPipeline);
+        spider.addUrl("http://item.jd.com/544027.html")
+                .addUrl("http://item.jd.com/1041474.html")
+                .addUrl("http://item.jd.com/675971.html")
+                .addUrl("http://item.jd.com/1507907129.html");
+        spider.setSpiderListeners(listeners);
+        spider.thread(5);
+        spider.run();
+
     }
 
     @PreDestroy

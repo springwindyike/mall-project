@@ -1,7 +1,8 @@
 package com.ishare.mall.crawler.jd.processor;
 
 import com.google.common.collect.Sets;
-import com.ishare.mall.crawler.jd.JDProduct;
+import com.ishare.mall.crawler.jd.model.JDProduct;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -24,23 +25,31 @@ public class JDListPageProcessor implements PageProcessor {
     public void process(Page page) {
         Set<JDProduct> products = Sets.newHashSet();
 
-        Elements elements = page.getHtml().getDocument().select("div.p-name > a");
+        Document document = page.getHtml().getDocument();
+
+        Elements elements = document.select("li.gl-item > div");
         for (Element element : elements) {
             JDProduct product = new JDProduct();
-            product.setLink(element.attr("href"));
-            if (element.hasAttr("title") && !element.attr("title").isEmpty()) {
-                product.setName(element.attr("title").trim());
+
+            Element pName = element.select("div.p-name > a").first();
+
+            product.setLink(pName.attr("href"));
+            if (pName.hasAttr("title") && !pName.attr("title").isEmpty()) {
+                product.setName(pName.attr("title").trim());
             } else {
-                product.setName(element.text().trim());
+                product.setName(pName.text().trim());
             }
 
-            //log.debug("{}", product.toString());
+            String url = product.getLink();
+            product.setCode(url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf(".html")));
+            //列表页上的京东自营不准确，产品详情页的京东自营较为准确
+
             products.add(product);
         }
 
-        boolean notNext = page.getHtml().getDocument().select("a.pn-next").isEmpty();
+        boolean notNext = document.select("a.pn-next").isEmpty();
         if (!notNext) {
-            page.addTargetRequest(page.getHtml().getDocument().select("a.pn-next").attr("href"));
+            page.addTargetRequest(document.select("a.pn-next").attr("href"));
         }
 
         page.putField("product", products);
