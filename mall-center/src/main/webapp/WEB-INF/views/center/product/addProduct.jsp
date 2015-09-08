@@ -23,7 +23,6 @@
 <title>新增图片</title>
     <script type="text/javascript">
         var context_ = '${context_}/';
-        alert(context_);
     </script>
 </head>
 <body>
