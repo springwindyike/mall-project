@@ -14,18 +14,14 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css"/>
     <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css"/>
-    <link href="${pageContext.request.contextPath}/resources/css/icheck.css" rel="stylesheet" type="text/css"/>
-    <link href="${pageContext.request.contextPath}/resources/css/iconfont.css" rel="stylesheet"
+    <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet"
           type="text/css"/>
-    <link href="${pageContext.request.contextPath}/resources/css/webuploader.css" rel="stylesheet"
-          type="text/css"/>
-    <link href='${pageContext.request.contextPath}/resources/css/style.css' rel='stylesheet' type='text/css'/>
     <title>用户管理</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span
         class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r mr-20"
-                                              style="line-height:1.6em;margin-top:3px"
+                                              style="line-height:1.6em;margin-top:3px
                                               href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
@@ -39,9 +35,10 @@
         <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
         </button>
     </div>
+    "
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
                                                                class="btn btn-danger radius"><i class="Hui-iconfont">
-        &#xe6e2;</i> 批量删除</a> <a href="javascript:" onclick="member_add('添加用户','member-add.html','','510')"
+        &#xe6e2;</i> 批量删除</a> <a href="javascript:" onclick="member_add('添加用户','findByAccount/15.dhtml','','510')"
                                  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span>
         <span class="r">共有数据：<strong>88</strong> 条</span></div>
     <div class="mt-20">
@@ -88,10 +85,12 @@
         </table>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/layer.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/laypage.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/WdatePicker.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/resources/lib/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/resources/scripts/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script>

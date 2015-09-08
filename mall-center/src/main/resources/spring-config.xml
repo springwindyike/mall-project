@@ -23,5 +23,5 @@
 	<util:properties id="settings" location="classpath:config/config.properties" />
 	<!--
 	<import resource="classpath:spring-config-cache.xml"/>
-	<import resource="classpath:shiro/spring-shiro-config.xml"/>-->
+	<import resource="classpath:shiro/spring-config-shiro.xml"/>-->
 </beans>
