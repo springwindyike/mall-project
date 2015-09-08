@@ -1,5 +1,10 @@
 package com.ishare.mall.center.shiro.realm;
 
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
+import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
+import com.ishare.mall.common.base.dto.permission.PermissionDTO;
+import com.ishare.mall.common.base.dto.permission.RoleDTO;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -7,7 +12,15 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/9/6.
@@ -15,6 +28,8 @@ import org.springframework.beans.factory.annotation.Value;
  * Version 1.0
  */
 public class MemberRealm extends AuthorizingRealm {
+
+    private static final Logger log = LoggerFactory.getLogger(MemberRealm.class);
 
     @Value("#{settings['biz.app.url']}")
     private String bizAppUrl;
@@ -24,11 +39,66 @@ public class MemberRealm extends AuthorizingRealm {
         String account = (String) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
-        return null;
+        ResponseEntity<MemberRoleDTO> roleResultDTO = null;
+
+        ResponseEntity<MemberPermissionDTO> permissionResultDTO = null;
+        RestTemplate restTemplate = new RestTemplate();
+        log.debug(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940");
+        //获取所有权限
+        permissionResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940", MemberPermissionDTO.class);
+        MemberPermissionDTO memberPermissionDTO = permissionResultDTO.getBody();
+        //获取所有角色
+        roleResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Role.REQUEST_MAPPING,"") + "/13885268940", MemberRoleDTO.class);
+        MemberRoleDTO memberRoleDTO = roleResultDTO.getBody();
+        //设置角色
+        authorizationInfo.setRoles(this.listRole2SetString(memberRoleDTO.getRoleDTOs()));
+        //设置权限
+        authorizationInfo.setStringPermissions(this.listPermission2SetString(memberPermissionDTO.getPermissionDTOs()));
+        return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         return null;
+    }
+
+    /**
+     * 解析用户角色
+     * @param roleDTOs
+     * @return
+     */
+    private Set<String> listRole2SetString(List<RoleDTO> roleDTOs) {
+        Set<String> sets = new HashSet<>();
+        if (roleDTOs != null && roleDTOs.size() > 0) {
+            for (RoleDTO roleDTO : roleDTOs) {
+                sets.add(roleDTO.getName());
+            }
+        }
+        return sets;
+    }
+
+    /**
+     * 解析用户权限
+     * @param permissionDTOs
+     * @return
+     */
+    private Set<String> listPermission2SetString(List<PermissionDTO> permissionDTOs) {
+        Set<String> sets = new HashSet<>();
+        if (permissionDTOs != null && permissionDTOs.size() > 0) {
+            for (PermissionDTO permissionDTO : permissionDTOs) {
+                sets.add(permissionDTO.getName());
+            }
+        }
+        return sets;
+    }
+
+    /**
+     * 基础的path和apiPath
+     * @param moduleRequestMapping
+     * @param apiRequestMapping
+     * @return
+     */
+    protected String buildBizAppURI(String moduleRequestMapping, String apiRequestMapping) {
+        return bizAppUrl + moduleRequestMapping + apiRequestMapping;
     }
 }

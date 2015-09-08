@@ -3,6 +3,7 @@ package com.ishare.mall.core.service.permission;
 import com.ishare.mall.core.model.permission.Permission;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/9/7.
@@ -16,5 +17,12 @@ public interface PermissionService {
      * @return
      */
     List<Permission> findByAccount(String account);
+
+    /**
+     * 通过账户获取用户所有权限字符串
+     * @param account
+     * @return
+     */
+    Set<String> findAllPermissionByAccount(String account);
 
 }
