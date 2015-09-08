@@ -19,7 +19,7 @@ public interface CenterViewConstant {
     interface Main {
     	String MAIN = "main/index";
     	//注册
-    	String ADD_MEMBER = "main/member-add";
+    	String REGISTER = "main/register";
     	//找回密码
     	String FIND_PASSWORD = "main/find-password";
     }

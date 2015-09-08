@@ -30,8 +30,8 @@
 <input type="hidden" id="TenantId" name="TenantId" value="" />
 <div class="header">
 	<span>
-		<a href="javascript:;" onclick="member_add('注册申请','addMember.dhtml','','510')">立即注册</a> | 
-		<a href="javascript:;" onclick="member_add('找回密码','findPassword.dhtml','','510')">找回密码</a>
+		<a href="javascript:;" onclick="member_add('注册申请','register.dhtml','','555')">立即注册</a> | 
+		<a href="javascript:;" onclick="member_add('找回密码','findPassword.dhtml','','440')">找回密码</a>
 	</span>
 </div>
 <div class="loginWraper">
