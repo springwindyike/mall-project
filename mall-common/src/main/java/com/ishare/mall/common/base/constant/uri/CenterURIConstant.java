@@ -20,7 +20,7 @@ public interface CenterURIConstant {
     	  //添加商品
         String ADD_PRODUCT="addProduct";
     }
-    
+
     interface Main {
         //首页
         String INDEX = "index";
