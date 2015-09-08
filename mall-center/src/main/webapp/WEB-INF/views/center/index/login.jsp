@@ -28,7 +28,12 @@
 
 <body>
 <input type="hidden" id="TenantId" name="TenantId" value="" />
-<div class="header"><span ><a href="#">立即注册</a> | <a href="#">找回密码</a></span></div>
+<div class="header">
+	<span>
+		<a href="javascript:;" onclick="member_add('注册申请','addMember.dhtml','','510')">立即注册</a> | 
+		<a href="javascript:;" onclick="member_add('找回密码','findPassword.dhtml','','510')">找回密码</a>
+	</span>
+</div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
     <form class="form form-horizontal" action="login.dhtml" method="post">
@@ -67,7 +72,9 @@
 </div>
 <div class="footer">Copyright 成都平凡谷信息科技有限公司 </div>
 <script type="text/javascript" src="resources/scripts/jquery.min.js"></script> 
-<script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
+<script type="text/javascript" src="resources/scripts/H-ui.js"></script>
+<script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
+<script type="text/javascript" src="resources/scripts/layer/1.9.3/layer.js"></script>
 <script>
 function changeImg() { 
     var imgSrc = $("#imgObj"); 
@@ -86,6 +93,11 @@ function chgUrl(url) {
     } 
     return url;
 } 
+
+/*用户-添加*/
+function member_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
 
 var _hmt = _hmt || [];
 (function() {
