@@ -164,9 +164,6 @@ public final class ConfigManager {
 			Iterator<String> it = jsonConfig.keys();
 			while(it.hasNext()){
 				String key=it.next();
-//				if (key.contains("PathFormat")) {
-//					jsonConfig.put(key, contextPath + jsonConfig.get(key));
-//				}
 				if(key.contains("UrlPrefix")) {
 					jsonConfig.put(key, contextPath);
 				}
