@@ -1,4 +1,4 @@
-?/*! layPage v1.2 - ·ÖÒ³²å¼þ By ÏÍÐÄ http://sentsin.com/layui/laypage MIT License */
+/*! layPage v1.2 - åˆ†é¡µæ’ä»¶ By è´¤å¿ƒ http://sentsin.com/layui/laypage MIT License */
 ;
 !function () {
     "use strict";
@@ -26,17 +26,17 @@
         return "object" == typeof a.cont ? void 0 === a.cont.length ? 2 : 3 : void 0
     }, f.prototype.view = function () {
         var b = this, c = b.config, d = [], e = {};
-        c.pages = 0 | c.pages, c.curr = 0 | c.curr || 1, c.groups = "groups"in c ? 0 | c.groups : 5, c.first = "first"in c ? c.first : 1, c.last = "last"in c ? c.last : c.pages, c.prev = "prev"in c ? c.prev : "ÉÏÒ»Ò³", c.next = "next"in c ? c.next : "ÏÂÒ»Ò³", c.groups > c.pages && (c.groups = c.pages), e.index = Math.ceil((c.curr + (c.groups > 1 && c.groups !== c.pages ? 1 : 0)) / (0 === c.groups ? 1 : c.groups)), c.curr > 1 && c.prev && d.push('<a href="javascript:;" class="laypage_prev" data-page="' + (c.curr - 1) + '">' + c.prev + "</a>"), e.index > 1 && c.first && 0 !== c.groups && d.push('<a href="javascript:;" class="laypage_first" data-page="1"  title="Ê×Ò³">' + c.first + "</a><span>¡­</span>"), e.poor = Math.floor((c.groups - 1) / 2), e.start = e.index > 1 ? c.curr - e.poor : 1, e.end = e.index > 1 ? function () {
+        c.pages = 0 | c.pages, c.curr = 0 | c.curr || 1, c.groups = "groups"in c ? 0 | c.groups : 5, c.first = "first"in c ? c.first : 1, c.last = "last"in c ? c.last : c.pages, c.prev = "prev"in c ? c.prev : "ä¸Šä¸€é¡µ", c.next = "next"in c ? c.next : "ä¸‹ä¸€é¡µ", c.groups > c.pages && (c.groups = c.pages), e.index = Math.ceil((c.curr + (c.groups > 1 && c.groups !== c.pages ? 1 : 0)) / (0 === c.groups ? 1 : c.groups)), c.curr > 1 && c.prev && d.push('<a href="javascript:;" class="laypage_prev" data-page="' + (c.curr - 1) + '">' + c.prev + "</a>"), e.index > 1 && c.first && 0 !== c.groups && d.push('<a href="javascript:;" class="laypage_first" data-page="1"  title="é¦–é¡µ">' + c.first + "</a><span>â€¦</span>"), e.poor = Math.floor((c.groups - 1) / 2), e.start = e.index > 1 ? c.curr - e.poor : 1, e.end = e.index > 1 ? function () {
             var a = c.curr + (c.groups - e.poor - 1);
             return a > c.pages ? c.pages : a
         }() : c.groups, e.end - e.start < c.groups - 1 && (e.start = e.end - c.groups + 1);
         for (; e.start <= e.end; e.start++)e.start === c.curr ? d.push('<span class="laypage_curr" ' + (/^#/.test(c.skin) ? 'style="background-color:' + c.skin + '"' : "") + ">" + e.start + "</span>") : d.push('<a href="javascript:;" data-page="' + e.start + '">' + e.start + "</a>");
-        return c.pages > c.groups && e.end < c.pages && c.last && 0 !== c.groups && d.push('<span>¡­</span><a href="javascript:;" class="laypage_last" title="Î²Ò³"  data-page="' + c.pages + '">' + c.last + "</a>"), e.flow = !c.prev && 0 === c.groups, (c.curr !== c.pages && c.next || e.flow) && d.push(function () {
-            return e.flow && c.curr === c.pages ? '<span class="page_nomore" title="ÒÑÃ»ÓÐ¸ü¶à">' + c.next + "</span>" : '<a href="javascript:;" class="laypage_next" data-page="' + (c.curr + 1) + '">' + c.next + "</a>"
+        return c.pages > c.groups && e.end < c.pages && c.last && 0 !== c.groups && d.push('<span>â€¦</span><a href="javascript:;" class="laypage_last" title="å°¾é¡µ"  data-page="' + c.pages + '">' + c.last + "</a>"), e.flow = !c.prev && 0 === c.groups, (c.curr !== c.pages && c.next || e.flow) && d.push(function () {
+            return e.flow && c.curr === c.pages ? '<span class="page_nomore" title="å·²æ²¡æœ‰æ›´å¤š">' + c.next + "</span>" : '<a href="javascript:;" class="laypage_next" data-page="' + (c.curr + 1) + '">' + c.next + "</a>"
         }()), '<div name="laypage' + a.v + '" class="laypage_main laypageskin_' + (c.skin ? function (a) {
             return /^#/.test(a) ? "molv" : a
         }(c.skin) : "default") + '" id="laypage_' + b.config.item + '">' + d.join("") + function () {
-            return c.skip ? '<span class="laypage_total"><label>µ½µÚ</label><input type="number" min="1" onkeyup="this.value=this.value.replace(/\\D/, \'\');" class="laypage_skip"><label>Ò³</label><button type="button" class="laypage_btn">È·¶¨</button></span>' : ""
+            return c.skip ? '<span class="laypage_total"><label>åˆ°ç¬¬</label><input type="number" min="1" onkeyup="this.value=this.value.replace(/\\D/, \'\');" class="laypage_skip"><label>é¡µ</label><button type="button" class="laypage_btn">ç¡®å®š</button></span>' : ""
         }() + "</div>"
     }, f.prototype.jump = function (a) {
         var i, j, b = this, c = b.config, e = a.children, g = a[d]("button")[0], h = a[d]("input")[0];
