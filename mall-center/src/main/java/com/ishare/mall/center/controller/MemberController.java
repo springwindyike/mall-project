@@ -50,6 +50,7 @@ public class MemberController extends BaseController {
 //		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
 //		MemberDTO memberDTOResult = resultDTO.getBody();
 		//log.debug(MemberDetailDTO.toString());
+		System.out.print("test1111111");
 		return CenterViewConstant.Member.MEMBER_LIST;
 	}
 
@@ -73,7 +74,7 @@ public class MemberController extends BaseController {
 	 * @param account
 	 * @return
 	 */
-	@RequestMapping(value = "findByAccount/{account}", method = RequestMethod.POST)
+	@RequestMapping(value = "/findByAccount/{account}", method = RequestMethod.GET)
 	public MemberDetailDTO findByAccount(@NotEmpty @PathVariable("account") String account) {
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
