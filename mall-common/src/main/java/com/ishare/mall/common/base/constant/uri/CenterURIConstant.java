@@ -14,6 +14,10 @@ public interface CenterURIConstant {
 //        String INDEX = "index";
         //登录
         String LOGIN = "login";
+        //注册member
+        String REGISTER="register";
+        //找回密码
+        String FIND_PASSWORD="findPassword";
     }
     
     interface Product{
@@ -24,10 +28,7 @@ public interface CenterURIConstant {
     interface Main {
         //首页
         String INDEX = "index";
-        //注册member
-        String REGISTER="register";
-        //找回密码
-        String FIND_PASSWORD="findPassword";
+
 
     }
 }

@@ -127,7 +127,6 @@ $(function(){
 		tiptype:2,
 		callback:function(form){
 			var index = parent.layer.getFrameIndex(window.name);
-			parent.layer.close(index);
 			form[0].submit();
 /* 			parent.$('.btn-refresh').click();
 			parent.layer.close(index); */

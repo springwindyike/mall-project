@@ -2,12 +2,14 @@ package com.ishare.mall.center.controller;
 
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.form.login.LoginForm;
+import com.ishare.mall.center.form.register.RegisterForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberLoginDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +77,33 @@ public class IndexController extends BaseController {
     	}
    return CenterViewConstant.Index.LOGIN;
     }
+    
+    /**
+     * 访问注册页面
+     * @return
+     */
+    @RequestMapping(value = CenterURIConstant.Index.REGISTER, method = RequestMethod.GET)
+    public String register() {
+        return CenterViewConstant.Index.REGISTER;
+    }
+    /**
+     * 注册提交
+     * @return
+     */
+    @RequestMapping(value = CenterURIConstant.Index.REGISTER, method = RequestMethod.POST)
+    public String registerMember(@ModelAttribute("registerAttribute") RegisterForm registerForm) {
+    			log.debug(registerForm.toString());
+        return CenterViewConstant.Index.LOGIN;
+    }
+    /**
+     * 访问找回密码页面
+     * @return
+     */
+    @RequestMapping(value = CenterURIConstant.Index.FIND_PASSWORD, method = RequestMethod.GET)
+    public String findPassword() {
+        return CenterViewConstant.Index.FIND_PASSWORD;
+    }
+    
     @RequestMapping(value ="test")
     public String test() {
         log.debug("here");
