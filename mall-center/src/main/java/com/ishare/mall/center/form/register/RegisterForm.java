@@ -87,5 +87,18 @@ public class RegisterForm {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "RegisterForm{" +
+				"account='" + account + '\'' +
+				", password='" + password + '\'' +
+				", repassword='" + repassword + '\'' +
+				", email='" + email + '\'' +
+				", sex='" + sex + '\'' +
+				", channel='" + channel + '\'' +
+				", city='" + city + '\'' +
+				", note='" + note + '\'' +
+				'}';
+	}
 }
