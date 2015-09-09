@@ -7,7 +7,8 @@ package com.ishare.mall.common.base.constant;
  */
 public interface CommonConstant {
     interface Common {
-       String SLASH = "/";
+        String SLASH = "/";
+        String CURRENT_MEMBER = "member";
     }
     //字符集
     interface CharSet {

@@ -3,9 +3,12 @@ package com.baidu.ueditor;
 import com.baidu.ueditor.define.ActionMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -15,10 +18,12 @@ import java.util.Map;
  */
 public final class ConfigManager {
 
+	private static final Logger log = LoggerFactory.getLogger(ConfigManager.class);
+
 	private final String rootPath;
 	private final String originalPath;
 	private final String contextPath;
-	private static final String configFileName = "config.json";
+	private static final String configFileName = "ueditor.config.json";
 	private String parentPath = null;
 	private JSONObject jsonConfig = null;
 	// 涂鸦上传filename定义
@@ -29,20 +34,20 @@ public final class ConfigManager {
 	/*
 	 * 通过一个给定的路径构建一个配置管理器， 该管理器要求地址路径所在目录下必须存在config.properties文件
 	 */
-	private ConfigManager ( String rootPath, String contextPath, String uri ) throws FileNotFoundException, IOException {
+	private ConfigManager ( String rootPath, String contextPath, String uri) throws FileNotFoundException, IOException {
 		
 		rootPath = rootPath.replace( "\\", "/" );
 		
 		this.contextPath = contextPath;
+
+		this.rootPath = rootPath;
 		
 		if ( contextPath.length() > 0 ) {
-			this.rootPath = rootPath.substring( 0, rootPath.length() - contextPath.length() );
+			this.originalPath = this.rootPath + uri.substring(contextPath.length() + (contextPath.endsWith("/") ? 0 : 1));
 		} else {
-			this.rootPath = rootPath;
+			this.originalPath = this.rootPath + uri;
 		}
-		
-		this.originalPath = this.rootPath + uri;
-		
+
 		this.initEnv();
 		
 	}
@@ -71,9 +76,7 @@ public final class ConfigManager {
 	}
 	
 	public JSONObject getAllConfig () {
-		
 		return this.jsonConfig;
-		
 	}
 	
 	public Map<String, Object> getConfig ( int type ) {
@@ -158,16 +161,28 @@ public final class ConfigManager {
 		
 		try{
 			JSONObject jsonConfig = new JSONObject( configContent );
+			Iterator<String> it = jsonConfig.keys();
+			while(it.hasNext()){
+				String key=it.next();
+				if(key.contains("UrlPrefix")) {
+					jsonConfig.put(key, contextPath);
+				}
+			}
 			this.jsonConfig = jsonConfig;
 		} catch ( Exception e ) {
 			this.jsonConfig = null;
 		}
 		
 	}
-	
+
+	/**
+	 * 获得配置路径
+	 * @return
+	 */
 	private String getConfigPath () {
-		System.out.println(this.parentPath + File.separator +"webapp" + File.separator + "resources" + File.separator + ConfigManager.configFileName);
-		return "E:\\workspace\\ishare\\mall-center\\src\\main\\webapp" + File.separator + "resources" + File.separator +"lib" + File.separator + "ueditor" + File.separator + ConfigManager.configFileName;
+
+		return this.rootPath + File.separator + "resources" + File.separator + "scripts" + File.separator + "ueditor" + File.separator + "config" + File.separator + ConfigManager.configFileName;
+
 	}
 
 	private String[] getArray ( String key ) {
@@ -214,5 +229,8 @@ public final class ConfigManager {
 		return input.replaceAll( "/\\*[\\s\\S]*?\\*/", "" );
 		
 	}
-	
+
+	public static Logger getLog() {
+		return log;
+	}
 }

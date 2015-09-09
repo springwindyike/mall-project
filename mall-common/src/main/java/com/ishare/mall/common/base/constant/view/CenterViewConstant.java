@@ -15,4 +15,16 @@ public interface CenterViewConstant {
     interface Product {
     	 String ADD_PRODUCT ="product/addProduct";
     }
+
+    interface Main {
+    	String MAIN = "main/index";
+    	//注册
+    	String REGISTER = "main/register";
+    	//找回密码
+    	String FIND_PASSWORD = "main/find-password";
+    }
+
+    interface Member {
+        String MEMBER_LIST = "member/memberList";
+    }
 }

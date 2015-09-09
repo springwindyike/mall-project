@@ -23,7 +23,6 @@
 <title>新增图片</title>
     <script type="text/javascript">
         var context_ = '${context_}/';
-        alert(context_);
     </script>
 </head>
 <body>
@@ -108,8 +107,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/My97DatePicker/WdatePicker.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/icheck/jquery.icheck.min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/Validform/5.3.2/Validform.min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/webuploader/0.1.5/webuploader.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/resources/lib/webuploader/0.1.5/webuploader.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/ueditor.config.js?1"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
@@ -274,7 +274,7 @@ $(function(){
                     if( this.width != 1 || this.height != 1 ) {
                         support = false;
                     }
-                }
+                };
                 data.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
                 return support;
             } )(),
@@ -320,11 +320,11 @@ $(function(){
                     window['expressinstallcallback'] = function( state ) {
                         switch(state) {
                             case 'Download.Cancelled':
-                                alert('您取消了更新！')
+                                alert('您取消了更新！');
                                 break;
 
                             case 'Download.Failed':
-                                alert('安装失败')
+                                alert('安装失败');
                                 break;
 
                             default:
