@@ -27,9 +27,9 @@ public class MainController extends BaseController {
     public String main() {
         return CenterViewConstant.Main.MAIN;
     }
-    @RequestMapping(value = CenterURIConstant.Main.ADD_MEMBER, method = RequestMethod.GET)
-    public String addMember() {
-        return CenterViewConstant.Main.ADD_MEMBER;
+    @RequestMapping(value = CenterURIConstant.Main.REGISTER, method = RequestMethod.GET)
+    public String register() {
+        return CenterViewConstant.Main.REGISTER;
     }
     @RequestMapping(value = CenterURIConstant.Main.FIND_PASSWORD, method = RequestMethod.GET)
     public String findPassword() {

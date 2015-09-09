@@ -27,6 +27,10 @@ public class ProductType extends BaseEntity {
     /**类别描述**/
     @Column(length = 36, nullable = false, name = "type_note")
     private String note;
+    
+    /**菜单级别如果为一级菜单就是1，二级菜单则为2**/
+    @Column(length = 1, nullable = false, name = "type_level")
+    private Integer level;
     /**父节点**/
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name ="type_parent_id")
@@ -94,9 +98,17 @@ public class ProductType extends BaseEntity {
         this.products = products;
     }
 
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
 	@Override
 	public String toString() {
-		return "ProductType [id=" + id + ", name=" + name + ", code=" + code
+		return "ProductType [id=" + id + ", name=" + name+ ", level=" + level + ", code=" + code
 				+ ", note=" + note + "]";
 	}
     
