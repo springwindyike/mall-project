@@ -6,7 +6,9 @@ package com.ishare.mall.common.base.exception;
  * Version 1.0
  */
 public class BaseException extends Exception {
+
     protected String errorCode;
+
     protected String errorMsg;
 
     public String getErrorCode() {
@@ -23,5 +25,25 @@ public class BaseException extends Exception {
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public BaseException() {
+        super();
+    }
+
+    public BaseException(String message) {
+        super(message);
+    }
+
+    public BaseException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public BaseException(Throwable cause) {
+        super(cause);
+    }
+
+    protected BaseException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }
