@@ -1,6 +1,7 @@
 package com.ishare.mall.center.controller;
 
 import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.center.form.member.MemberForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
@@ -8,6 +9,7 @@ import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -69,7 +71,7 @@ public class MemberController extends BaseController {
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ROL_ID), memberDTO, MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
 		//log.debug(MemberDetailDTO.toString());
-		return memberDTOResult.getPage();
+		return null;
 	}
 
 	/**
@@ -84,6 +86,31 @@ public class MemberController extends BaseController {
 //		RestTemplate restTemplate = new RestTemplate();
 //		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
 //		MemberDTO memberDTOResult = resultDTO.getBody();
+		return CenterViewConstant.Member.MEMBER_ADD;
+	}
+
+	/**
+	 * 保存新member
+	 * @param memberForm
+	 * @return member list 页面
+	 */
+	@RequestMapping(value = "/saveMember")
+	public String saveMember(MemberForm memberForm){
+		MemberDTO memberDTO = new MemberDTO();
+		BeanUtils.copyProperties(memberForm,memberDTO);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER),memberDTO,MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
+		return CenterViewConstant.Member.MEMBER_LIST;
+	}
+
+	/**
+	 *
+	 * @return to add member page
+	 */
+	@RequestMapping(value = "/addMemberPage")
+	public String forwardTOAddMember(){
 		return CenterViewConstant.Member.MEMBER_ADD;
 	}
 }

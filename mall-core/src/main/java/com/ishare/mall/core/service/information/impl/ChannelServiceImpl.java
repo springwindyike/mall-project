@@ -28,7 +28,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel findOne(Integer id) {
-        return null;
+        return channelRepository.findOne(id);
     }
 
     @Override
