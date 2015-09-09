@@ -26,5 +26,6 @@ public interface CenterViewConstant {
 
     interface Member {
         String MEMBER_LIST = "member/memberList";
+        String MEMBER_ADD = "member/memberAdd";
     }
 }
