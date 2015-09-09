@@ -28,25 +28,25 @@
 
 <body>
 <div class="pd-20">
-  <form action="" method="post" class="form form-horizontal" id="form-member-add">
+  <form action="register.dhtml" method="post" class="form form-horizontal" id="form-member-add">
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>手机：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="member-tel" name="member-tel"  datatype="m" nullmsg="手机不能为空">
+        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空">
       </div>
       <div class="col-4"> </div>
     </div>
 			<div class="row cl">
 				<label class="form-label col-3"><span class="c-red">*</span>密码：</label>
 				<div class="formControls col-5">
-					<input type="password" class="input-text" autocomplete="off" placeholder="" name="new-password" id="new-password" datatype="*6-18" nullmsg="密码不能为空" >
+					<input type="password" class="input-text" autocomplete="off" placeholder="" name="password" id="password" datatype="*6-18" nullmsg="密码不能为空" >
 				</div>
 				<div class="col-4"> </div>
 			</div>
 			<div class="row cl">
 				<label class="form-label col-3"><span class="c-red">*</span>确认密码：</label>
 				<div class="formControls col-5">
-					<input type="password" class="input-text" autocomplete="off" placeholder="" name="new-password2" id="new-password2" recheck="new-password" datatype="*6-18" errormsg="您两次输入的密码不一致！"nullmsg="请确认密码">
+					<input type="password" class="input-text" autocomplete="off" placeholder="" name="repassword" id="repassword" recheck="password" datatype="*6-18" errormsg="您两次输入的密码不一致！"nullmsg="请确认密码">
 				</div>
 				<div class="col-4"> </div>
 			</div>
@@ -74,14 +74,14 @@
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>公司名称：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="channel-name" name="channel-name" datatype="*2-16" nullmsg="公司名称不能为空">
+        <input type="text" class="input-text" value="" placeholder="" id="channel" name="channel" datatype="*2-16" nullmsg="公司名称不能为空">
       </div>
       <div class="col-4"> </div>
     </div>
     <div class="row cl">
       <label class="form-label col-3">所在城市：</label>
       <div class="formControls col-5"> <span class="select-box">
-        <select class="select" size="1" name="demo1" datatype="*" nullmsg="请选择所在城市！">
+        <select class="select" size="1" name="city" datatype="*" nullmsg="请选择所在城市！">
           <option value="" selected>请选择城市</option>
           <option value="1">北京</option>
           <option value="2">上海</option>
@@ -93,7 +93,7 @@
     <div class="row cl">
       <label class="form-label col-3">备注：</label>
       <div class="formControls col-5">
-        <textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
+        <textarea name="note" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
         <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
       </div>
       <div class="col-4"> </div>
@@ -106,10 +106,10 @@
   </form>
 </div>
 </div>
-<script type="text/javascript" src="resources/scripts/jquery.min.js"></script> 
-<script type="text/javascript" src="resources/scripts/jquery.icheck.min.js"></script> 
-<script type="text/javascript" src="resources/scripts/Validform.min.js"></script>
-<script type="text/javascript" src="resources/scripts/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="resources/lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="resources/lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="resources/lib/layer/1.9.3/layer.js"></script>
 <script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">

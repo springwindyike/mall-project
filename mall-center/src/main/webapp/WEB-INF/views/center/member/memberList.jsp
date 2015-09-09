@@ -88,11 +88,11 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/laypage.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/resources/lib/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/resources/scripts/jquery.dataTables.min.js"></script>
+        src="${pageContext.request.contextPath}/resources/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
