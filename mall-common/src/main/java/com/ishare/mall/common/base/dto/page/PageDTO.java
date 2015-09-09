@@ -19,7 +19,7 @@ public class PageDTO<T extends GenericDTO> {
 
     private Integer totalPages;
 
-    private Integer totalElements;
+    private Long totalElements;
 
     private Boolean next;
 
@@ -45,11 +45,11 @@ public class PageDTO<T extends GenericDTO> {
         this.totalPages = totalPages;
     }
 
-    public Integer getTotalElements() {
+    public Long getTotalElements() {
         return totalElements;
     }
 
-    public void setTotalElements(Integer totalElements) {
+    public void setTotalElements(Long totalElements) {
         this.totalElements = totalElements;
     }
 
