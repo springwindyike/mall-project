@@ -98,12 +98,14 @@
 		<property name="httpOnly" value="true"/>
 		<property name="maxAge" value="-1"/>
 	</bean>
+
 	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 		<constructor-arg value="rememberMe"/>
 		<property name="httpOnly" value="true"/>
 		<property name="maxAge" value="2592000"/><!-- 30天 -->
 	</bean>
 
+	<bean id="sysMemberFilter" class="com.ishare.mall.center.shiro.filter.SysMemberFilter"/>
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager"/>
@@ -111,7 +113,7 @@
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter"/>
-				<entry key="sysUser" value-ref="sysUserFilter"/>
+				<entry key="sysUser" value-ref="sysMemberFilter"/>
 			</util:map>
 		</property>
 		<property name="filterChainDefinitions">
