@@ -1,6 +1,8 @@
 package com.ishare.mall.core.utils.page;
 
 import com.google.common.collect.Lists;
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.object.BaseObject;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -63,6 +65,28 @@ public class PageUtils {
 			}
 		}
 		return new PageRequest(offset - 1, limit, direction, properties);
+	}
+
+	/**
+	 * 强制转换为DTO形式page
+	 * @param page
+	 * @param clazzE
+	 * @param <T>
+	 * @param <E>
+	 * @return
+	 */
+	public static <T extends BaseObject, E extends GenericDTO> PageDTO<E> mapper(Page<T> page, Class<E> clazzE) {
+		PageDTO<E> pageDTO = new PageDTO();
+		List<T> element = page.getContent();
+		List<E> resultElement = Lists.newArrayList();
+		if (element != null && element.size() > 0) {
+			resultElement = (List<E>) MapperUtils.mapAsList(element, clazzE);
+		}
+		pageDTO.setContent(resultElement);
+		pageDTO.setPageSize(page.getSize());
+		pageDTO.setTotalElements(page.getTotalElements());
+		pageDTO.setTotalPages(page.getTotalPages());
+		return pageDTO;
 	}
 
 }

@@ -14,10 +14,10 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css"/>
     <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/resources/css/icheck.css" rel="stylesheet" type="text/css"/>
     <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet"
           type="text/css"/>
-    <link href="${pageContext.request.contextPath}/resources/css/icheck.css" rel="stylesheet" type="text/css"/>
-    <title>111111111</title>
+    <title>添加用户</title>
 </head>
 <body>
 <div class="pd-20">
