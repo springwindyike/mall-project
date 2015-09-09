@@ -25,7 +25,7 @@ public interface CenterURIConstant {
         //首页
         String INDEX = "index";
         //注册member
-        String ADD_MEMBER="addMember";
+        String REGISTER="register";
         //找回密码
         String FIND_PASSWORD="findPassword";
 
