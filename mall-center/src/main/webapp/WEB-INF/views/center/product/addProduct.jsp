@@ -113,7 +113,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/ueditor.config.js?1"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/zh-cn.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">

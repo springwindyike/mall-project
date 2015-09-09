@@ -54,23 +54,26 @@ public class IndexController extends BaseController {
     
     @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.POST)
     public String login(HttpSession session, @ModelAttribute("loginAttribute") LoginForm loginForm) {
-    	System.out.println(loginForm.getVerifyCode());
-	    	 if (!(loginForm.getVerifyCode().equalsIgnoreCase(session.getAttribute("code").toString()))) {  //忽略验证码大小写
-	    		 	System.out.println("验证码不正确");
-	    		 	return CenterViewConstant.Index.LOGIN;
-	    	}else {
-	    		System.out.println("验证码正确");
-                 MemberLoginDTO memberLoginDTO = new MemberLoginDTO();
-                 memberLoginDTO.setAccount(loginForm.getAccount());
-                 memberLoginDTO.setPassword(loginForm.getPassword());
-                 log.debug(memberLoginDTO.toString());
-                 ResponseEntity<MemberLoginResultDTO> resultDTO = null;
-                 RestTemplate restTemplate = new RestTemplate();
-                 resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_LOGIN), memberLoginDTO, MemberLoginResultDTO.class);
-                 MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
-                 log.debug(memberLoginResultDTO.toString());
-                 return "redirect:/index.dhtml";
-             }
+    	if(null != loginForm.getVerifyCode()){
+    		
+    		if (!(loginForm.getVerifyCode().equalsIgnoreCase(session.getAttribute("code").toString()))) {  //忽略验证码大小写
+    			System.out.println("验证码不正确");
+    			return CenterViewConstant.Index.LOGIN;
+    		}else {
+    			System.out.println("验证码正确");
+    			MemberLoginDTO memberLoginDTO = new MemberLoginDTO();
+    			memberLoginDTO.setAccount(loginForm.getAccount());
+    			memberLoginDTO.setPassword(loginForm.getPassword());
+    			log.debug(memberLoginDTO.toString());
+    			ResponseEntity<MemberLoginResultDTO> resultDTO = null;
+    			RestTemplate restTemplate = new RestTemplate();
+    			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_LOGIN), memberLoginDTO, MemberLoginResultDTO.class);
+    			MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
+    			log.debug(memberLoginResultDTO.toString());
+    			return "redirect:/index.dhtml";
+    		}
+    	}
+   return CenterViewConstant.Index.LOGIN;
     }
     @RequestMapping(value ="test")
     public String test() {
