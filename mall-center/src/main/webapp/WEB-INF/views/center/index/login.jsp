@@ -71,9 +71,9 @@
   </div>
 </div>
 <div class="footer">Copyright 成都平凡谷信息科技有限公司 </div>
+<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="resources/scripts/H-ui.js"></script>
 <script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
-<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="resources/lib/layer/1.9.3/layer.js"></script>
 <script>
 function changeImg() { 
