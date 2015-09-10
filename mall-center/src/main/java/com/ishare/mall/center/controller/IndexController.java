@@ -90,10 +90,11 @@ public class IndexController extends BaseController {
      * 注册提交
      * @return
      */
+    @ResponseBody
     @RequestMapping(value = CenterURIConstant.Index.REGISTER, method = RequestMethod.POST)
-    public String registerMember(@ModelAttribute("registerAttribute") RegisterForm registerForm) {
+    public RegisterForm registerMember(@ModelAttribute("registerAttribute") RegisterForm registerForm) {
     			log.debug(registerForm.toString());
-        return CenterViewConstant.Index.LOGIN;
+        return registerForm;
     }
     /**
      * 访问找回密码页面
