@@ -24,6 +24,9 @@ public class ProductTypeDTO implements BaseObject {
 	private String typeName;
 
 	private List <ProductTypeDTO> child; 
+	
+	private String code;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -55,4 +58,13 @@ public class ProductTypeDTO implements BaseObject {
 	public void setChild(List<ProductTypeDTO> child) {
 		this.child = child;
 	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 }

@@ -34,4 +34,8 @@ public interface APPURIConstant {
     	String REQUEST_MAPPING_FIND_FIRST_LEVEL = "/findFirstLevel";
     	
     }
+    
+    interface Product{
+    	 String REQUEST_MAPPING   = "/product";
+    }
 }
