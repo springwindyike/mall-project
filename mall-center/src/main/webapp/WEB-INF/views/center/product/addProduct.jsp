@@ -7,7 +7,8 @@
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<html xmlns="http://www.w3.org/1999/xhtml">
+ <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -48,7 +49,7 @@
 				</span> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-2">产品进价：</label>
+			<label class="form-label col-2">产品进价：</label>${type}
 			<div class="formControls col-4">
 			<form:input type="text" path="basePrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
 				元</div>

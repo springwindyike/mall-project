@@ -24,7 +24,14 @@ public interface CenterURIConstant {
     	  //添加商品
         String ADD_PRODUCT="addProduct";
     }
-
+    
+   
+    interface ProductType {
+    	
+    	 //显示商品分类
+    	 String PRODUCT_ALL_TYPE ="allProductType"; 
+    }
+   
     interface Main {
         //首页
         String INDEX = "index";
