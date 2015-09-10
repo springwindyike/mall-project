@@ -1,14 +1,15 @@
 package com.ishare.mall.center.controller;
 
+import com.ishare.mall.center.annoation.CurrentMember;
+import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.ishare.mall.center.controller.base.BaseController;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/7.
@@ -28,7 +29,7 @@ public class MainController extends BaseController {
 	 * @return
 	 */
     @RequestMapping(value = CenterURIConstant.Main.INDEX, method = RequestMethod.GET)
-    public String main() {
+    public String main(@CurrentMember MemberDTO memberDTO) {
         return CenterViewConstant.Main.MAIN;
     }
 
