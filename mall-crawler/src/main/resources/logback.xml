@@ -3,6 +3,8 @@
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <!-- 此处设置字符集 -->
         </encoder>
     </appender>
 
@@ -13,6 +15,8 @@
         </rollingPolicy>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <!-- 此处设置字符集 -->
         </encoder>
     </appender>
 
@@ -31,4 +35,5 @@
     <logger name="org.springframework" level="INFO"/>
     <logger name="com.opensymphony" level="WARN"/>
     <logger name="org.apache" level="WARN"/>
+    <logger name="freemarker" level="WARN"/>
 </configuration>
