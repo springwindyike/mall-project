@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.product.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.repository.product.ProductTypeRepository;
 import com.ishare.mall.core.service.product.ProductTypeService;
@@ -43,8 +45,23 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public ProductType findOne(Integer id) {
         return productTypeRepository.findOne(id);
     }
-
+    
+    @Override
+    public List<ProductType> findByLevel(Integer id) {
+	    List<ProductType> productType = productTypeRepository.findByLevel(id);
+	    if (productType == null || productType.size() == 0) return null;
+	    return productType;
+    }
+    
     public static Logger getLog() {
         return log;
     }
+
+	@Override
+	public List<ProductType> findByParentId(Integer pariendId) {
+		// TODO Auto-generated method stub
+		 List<ProductType> productType = productTypeRepository.findByParendId(pariendId);
+		    if (productType == null || productType.size() == 0) return null;
+		    return productType;
+	}
 }

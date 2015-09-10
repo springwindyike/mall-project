@@ -17,9 +17,11 @@ import org.slf4j.LoggerFactory;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductType;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -35,9 +37,11 @@ public class OrikaMapper extends ConfigurableMapper {
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Member.class, MemberDetailDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Product.class, ProductDetailDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Order.class, OrderDetailDTO.class));
+		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ProductType.class, ProductTypeDTO.class));
 	    this.registerProductClassMap(mapperFactory);
 	    this.registerMemberClassMap(mapperFactory);
 	    this.registerOrderClassMap(mapperFactory);
+	    this.registerProductTypeClassMap(mapperFactory);
     }
 
 	/**
@@ -83,6 +87,18 @@ public class OrikaMapper extends ConfigurableMapper {
 	            }
 	        }
 		  classMapBuilder.field("channel.id", "channelId");
+		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+	}
+	
+	private void registerProductTypeClassMap(MapperFactory mapperFactory) {
+		 ClassMapBuilder<ProductType, ProductTypeDTO>classMapBuilder = mapperFactory.classMap(ProductType.class, ProductTypeDTO.class);
+		  Field[] fields = ProductTypeDTO.class.getDeclaredFields();
+		  Set<String> otherDealField = new HashSet<String>();
+		  otherDealField.add("parentId");
+		  otherDealField.add("typeName");
+		  classMapBuilder.field("parent.id", "parentId");
+		  classMapBuilder.field("id", "id");
+		  classMapBuilder.field("name", "typeName");
 		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	

@@ -22,4 +22,11 @@ public interface APPURIConstant {
     interface Role {
         String REQUEST_MAPPING = "/role";
     }
+    
+    //商品分类
+    interface ProductType{
+    	String REQUEST_MAPPING = "/productType";
+    	String REQUEST_MAPPING_FIND_FIRST_LEVEL = "/findFirstLevel";
+    	
+    }
 }
