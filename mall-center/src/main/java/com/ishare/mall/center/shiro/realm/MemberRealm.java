@@ -59,6 +59,8 @@ public class MemberRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        String account = (String) token.getPrincipal();
+       // MemberDTO memberDTO =
         return null;
     }
 
