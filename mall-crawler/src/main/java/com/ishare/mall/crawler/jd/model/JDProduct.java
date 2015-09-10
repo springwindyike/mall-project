@@ -28,10 +28,13 @@ public class JDProduct {
     private boolean self;
 
     @ElementCollection
+    @CollectionTable(name = "spider_jd_product_attr", joinColumns = @JoinColumn(name = "id"))
     private Map<String, String> attributes = Maps.newHashMap();
     @ElementCollection
+    @CollectionTable(name = "spider_jd_intro_image", joinColumns = @JoinColumn(name = "id"))
     private List<String> introImgs = Lists.newArrayList();
     @ElementCollection
+    @CollectionTable(name = "spider_jd_photo", joinColumns = @JoinColumn(name = "id"))
     private List<String> photo = Lists.newArrayList();
     private String price;
     private String stock;

@@ -1,5 +1,6 @@
 package com.ishare.mall.crawler.jd.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 
 import javax.persistence.*;
@@ -18,10 +19,12 @@ public class JDCategory {
     private String name;
     private String link;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private JDCategory parent;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<JDCategory> children = Sets.newHashSet();
 

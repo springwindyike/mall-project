@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.Date;
@@ -32,6 +31,7 @@ public class JDPageProcessor implements PageProcessor {
 
     private Site site = Site.me().setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36").setRetryTimes(30).setSleepTime(10000);
 
+    /*
     public static void main(String[] args) {
         Spider.create(new JDPageProcessor())
                 .addUrl("http://item.jd.com/544027.html")
@@ -39,7 +39,7 @@ public class JDPageProcessor implements PageProcessor {
                 .addUrl("http://item.jd.com/675971.html")
                 .addUrl("http://item.jd.com/1507907129.html")
                 .thread(1).run();
-    }
+    }*/
 
     @Override
     public void process(Page page) {

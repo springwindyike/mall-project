@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Html;
 
@@ -19,14 +18,6 @@ public class JDCategoryPageProcessor implements PageProcessor {
 
     // 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
     private Site site = Site.me().setRetryTimes(30).setSleepTime(10000);
-
-    public static void main(String[] args) {
-
-        Spider.create(new JDCategoryPageProcessor())
-                .addUrl("http://www.jd.com/allSort.aspx")
-                .thread(5)
-                .run();
-    }
 
     @Override
     // process是定制爬虫逻辑的核心接口，在这里编写抽取逻辑
