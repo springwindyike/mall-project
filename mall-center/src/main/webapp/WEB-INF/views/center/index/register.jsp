@@ -28,25 +28,25 @@
 
 <body>
 <div class="pd-20">
-  <form action="" method="post" class="form form-horizontal" id="form-member-add">
+  <form action="register.dhtml" method="post" class="form form-horizontal" id="form-member-add">
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>手机：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="member-tel" name="member-tel"  datatype="m" nullmsg="手机不能为空">
+        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空">
       </div>
       <div class="col-4"> </div>
     </div>
 			<div class="row cl">
 				<label class="form-label col-3"><span class="c-red">*</span>密码：</label>
 				<div class="formControls col-5">
-					<input type="password" class="input-text" autocomplete="off" placeholder="" name="new-password" id="new-password" datatype="*6-18" nullmsg="密码不能为空" >
+					<input type="password" class="input-text" autocomplete="off" placeholder="" name="password" id="password" datatype="*6-18" nullmsg="密码不能为空" >
 				</div>
 				<div class="col-4"> </div>
 			</div>
 			<div class="row cl">
 				<label class="form-label col-3"><span class="c-red">*</span>确认密码：</label>
 				<div class="formControls col-5">
-					<input type="password" class="input-text" autocomplete="off" placeholder="" name="new-password2" id="new-password2" recheck="new-password" datatype="*6-18" errormsg="您两次输入的密码不一致！"nullmsg="请确认密码">
+					<input type="password" class="input-text" autocomplete="off" placeholder="" name="repassword" id="repassword" recheck="password" datatype="*6-18" errormsg="您两次输入的密码不一致！"nullmsg="请确认密码">
 				</div>
 				<div class="col-4"> </div>
 			</div>
@@ -74,26 +74,28 @@
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>公司名称：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="channel-name" name="channel-name" datatype="*2-16" nullmsg="公司名称不能为空">
+        <input type="text" class="input-text" value="" placeholder="" id="channel" name="channel" datatype="*2-16" nullmsg="公司名称不能为空">
       </div>
       <div class="col-4"> </div>
     </div>
     <div class="row cl">
       <label class="form-label col-3">所在城市：</label>
-      <div class="formControls col-5"> <span class="select-box">
-        <select class="select" size="1" name="demo1" datatype="*" nullmsg="请选择所在城市！">
-          <option value="" selected>请选择城市</option>
-          <option value="1">北京</option>
-          <option value="2">上海</option>
-          <option value="3">广州</option>
-        </select>
-        </span> </div>
+      <div class="formControls col-5">
+	      	<span class="select-box" id="area">
+		        <!-- <select class="select" size="1" name="city" datatype="*" nullmsg="请选择所在城市！">
+		          <option value="" selected>请选择城市</option>
+		          <option value="1">北京</option>
+		          <option value="2">上海</option>
+		          <option value="3">广州</option>
+		        </select> -->
+	        </span> 
+        </div>
       <div class="col-4"> </div>
     </div>
     <div class="row cl">
       <label class="form-label col-3">备注：</label>
       <div class="formControls col-5">
-        <textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
+        <textarea name="note" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
         <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
       </div>
       <div class="col-4"> </div>
@@ -106,12 +108,13 @@
   </form>
 </div>
 </div>
-<script type="text/javascript" src="resources/scripts/jquery.min.js"></script> 
-<script type="text/javascript" src="resources/scripts/jquery.icheck.min.js"></script> 
-<script type="text/javascript" src="resources/scripts/Validform.min.js"></script>
-<script type="text/javascript" src="resources/scripts/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="resources/lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="resources/lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="resources/lib/layer/1.9.3/layer.js"></script>
 <script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
+<script type="text/javascript" src="resources/scripts/area.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('.skin-minimal input').iCheck({
@@ -123,13 +126,57 @@ $(function(){
 	$("#form-member-add").Validform({
 		tiptype:2,
 		callback:function(form){
-			form[0].submit();
 			var index = parent.layer.getFrameIndex(window.name);
-			parent.$('.btn-refresh').click();
-			parent.layer.close(index);
+			form[0].submit();
+/* 			parent.$('.btn-refresh').click();
+			parent.layer.close(index); */
 		}
 	});
 });
+
+/* 省市县选择 */
+     $(function(){
+
+        add_select(0);
+
+        $('body').on('change', '#area select', function() {
+            var $me = $(this);
+            var $next = $me.next();
+            /**
+             * 如果下一级已经是当前所选地区的子地区，则不进行处理
+             */
+            if ($me.val() == $next.data('pid')) {
+                return;
+            }
+            $me.nextAll().remove();
+            add_select($me.val());
+        });
+
+        function add_select(pid) {
+            var area_names = area['name'+pid];
+            if (!area_names) {
+                return false;
+            }
+            var area_codes = area['code'+pid];
+            var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
+            $select.attr('name', 'area[]');
+            $select.data('pid', pid);
+            if (area_codes[0] != -1) {
+                area_names.unshift('请选择');
+                area_codes.unshift(-1);
+            }
+            for (var idx in area_codes) {
+                var $option = $('<option>');
+                $option.attr('value', area_codes[idx]);
+                $option.text(area_names[idx]);
+                $select.append($option);
+            }
+            var length = $("#area select").length;
+            if(length < 3){
+            $('#area').append($select);
+            }
+        };
+    });
 </script>
 </body>
 </html>

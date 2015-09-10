@@ -5,13 +5,18 @@ import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
+import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;
+import com.ishare.mall.core.status.Gender;
+import com.ishare.mall.core.status.MemberType;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +40,8 @@ public class MemberResource {
     private MemberService memberService;
     @Autowired
     private OAuthService oAuthService;
+    @Autowired
+    private ChannelService channelService;
 
     public static Logger getLog() {
         return log;
@@ -95,7 +102,6 @@ public class MemberResource {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
         Integer rolId = memberDTO.getRoleId();
         Page<Member> result = memberService.findByRoleId(rolId, pageRequest);
-        memberDTO.setPage(PageUtils.mapper(result, pageRequest, MemberDetailDTO.class));
         return memberDTO;
     }
 
@@ -114,7 +120,6 @@ public class MemberResource {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
         Integer channelId = memberDTO.getChannelId();
         Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
-        memberDTO.setPage(PageUtils.mapper(result, pageRequest, MemberDetailDTO.class));
         return memberDTO;
     }
 
@@ -133,5 +138,21 @@ public class MemberResource {
         MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
         memberDTO.setMemberDetailDTO(memberDetailDTO);
         return memberDTO;
+    }
+
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public MemberDTO saveMeber(@RequestBody MemberDTO memberDTO){
+        Member member = new Member();
+        BeanUtils.copyProperties(memberDTO, member);
+        member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
+        member.setCreateBy(memberDTO.getAccount());
+        member.setMemberType(MemberType.MEMBER);
+        Channel channel = channelService.findOne(8);
+        member.setChannel(channel);
+        memberService.saveMember(member);
+        return  memberDTO;
     }
 }

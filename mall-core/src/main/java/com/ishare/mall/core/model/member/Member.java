@@ -31,6 +31,9 @@ public class Member extends BaseEntity {
     /**平台登录密码**/
     @Column(name = "member_password",length = 50)
     private String password;
+    @Column(name = "member_salt", length = 32)
+    private String salt;
+
     /**所属渠道**/
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "channel_id")
@@ -164,5 +167,17 @@ public class Member extends BaseEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getCredentialsSalt() {
+        return account + salt;
     }
 }

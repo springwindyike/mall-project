@@ -2,7 +2,9 @@ package com.ishare.mall.common.base.dto.generic;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
@@ -10,6 +12,8 @@ import java.io.Serializable;
  * Description : DTO父类
  * Version 1.0
  */
+@XmlRootElement
+@JsonAutoDetect
 public abstract class GenericDTO implements Serializable {
     /**
      * Serial UID.

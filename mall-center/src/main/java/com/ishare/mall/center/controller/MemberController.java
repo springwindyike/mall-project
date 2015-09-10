@@ -1,6 +1,7 @@
 package com.ishare.mall.center.controller;
 
 import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.center.form.member.MemberForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
@@ -8,9 +9,11 @@ import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +41,7 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
 	public String findByChannelId(@NotEmpty @PathVariable(OFFSET) Integer offset,
-								  @NotEmpty @PathVariable(LIMIT) Integer limit, HttpServletRequest request) {
+								  @NotEmpty @PathVariable(LIMIT) Integer limit, HttpServletRequest request, Model model) {
 //		MemberDTO memberDTO = new MemberDTO();
 //		memberDTO.setLimit(limit);
 //		memberDTO.setOffset(offset);
@@ -51,6 +54,7 @@ public class MemberController extends BaseController {
 //		MemberDTO memberDTOResult = resultDTO.getBody();
 		//log.debug(MemberDetailDTO.toString());
 		System.out.print("test1111111");
+		//model.addAttribute()
 		return CenterViewConstant.Member.MEMBER_LIST;
 	}
 
@@ -67,7 +71,7 @@ public class MemberController extends BaseController {
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ROL_ID), memberDTO, MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
 		//log.debug(MemberDetailDTO.toString());
-		return memberDTOResult.getPage();
+		return null;
 	}
 
 	/**
@@ -75,13 +79,38 @@ public class MemberController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/findByAccount/{account}", method = RequestMethod.GET)
-	public MemberDetailDTO findByAccount(@NotEmpty @PathVariable("account") String account) {
+	public String findByAccount(@NotEmpty @PathVariable("account") String account) {
+//		MemberDTO memberDTO = new MemberDTO();
+//		memberDTO.setAccount(account);
+//		ResponseEntity<MemberDTO> resultDTO = null;
+//		RestTemplate restTemplate = new RestTemplate();
+//		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
+//		MemberDTO memberDTOResult = resultDTO.getBody();
+		return CenterViewConstant.Member.MEMBER_ADD;
+	}
+
+	/**
+	 * 保存新member
+	 * @param memberForm
+	 * @return member list 页面
+	 */
+	@RequestMapping(value = "/saveMember")
+	public String saveMember(MemberForm memberForm){
 		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setAccount(account);
+		BeanUtils.copyProperties(memberForm,memberDTO);
 		ResponseEntity<MemberDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER),memberDTO,MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
-		return memberDTOResult.getMemberDetailDTO();
+		return CenterViewConstant.Member.MEMBER_LIST;
+	}
+
+	/**
+	 *
+	 * @return to add member page
+	 */
+	@RequestMapping(value = "/addMemberPage")
+	public String forwardTOAddMember(){
+		return CenterViewConstant.Member.MEMBER_ADD;
 	}
 }

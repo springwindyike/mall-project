@@ -56,4 +56,9 @@ public class MemberServiceImpl implements MemberService {
 		Page<Member> page = memberRepository.findByRoleId(rolId, pageRequest);
 		return page;
 	}
+
+	@Override
+	public void saveMember(Member member) {
+		memberRepository.save(member);
+	}
 }
