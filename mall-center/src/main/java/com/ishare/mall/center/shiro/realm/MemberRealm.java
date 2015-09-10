@@ -1,17 +1,17 @@
 package com.ishare.mall.center.shiro.realm;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
 import com.ishare.mall.common.base.dto.permission.PermissionDTO;
 import com.ishare.mall.common.base.dto.permission.RoleDTO;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +59,21 @@ public class MemberRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        return null;
+        String account = (String) token.getPrincipal();
+        ResponseEntity<MemberDTO> resultDTO = null;
+        RestTemplate restTemplate = new RestTemplate();
+        resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Role.REQUEST_MAPPING,"/13885268940"), MemberDTO.class);
+        MemberDTO memberDTO = resultDTO.getBody();
+        if (memberDTO == null) {
+            throw new UnknownAccountException();
+        }
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                memberDTO.getAccount(),
+                memberDTO.getPassword(),
+                ByteSource.Util.bytes(memberDTO.getCredentialsSalt()),
+                getName()
+        );
+        return authenticationInfo;
     }
 
     /**
@@ -100,5 +114,33 @@ public class MemberRealm extends AuthorizingRealm {
      */
     protected String buildBizAppURI(String moduleRequestMapping, String apiRequestMapping) {
         return bizAppUrl + moduleRequestMapping + apiRequestMapping;
+    }
+
+    @Override
+    public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthorizationInfo(principals);
+    }
+
+    @Override
+    public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthenticationInfo(principals);
+    }
+
+    @Override
+    public void clearCache(PrincipalCollection principals) {
+        super.clearCache(principals);
+    }
+
+    public void clearAllCachedAuthorizationInfo() {
+        getAuthorizationCache().clear();
+    }
+
+    public void clearAllCachedAuthenticationInfo() {
+        getAuthenticationCache().clear();
+    }
+
+    public void clearAllCache() {
+        clearAllCachedAuthenticationInfo();
+        clearAllCachedAuthorizationInfo();
     }
 }

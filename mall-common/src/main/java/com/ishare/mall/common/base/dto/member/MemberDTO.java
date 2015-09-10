@@ -3,8 +3,6 @@ package com.ishare.mall.common.base.dto.member;
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -21,6 +19,9 @@ public class MemberDTO extends GenericDTO {
 
     private String account;
     private String password;
+
+    private String salt;
+
     private Integer channelId;
     private Integer roleId;
     private MemberDetailDTO memberDetailDTO;
@@ -120,5 +121,17 @@ public class MemberDTO extends GenericDTO {
 
     public void setPageDTO(PageDTO pageDTO) {
         this.pageDTO = pageDTO;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getCredentialsSalt() {
+        return account + salt;
     }
 }

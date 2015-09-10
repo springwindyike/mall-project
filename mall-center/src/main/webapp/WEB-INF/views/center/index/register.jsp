@@ -125,11 +125,21 @@ $(function(){
 	
 	$("#form-member-add").Validform({
 		tiptype:2,
-		callback:function(form){
-			var index = parent.layer.getFrameIndex(window.name);
-			form[0].submit();
-/* 			parent.$('.btn-refresh').click();
-			parent.layer.close(index); */
+		ajaxPost:true,
+		callback:function(data){
+			if(data.sex=="on"){
+				setTimeout(function(){
+					//$.Hidemsg(); 公用方法关闭信息提示框
+					$.Showmsg("注册成功！");
+					/* var index = parent.layer.getFrameIndex(window.name); */
+					/* parent.layer.close(index); */
+				},2000);
+				setTimeout(function(){
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index); 
+				},5000);
+
+			}
 		}
 	});
 });

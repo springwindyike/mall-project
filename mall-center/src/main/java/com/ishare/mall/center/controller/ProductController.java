@@ -2,14 +2,20 @@ package com.ishare.mall.center.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.form.product.AddProductForm;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 
 
 /**
@@ -26,9 +32,18 @@ public class ProductController extends BaseController {
         return log;
     }
     
-    @RequestMapping(value = CenterURIConstant.Product.ADD_PRODUCT)
+    @RequestMapping(value = CenterURIConstant.Product.ADD_PRODUCT,method = RequestMethod.GET)
     public String addProduct(@ModelAttribute("productAttribute") AddProductForm apf) {
-    	System.out.println("啦啦");
         return CenterViewConstant.Product.ADD_PRODUCT;
+    }
+    @RequestMapping(value = CenterURIConstant.ProductType.PRODUCT_ALL_TYPE)
+    @ResponseBody
+    public ProductTypeDTO addProduct() {
+    	ResponseEntity<ProductTypeDTO> resultDTO = null;
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL), ProductTypeDTO.class);
+		ProductTypeDTO productTypeDTOResult =  resultDTO.getBody();
+		return productTypeDTOResult;
     }
 }

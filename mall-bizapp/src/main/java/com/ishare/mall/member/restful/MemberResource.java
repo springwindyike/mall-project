@@ -14,7 +14,7 @@ import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.status.Gender;
 import com.ishare.mall.core.status.MemberType;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-import com.ishare.mall.core.utils.page.PageUtils;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -239,5 +236,20 @@ public class MemberResource {
             memberDTO.setPageDTO(pageDTO);
         }
         return memberDTO;
+    }
+
+    /**
+     * 通过账号获取用户信息，用于登录
+     * @param account
+     * @return
+     */
+    @RequestMapping(value       = "/{account}",
+                    method      = RequestMethod.GET,
+                    headers     = "Accept=application/xml, application/json",
+                    produces    = {"application/json", "application/xml"})
+    public MemberDTO queryByAccount(@NotEmpty @PathVariable("account") String account) {
+        Member member = memberService.findByAccount(account);
+        if (member == null) return null;
+        return (MemberDTO) MapperUtils.map(member, MemberDTO.class);
     }
 }
