@@ -1,7 +1,11 @@
 package com.ishare.mall.test.repository;
 
+import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.repository.member.MemberRepository;
+import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.status.Gender;
+import com.ishare.mall.core.status.MemberType;
 import com.ishare.mall.test.RepositoryTestTemplate;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,8 @@ import org.springframework.data.domain.PageRequest;
 public class MemberRepositoryTests extends RepositoryTestTemplate {
 	@Autowired
 	private MemberRepository memberRepository;
-
+	@Autowired
+	private ChannelService channelService;
 	@Override
 	public void setUp() {
 
@@ -32,8 +37,17 @@ public class MemberRepositoryTests extends RepositoryTestTemplate {
 
 	@Override
 	public void testRetrieve() {
-		Page<Member> page = memberRepository.findByRoleId(1, new PageRequest(1, 15));
-		Assert.assertTrue(!page.hasContent());
+		Member member = new Member();
+		member.setSex(Gender.MAN);
+		member.setAccount("123456");
+		member.setCreateBy("123456");
+
+		Channel channel = channelService.findOne(8);
+		member.setChannel(channel);
+		member.setMobile("18011111111");
+		member.setMemberType(MemberType.MEMBER);
+		memberRepository.save(member);
+		//Assert.assertTrue(!page.hasContent());
 	}
 
 	@Override

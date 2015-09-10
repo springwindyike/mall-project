@@ -10,6 +10,10 @@ public interface CenterViewConstant {
     interface Index {
         String LOGIN = "index/login";
         String INDEX = "index";
+    	//注册
+    	String REGISTER = "index/register";
+    	//找回密码
+    	String FIND_PASSWORD = "index/find-password";
     }
     
     interface Product {
@@ -18,10 +22,7 @@ public interface CenterViewConstant {
 
     interface Main {
     	String MAIN = "main/index";
-    	//注册
-    	String REGISTER = "main/register";
-    	//找回密码
-    	String FIND_PASSWORD = "main/find-password";
+
     }
 
     interface Member {

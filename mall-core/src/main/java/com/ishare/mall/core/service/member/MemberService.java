@@ -55,4 +55,6 @@ public interface MemberService {
 	 */
 	Page<Member> findByRoleId(Integer rolId, PageRequest pageRequest);
 
+	void saveMember(Member member);
+
 }

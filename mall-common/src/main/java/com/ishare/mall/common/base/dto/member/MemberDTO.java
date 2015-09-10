@@ -22,10 +22,6 @@ public class MemberDTO extends GenericDTO {
 
     private String password;
 
-    private Page<MemberDetailDTO> page;
-
-    private PageRequest pageRequest;
-
     private Integer channelId;
 
     private Integer roleId;
@@ -34,6 +30,8 @@ public class MemberDTO extends GenericDTO {
 
     private int offset;
     private int limit;
+    private String sex;
+    private String mobile;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -53,22 +51,6 @@ public class MemberDTO extends GenericDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Page<MemberDetailDTO> getPage() {
-        return page;
-    }
-
-    public void setPage(Page<MemberDetailDTO> page) {
-        this.page = page;
-    }
-
-    public PageRequest getPageRequest() {
-        return pageRequest;
-    }
-
-    public void setPageRequest(PageRequest pageRequest) {
-        this.pageRequest = pageRequest;
     }
 
     public Integer getChannelId() {
@@ -109,5 +91,21 @@ public class MemberDTO extends GenericDTO {
 
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

@@ -31,15 +31,15 @@
         -
         <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax"
                class="input-text Wdate" style="width:120px;">
-        <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">
-        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
+        <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、账号" id="searchCondition" name="">
+        <button type="submit" onclick="searchMember()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
         </button>
     </div>
     "
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
                                                                class="btn btn-danger radius"><i class="Hui-iconfont">
         &#xe6e2;</i> 批量删除</a> <a href="javascript:"
-                                 onclick="member_add('添加用户','${pageContext.request.contextPath}/member/findByAccount/15.dhtml','','510')"
+                                 onclick="member_add('添加用户','${pageContext.request.contextPath}/member/addMemberPage.dhtml','','510')"
                                  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span>
         <span class="r">共有数据：<strong>88</strong> 条</span></div>
     <div class="mt-20">
@@ -157,6 +157,11 @@
             $(obj).parents("tr").remove();
             layer.msg('已删除!', {icon: 1, time: 1000});
         });
+    }
+    /*根据条件查询*/
+    function searchMember(){
+        var searchCondition = $("#searchCondition").val();
+        url = ${pageContext.request.contextPath}+'/member/
     }
 </script>
 </body>
