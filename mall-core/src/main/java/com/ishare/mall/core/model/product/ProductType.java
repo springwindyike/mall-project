@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description : 商品类别表，自连接表，code 001000100001这种形式来表示商品类型，使得商品可以快速的被查找
  * Version 1.0
  */
-@Entity(name = TABLE_PRODUCT_TYPE_NAME)
+@Entity
+@Table(name = TABLE_PRODUCT_TYPE_NAME)
 public class ProductType extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

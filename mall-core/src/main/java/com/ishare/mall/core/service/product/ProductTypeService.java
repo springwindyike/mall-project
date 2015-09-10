@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.product;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -18,4 +19,7 @@ public abstract interface ProductTypeService {
 
     public abstract ProductType findOne(Integer id);
 
+    public abstract List<ProductType> findByLevel(Integer id);
+    
+    public abstract List<ProductType>findByParentId(Integer pariendId);
 }
