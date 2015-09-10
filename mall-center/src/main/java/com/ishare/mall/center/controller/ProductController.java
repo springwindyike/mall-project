@@ -24,6 +24,7 @@ import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
  * Version 1.0
  */
 @Controller
+@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING)
 public class ProductController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
@@ -32,13 +33,13 @@ public class ProductController extends BaseController {
         return log;
     }
     
-    @RequestMapping(value = CenterURIConstant.Product.ADD_PRODUCT,method = RequestMethod.GET)
+    @RequestMapping(value = "/addProduct")
     public String addProduct(@ModelAttribute("productAttribute") AddProductForm apf) {
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
-    @RequestMapping(value = CenterURIConstant.ProductType.PRODUCT_ALL_TYPE)
+    @RequestMapping(value = "/allType", produces = {"application/json"})
     @ResponseBody
-    public ProductTypeDTO addProduct() {
+    public ProductTypeDTO getType() {
     	ResponseEntity<ProductTypeDTO> resultDTO = null;
 		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
 		RestTemplate restTemplate = new RestTemplate();

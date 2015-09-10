@@ -39,13 +39,7 @@
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				<select name="" class="select">
-					<option value="0">一级分类</option>
-					<option value="1">一级分类</option>
-					<option value="11">├二级分类</option>
-					<option value="12">├二级分类</option>
-					<option value="13">├二级分类</option>
-				</select>
+				<input id ='selectType'class="select" value ='请选择商品分类'/>
 				</span> </div>
 		</div>
 		<div class="row cl">
@@ -787,6 +781,17 @@ $(function(){
 
 	var ue = UE.getEditor('editor');
 });
+$("#selectType").click(function(){
+	$.ajax({
+		   type: "GET",
+		   url:  'http://localhost:8100/center/product/allType.dhtml',
+		   data: '',
+		   dataType: "json",
+		   complete: function(data){
+			 
+		   }
+		   });
+})
 </script>
 </body>
 </html>

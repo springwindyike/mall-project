@@ -98,6 +98,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		  otherDealField.add("typeName");
 		  classMapBuilder.field("parent.id", "parentId");
 		  classMapBuilder.field("id", "id");
+		  classMapBuilder.field("code", "code");
 		  classMapBuilder.field("name", "typeName");
 		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
