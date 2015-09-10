@@ -5,6 +5,7 @@ import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -96,12 +100,27 @@ public class MemberResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public MemberDTO findMemberByRolId(@RequestBody MemberDTO memberDTO) {
-
+        List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
         Integer rolId = memberDTO.getRoleId();
         Page<Member> result = memberService.findByRoleId(rolId, pageRequest);
+        PageDTO pageDTO = new PageDTO();
+        if(result != null && result.getContent() != null && result.getContent().size()>0){
+            List<Member> listMember = result.getContent();
+            for (Member member:listMember){
+                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                BeanUtils.copyProperties(member, memberDetailDTO);
+                memberDetailDTO.setChannelId(member.getChannel().getId());
+                memberDetailDTO.setSex(member.getSex().getName());
+                memberDetailDTO.setMemberType(member.getMemberType().getName());
+                listMemberList.add(memberDetailDTO);
+            }
+            pageDTO.setContent(listMemberList);
+            pageDTO.setTotalPages(result.getTotalPages());
+            memberDTO.setPageDTO(pageDTO);
+        }
         return memberDTO;
     }
 
@@ -115,11 +134,27 @@ public class MemberResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public MemberDTO findByChannelId(@RequestBody MemberDTO memberDTO) {
+        List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
         Integer channelId = memberDTO.getChannelId();
         Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
+        PageDTO pageDTO = new PageDTO();
+        if(result != null && result.getContent() != null && result.getContent().size()>0){
+            List<Member> listMember = result.getContent();
+            for (Member member:listMember){
+                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                BeanUtils.copyProperties(member, memberDetailDTO);
+                memberDetailDTO.setChannelId(member.getChannel().getId());
+                memberDetailDTO.setSex(member.getSex().getName());
+                memberDetailDTO.setMemberType(member.getMemberType().getName());
+                listMemberList.add(memberDetailDTO);
+            }
+            pageDTO.setContent(listMemberList);
+            pageDTO.setTotalPages(result.getTotalPages());
+            memberDTO.setPageDTO(pageDTO);
+        }
         return memberDTO;
     }
 
@@ -145,6 +180,7 @@ public class MemberResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public MemberDTO saveMeber(@RequestBody MemberDTO memberDTO){
+        List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         Member member = new Member();
         BeanUtils.copyProperties(memberDTO, member);
         member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
@@ -153,6 +189,55 @@ public class MemberResource {
         Channel channel = channelService.findOne(8);
         member.setChannel(channel);
         memberService.saveMember(member);
-        return  memberDTO;
+        PageRequest pageRequest = new PageRequest(1,15,Sort.Direction.DESC,"createTime");
+        Integer channelId = memberDTO.getChannelId();
+        Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
+        PageDTO pageDTO = new PageDTO();
+        if(result != null && result.getContent() != null && result.getContent().size()>0){
+            List<Member> listMember = result.getContent();
+            for (Member memberPage:listMember){
+                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                BeanUtils.copyProperties(memberPage, memberDetailDTO);
+                memberDetailDTO.setChannelId(memberPage.getChannel().getId());
+                memberDetailDTO.setSex(memberPage.getSex().getName());
+                memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
+                listMemberList.add(memberDetailDTO);
+            }
+            pageDTO.setContent(listMemberList);
+            pageDTO.setTotalPages(result.getTotalPages());
+            memberDTO.setPageDTO(pageDTO);
+        }
+        return memberDTO;
+    }
+
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public MemberDTO findBySearchCondition(@RequestBody MemberDTO memberDTO){
+        List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
+        String account = memberDTO.getAccount();
+        String name = memberDTO.getName();
+        String mobile = memberDTO.getMobile();
+        int offset = memberDTO.getOffset();
+        int limit = memberDTO.getLimit();
+        PageRequest pageRequest = new PageRequest(0, 1, Sort.Direction.DESC, "account");
+        Page<Member> result = memberService.findByAccountLikeOrNameLikeOrMobileLike(account, name, mobile, pageRequest);
+        PageDTO pageDTO = new PageDTO();
+        if(result != null && result.getContent() != null && result.getContent().size()>0){
+            List<Member> listMember = result.getContent();
+            for (Member member:listMember){
+                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                BeanUtils.copyProperties(member, memberDetailDTO);
+                memberDetailDTO.setChannelId(member.getChannel().getId());
+                memberDetailDTO.setSex(member.getSex().getName());
+                memberDetailDTO.setMemberType(member.getMemberType().getName());
+                listMemberList.add(memberDetailDTO);
+            }
+            pageDTO.setContent(listMemberList);
+            pageDTO.setTotalPages(result.getTotalPages());
+            memberDTO.setPageDTO(pageDTO);
+        }
+        return memberDTO;
     }
 }

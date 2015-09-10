@@ -42,19 +42,16 @@ public class MemberController extends BaseController {
 	@RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
 	public String findByChannelId(@NotEmpty @PathVariable(OFFSET) Integer offset,
 								  @NotEmpty @PathVariable(LIMIT) Integer limit, HttpServletRequest request, Model model) {
-//		MemberDTO memberDTO = new MemberDTO();
-//		memberDTO.setLimit(limit);
-//		memberDTO.setOffset(offset);
-		//PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
-		//memberDTO.setChannelId(channelId);
-		//memberDTO.setPageRequest(pageRequest);
-//		ResponseEntity<MemberDTO> resultDTO = null;
-//		RestTemplate restTemplate = new RestTemplate();
-//		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
-//		MemberDTO memberDTOResult = resultDTO.getBody();
-		//log.debug(MemberDetailDTO.toString());
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setLimit(limit);
+		memberDTO.setOffset(offset);
+		memberDTO.setChannelId(8);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
+		model.addAttribute("pageDTO",memberDTOResult.getPageDTO());
 		System.out.print("test1111111");
-		//model.addAttribute()
 		return CenterViewConstant.Member.MEMBER_LIST;
 	}
 
@@ -112,5 +109,19 @@ public class MemberController extends BaseController {
 	@RequestMapping(value = "/addMemberPage")
 	public String forwardTOAddMember(){
 		return CenterViewConstant.Member.MEMBER_ADD;
+	}
+
+	@RequestMapping(value = "/findBySearchCondition/{searchCondition}")
+	public String findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model){
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setMobile(searchCondition);
+		memberDTO.setAccount(searchCondition);
+		memberDTO.setName(searchCondition);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION),memberDTO,MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
+		model.addAttribute("pageDTO",memberDTOResult.getPageDTO());
+		return CenterViewConstant.Member.MEMBER_LIST;
 	}
 }
