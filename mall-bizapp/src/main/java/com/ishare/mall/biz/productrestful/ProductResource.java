@@ -17,8 +17,8 @@ import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;
+import com.ishare.mall.core.service.product.ProductService;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -31,11 +31,7 @@ public class ProductResource {
 	
     private static final Logger log = LoggerFactory.getLogger(ProductResource.class);
     @Autowired
-    private MemberService memberService;
-    @Autowired
-    private OAuthService oAuthService;
-    @Autowired
-    private ChannelService channelService;
+    private ProductService productService;
 
     public static Logger getLog() {
         return log;
@@ -61,7 +57,7 @@ public class ProductResource {
         			product.setBrand(brand);
         			product.setCreateBy(member);
         			product.setChannel(channel);
-        memberService.saveMember(member);
+        			productService.saveProduct(product);
         return productDetailDTO;
     }
 
