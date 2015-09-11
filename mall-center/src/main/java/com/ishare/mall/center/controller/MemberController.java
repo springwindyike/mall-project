@@ -78,13 +78,13 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "/findByAccount/{account}", method = RequestMethod.GET)
 	public String findByAccount(@NotEmpty @PathVariable("account") String account) {
-//		MemberDTO memberDTO = new MemberDTO();
-//		memberDTO.setAccount(account);
-//		ResponseEntity<MemberDTO> resultDTO = null;
-//		RestTemplate restTemplate = new RestTemplate();
-//		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
-//		MemberDTO memberDTOResult = resultDTO.getBody();
-		return CenterViewConstant.Member.MEMBER_ADD;
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setAccount(account);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
+		return CenterViewConstant.Member.MEMBER_VIEW;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class MemberController extends BaseController {
 		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER),memberDTO,MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
-		return "S";
+		return CenterViewConstant.Member.MEMBER_ADD_SUCCESS;
 	}
 
 	/**
