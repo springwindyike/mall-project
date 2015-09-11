@@ -43,7 +43,7 @@
       <div class="row cl">
         <label class="form-label col-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-8">
-          <input id="" name="account" type="text" placeholder="账户" value="<shiro:principal/>" class="input-text size-L">
+          <input id="" name="account" type="text" placeholder="账户" value="<!shiro:principal/>" class="input-text size-L">
         </div>
       </div>
       <div class="row cl">

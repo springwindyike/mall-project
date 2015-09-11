@@ -45,12 +45,12 @@ public class MemberRealm extends AuthorizingRealm {
 
         ResponseEntity<MemberPermissionDTO> permissionResultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
-        log.debug(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940");
+        log.debug(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING, "/" + account));
         //获取所有权限
-        permissionResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940", MemberPermissionDTO.class);
+        permissionResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING, "/" + account), MemberPermissionDTO.class);
         MemberPermissionDTO memberPermissionDTO = permissionResultDTO.getBody();
         //获取所有角色
-        roleResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Role.REQUEST_MAPPING,"") + "/13885268940", MemberRoleDTO.class);
+        roleResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Role.REQUEST_MAPPING, "/" + account), MemberRoleDTO.class);
         MemberRoleDTO memberRoleDTO = roleResultDTO.getBody();
         //设置角色
         authorizationInfo.setRoles(this.listRole2SetString(memberRoleDTO.getRoleDTOs()));
