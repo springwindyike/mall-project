@@ -53,9 +53,52 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <a class="btn btn-lg btn-primary form-control"
-                       href="${springMacroRequestContext.contextPath}">back</a>
+                    <label class="col-sm-2 control-label">商品介绍</label>
+
+                    <div class="col-sm-10">
+                    <#list product.attributes?keys as attrKey>
+                        <p class="form-control-static">${attrKey} : ${product.attributes[attrKey]}</p>
+                    </#list>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">相册</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static">
+
+                        <div class="row">
+                            <div class="col-xs-6 col-md-3">
+                            <#list product.photo as img>
+                                <a href="${img}" class="thumbnail">
+                                    <img src="${img}" alt="${img}">
+                                </a>
+                            </#list>
+                            </div>
+                        </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">图文</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static">
+
+                        <div class="row">
+                            <div class="col-xs-6 col-md-3">
+                            <#list product.introImgs as img>
+                                <a href="${img}" class="thumbnail">
+                                    <img src="${img}" alt="${img}">
+                                </a>
+                            </#list>
+                            </div>
+                        </div>
+                        </p>
+                    </div>
+                </div>
+                <a class="btn btn-primary form-control"
+                   href="${springMacroRequestContext.contextPath}">back</a>
             </form>
         </div>
     </div>

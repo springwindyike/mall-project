@@ -11,11 +11,9 @@
 <div class="container">
     <div class="page-header">
         <h1>爬虫管理 测试界面</h1>
-
     </div>
 
     <div>
-
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active" id="homeTab"><a href="#home" aria-controls="home" role="tab"
@@ -44,7 +42,8 @@
                         <td>${category.name}</td>
                         <td>${category.link}</td>
                         <td>
-                            <button class="btn btn-primary" data-title="${category.link}">抓取</button>
+                            <button class="btn btn-primary ladda-button" data-style="room-in"
+                                    data-title="${category.link}"><span class="ladda-label">抓取</span></button>
                         </td>
                     </tr>
                     </#list>
@@ -73,6 +72,7 @@
                         <th>CODE</th>
                         <th>TIME</th>
                         <th>NAME</th>
+                        <th>PRICE</th>
                         <th>OP</th>
                     </tr>
                     </thead>
@@ -81,10 +81,16 @@
                     <tr>
                         <td>${product.id}</td>
                         <td>${product.code}</td>
-                        <td>${product.createTime}</td>
-                        <td><a href="${product.link}" target="_blank">${product.name}</a></td>
                         <td>
-                            <button class="btn btn-danger" data-title="${product.link}">抓</button>
+                            <#if (product.updateTime)??>
+                            ${product.updateTime}
+                        </#if>
+                        </td>
+                        <td><a href="${product.link}" target="_blank">${product.name}</a></td>
+                        <td>${product.price!""}</td>
+                        <td>
+                            <button class="btn btn-danger ladda-button" data-title="${product.link}"><span
+                                    class="ladda-label">抓</span></button>
                             <a class="btn btn-primary" href="product/${product.id}" target="_self">看</a>
                         </td>
                     </tr>
@@ -122,22 +128,37 @@
 
         $('div#home>table>tbody>tr>td>button').click(function () {
             var btn = $(this);
-            btn.attr('disabled', 'disabled');
-            var link = $(this).attr('data-title');
+            var link = btn.attr('data-title');
             console.log(link);
-            $.getJSON('fetchList', {link: link}, function (result) {
-                console.log(result);
-                btn.removeAttr('disabled');
+            /*
+            e.preventDefault();
+            var l = Ladda.create(this);
+            l.start();
+            $.post("your-url", {data: data}, function (response) {
+                console.log(response);
+            }, "json").always(function () {
+                l.stop();
+            });
+            */
+            var l = Ladda.create(this);
+            l.start();
+            $.post('fetchList', {link: link}, function (response) {
+                console.log(response);
+            }, 'json').always(function () {
+                l.stop();
             });
         });
 
         $('div#profile>table>tbody>tr>td>button:first-child').click(function () {
             var btn = $(this);
             var link = btn.attr('data-title');
-            console.log(link);
-            $.getJSON('fetchPage', {link: link}, function (result) {
-                console.log(result);
-                alert('OK');
+
+            var l = Ladda.create(this);
+            l.start();
+            $.post('fetchPage', {link: link}, function (response) {
+                console.log(response);
+            }, 'json').always(function () {
+                l.stop();
             });
         });
 

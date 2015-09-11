@@ -11,3 +11,7 @@
 <script src="${springMacroRequestContext.contextPath}/js/jquery-1.11.3.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="${springMacroRequestContext.contextPath}/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/ladda-themeless.min.css">
+<script src="${springMacroRequestContext.contextPath}/js/spin.min.js"></script>
+<script src="${springMacroRequestContext.contextPath}/js/ladda.min.js"></script>

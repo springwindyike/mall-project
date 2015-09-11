@@ -14,7 +14,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="init" id="initBtn">初始化</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#about"></a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             </li>
