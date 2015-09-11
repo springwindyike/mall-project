@@ -53,4 +53,10 @@ public class ProductServiceImpl implements ProductService {
     if (products == null || products.size() == 0) return null;
     return products.get(0);
 	}
+
+	@Override
+	public void saveProduct(Product product) {
+		// TODO Auto-generated method stub
+		productRepository.save(product);
+	}
 }
