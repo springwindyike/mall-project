@@ -64,7 +64,7 @@
                     <td><input type="checkbox" value="1" name=""></td>
                     <td>${memberDetailDTO.account}</td>
                     <td><u style="cursor:pointer" class="text-primary"
-                           onclick="member_show('张三','member-show.html','10001','360','400')">${memberDetailDTO.name}</u></td>
+                           onclick="member_show('${memberDetailDTO.name}','${pageContext.request.contextPath}/member/findByAccount/${memberDetailDTO.account}.dhtml','10001','360','400')">${memberDetailDTO.name}</u></td>
                     <td>${memberDetailDTO.sex}</td>
                     <td>${memberDetailDTO.mobile}</td>
                     <td>${memberDetailDTO.createTime}</td>
