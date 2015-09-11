@@ -8,6 +8,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <link href="resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
@@ -24,6 +25,7 @@
 		<title>『享买』开放平台v1.0</title>
 		<meta name="keywords" content="享买开放平台">
 		<meta name="description" content="享买开放平台">
+        <style type="text/css">.error{color:red;}</style>
 </head>
 
 <body>
@@ -34,13 +36,14 @@
 		<a href="javascript:;" onclick="member_add('找回密码','findPassword.dhtml','','440')">找回密码</a>
 	</span>
 </div>
+<div class="error">${error}</div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
     <form class="form form-horizontal" action="login.dhtml" method="post">
       <div class="row cl">
         <label class="form-label col-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-8">
-          <input id="" name="account" type="text" placeholder="账户" class="input-text size-L">
+          <input id="" name="account" type="text" placeholder="账户" value="<shiro:principal/>" class="input-text size-L">
         </div>
       </div>
       <div class="row cl">
@@ -57,7 +60,7 @@
       <div class="row">
         <div class="formControls col-8 col-offset-3">
           <label for="online">
-            <input type="checkbox" name="online" id="online" value="">
+            <input type="checkbox" name="rememberMe" id="online" value="true">
             使我保持登录状态</label>
         </div>
       </div>
