@@ -126,8 +126,6 @@ $(function(){
 				setTimeout(function(){
 					//$.Hidemsg(); 公用方法关闭信息提示框
 					$.Showmsg("注册成功！");
-					/* var index = parent.layer.getFrameIndex(window.name); */
-					/* parent.layer.close(index); */
 				},2000);
 				setTimeout(function(){
 					var index = parent.layer.getFrameIndex(window.name);
@@ -159,7 +157,8 @@ $(function(){
                 return;
             }
             $me.nextAll().remove();
-            add_select($me.val());
+            //add_select($me.val());.attr("id"));
+            add_select($me.find("option:selected").attr("id"));
         });
 
         function add_select(pid) {
@@ -169,7 +168,7 @@ $(function(){
             }
             var area_codes = area['code'+pid];
             var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
-            $select.attr('name', 'area[]');
+            $select.attr('name', 'city');
             $select.data('pid', pid);
             if (area_codes[0] != -1) {
                 area_names.unshift('请选择');
@@ -177,7 +176,8 @@ $(function(){
             }
             for (var idx in area_codes) {
                 var $option = $('<option>');
-                $option.attr('value', area_codes[idx]);
+                $option.attr('value', area_names[idx]);
+                $option.attr('id', area_codes[idx]);
                 $option.text(area_names[idx]);
                 $select.append($option);
             }
