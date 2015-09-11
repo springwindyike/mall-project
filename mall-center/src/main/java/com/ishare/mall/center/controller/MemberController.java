@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,6 +92,7 @@ public class MemberController extends BaseController {
 	 * @param memberForm
 	 * @return member list 页面
 	 */
+	@ResponseBody
 	@RequestMapping(value = "/saveMember")
 	public String saveMember(MemberForm memberForm){
 		MemberDTO memberDTO = new MemberDTO();
@@ -99,7 +101,7 @@ public class MemberController extends BaseController {
 		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER),memberDTO,MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
-		return CenterViewConstant.Member.MEMBER_LIST;
+		return "S";
 	}
 
 	/**
