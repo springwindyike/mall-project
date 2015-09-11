@@ -1,15 +1,12 @@
 package com.ishare.mall.center.controller;
 
-import com.ishare.mall.center.controller.base.BaseController;
-import com.ishare.mall.center.form.register.RegisterForm;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
-import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
+import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.center.form.register.RegisterForm;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
+import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
+import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 
 /**
  * Created by YinLin on 2015/8/13.
@@ -102,10 +106,17 @@ public class IndexController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = CenterURIConstant.Index.REGISTER, method = RequestMethod.POST)
-    public RegisterForm registerMember(@ModelAttribute("registerAttribute") RegisterForm registerForm) {
+    public MemberRegisterResultDTO registerMember(@ModelAttribute("registerAttribute") RegisterForm registerForm) {
     			log.debug(registerForm.toString());
-        return registerForm;
+    			MemberRegisterDTO memberRegisterDTO = new MemberRegisterDTO();
+    			BeanUtils.copyProperties(registerForm,memberRegisterDTO);
+    			ResponseEntity<MemberRegisterResultDTO> resultDTO = null;
+    			RestTemplate restTemplate = new RestTemplate();
+    			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_REGISTER_MEMBER),memberRegisterDTO,MemberRegisterResultDTO.class);
+    			MemberRegisterResultDTO memberRegisterResultDTO = resultDTO.getBody();   			
+       return memberRegisterResultDTO;
     }
+    
     /**
      * 访问找回密码页面
      * @return

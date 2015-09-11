@@ -1,10 +1,29 @@
 package com.ishare.mall.member.restful;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginDTO;
 import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
+import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
+import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
@@ -14,18 +33,6 @@ import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.status.Gender;
 import com.ishare.mall.core.status.MemberType;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -252,4 +259,50 @@ public class MemberResource {
         if (member == null) return null;
         return (MemberDTO) MapperUtils.map(member, MemberDTO.class);
     }
+    
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_REGISTER_MEMBER, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public MemberRegisterResultDTO registerMember(@RequestBody MemberRegisterDTO memberRegisterDTO){
+        MemberRegisterResultDTO memberRegisterResultDTO = new MemberRegisterResultDTO();
+        String[] area = memberRegisterDTO.getCity().split(",");
+
+        Member member = new Member();
+        Channel channel = new Channel();
+        BeanUtils.copyProperties(memberRegisterDTO, member);
+        member.setSex("1".equals(memberRegisterDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
+        member.setCreateBy(memberRegisterDTO.getAccount());
+        member.setMemberType(MemberType.ADMIN);
+        channel.setUpdateBy(memberRegisterDTO.getAccount());
+        channel.setName(memberRegisterDTO.getChannel());
+        channel.setCountry("中国");
+        channel.setProvince(area[0]);
+        if(area.length > 1){
+        	channel.setCity(area[1]);
+        			 }
+        if(area.length > 2){
+        	channel.setDistrict(area[2]);
+        			 }
+        
+        member.setChannel(channel);
+        try {
+						memberService.saveMember(member);
+					} catch (Exception e) {
+						e.printStackTrace();
+						memberRegisterResultDTO.setSuccess(false);
+						return memberRegisterResultDTO;
+					}
+        memberRegisterResultDTO.setSuccess(true);
+        return memberRegisterResultDTO;
+    }
+    
+    public static void main(String[] args) {
+    	String str = ",2";
+    	String[] area = str.split(",");
+
+    	System.out.println(area[0]);
+    	System.out.println(area[1]);
+//    	System.out.println(area[2]);
+	}
 }

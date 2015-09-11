@@ -111,6 +111,58 @@
 <script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript" src="resources/scripts/area.js"></script>
 <script type="text/javascript">
+
+/* 省市县选择 */
+ $(function(){
+
+    add_select(0);
+
+    $('body').on('change', '#area select', function() {
+        var $me = $(this);
+        var $next = $me.next();
+        /**
+         * 如果下一级已经是当前所选地区的子地区，则不进行处理
+         */
+        if ($me.val() == $next.data('pid')) {
+            return;
+        }
+        $me.nextAll().remove();
+        //add_select($me.val());.attr("id"));
+        add_select($me.find("option:selected").attr("id"));
+    });
+
+    function add_select(pid) {
+        var area_names = area['name'+pid];
+        if (!area_names) {
+            return false;
+        }
+        var area_codes = area['code'+pid];
+        var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
+        $select.attr('name', 'city');
+        $select.data('pid', pid);
+        if (area_codes[0] != -1) {
+            area_names.unshift('请选择');
+            area_codes.unshift(-1);
+        }
+        for (var idx in area_codes) {
+            var $option = $('<option>');
+            if(area_codes[idx] == -1){
+            		$option.attr('value', "");
+            }else{
+            	$option.attr('value', area_names[idx]);
+            					}
+            $option.attr('id', area_codes[idx]);
+            $option.text(area_names[idx]);
+            $select.append($option);
+        }
+        var length = $("#area select").length;
+        if(length < 3){
+        $('#area').append($select);
+        }
+    };
+});
+
+//验证
 $(function(){
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
@@ -122,7 +174,7 @@ $(function(){
 		tiptype:2,
 		ajaxPost:true,
 		callback:function(data){
-			if(data.sex=="0"){
+			if(data.success==true){
 				setTimeout(function(){
 					//$.Hidemsg(); 公用方法关闭信息提示框
 					$.Showmsg("注册成功！");
@@ -132,7 +184,7 @@ $(function(){
 					parent.layer.close(index); 
 				},5000);
 			}
-			if(data.sex=="1"){
+			if(data.success==false){
 				setTimeout(function(){
 					$.Showmsg("注册失败！");
 				},2000);
@@ -142,51 +194,6 @@ $(function(){
 	});
 });
 
-/* 省市县选择 */
-     $(function(){
-
-        add_select(0);
-
-        $('body').on('change', '#area select', function() {
-            var $me = $(this);
-            var $next = $me.next();
-            /**
-             * 如果下一级已经是当前所选地区的子地区，则不进行处理
-             */
-            if ($me.val() == $next.data('pid')) {
-                return;
-            }
-            $me.nextAll().remove();
-            //add_select($me.val());.attr("id"));
-            add_select($me.find("option:selected").attr("id"));
-        });
-
-        function add_select(pid) {
-            var area_names = area['name'+pid];
-            if (!area_names) {
-                return false;
-            }
-            var area_codes = area['code'+pid];
-            var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
-            $select.attr('name', 'city');
-            $select.data('pid', pid);
-            if (area_codes[0] != -1) {
-                area_names.unshift('请选择');
-                area_codes.unshift(-1);
-            }
-            for (var idx in area_codes) {
-                var $option = $('<option>');
-                $option.attr('value', area_names[idx]);
-                $option.attr('id', area_codes[idx]);
-                $option.text(area_names[idx]);
-                $select.append($option);
-            }
-            var length = $("#area select").length;
-            if(length < 3){
-            $('#area').append($select);
-            }
-        };
-    });
 </script>
 </body>
 </html>

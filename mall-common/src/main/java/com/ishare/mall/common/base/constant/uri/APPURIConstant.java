@@ -15,6 +15,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_SAVE_MEMBER = "/saveMember";
         String REQUEST_MAPPING_ADD_MEMBER_PAGE = "/addMemberPage";
         String REQUEST_MAPPING_FIND_BY_CONDITION = "/findBySearchCondition";
+        
+        String REQUEST_MAPPING_REGISTER_MEMBER = "/registerMember";
         //通过账号获取用户信息用于登录
         String REQUEST_MAPPING_QUERY_BY_ACCOUNT = "/queryByAccount";
     }
