@@ -61,11 +61,11 @@
       <label class="form-label col-3"><span class="c-red">*</span>性别：</label>
       <div class="formControls col-5 skin-minimal">
         <div class="radio-box">
-          <input type="radio" id="sex-1" name="sex" datatype="*" nullmsg="请选择性别！">
+          <input type="radio" id="sex-1" name="sex" value="1" datatype="*" nullmsg="请选择性别！">
           <label for="sex-1">男</label>
         </div>
         <div class="radio-box">
-          <input type="radio" id="sex-2" name="sex">
+          <input type="radio" id="sex-2" name="sex" value="0">
           <label for="sex-2">女</label>
         </div>
       </div>
@@ -82,12 +82,7 @@
       <label class="form-label col-3">所在城市：</label>
       <div class="formControls col-5">
 	      	<span class="select-box" id="area">
-		        <!-- <select class="select" size="1" name="city" datatype="*" nullmsg="请选择所在城市！">
-		          <option value="" selected>请选择城市</option>
-		          <option value="1">北京</option>
-		          <option value="2">上海</option>
-		          <option value="3">广州</option>
-		        </select> -->
+	      	
 	        </span> 
         </div>
       <div class="col-4"> </div>
@@ -127,19 +122,22 @@ $(function(){
 		tiptype:2,
 		ajaxPost:true,
 		callback:function(data){
-			if(data.sex=="on"){
+			if(data.sex=="0"){
 				setTimeout(function(){
 					//$.Hidemsg(); 公用方法关闭信息提示框
 					$.Showmsg("注册成功！");
-					/* var index = parent.layer.getFrameIndex(window.name); */
-					/* parent.layer.close(index); */
 				},2000);
 				setTimeout(function(){
 					var index = parent.layer.getFrameIndex(window.name);
 					parent.layer.close(index); 
 				},5000);
-
 			}
+			if(data.sex=="1"){
+				setTimeout(function(){
+					$.Showmsg("注册失败！");
+				},2000);
+			}
+
 		}
 	});
 });
@@ -159,7 +157,8 @@ $(function(){
                 return;
             }
             $me.nextAll().remove();
-            add_select($me.val());
+            //add_select($me.val());.attr("id"));
+            add_select($me.find("option:selected").attr("id"));
         });
 
         function add_select(pid) {
@@ -169,7 +168,7 @@ $(function(){
             }
             var area_codes = area['code'+pid];
             var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
-            $select.attr('name', 'area[]');
+            $select.attr('name', 'city');
             $select.data('pid', pid);
             if (area_codes[0] != -1) {
                 area_names.unshift('请选择');
@@ -177,7 +176,8 @@ $(function(){
             }
             for (var idx in area_codes) {
                 var $option = $('<option>');
-                $option.attr('value', area_codes[idx]);
+                $option.attr('value', area_names[idx]);
+                $option.attr('id', area_codes[idx]);
                 $option.text(area_names[idx]);
                 $select.append($option);
             }

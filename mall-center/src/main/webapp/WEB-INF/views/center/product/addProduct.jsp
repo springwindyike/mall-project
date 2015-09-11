@@ -146,7 +146,7 @@ $(function(){
 		swf: 'lib/webuploader/0.1.5/Uploader.swf',
 	
 		// 文件接收服务端。
-		server: 'http://localhost:8100/center/ueditor/dispatch.dhtml',
+		server: 'http://localhost:8100/center/ueditor/dispatch.dhtml?action=uploadimage',
 	
 		// 选择文件的按钮。可选。
 		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -390,7 +390,7 @@ $(function(){
             swf: 'lib/webuploader/0.1.5/Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
-            server: 'http://localhost:8100/center/ueditor/dispatch.dhtml',
+            server: 'http://localhost:8100/center/ueditor/dispatch.dhtml?action=uploadimage',
             // runtimeOrder: 'flash',
 
             // accept: {

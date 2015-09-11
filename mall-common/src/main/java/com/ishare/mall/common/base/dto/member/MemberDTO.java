@@ -1,6 +1,7 @@
 package com.ishare.mall.common.base.dto.member;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -17,22 +18,19 @@ public class MemberDTO extends GenericDTO {
     private static final long serialVersionUID = 1L;
 
     private String account;
-
     private String password;
 
     private String salt;
 
     private Integer channelId;
-
     private Integer roleId;
-
     private MemberDetailDTO memberDetailDTO;
-
     private int offset;
     private int limit;
     private String sex;
     private String mobile;
-
+    private String name;
+    private PageDTO pageDTO;
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -107,6 +105,22 @@ public class MemberDTO extends GenericDTO {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public PageDTO getPageDTO() {
+        return pageDTO;
+    }
+
+    public void setPageDTO(PageDTO pageDTO) {
+        this.pageDTO = pageDTO;
     }
 
     public String getSalt() {

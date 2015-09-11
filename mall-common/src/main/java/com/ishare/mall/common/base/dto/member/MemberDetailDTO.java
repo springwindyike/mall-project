@@ -33,6 +33,10 @@ public class MemberDetailDTO implements BaseObject {
 	 private String updateBy;//更新者
 	 
 	 private boolean use;//是否可用
+
+	private String password;
+
+	private String mobile;
 	 
 	public String getAccount() {
 		return account;
@@ -113,5 +117,20 @@ public class MemberDetailDTO implements BaseObject {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	 
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 }

@@ -55,6 +55,12 @@ public interface MemberService {
 	 */
 	Page<Member> findByRoleId(Integer rolId, PageRequest pageRequest);
 
+	/**
+	 * 保存新的member
+	 * @param member
+	 */
 	void saveMember(Member member);
+
+	Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account,String name,String mobile,PageRequest pageRequest);
 
 }

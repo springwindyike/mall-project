@@ -3,6 +3,7 @@ package com.ishare.mall.core.service.member.impl;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.repository.member.MemberRepository;
 import com.ishare.mall.core.service.member.MemberService;
+import com.ishare.mall.core.service.member.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberRepository memberRepository;
+
+	@Autowired
+	private PasswordHelper passwordHelper;
 
 	@Override
 	public Member findOne(Integer id) {
@@ -59,6 +63,13 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void saveMember(Member member) {
+		passwordHelper.encryptPassword(member);
 		memberRepository.save(member);
 	}
+
+	@Override
+	public Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account, String name, String mobile,PageRequest pageRequest) {
+		return memberRepository.findByAccountLikeOrNameLikeOrMobileLike(account, name, mobile, pageRequest);
+	}
+
 }

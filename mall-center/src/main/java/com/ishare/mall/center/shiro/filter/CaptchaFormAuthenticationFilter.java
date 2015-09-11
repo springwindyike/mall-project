@@ -22,7 +22,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 
     private static final Logger log = LoggerFactory.getLogger(CaptchaFormAuthenticationFilter.class);
 
-    public CaptchaFormAuthenticationFilter() {}
+    public CaptchaFormAuthenticationFilter() {log.debug("account : ");}
 
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
@@ -34,6 +34,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
             //subject.getSession().setAttribute();
             return onLoginSuccess(token, subject, request, response);
         } catch (AuthenticationException e) {
+            e.printStackTrace();
             return onLoginFailure(token, e, request, response);
         }
     }
@@ -48,12 +49,17 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 
     @Override
     protected CaptchaMemberPasswordToken createToken(ServletRequest request, ServletResponse response) {
+
         //return super.createToken(request, response);
         String account = getUsername(request);
+        log.debug("account:" + account);
         String password = getPassword(request);
         String captcha = getCaptcha(request);
         boolean rememberMe = isRememberMe(request);
         String host = getHost(request);
+        log.debug("password:" + password);
+        log.debug("captcha:" + captcha);
+        log.debug("rememberMe:" + rememberMe);
         return new CaptchaMemberPasswordToken(account, password.toCharArray(), rememberMe, host, captcha);
     }
 
@@ -63,7 +69,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
      * @return
      */
     private String getCaptcha(ServletRequest request) {
-        return WebUtils.getCleanParam(request, "code");
+        return WebUtils.getCleanParam(request, "verifyCode");
     }
 
     @Override
