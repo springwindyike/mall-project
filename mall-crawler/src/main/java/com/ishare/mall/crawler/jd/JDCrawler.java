@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.processor.PageProcessor;
 
 import javax.annotation.PreDestroy;
 
@@ -31,10 +32,11 @@ public class JDCrawler {
     JDPipeline jdPipeline;
     @Autowired
     JDSpiderListener listener;
+
     private Spider spider;
 
     public JDCrawler() {
-        log.info("初始化");
+        log.info("初始化 spider {}", spider);
     }
 
     public Spider init() {
@@ -47,11 +49,11 @@ public class JDCrawler {
         return spider;
     }
 
-    public void start(String url) {
+    public void start(String url, PageProcessor processor) {
 
         log.info("开始抓取{}的内容", url);
-
-        spider = Spider.create(jdListPageProcessor);
+        spider = Spider.create(processor);
+        log.debug("spider {} status {}", spider, spider.getStatus());
         spider.addUrl(url);
         spider.addPipeline(jdPipeline);
         spider.thread(5);
@@ -62,7 +64,8 @@ public class JDCrawler {
     @PreDestroy
     public void stop() {
         log.info("结束");
-
-        spider.stop();
+        if (spider != null) {
+            spider.stop();
+        }
     }
 }

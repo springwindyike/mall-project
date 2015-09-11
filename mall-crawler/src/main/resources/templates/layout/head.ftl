@@ -4,10 +4,10 @@
 <title>Crawler Controller</title>
 
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/sticky-footer-navbar.css" rel="stylesheet">
+<link href="${springMacroRequestContext.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+<link href="${springMacroRequestContext.contextPath}/css/sticky-footer-navbar.css" rel="stylesheet">
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="js/jquery-1.11.3.min.js"></script>
+<script src="${springMacroRequestContext.contextPath}/js/jquery-1.11.3.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<script src="${springMacroRequestContext.contextPath}/js/bootstrap.min.js"></script>
