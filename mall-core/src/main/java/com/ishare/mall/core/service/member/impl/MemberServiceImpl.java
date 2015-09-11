@@ -66,4 +66,10 @@ public class MemberServiceImpl implements MemberService {
 		passwordHelper.encryptPassword(member);
 		memberRepository.save(member);
 	}
+
+	@Override
+	public Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account, String name, String mobile,PageRequest pageRequest) {
+		return memberRepository.findByAccountLikeOrNameLikeOrMobileLike(account, name, mobile, pageRequest);
+	}
+
 }

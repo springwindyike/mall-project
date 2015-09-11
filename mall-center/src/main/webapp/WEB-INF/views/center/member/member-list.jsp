@@ -25,23 +25,25 @@
                                               href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
-    <div class="text-c"> 日期范围：
-        <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin"
+    <form action="" method="post" class="form form-horizontal" id="form-member-search">
+        <div class="text-c"> 日期范围：
+            <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin"
+                   class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax"
                class="input-text Wdate" style="width:120px;">
-        -
-        <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax"
-               class="input-text Wdate" style="width:120px;">
-        <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、账号" id="searchCondition" name="">
-        <button type="submit" onclick="searchMember()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
-        </button>
-    </div>
-    "
+
+            <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、账号" id="searchCondition" name="">
+            <button type="submit" onclick="searchMember()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
+            </button>
+        </div>
+    </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
                                                                class="btn btn-danger radius"><i class="Hui-iconfont">
         &#xe6e2;</i> 批量删除</a> <a href="javascript:"
                                  onclick="member_add('添加用户','${pageContext.request.contextPath}/member/addMemberPage.dhtml','','510')"
                                  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span>
-        <span class="r">共有数据：<strong>88</strong> 条</span></div>
+        <span class="r">共有：<strong>${pageDTO.totalPages}</strong> 页</span></div>
     <div class="mt-20">
         <table class="table table-border table-bordered table-hover table-bg table-sort">
             <thead>
@@ -51,37 +53,35 @@
                 <th width="100">用户名</th>
                 <th width="40">性别</th>
                 <th width="90">手机</th>
-                <th width="150">邮箱</th>
-                <th width="">地址</th>
                 <th width="130">加入时间</th>
                 <th width="70">状态</th>
                 <th width="100">操作</th>
             </tr>
             </thead>
             <tbody>
-            <tr class="text-c">
-                <td><input type="checkbox" value="1" name=""></td>
-                <td>1</td>
-                <td><u style="cursor:pointer" class="text-primary"
-                       onclick="member_show('张三','member-show.html','10001','360','400')">张三</u></td>
-                <td>男</td>
-                <td>13000000000</td>
-                <td>admin@mail.com</td>
-                <td class="text-l">北京市 海淀区</td>
-                <td>2014-6-11 11:11:42</td>
-                <td class="td-status"><span class="label label-success radius">已启用</span></td>
-                <td class="td-manage"><a style="text-decoration:none" onClick="member_stop(this,'10001')"
-                                         href="javascript:" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a
-                        title="编辑" href="javascript:" onclick="member_edit('编辑','member-add.html','4','','510')"
-                        class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a
-                        style="text-decoration:none" class="ml-5"
-                        onClick="change_password('修改密码','change-password.html','10001','600','270')" href="javascript:"
-                        title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:"
-                                                                                 onclick="member_del(this,'1')"
-                                                                                 class="ml-5"
-                                                                                 style="text-decoration:none"><i
-                        class="Hui-iconfont">&#xe6e2;</i></a></td>
-            </tr>
+            <c:forEach items="${pageDTO.content}" var="memberDetailDTO">
+                <tr class="text-c">
+                    <td><input type="checkbox" value="1" name=""></td>
+                    <td>${memberDetailDTO.account}</td>
+                    <td><u style="cursor:pointer" class="text-primary"
+                           onclick="member_show('${memberDetailDTO.name}','${pageContext.request.contextPath}/member/findByAccount/${memberDetailDTO.account}.dhtml','10001','360','400')">${memberDetailDTO.name}</u></td>
+                    <td>${memberDetailDTO.sex}</td>
+                    <td>${memberDetailDTO.mobile}</td>
+                    <td>${memberDetailDTO.createTime}</td>
+                    <td class="td-status"><span class="label label-success radius">已启用</span></td>
+                    <td class="td-manage"><a style="text-decoration:none" onClick="member_stop(this,'10001')"
+                                             href="javascript:" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a
+                            title="编辑" href="javascript:" onclick="member_edit('编辑','member-add.html','4','','510')"
+                            class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a
+                            style="text-decoration:none" class="ml-5"
+                            onClick="change_password('修改密码','change-password.html','10001','600','270')" href="javascript:"
+                            title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:"
+                                                                                     onclick="member_del(this,'1')"
+                                                                                     class="ml-5"
+                                                                                     style="text-decoration:none"><i
+                            class="Hui-iconfont">&#xe6e2;</i></a></td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>
@@ -161,7 +161,9 @@
     /*根据条件查询*/
     function searchMember(){
         var searchCondition = $("#searchCondition").val();
-        url = ${pageContext.request.contextPath}+'/member/
+        var url = '${pageContext.request.contextPath}'+'/member/findBySearchCondition/'+searchCondition+'.dhtml';
+        $("#form-member-search").attr("action",url);
+        $("#form-member-search").submit();
     }
 </script>
 </body>

@@ -17,5 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpe
 
 	@Query("SELECT m FROM Member m, MemberRole mr WHERE mr.role.id=?1 AND m.id = mr.member.id")
 	Page<Member> findByRoleId(Integer roleId, Pageable pageable);
+
+	Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account, String name, String mobile,Pageable pageable);
 }
 
