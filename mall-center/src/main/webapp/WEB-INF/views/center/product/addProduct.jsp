@@ -21,15 +21,22 @@
 <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
 <link href='${pageContext.request.contextPath}/resources/css/style.css' rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/demo.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/zTreeStyle.css" type="text/css">
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.ztree.core-3.5.js"></script>
 <title>新增图片</title>
     <script type="text/javascript">
         var context_ = '${context_}/';
     </script>
 </head>
 <body>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
 <div class="pd-20">
-	 <c:url var="saveUrl" value="/addProduct" />
-    <form:form modelAttribute="productAttribute" action="${saveUrl}" class="form form-horizontal" id="form-article-add">
+	 <c:url var="saveUrl" value="/product/addProduct.dhtml" />
+    <form:form modelAttribute="productAttribute" action="${saveUrl}"  method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>产品标题：</label>
 			<div class="formControls col-10">
@@ -39,8 +46,21 @@
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				<input id ='selectType'class="select" value ='请选择商品分类'/>
+				<!-- <input id ='selectType'class="select" value ='请选择商品分类'/> -->
+				 <form:select path="typeCode" class="select">
+<!-- 					<option path="typeCode" value="1000100101">衬衫</option>
+ -->					 <form:option value="1000100101">衬衫</form:option>  
+				 </form:select>
+					<!-- 	<div id ='showType' class="content_wrap">
+							<div class="zTreeDemoBackground left form-label">
+								<ul id="treeDemo" class="ztree"></ul>
+							</div>
+						</div> -->
 				</span> </div>
+				<label class="form-label col-2">产品库存：</label>
+			<div class="formControls col-2">
+				<form:input type="text" class="input-text" value="0" placeholder="" id="" name=""  path="inventory"/>
+			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-2">产品进价：</label>${type}
@@ -51,16 +71,6 @@
 			<div class="formControls col-4">
 					<form:input type="text" path="marketPrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
 				元</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-2">缩略图：</label>
-			<div class="formControls col-10">
-				<div class="uploader-thum-container">
-					<div id="fileList" class="uploader-list"></div>
-					<div id="filePicker">选择图片</div>
-					<button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
-				</div>
-			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-2">图片上传：</label>
@@ -87,6 +97,13 @@
 			<label class="form-label col-2">详细内容：</label>
 			<div class="formControls col-10"> 
 				<script id="editor" type="text/plain" style="width:100%;height:400px;"></script> 
+				<script type="text/javascript">
+				function getContent() {
+					   // var arr = [];
+					   $("#descri").value = UE.getEditor('editor').getContent();
+					};
+				</script> 
+					<form:input type="hidden" id="descri" value="" path="description"/>
 			</div>
 		</div>
 		<div class="row cl">
@@ -112,6 +129,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">
 $(function(){
+	$("#showType").hide();
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
 		radioClass: 'iradio-blue',
@@ -781,7 +799,7 @@ $(function(){
 
 	var ue = UE.getEditor('editor');
 });
-$("#selectType").click(function(){
+/* $("#selectType").click(function(){
 	$.ajax({
 		   type: "GET",
 		   url:  'http://localhost:8100/center/product/allType.dhtml',
@@ -790,8 +808,24 @@ $("#selectType").click(function(){
 		   complete: function(data){
 			 
 		   }
-		   });
-})
+				   });
+	var setting = {	};
+	var zNodes =[
+		{ name:"父节点1 - 展开", open:true,
+			children: [
+				{ name:"父节点11 - 折叠",
+					children: [
+						{ name:"叶子节点111"},
+						{ name:"叶子节点112"},
+						{ name:"叶子节点113"},
+						{ name:"叶子节点114"}
+					]}
+			]}
+
+	];
+	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	$("#showType").show();
+}); */
 </script>
 </body>
 </html>

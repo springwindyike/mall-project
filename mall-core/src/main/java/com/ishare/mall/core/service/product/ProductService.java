@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
 
 /**
@@ -19,4 +20,11 @@ public abstract interface ProductService {
     public abstract Product findOne(Integer id);
 
     Product findByCode(String code);
+    
+    /**
+	 * 保存Product
+	 *
+	 * @return
+	 */
+    void saveProduct(Product product);
 }

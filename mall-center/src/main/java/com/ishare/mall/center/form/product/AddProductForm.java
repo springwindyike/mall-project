@@ -19,14 +19,18 @@ public class AddProductForm {
     private Float marketPrice;
   
     //描述
-	/*@NotEmpty(message = "产品描述不能为空")*/
+	@NotEmpty(message = "产品描述不能为空")
     private String description;
- 
-    //购买须知
-	/*@NotEmpty(message = "产品购买须知不能为空")*/
-    private String buyExplain;
 	
-	/*@NotEmpty(message = "库存不能为空")*/
+	 //分类id
+		@NotEmpty(message = "产品分类id")
+	    private Integer typeId;
+ 
+/*    //购买须知
+	@NotEmpty(message = "产品购买须知不能为空")
+    private String buyExplain;*/
+	
+	@NotEmpty(message = "库存不能为空")
     private Integer inventory;
 
 	public String getProductName() {
@@ -49,6 +53,14 @@ public class AddProductForm {
 		return marketPrice;
 	}
 
+	public String getTypeCode() {
+		return typeCode;
+	}
+
+	public void setTypeCode(String typeCode) {
+		this.typeCode = typeCode;
+	}
+
 	public void setMarketPrice(Float marketPrice) {
 		this.marketPrice = marketPrice;
 	}
@@ -61,12 +73,21 @@ public class AddProductForm {
 		this.description = description;
 	}
 
-	public String getBuyExplain() {
+	
+/*	public String getBuyExplain() {
 		return buyExplain;
 	}
 
 	public void setBuyExplain(String buyExplain) {
 		this.buyExplain = buyExplain;
+	}*/
+
+	public Integer getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(Integer typeId) {
+		this.typeId = typeId;
 	}
 
 	public Integer getInventory() {

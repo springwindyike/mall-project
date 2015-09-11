@@ -1,7 +1,11 @@
 package com.ishare.mall.center.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.form.product.AddProductForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 
 
@@ -33,8 +39,31 @@ public class ProductController extends BaseController {
         return log;
     }
     
-    @RequestMapping(value = "/addProduct")
+    @RequestMapping(value = "/addProduct",method = RequestMethod.GET)
     public String addProduct(@ModelAttribute("productAttribute") AddProductForm apf) {
+        return CenterViewConstant.Product.ADD_PRODUCT;
+    }
+    
+    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+    public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
+    	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
+    	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+    /*	productDetailDTO.setName(apf.getProductName());
+    	productDetailDTO.setDescription(apf.getDescription());
+    	productDetailDTO.setTypeCode(apf.getTypeCode());
+    	productDetailDTO.setBasePrice(apf.getBasePrice());
+    	productDetailDTO.setMarketPrice(apf.getMarketPrice());
+    	productDetailDTO.setInventory(apf.getInventory());*/
+    	BeanUtils.copyProperties(addProductForm,productDetailDTO);
+    	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
+    	productDetailDTO.setBrandId(1);
+    	productDetailDTO.setChannelId(1);
+    	productDetailDTO.setTypeId(addProductForm.getTypeId());
+    	productDetailDTO.setCreateByAccount(member.getAccount());
+    	ResponseEntity<ProductDetailDTO> resultDTO = null;
+    	RestTemplate restTemplate = new RestTemplate();
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_SAVE_PRODUCT),productDetailDTO,ProductDetailDTO.class);
+			ProductDetailDTO productDTOResult = resultDTO.getBody();
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
     @RequestMapping(value = "/allType", produces = {"application/json"})
