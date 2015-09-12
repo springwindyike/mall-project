@@ -1,4 +1,4 @@
-package com.ishare.mall.member.restful;
+package com.ishare.mall.biz.restful.member;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberRoleDTO;

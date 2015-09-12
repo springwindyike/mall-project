@@ -21,15 +21,11 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 public class Role extends BaseEntity {
     /**角色Id**/
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**角色名称**/
     @Column(name = "role_name")
     private String name;
-    /**权限组**/
-    @ManyToMany
-    @JoinTable(name = TABLE_MEMBER_ROLE_NAME, joinColumns = {@JoinColumn(name="role_id")}, inverseJoinColumns = {@JoinColumn(name = "member_account")})
-    private Set<Member> members = Sets.newConcurrentHashSet();
 
     public Integer getId() {
         return id;
@@ -47,11 +43,4 @@ public class Role extends BaseEntity {
         this.name = name;
     }
 
-    public Set<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(Set<Member> members) {
-        this.members = members;
-    }
 }

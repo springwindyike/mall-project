@@ -1,21 +1,14 @@
-package com.ishare.mall.biz.productType.restful;
+package com.ishare.mall.biz.restful.product.type;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
-import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
-import com.ishare.mall.common.base.dto.permission.RoleDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.core.model.permission.Role;
 import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.permission.RoleService;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.ishare.mall.biz.productrestful;
+package com.ishare.mall.biz.restful.product;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,6 @@ import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.service.product.ProductService;
 
 /**

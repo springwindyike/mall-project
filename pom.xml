@@ -28,7 +28,7 @@
 
         <java.version>1.7</java.version>
         <spring.version>4.1.7.RELEASE</spring.version>
-        <spring.jpa.version>1.8.1.RELEASE</spring.jpa.version>
+        <spring.jpa.version>1.8.2.RELEASE</spring.jpa.version>
         <hibernate.version>4.3.10.Final</hibernate.version>
         <tomcat.version>8.0.24</tomcat.version>
         <mysql.version>5.1.36</mysql.version>
@@ -126,7 +126,11 @@
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${spring.jpa.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>1.10.2.RELEASE</version>
+            </dependency>
             <!-- Spring Boot-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

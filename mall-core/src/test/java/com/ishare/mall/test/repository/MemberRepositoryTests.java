@@ -52,7 +52,7 @@ public class MemberRepositoryTests extends RepositoryTestTemplate {
 //		member.setMobile("18011111111");
 //		member.setMemberType(MemberType.MEMBER);
 		PageRequest pageRequest = new PageRequest(0,1, Sort.Direction.DESC, "account");
-		Page<Member> memberPage = memberRepository.findByAccountLikeOrNameLikeOrMobileLike("123456", "123456", "123456", pageRequest);
+		Page<Member> memberPage = null; //memberRepository.findByAccountLikeOrNameLikeOrMobileLike("123456", "123456", "123456", pageRequest);
 		List<Member> list = memberPage.getContent();
 
 		System.out.println("totalElements = "+memberPage.getTotalElements()+"totalPage"+memberPage.getTotalPages() +

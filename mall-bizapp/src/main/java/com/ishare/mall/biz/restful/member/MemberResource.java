@@ -1,4 +1,4 @@
-package com.ishare.mall.member.restful;
+package com.ishare.mall.biz.restful.member;
 
 import java.util.ArrayList;
 import java.util.List;

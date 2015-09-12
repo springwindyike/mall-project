@@ -1,4 +1,4 @@
-package com.ishare.mall.channel.restful;
+package com.ishare.mall.biz.restful.channel;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
