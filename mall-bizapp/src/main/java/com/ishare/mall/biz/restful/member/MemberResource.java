@@ -35,6 +35,7 @@ import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.status.Gender;
 import com.ishare.mall.core.status.MemberType;
+import com.ishare.mall.core.utils.UuidUtils;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
@@ -285,6 +286,11 @@ public class MemberResource {
         return (MemberDTO) MapperUtils.map(member, MemberDTO.class);
     }
     
+    /**
+     * 账号注册
+     * @param memberRegisterDTO
+     * @return
+     */
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_REGISTER_MEMBER, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
@@ -302,16 +308,23 @@ public class MemberResource {
         Member member = new Member();
         Channel channel = new Channel();
         BeanUtils.copyProperties(memberRegisterDTO, member);
+        Date date = new Date();
+        String dateStr = String.valueOf(date.getTime());
         member.setSex("1".equals(memberRegisterDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
         member.setCreateBy(memberRegisterDTO.getAccount());
         member.setMemberType(MemberType.ADMIN);
-        member.setCreateTime(new Date());
+        member.setCreateTime(date);
+        
         channel.setUpdateBy(memberRegisterDTO.getAccount());
         channel.setName(memberRegisterDTO.getChannel());
         channel.setCountry("中国");
         channel.setProvince(area[0]);
-        channel.setCreateTime(new Date());
+        channel.setCreateTime(date);
         channel.setCreateBy(memberRegisterDTO.getAccount());
+        UuidUtils uu = new UuidUtils();
+        String appId = uu.App_Id();
+        channel.setAppId(appId);
+        channel.setAppSecret(uu.App_screct(dateStr, appId));
         if(area.length > 1){
         	channel.setCity(area[1]);
         			 }

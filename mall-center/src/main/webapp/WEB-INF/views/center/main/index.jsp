@@ -101,6 +101,14 @@
 				</ul>
 			</dd>
 		</dl>
+		<dl id="menu-order">
+			<dt><i class="Hui-iconfont">&#xe627;</i> 订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="order/list.dhtml" href="javascript:void(0)">订单列表</a></li>
+				</ul>
+			</dd>
+		</dl>
 		<!--<dl id="menu-page">
 			<dt><i class="Hui-iconfont">&#xe626;</i> 页面管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
