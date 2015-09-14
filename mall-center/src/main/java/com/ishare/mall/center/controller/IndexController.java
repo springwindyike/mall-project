@@ -145,14 +145,6 @@ public class IndexController extends BaseController {
 			ValidformRespDTO validformRespDTO = resultDTO.getBody();
 			return validformRespDTO;
     }
-    /**
-     * 访问找回密码页面
-     * @return
-     */
-    @RequestMapping(value = CenterURIConstant.Index.FIND_PASSWORD, method = RequestMethod.GET)
-    public String findPassword() {
-        return CenterViewConstant.Index.FIND_PASSWORD;
-    }
     
     @RequestMapping(value ="test")
     public String test() {

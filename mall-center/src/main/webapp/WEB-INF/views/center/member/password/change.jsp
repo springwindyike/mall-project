@@ -10,8 +10,8 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<link href="resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
 
 <head>
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -53,11 +53,11 @@
 		</div>
 	</form>
 </div>
-<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="resources/lib/Validform/5.3.2/Validform.min.js"></script>
-<script type="text/javascript" src="resources/lib/layer/1.9.3/layer.js"></script>
-<script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
-<script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script>
 $(function(){
 	$("#form-change-password").Validform({
