@@ -12,12 +12,14 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,6 +33,7 @@ import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
+import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
 
 
 /**
@@ -125,6 +128,21 @@ public class IndexController extends BaseController {
        return memberRegisterResultDTO;
     }
     
+    /**
+     * 注册账号验证
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = CenterURIConstant.Index.ACCOUNTVALID, method = RequestMethod.POST)
+    public ValidformRespDTO accountValid(@RequestParam("name") String name, @RequestParam("param") String param) {
+    	MemberRegisterDTO memberRegisterDTO = new MemberRegisterDTO();
+    	memberRegisterDTO.setAccount(param);
+			ResponseEntity<ValidformRespDTO> resultDTO = null;
+			RestTemplate restTemplate = new RestTemplate();
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT), memberRegisterDTO, ValidformRespDTO.class);
+			ValidformRespDTO validformRespDTO = resultDTO.getBody();
+			return validformRespDTO;
+    }
     /**
      * 访问找回密码页面
      * @return
