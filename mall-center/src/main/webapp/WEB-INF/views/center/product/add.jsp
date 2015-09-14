@@ -35,7 +35,7 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
 <div class="pd-20">
-	 <c:url var="saveUrl" value="/product/addProduct.dhtml" />
+	 <c:url var="saveUrl" value="/product/add.dhtml" />
     <form:form modelAttribute="productAttribute" action="${saveUrl}"  method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>产品标题：</label>
