@@ -39,7 +39,7 @@ public class ProductResource {
 
 
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST,
+    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_SAVE, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})

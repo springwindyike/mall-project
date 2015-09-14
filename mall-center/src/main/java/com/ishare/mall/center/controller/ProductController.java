@@ -18,6 +18,7 @@ import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.form.product.AddProductForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
@@ -30,7 +31,7 @@ import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
  * Version 1.0
  */
 @Controller
-@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING)
+@RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING)
 public class ProductController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
@@ -39,12 +40,12 @@ public class ProductController extends BaseController {
         return log;
     }
     
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_SAVE,method = RequestMethod.GET)
     public String addProduct(@ModelAttribute("productAttribute") AddProductForm apf) {
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
     
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_SAVE, method = RequestMethod.POST)
     public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
     	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
     	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
@@ -62,7 +63,7 @@ public class ProductController extends BaseController {
     	productDetailDTO.setCreateByAccount("18566469285");
     	ResponseEntity<ProductDetailDTO> resultDTO = null;
     	RestTemplate restTemplate = new RestTemplate();
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_SAVE_PRODUCT),productDetailDTO,ProductDetailDTO.class);
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_SAVE),productDetailDTO,ProductDetailDTO.class);
 			ProductDetailDTO productDTOResult = resultDTO.getBody();
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
