@@ -122,19 +122,27 @@
                 },
                 "sAjaxSource": ajaxSource,
                 "aoColumns": [
-                    { "mData": "name" },
-                    { "mData": "position" },
-                    { "mData": "office" },
-                    { "mData": "phone" },
-                    { "mData": "start_date" },
-                    { "mData": "salary" },
+                    { "data": "name" },
+                    { "data": "position" },
+                    { "data": "office" },
+                    { "data": "phone" },
+                    { "data": "start_date" },
+                    { "data": "salary" },
+                    { "data": null }
                 ],
                 "columnDefs" : [{
-                    "targets" : 0 ,
-                    "render": function(data, type, full) {
-                        return '<a href="xxx">hello</a>';
-                    }
-                }],
+                        "targets" : 0 ,
+                        "render" : function(data, type, full) {
+                            return '<a href="xxx">hello</a>';
+                        }
+                    },
+                    {
+                       "targets" : 6,
+                        "render" : function(data, type, full) {
+                            return '<input type="button" value="编辑"/>' + data.office;
+                        }
+
+                    }],
             } );
             $("#search").click(function () {
                 table.fnReloadAjax(ajaxSource + "?"+ $("#username").attr("name") + "=" +  $("#username").val());
@@ -158,6 +166,7 @@
                 <th>Phone</th>
                 <th>Start Date</th>
                 <th>Salary</th>
+                <th>操作</th>
             </tr>
             </thead>
         </table>
