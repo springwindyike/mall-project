@@ -39,12 +39,12 @@ public class ProductController extends BaseController {
         return log;
     }
     
-    @RequestMapping(value = "/addProduct",method = RequestMethod.GET)
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
     public String addProduct(@ModelAttribute("productAttribute") AddProductForm apf) {
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
     
-    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
     	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
     	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
@@ -59,7 +59,7 @@ public class ProductController extends BaseController {
     	productDetailDTO.setBrandId(1);
     	productDetailDTO.setChannelId(1);
     	productDetailDTO.setTypeId(addProductForm.getTypeId());
-    	productDetailDTO.setCreateByAccount(member.getAccount());
+    	productDetailDTO.setCreateByAccount("18566469285");
     	ResponseEntity<ProductDetailDTO> resultDTO = null;
     	RestTemplate restTemplate = new RestTemplate();
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_SAVE_PRODUCT),productDetailDTO,ProductDetailDTO.class);
