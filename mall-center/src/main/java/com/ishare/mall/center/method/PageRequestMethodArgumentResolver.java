@@ -46,7 +46,7 @@ public class PageRequestMethodArgumentResolver implements HandlerMethodArgumentR
         Integer currentPage = 0;
         if (null != webRequest.getParameter("iDisplayStart")) {
             try {
-                currentPage = (Integer.valueOf(webRequest.getParameter("iDisplayStart")) / 10) + 1;
+                currentPage = (Integer.valueOf(webRequest.getParameter("iDisplayStart")) / pageSize) + 1;
             } catch (Exception e) {
                 currentPage = 1;
             }
