@@ -133,7 +133,7 @@
 			<dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="member/offset/1/limit/15.dhtml" href="javascript:">会员列表</a></li>
+					<li><a _href="member/forwardTOMemberList.dhtml" href="javascript:">会员列表</a></li>
 					<li><a _href="member-del.html" href="javascript:">删除的会员</a></li>
 					<li><a _href="member-level.html" href="javascript:">等级管理</a></li>
 					<li><a _href="member-scoreoperation.html" href="javascript:">积分管理</a></li>

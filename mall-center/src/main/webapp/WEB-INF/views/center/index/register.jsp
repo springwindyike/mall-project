@@ -32,7 +32,7 @@
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>手机：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空">
+        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空" ajaxurl="accountValid.dhtml" sucmsg="验证通过！">
       </div>
       <div class="col-4"> </div>
     </div>

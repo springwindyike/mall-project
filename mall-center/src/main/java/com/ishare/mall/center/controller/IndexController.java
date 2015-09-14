@@ -18,9 +18,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.ishare.mall.center.annoation.PageRequest;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.controller.test.Person;
 import com.ishare.mall.center.controller.test.PersonJsonObject;
@@ -31,6 +33,9 @@ import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
+import com.ishare.mall.common.base.dto.page.PageRequestDTO;
+import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+
 
 
 /**
@@ -126,6 +131,21 @@ public class IndexController extends BaseController {
     }
     
     /**
+     * 注册账号验证
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = CenterURIConstant.Index.ACCOUNTVALID, method = RequestMethod.POST)
+    public ValidformRespDTO accountValid(@RequestParam("name") String name, @RequestParam("param") String param) {
+    	MemberRegisterDTO memberRegisterDTO = new MemberRegisterDTO();
+    	memberRegisterDTO.setAccount(param);
+			ResponseEntity<ValidformRespDTO> resultDTO = null;
+			RestTemplate restTemplate = new RestTemplate();
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT), memberRegisterDTO, ValidformRespDTO.class);
+			ValidformRespDTO validformRespDTO = resultDTO.getBody();
+			return validformRespDTO;
+    }
+    /**
      * 访问找回密码页面
      * @return
      */
@@ -152,12 +172,17 @@ public class IndexController extends BaseController {
     }
     @RequestMapping(value = "table/data", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public PersonJsonObject testDataTables(HttpServletRequest request) {
+    public PersonJsonObject testDataTables(@PageRequest PageRequestDTO pageRequestDTO, HttpServletRequest request) {
         log.debug("hhahhahahah....");
+        log.debug("pageRequestDTO.pageSize : " + pageRequestDTO.getPageSize());
         //Fetch the page number from client
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
+        Integer pageNumber = pageRequestDTO.getCurrentPage();
+        if (null != request.getParameter("iDisplayStart")) {
+            log.debug("iDisplayStart : " + request.getParameter("iDisplayStart"));
+            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart")) / pageRequestDTO.getPageSize()) + 1;
+        }
+
+        log.debug("pageNumber : " + pageNumber);
 
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");

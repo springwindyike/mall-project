@@ -15,9 +15,11 @@ public interface CenterURIConstant {
         //登录
         String LOGIN = "login";
         //注册member
-        String REGISTER="register";
+        String REGISTER = "register";
         //找回密码
-        String FIND_PASSWORD="findPassword";
+        String FIND_PASSWORD = "findPassword";
+        //验证账户名
+        String ACCOUNTVALID = "accountValid";
     }
     
     interface Product{

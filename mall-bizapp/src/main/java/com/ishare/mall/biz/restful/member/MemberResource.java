@@ -1,6 +1,7 @@
 package com.ishare.mall.biz.restful.member;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ishare.mall.common.base.constant.CommonConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
@@ -25,6 +27,7 @@ import com.ishare.mall.common.base.dto.member.MemberLoginResultDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -157,6 +160,8 @@ public class MemberResource {
             }
             pageDTO.setContent(listMemberList);
             pageDTO.setTotalPages(result.getTotalPages());
+            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
+            pageDTO.setiTotalRecords(result.getTotalElements());
             memberDTO.setPageDTO(pageDTO);
         }
         return memberDTO;
@@ -178,6 +183,28 @@ public class MemberResource {
         memberDTO.setMemberDetailDTO(memberDetailDTO);
         return memberDTO;
     }
+    /**
+     * 通过account查询出memeber是否存在
+     *
+     * @param memberDTO
+     * @return Member 返回的数据对象
+     */
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public ValidformRespDTO findValidByAccount(@RequestBody MemberRegisterDTO memberRegisterDTO) {
+        Member member = memberService.findByAccount(memberRegisterDTO.getAccount());
+        ValidformRespDTO validformRespDTO = new ValidformRespDTO();
+        if(null != member){
+		        validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_FAIL_INFO);
+		        validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_FAIL_STATUS);
+	    			}else{
+		        validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_SUCCESS_INFO);
+		        validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_SUCCESS_STATUS);
+        				}
+         return validformRespDTO;
+    	}
 
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
@@ -240,6 +267,8 @@ public class MemberResource {
             }
             pageDTO.setContent(listMemberList);
             pageDTO.setTotalPages(result.getTotalPages());
+            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
+            pageDTO.setiTotalRecords(result.getTotalElements());
             memberDTO.setPageDTO(pageDTO);
         }
         return memberDTO;
@@ -266,6 +295,12 @@ public class MemberResource {
             consumes = {"application/json", "application/xml"})
     public MemberRegisterResultDTO registerMember(@RequestBody MemberRegisterDTO memberRegisterDTO){
         MemberRegisterResultDTO memberRegisterResultDTO = new MemberRegisterResultDTO();
+        Member memberValid = memberService.findByAccount(memberRegisterDTO.getAccount());
+        if(null != memberValid){
+        	memberRegisterResultDTO.setMessage("账户已存在！");
+						memberRegisterResultDTO.setSuccess(false);
+						return memberRegisterResultDTO;
+        			}
         String[] area = memberRegisterDTO.getCity().split(",");
 
         Member member = new Member();
@@ -274,10 +309,13 @@ public class MemberResource {
         member.setSex("1".equals(memberRegisterDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
         member.setCreateBy(memberRegisterDTO.getAccount());
         member.setMemberType(MemberType.ADMIN);
+        member.setCreateTime(new Date());
         channel.setUpdateBy(memberRegisterDTO.getAccount());
         channel.setName(memberRegisterDTO.getChannel());
         channel.setCountry("中国");
         channel.setProvince(area[0]);
+        channel.setCreateTime(new Date());
+        channel.setCreateBy(memberRegisterDTO.getAccount());
         if(area.length > 1){
         	channel.setCity(area[1]);
         			 }
@@ -290,6 +328,7 @@ public class MemberResource {
 						memberService.saveMember(member);
 					} catch (Exception e) {
 						e.printStackTrace();
+						memberRegisterResultDTO.setMessage("数据库出错！");
 						memberRegisterResultDTO.setSuccess(false);
 						return memberRegisterResultDTO;
 					}

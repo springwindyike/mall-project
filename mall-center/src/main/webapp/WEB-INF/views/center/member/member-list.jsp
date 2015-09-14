@@ -43,12 +43,11 @@
         &#xe6e2;</i> 批量删除</a> <a href="javascript:"
                                  onclick="member_add('添加用户','${pageContext.request.contextPath}/member/addMemberPage.dhtml','','510')"
                                  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span>
-        <span class="r">共有：<strong>${pageDTO.totalPages}</strong> 页</span></div>
+        <span class="r">共有：</span></div>
     <div class="mt-20">
         <table class="table table-border table-bordered table-hover table-bg table-sort">
             <thead>
             <tr class="text-c">
-                <th width="25"><input type="checkbox" name="" value=""></th>
                 <th width="80">ID</th>
                 <th width="100">用户名</th>
                 <th width="40">性别</th>
@@ -59,29 +58,17 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${pageDTO.content}" var="memberDetailDTO">
+
                 <tr class="text-c">
-                    <td><input type="checkbox" value="1" name=""></td>
-                    <td>${memberDetailDTO.account}</td>
+                    <td>account</td>
                     <td><u style="cursor:pointer" class="text-primary"
-                           onclick="member_show('${memberDetailDTO.name}','${pageContext.request.contextPath}/member/findByAccount/${memberDetailDTO.account}.dhtml','10001','360','400')">${memberDetailDTO.name}</u></td>
-                    <td>${memberDetailDTO.sex}</td>
-                    <td>${memberDetailDTO.mobile}</td>
-                    <td>${memberDetailDTO.createTime}</td>
-                    <td class="td-status"><span class="label label-success radius">已启用</span></td>
-                    <td class="td-manage"><a style="text-decoration:none" onClick="member_stop(this,'10001')"
-                                             href="javascript:" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a
-                            title="编辑" href="javascript:" onclick="member_edit('编辑','member-add.html','4','','510')"
-                            class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a
-                            style="text-decoration:none" class="ml-5"
-                            onClick="change_password('修改密码','change-password.html','10001','600','270')" href="javascript:"
-                            title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:"
-                                                                                     onclick="member_del(this,'1')"
-                                                                                     class="ml-5"
-                                                                                     style="text-decoration:none"><i
-                            class="Hui-iconfont">&#xe6e2;</i></a></td>
+                           onclick="member_show('','${pageContext.request.contextPath}/member/findByAccount/xxx.dhtml','10001','360','400')">${memberDetailDTO.name}</u></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
                 </tr>
-            </c:forEach>
+
             </tbody>
         </table>
     </div>
@@ -99,12 +86,27 @@
 <script type="text/javascript">
     $(function () {
         $('.table-sort').dataTable({
-            "aaSorting": [[1, "desc"]],//默认第几个排序
-            "bStateSave": true,//状态保存
-            "aoColumnDefs": [
-                //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-                {"orderable": false, "aTargets": [0, 8, 9]}// 制定列不参与排序
-            ]
+//            "aaSorting": [[1, "desc"]],//默认第几个排序
+//            "bStateSave": true,//状态保存
+//            "aoColumnDefs": [
+//                //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+//                {"orderable": false, "aTargets": [0, 8, 9]}// 制定列不参与排序
+//            ]
+
+            "bProcessing": true,
+            "bServerSide": true,
+            "bStateSave": false,
+            "aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+            "sAjaxSource": "${pageContext.request.contextPath}/member/findByChannelId.dhtml",
+            "sAjaxDataProp":"content",
+            "aoColumns": [
+                { "mDataProp": "account" },
+                { "mDataProp": "name" },
+                { "mDataProp": "sex" },
+                { "mDataProp": "mobile" },
+                { "mDataProp": "createTime" },
+
+            ],
         });
         $('.table-sort tbody').on('click', 'tr', function () {
             if ($(this).hasClass('selected')) {

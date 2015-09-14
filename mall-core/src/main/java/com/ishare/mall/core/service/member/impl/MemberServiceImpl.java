@@ -1,16 +1,18 @@
 package com.ishare.mall.core.service.member.impl;
 
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.repository.member.MemberRepository;
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.service.member.PasswordHelper;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.repository.information.ChannelRepository;
+import com.ishare.mall.core.repository.member.MemberRepository;
+import com.ishare.mall.core.service.member.MemberService;
+import com.ishare.mall.core.service.member.PasswordHelper;
 
 /**
  * Created by YinLin on 2015/8/12.
@@ -23,6 +25,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberRepository memberRepository;
+	
+	@Autowired
+	private ChannelRepository channelRepository;
 
 	@Autowired
 	private PasswordHelper passwordHelper;
@@ -63,6 +68,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void saveMember(Member member) {
+		channelRepository.save(member.getChannel());
 		passwordHelper.encryptPassword(member);
 		memberRepository.save(member);
 	}
