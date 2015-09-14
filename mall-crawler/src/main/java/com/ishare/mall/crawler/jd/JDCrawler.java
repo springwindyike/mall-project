@@ -49,7 +49,7 @@ public class JDCrawler {
         return spider;
     }
 
-    public void start(String url, PageProcessor processor) {
+    public void start(PageProcessor processor, String... url) {
 
         log.info("开始抓取{}的内容", url);
         spider = Spider.create(processor);

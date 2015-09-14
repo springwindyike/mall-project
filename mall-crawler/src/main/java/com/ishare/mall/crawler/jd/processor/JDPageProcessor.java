@@ -7,6 +7,8 @@ import com.google.common.collect.Maps;
 import com.ishare.mall.crawler.jd.JDPageConfig;
 import com.ishare.mall.crawler.jd.model.JDProduct;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -52,6 +54,7 @@ public class JDPageProcessor implements PageProcessor {
 
         String name = document.select("div#name > h1").text();
 
+        String jdDatetime = "";
         Map<String, String> attributes = Maps.newHashMap();
         Elements lis = document.select("ul#parameter2.p-parameter-list > li");
         for (Element li : lis) {
@@ -61,6 +64,9 @@ public class JDPageProcessor implements PageProcessor {
 
             attributes.put(key, val);
             //log.debug("商品介绍：{} = {}", key, val);
+            if (key.contains("上架时间")) {
+                jdDatetime = val;
+            }
         }
 
         String price = fetchPrice(pageConfig);
@@ -79,10 +85,11 @@ public class JDPageProcessor implements PageProcessor {
         product.setSelf(isSelf);
         product.setAttributes(attributes);
         product.setIntroImgs(introImgs);
-        product.setPrice(price);
+        product.setPrice(Double.valueOf(price));
         product.setStock(stock);
         product.setTag(tag);
         product.setPhoto(photo);
+        product.setJdDatetime(DateTime.parse(jdDatetime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
 
         page.putField("product.update", product);
     }
