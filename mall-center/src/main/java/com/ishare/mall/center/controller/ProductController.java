@@ -44,7 +44,7 @@ public class ProductController extends BaseController {
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
     
-    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
     	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
     	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
