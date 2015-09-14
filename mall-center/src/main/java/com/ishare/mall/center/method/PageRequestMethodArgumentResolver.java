@@ -34,16 +34,21 @@ public class PageRequestMethodArgumentResolver implements HandlerMethodArgumentR
      * @return
      */
     private PageRequestDTO buildPageRequestDTO(NativeWebRequest webRequest) {
+
         PageRequestDTO pageRequestDTO = new PageRequestDTO();
+
         Integer pageSize = 0;
+
         try {
             pageSize = Integer.valueOf(webRequest.getParameter("iDisplayLength"));
         } catch (Exception e) {
             pageSize = 15;
         }
-       pageRequestDTO.setPageSize(pageSize);
+
+        pageRequestDTO.setPageSize(pageSize);
 
         Integer currentPage = 0;
+
         if (null != webRequest.getParameter("iDisplayStart")) {
             try {
                 currentPage = (Integer.valueOf(webRequest.getParameter("iDisplayStart")) / pageSize) + 1;
@@ -51,7 +56,13 @@ public class PageRequestMethodArgumentResolver implements HandlerMethodArgumentR
                 currentPage = 1;
             }
         }
+
         pageRequestDTO.setCurrentPage(currentPage);
+
+        String order = webRequest.getParameter("sSearch");
+
+        pageRequestDTO.setOrder(order);
+
         return pageRequestDTO;
     }
 }

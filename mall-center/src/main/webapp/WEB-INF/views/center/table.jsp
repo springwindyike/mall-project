@@ -18,6 +18,7 @@
 
     <title>用户管理</title>
     <script type="text/javascript">
+        var ajaxSource = "table/data.dhtml";
         jQuery.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
         {
             return {
@@ -33,9 +34,77 @@
             };
         };
 
+        jQuery.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback, bStandingRedraw )
+        {
+            // DataTables 1.10 compatibility - if 1.10 then `versionCheck` exists.
+            // 1.10's API has ajax reloading built in, so we use those abilities
+            // directly.
+            if ( jQuery.fn.dataTable.versionCheck ) {
+                var api = new jQuery.fn.dataTable.Api( oSettings );
+
+                if ( sNewSource ) {
+                    api.ajax.url( sNewSource ).load( fnCallback, !bStandingRedraw );
+                }
+                else {
+                    api.ajax.reload( fnCallback, !bStandingRedraw );
+                }
+                return;
+            }
+
+            if ( sNewSource !== undefined && sNewSource !== null ) {
+                oSettings.sAjaxSource = sNewSource;
+            }
+
+            // Server-side processing should just call fnDraw
+            if ( oSettings.oFeatures.bServerSide ) {
+                this.fnDraw();
+                return;
+            }
+
+            this.oApi._fnProcessingDisplay( oSettings, true );
+            var that = this;
+            var iStart = oSettings._iDisplayStart;
+            var aData = [];
+
+            this.oApi._fnServerParams( oSettings, aData );
+
+            oSettings.fnServerData.call( oSettings.oInstance, oSettings.sAjaxSource, aData, function(json) {
+                /* Clear the old information from the table */
+                that.oApi._fnClearTable( oSettings );
+
+                /* Got the data - add it to the table */
+                var aData =  (oSettings.sAjaxDataProp !== "") ?
+                        that.oApi._fnGetObjectDataFn( oSettings.sAjaxDataProp )( json ) : json;
+
+                for ( var i=0 ; i<aData.length ; i++ )
+                {
+                    that.oApi._fnAddData( oSettings, aData[i] );
+                }
+
+                oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+
+                that.fnDraw();
+
+                if ( bStandingRedraw === true )
+                {
+                    oSettings._iDisplayStart = iStart;
+                    that.oApi._fnCalculateEnd( oSettings );
+                    that.fnDraw( false );
+                }
+
+                that.oApi._fnProcessingDisplay( oSettings, false );
+
+                /* Callback user function - for event handlers etc */
+                if ( typeof fnCallback == 'function' && fnCallback !== null )
+                {
+                    fnCallback( oSettings );
+                }
+            }, oSettings );
+        };
+
         $(document).ready(function() {
 
-            $("#example").dataTable( {
+            var table = $("#example").dataTable( {
                 "bProcessing": true,
                 "bServerSide": true,
                 "sort": "position",
@@ -51,7 +120,7 @@
                     //Un-comment below alert to see page number
                     //alert("Current page number: "+this.fnPagingInfo().iPage);
                 },
-                "sAjaxSource": "table/data.dhtml",
+                "sAjaxSource": ajaxSource,
                 "aoColumns": [
                     { "mData": "name" },
                     { "mData": "position" },
@@ -59,13 +128,24 @@
                     { "mData": "phone" },
                     { "mData": "start_date" },
                     { "mData": "salary" },
-                ]
+                ],
+                "columnDefs" : [{
+                    "targets" : 0 ,
+                    "render": function(data, type, full) {
+                        return '<a href="xxx">hello</a>';
+                    }
+                }],
             } );
-
+            $("#search").click(function () {
+                table.fnReloadAjax(ajaxSource + "?"+ $("#username").attr("name") + "=" +  $("#username").val());
+            });
         } );
+
     </script>
 </head>
 <body>
+测试：<input type="text" name="username" id="username"/>
+<input type="button" name="search" id="search" value="search"/>
 <form:form action="" method="GET">
     <h2 >Spring MVC pagination using data tables<br><br></h2>
     <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
