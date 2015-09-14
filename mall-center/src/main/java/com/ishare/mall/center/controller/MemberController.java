@@ -5,6 +5,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,20 +42,23 @@ public class MemberController extends BaseController {
 	 *
 	 * @return Page<MemberDetailDTO>
 	 */
-	@RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
-	public String findByChannelId(@NotEmpty @PathVariable(OFFSET) Integer offset,
-								  @NotEmpty @PathVariable(LIMIT) Integer limit, HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/findByChannelId", method = RequestMethod.GET)
+	@ResponseBody
+	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
 		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setLimit(limit);
-		memberDTO.setOffset(offset);
 		memberDTO.setChannelId(8);
+		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
+		int displayStart = Integer.parseInt(request.getParameter("iDisplayStart"));
+		int currentPage = displayStart/displayLength+1;
+		memberDTO.setLimit(displayLength);
+		memberDTO.setOffset(currentPage);
 		ResponseEntity<MemberDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
 		model.addAttribute("pageDTO",memberDTOResult.getPageDTO());
 		System.out.print("test1111111");
-		return CenterViewConstant.Member.MEMBER_LIST;
+		return memberDTOResult.getPageDTO();
 	}
 
 	@RequestMapping(value = "/offset/{offset}/limit/{limit}/roleId/{roleId}", method = RequestMethod.POST)
@@ -97,7 +101,7 @@ public class MemberController extends BaseController {
 	@RequestMapping(value = "/saveMember")
 	public String saveMember(MemberForm memberForm){
 		MemberDTO memberDTO = new MemberDTO();
-		BeanUtils.copyProperties(memberForm,memberDTO);
+		BeanUtils.copyProperties(memberForm, memberDTO);
 		ResponseEntity<MemberDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER),memberDTO,MemberDTO.class);
@@ -125,6 +129,11 @@ public class MemberController extends BaseController {
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION),memberDTO,MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
 		model.addAttribute("pageDTO",memberDTOResult.getPageDTO());
+		return CenterViewConstant.Member.MEMBER_LIST;
+	}
+
+	@RequestMapping(value = "forwardTOMemberList")
+	public String forwardTOMemberList(){
 		return CenterViewConstant.Member.MEMBER_LIST;
 	}
 }

@@ -157,6 +157,8 @@ public class MemberResource {
             }
             pageDTO.setContent(listMemberList);
             pageDTO.setTotalPages(result.getTotalPages());
+            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
+            pageDTO.setiTotalRecords(result.getTotalElements());
             memberDTO.setPageDTO(pageDTO);
         }
         return memberDTO;
@@ -240,6 +242,8 @@ public class MemberResource {
             }
             pageDTO.setContent(listMemberList);
             pageDTO.setTotalPages(result.getTotalPages());
+            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
+            pageDTO.setiTotalRecords(result.getTotalElements());
             memberDTO.setPageDTO(pageDTO);
         }
         return memberDTO;
