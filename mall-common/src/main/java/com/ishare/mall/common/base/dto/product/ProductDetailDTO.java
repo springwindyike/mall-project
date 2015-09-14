@@ -1,15 +1,19 @@
 package com.ishare.mall.common.base.dto.product;
 
 import com.ishare.mall.common.base.object.BaseObject;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by YinLin on 2015/8/7.
  * Description: productDTO
  * Version 1.0
  */
+@XmlRootElement
 @JsonAutoDetect
 public class ProductDetailDTO implements BaseObject {
     private Integer id;

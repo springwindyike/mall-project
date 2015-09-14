@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.repository.information.BrandRepository;
+import com.ishare.mall.core.repository.information.ChannelRepository;
+import com.ishare.mall.core.repository.member.MemberRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
+import com.ishare.mall.core.repository.product.ProductTypeRepository;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
@@ -29,6 +33,14 @@ public class ProductServiceImpl implements ProductService {
     private final static Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ProductTypeRepository productTypeResponsitory;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private BrandRepository brandRepository;
+    @Autowired
+    private ChannelRepository channelRepository;
     @Override
     public Page<Product> search(Map<String, Object> searchParams, PageRequest pageRequest) {
         Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -57,6 +69,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void saveProduct(Product product) {
 		// TODO Auto-generated method stub
+		productTypeResponsitory.save(product.getType());
+		memberRepository.save(product.getCreateBy());
+		brandRepository.save(product.getBrand());
+		channelRepository.save(product.getChannel());
 		productRepository.save(product);
 	}
 }

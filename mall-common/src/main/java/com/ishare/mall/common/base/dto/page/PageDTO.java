@@ -28,7 +28,9 @@ public class PageDTO<T extends GenericDTO> {
     private Boolean last;
 
     private List<T> content;
+    private Long iTotalRecords;
 
+    private Long iTotalDisplayRecords;
     public Integer getPageSize() {
         return pageSize;
     }
@@ -83,5 +85,21 @@ public class PageDTO<T extends GenericDTO> {
 
     public void setContent(List<T> content) {
         this.content = content;
+    }
+
+    public Long getiTotalRecords() {
+        return iTotalRecords;
+    }
+
+    public void setiTotalRecords(Long iTotalRecords) {
+        this.iTotalRecords = iTotalRecords;
+    }
+
+    public Long getiTotalDisplayRecords() {
+        return iTotalDisplayRecords;
+    }
+
+    public void setiTotalDisplayRecords(Long iTotalDisplayRecords) {
+        this.iTotalDisplayRecords = iTotalDisplayRecords;
     }
 }
