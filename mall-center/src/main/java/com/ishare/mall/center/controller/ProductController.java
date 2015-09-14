@@ -39,7 +39,7 @@ public class ProductController extends BaseController {
         return log;
     }
     
-    @RequestMapping(value = "/addProduct",method = RequestMethod.GET)
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
     public String addProduct(@ModelAttribute("productAttribute") AddProductForm apf) {
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
