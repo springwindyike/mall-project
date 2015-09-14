@@ -23,7 +23,8 @@ public interface CenterURIConstant {
     }
     
     interface Product{
-    	
+   	 String REQUEST_MAPPING   = "/product";
+   	 String REQUEST_MAPPING_SAVE= "/add";
     }
    
     interface Main {
