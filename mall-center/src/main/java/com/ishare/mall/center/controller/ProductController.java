@@ -59,7 +59,7 @@ public class ProductController extends BaseController {
     	productDetailDTO.setBrandId(1);
     	productDetailDTO.setChannelId(1);
     	productDetailDTO.setTypeId(addProductForm.getTypeId());
-    	productDetailDTO.setCreateByAccount(member.getAccount());
+    	productDetailDTO.setCreateByAccount("18566469285");
     	ResponseEntity<ProductDetailDTO> resultDTO = null;
     	RestTemplate restTemplate = new RestTemplate();
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_SAVE_PRODUCT),productDetailDTO,ProductDetailDTO.class);

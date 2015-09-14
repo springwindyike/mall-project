@@ -39,6 +39,6 @@ public interface APPURIConstant {
     
     interface Product{
     	 String REQUEST_MAPPING   = "/product";
-    	 String REQUEST_MAPPING_SAVE_PRODUCT = "saveProduct";
+    	 String REQUEST_MAPPING_SAVE_PRODUCT = "/saveProduct";
     }
 }

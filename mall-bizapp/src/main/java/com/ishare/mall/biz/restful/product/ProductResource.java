@@ -17,6 +17,8 @@ import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductService;
+import com.ishare.mall.core.status.Gender;
+import com.ishare.mall.core.status.MemberType;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -37,7 +39,7 @@ public class ProductResource {
 
 
 
-    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_SAVE_PRODUCT, method = RequestMethod.POST,
+    @RequestMapping(value = "/saveProduct", method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
@@ -48,15 +50,28 @@ public class ProductResource {
         			brand.setId(productDetailDTO.getBrandId());
         			Member member = new Member();
         			member.setAccount(productDetailDTO.getCreateByAccount());
+        			member.setMemberType(MemberType.MEMBER);
+        			member.setSex(Gender.MAN);
         			Channel channel = new Channel();
         			channel.setId(productDetailDTO.getChannelId());
+        			member.setChannel(channel);
         			ProductType productType = new ProductType();
         			productType.setId(productDetailDTO.getTypeId());
+        			productType.setCode("1001001001");
+        			productType.setName("衬衫");
+        			productType.setNote("非常好");
+        			productType.setLevel(3);
         			product.setBrand(brand);
         			product.setCreateBy(member);
         			product.setChannel(channel);
-        			productService.saveProduct(product);
-        return productDetailDTO;
+        			product.setType(productType);
+        			
+        			try {
+						productService.saveProduct(product);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+		return productDetailDTO;
     }
 
 }
