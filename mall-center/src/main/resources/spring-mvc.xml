@@ -17,11 +17,11 @@
 	<bean class="com.ishare.mall.center.utils.WebUtils"/>
 	<mvc:annotation-driven>
 		<!-- 自定义转换 -->
-		<!--
+
 		<mvc:argument-resolvers>
 			<bean class="com.ishare.mall.center.method.CurrentMemberMethodArgumentResolver"/>
+			<bean class="com.ishare.mall.center.method.PageRequestMethodArgumentResolver"/>
 		</mvc:argument-resolvers>
-		-->
 		<mvc:message-converters register-defaults="true">
 			<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
 			<bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">

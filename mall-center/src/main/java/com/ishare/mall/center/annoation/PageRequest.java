@@ -17,5 +17,5 @@ public @interface PageRequest {
      * 当前页面在Request中的key
      * @return
      */
-    String value() default CommonConstant.Common.CURRENT_MEMBER;
+    String value() default CommonConstant.Common.PAGE_REQUEST;
 }

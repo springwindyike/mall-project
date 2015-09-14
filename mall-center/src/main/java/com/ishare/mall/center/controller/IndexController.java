@@ -12,7 +12,6 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.ishare.mall.center.annoation.PageRequest;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.controller.test.Person;
 import com.ishare.mall.center.controller.test.PersonJsonObject;
@@ -33,7 +33,9 @@ import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
+import com.ishare.mall.common.base.dto.page.PageRequestDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+
 
 
 /**
@@ -170,12 +172,17 @@ public class IndexController extends BaseController {
     }
     @RequestMapping(value = "table/data", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public PersonJsonObject testDataTables(HttpServletRequest request) {
+    public PersonJsonObject testDataTables(@PageRequest PageRequestDTO pageRequestDTO, HttpServletRequest request) {
         log.debug("hhahhahahah....");
+        log.debug("pageRequestDTO.pageSize : " + pageRequestDTO.getPageSize());
         //Fetch the page number from client
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
+        Integer pageNumber = pageRequestDTO.getCurrentPage();
+        if (null != request.getParameter("iDisplayStart")) {
+            log.debug("iDisplayStart : " + request.getParameter("iDisplayStart"));
+            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart")) / pageRequestDTO.getPageSize()) + 1;
+        }
+
+        log.debug("pageNumber : " + pageNumber);
 
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
