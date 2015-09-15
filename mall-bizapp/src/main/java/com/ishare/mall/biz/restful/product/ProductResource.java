@@ -145,6 +145,7 @@ public class ProductResource {
 		if(result != null && result.getSize() > 0 && result.getContent() != null && result.getContent().size() >0){
 			List<Product> productList = result.getContent();
 			for (Product product:productList){
+				if(!product.getVisible()) continue;
 				ProductListDTO productDTO = new ProductListDTO();
 				BeanUtils.copyProperties(product,productDTO);
 				list.add(productDTO);
