@@ -1,5 +1,6 @@
 package com.ishare.mall.crawler.jd.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.hibernate.annotations.Type;
@@ -36,14 +37,21 @@ public class JDProduct {
     @ElementCollection
     @CollectionTable(name = "spider_jd_photo", joinColumns = @JoinColumn(name = "id"))
     private List<String> photo = Lists.newArrayList();
-    private String price;
+    private double price;
     private String stock;
     private String tag;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
+
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+    @Column(name = "jd_datetime")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date jdDatetime;
 
     public Long getId() {
         return id;
@@ -59,7 +67,6 @@ public class JDProduct {
 
     public void setLink(String link) {
         this.link = link;
-        //this.code = link.substring(link.lastIndexOf("/") + 1, link.lastIndexOf(".html"));
     }
 
     public String getName() {
@@ -110,11 +117,11 @@ public class JDProduct {
         this.photo = photo;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -148,6 +155,14 @@ public class JDProduct {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getJdDatetime() {
+        return jdDatetime;
+    }
+
+    public void setJdDatetime(Date jdDatetime) {
+        this.jdDatetime = jdDatetime;
     }
 
     @Override

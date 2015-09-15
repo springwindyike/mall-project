@@ -1,6 +1,6 @@
 package com.ishare.test.restful;
 
-import com.ishare.mall.restful.DeliverResource;
+import com.ishare.mall.api.restful.DeliverResource;
 import com.ishare.test.TestTemplate;
 import org.junit.Assert;
 import org.junit.Before;

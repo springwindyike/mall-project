@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import us.codecraft.webmagic.Spider;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -43,18 +44,10 @@ public class IndexController {
     JDPageProcessor pageProcessor;
 
     @RequestMapping("/")
-    public String index(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "page2", defaultValue = "0") int page2) {
+    public String index(Model model) {
         log.debug("首页");
 
-        Page<JDCategory> categories = jdCategoryRepository.findByLinkNotNullAndParentNotNull(new PageRequest(page, 20));
-        model.addAttribute("categories", categories);
-        log.debug("number={}, size={},page={}", categories.getNumber(), categories.getSize(), page);
-
-        Page<JDProduct> products = jdProductRepository.findAll(new PageRequest(page2, 20));
-        model.addAttribute("products", products);
-
-        log.debug("categories size {}\nproducts size {}", categories.getTotalElements(), products.getTotalElements());
-        return "index";
+        return "dashboard";
     }
 
     @RequestMapping(value = "init")
@@ -68,6 +61,27 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping(value = "fetchAll", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Object fetchAll() {
+        Map<String, Object> result = Maps.newHashMap();
+        boolean bln = false;
+        try {
+            List<JDProduct> list = jdProductRepository.findAll();
+            String[] urls = new String[list.size()];
+            for (int index = 0; index < urls.length; index++) {
+                urls[index] = list.get(index).getLink();
+            }
+            crawler.start(pageProcessor, urls);
+            bln = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        result.put("success", bln);
+        return result;
+    }
+
     @RequestMapping(value = "fetchList", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -75,7 +89,7 @@ public class IndexController {
         Map<String, Object> result = Maps.newHashMap();
         boolean bln = false;
         try {
-            crawler.start(url, listPageProcessor);
+            crawler.start(listPageProcessor, url);
             bln = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +107,7 @@ public class IndexController {
         Map<String, Object> result = Maps.newHashMap();
         boolean bln = false;
         try {
-            crawler.start(url, pageProcessor);
+            crawler.start(pageProcessor, url);
             bln = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,5 +125,34 @@ public class IndexController {
         model.addAttribute("product", product);
 
         return "product";
+    }
+
+    @RequestMapping(value = "dashboard", method = RequestMethod.GET)
+    public String dashboard(Model model) {
+
+        return "dashboard";
+    }
+
+    @RequestMapping(value = "data.json", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Object data(
+            @RequestParam(value = "start", defaultValue = "0") int start,
+            @RequestParam(value = "length", defaultValue = "10") int length,
+            @RequestParam(value = "search[value]", defaultValue = "") String search) {
+        log.debug("search: {}", search);
+
+        Map<String, Object> data = Maps.newHashMap();
+        Page<JDCategory> page = jdCategoryRepository.findAll(new PageRequest(start / length, length));
+        data.put("recordsTotal", page.getTotalElements());
+        data.put("recordsFiltered", page.getTotalElements());
+        data.put("data", page.getContent());
+        return data;
+    }
+
+    @RequestMapping(value = "jdCategory")
+    public String jdCategory() {
+
+        return "jd/category";
     }
 }

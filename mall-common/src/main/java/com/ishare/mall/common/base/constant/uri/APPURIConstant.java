@@ -37,12 +37,20 @@ public interface APPURIConstant {
     	String REQUEST_MAPPING_FIND_FIRST_LEVEL = "/findFirstLevel";
     	
     }
-    
+    //产品
     interface Product{
-
    	 String REQUEST_MAPPING   = "/product";
    	 String REQUEST_MAPPING_SAVE = "/save";
    	 String REQUEST_MAPPING_DEL ="/del";
    
     }
+
+    interface Brand {
+        String REQUEST_MAPPING = "/brand";
+        String REQUEST_MAPPING_GET_BY_ID = "/{id}";
+    }
+    //订单
+    interface Order{
+      	 String REQUEST_MAPPING   = "/order";
+       }
 }

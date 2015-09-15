@@ -120,9 +120,12 @@
                     //Un-comment below alert to see page number
                     //alert("Current page number: "+this.fnPagingInfo().iPage);
                 },
+                "createdRow" : function(row, data, dataIndex){
+                    $(row).addClass('center');
+                },
                 "sAjaxSource": ajaxSource,
                 "aoColumns": [
-                    { "data": "name" },
+                    { "data": "name", sClass:"center" },
                     { "data": "position" },
                     { "data": "office" },
                     { "data": "phone" },
