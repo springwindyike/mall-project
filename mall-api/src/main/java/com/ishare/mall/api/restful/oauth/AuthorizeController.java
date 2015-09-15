@@ -29,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_CLIENT_DESCRIPTION;
+import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_ACCOUNT_DESCRIPTION;
 
 /**
  * Created by YinLin on 2015/8/11.
@@ -61,7 +62,12 @@ public class AuthorizeController {
             String account = request.getParameter("account");
             // 如果没有就创建 检测account合法性
             if (!oAuthService.checkAccount(account)) {
-
+                OAuthResponse response =
+                        OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                                .setError(OAuthError.TokenResponse.INVALID_CLIENT)
+                                .setErrorDescription(INVALID_ACCOUNT_DESCRIPTION)
+                                .buildJSONMessage();
+                return new ResponseEntity(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
             }
             //生成授权码
             String authorizationCode = null;
