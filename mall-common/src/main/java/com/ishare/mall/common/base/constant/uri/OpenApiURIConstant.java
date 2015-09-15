@@ -10,6 +10,6 @@ public interface OpenApiURIConstant {
         //获取认证CODE
         String AUTHORIZE    = "authorize";
         //获取accessToken
-        String ACCESS_TOKEN = "access/token";
+        String ACCESS_TOKEN = "accessToken";
     }
 }

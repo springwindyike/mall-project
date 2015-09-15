@@ -1,7 +1,7 @@
 package com.ishare.mall.api.restful.oauth;
 
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.service.oauth.OAuthService;
+import com.ishare.mall.api.service.oauth.OAuthService;
+import com.ishare.mall.common.base.constant.uri.OpenApiURIConstant;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
@@ -13,6 +13,8 @@ import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -35,12 +37,12 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
 @RestController
 public class AccessTokenController {
 
-    @Autowired
-    private MemberService memberService;
+    private static final Logger log = LoggerFactory.getLogger(AccessTokenController.class);
+
     @Autowired
     private OAuthService oAuthService;
 
-    @RequestMapping(value = "/accessToken", method = RequestMethod.POST)
+    @RequestMapping(value = OpenApiURIConstant.Oauth.ACCESS_TOKEN, method = RequestMethod.POST)
     public HttpEntity token(HttpServletRequest request)
             throws URISyntaxException, OAuthSystemException {
         try {
@@ -59,7 +61,7 @@ public class AccessTokenController {
             }
 
             // 检查客户端安全KEY是否正确
-            if (!oAuthService.checkClientSecret(oauthRequest.getClientSecret())) {
+            if (!oAuthService.checkClientSecret(oauthRequest.getClientId(), oauthRequest.getClientSecret())) {
                 OAuthResponse response = OAuthASResponse
                         .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
                         .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
@@ -73,7 +75,7 @@ public class AccessTokenController {
             // 检查验证类型，此处只检查AUTHORIZATION_CODE类型，其他的还有PASSWORD或REFRESH_TOKEN
             if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(
                     GrantType.AUTHORIZATION_CODE.toString())) {
-                if (!oAuthService.checkAuthCode(authCode)) {
+                if (!oAuthService.checkAuthCode(authCode, oauthRequest.getClientId())) {
                     OAuthResponse response = OAuthASResponse
                             .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
                             .setError(OAuthError.TokenResponse.INVALID_GRANT)
@@ -107,5 +109,9 @@ public class AccessTokenController {
                     .buildJSONMessage();
             return new ResponseEntity(res.getBody(), HttpStatus.valueOf(res.getResponseStatus()));
         }
+    }
+
+    public static Logger getLog() {
+        return log;
     }
 }

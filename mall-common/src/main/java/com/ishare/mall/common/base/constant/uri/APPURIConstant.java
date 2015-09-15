@@ -52,4 +52,17 @@ public interface APPURIConstant {
     interface Order{
       	 String REQUEST_MAPPING   = "/order";
        }
+    //渠道
+    interface Channel {
+        //渠道
+        String REQUEST_MAPPING = "/channel";
+        //通过appId获取渠道信息
+        String REQUEST_MAPPING_GET_BY_APP_ID = "/app/id/";
+        //通过appId获取渠道信息参数
+        String REQUEST_MAPPING_GET_BY_APP_ID_PARAM = "{id}";
+        //通过Secret获取渠道信息
+        String REQUEST_MAPPING_GET_BY_APP_SECRET = "/app/secret/";
+        //通过Secret获取渠道信息参数
+        String REQUEST_MAPPING_GET_BY_APP_SECRET_PARAM = "{secret}";
+    }
 }
