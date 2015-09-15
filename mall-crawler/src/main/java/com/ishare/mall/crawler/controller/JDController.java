@@ -12,6 +12,10 @@ import com.ishare.mall.crawler.jd.repository.JDProductRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,6 +214,22 @@ public class JDController {
         return result;
     }
 
+    @RequestMapping(value = "/fetch/page", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Object fetchPage(@RequestParam(value = "url") String url) {
+        Map<String, Object> result = Maps.newHashMap();
+        boolean success = false;
+        try {
+            crawler.start(pageProcessor, url);
+            success = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        result.put("success", success);
+        return result;
+    }
+
     @RequestMapping(value = "/page")
     public String page() {
         return "jd/page";
@@ -221,5 +241,51 @@ public class JDController {
     JDProduct getProduct(@PathVariable(value = "id") long id) {
         JDProduct product = productDao.findOne(id);
         return product;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Object search(@RequestParam(value = "searchParam") String searchParam, @RequestParam(value = "action") String action) {
+        log.debug("search action: {}, param: {}", action, searchParam);
+        Map<String, Object> result = Maps.newHashMap();
+        boolean success = false;
+
+        try {
+
+            if (action.equals("search")) {
+                List<Map<String, String>> mapList = Lists.newArrayList();
+                String url = "http://search.jd.com/Search?enc=utf-8&keyword=" + searchParam;
+                Document document = Jsoup.connect(url).ignoreContentType(true).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36").timeout(10000).execute().parse();
+                Elements elements = document.select("div#plist > ul > li > div");
+                log.debug("{}", elements);
+                for (Element item : elements) {
+                    String img = item.select("div.p-img > a > img").attr("data-lazyload");
+                    String name = item.select("div.p-name > a").text();
+                    String link = item.select("div.p-name > a").attr("href");
+                    String price = item.select("div.p-price > strong").text();
+                    log.debug("{}, {}, {}, {}", price, img, name, link);
+                    if (StringUtils.isNotBlank(price + img + name + link)) {
+                        Map<String, String> map = Maps.newHashMap();
+                        map.put("img", img);
+                        map.put("name", name);
+                        map.put("link", link);
+                        map.put("price", price);
+                        mapList.add(map);
+                    }
+                }
+                result.put("searchResult", mapList);
+            } else if (action.equals("fetch")) {
+                List<JDProduct> products = crawler.fetchPage(searchParam);
+                result.put("searchResult", products);
+            }
+
+            success = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        result.put("success", success);
+        return result;
     }
 }

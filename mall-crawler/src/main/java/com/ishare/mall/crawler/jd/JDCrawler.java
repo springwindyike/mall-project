@@ -1,9 +1,11 @@
 package com.ishare.mall.crawler.jd;
 
+import com.ishare.mall.crawler.jd.model.JDProduct;
 import com.ishare.mall.crawler.jd.processor.JDCategoryPageProcessor;
 import com.ishare.mall.crawler.jd.processor.JDListPageProcessor;
 import com.ishare.mall.crawler.jd.processor.JDPageProcessor;
 import com.ishare.mall.crawler.jd.repository.JDCategoryRepository;
+import com.ishare.mall.crawler.jd.repository.JDProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 import javax.annotation.PreDestroy;
+import java.util.List;
 
 /**
  * Created by dongqi on 15/9/7.
@@ -28,6 +31,8 @@ public class JDCrawler {
     JDPageProcessor jdPageProcessor;
     @Autowired
     JDCategoryRepository jdCategoryRepository;
+    @Autowired
+    JDProductRepository jdProductRepository;
     @Autowired
     JDPipeline jdPipeline;
     @Autowired
@@ -59,6 +64,14 @@ public class JDCrawler {
         spider.thread(5);
         spider.run();
 
+    }
+
+    public List<JDProduct> fetchPage(String url) {
+        spider = Spider.create(jdPageProcessor).addUrl(url).addPipeline(jdPipeline).thread(1);
+
+        spider.run();
+
+        return jdProductRepository.findByLink(url);
     }
 
     @PreDestroy

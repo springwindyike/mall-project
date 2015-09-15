@@ -31,7 +31,8 @@ public class JDPageProcessor implements PageProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(JDPageProcessor.class);
 
-    private Site site = Site.me().setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36").setRetryTimes(30).setSleepTime(10000);
+    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36";
+    private Site site = Site.me().setUserAgent(USER_AGENT).setRetryTimes(30).setSleepTime(10000);
 
     /*
     public static void main(String[] args) {
@@ -71,7 +72,9 @@ public class JDPageProcessor implements PageProcessor {
             }
         }
 
-        String price = fetchPrice(pageConfig);
+        String[] prices = fetchPrice(pageConfig);
+        String price = prices[0];
+        String priceOrigin = prices[1];
         String stock = fetchStock(pageConfig);
         List<String> photo = fetchPhoto(pageConfig);
         List<String> introImgs = fetchIntroImgs(pageConfig);
@@ -88,10 +91,13 @@ public class JDPageProcessor implements PageProcessor {
         product.setAttributes(attributes);
         product.setIntroImgs(introImgs);
         product.setPrice(Double.valueOf(price));
+        product.setPriceOrigin(Double.valueOf(priceOrigin));
         product.setStock(stock);
         product.setTag(tag);
         product.setPhoto(photo);
-        product.setJdDatetime(DateTime.parse(jdDatetime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        if (StringUtils.isNotBlank(jdDatetime)) {
+            product.setJdDatetime(DateTime.parse(jdDatetime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        }
 
         page.putField("product.update", product);
     }
@@ -149,15 +155,17 @@ public class JDPageProcessor implements PageProcessor {
         return pageConfig;
     }
 
-    String fetchPrice(JDPageConfig pageConfig) {
-        String price = "";
+    String[] fetchPrice(JDPageConfig pageConfig) {
+        String price[] = new String[2];
         try {
             //log.debug("config.priceUrl {}", pageConfig.getPriceUrl());
-            String body = Jsoup.connect(pageConfig.getPriceUrl()).ignoreContentType(true).execute().body();
+            String body = Jsoup.connect(pageConfig.getPriceUrl()).userAgent(USER_AGENT).ignoreContentType(true).execute().body();
+            log.debug("\n\t价格\n\t{}\n", body);
             JSONArray array = JSONObject.parseArray(body);
             Object object = array.get(0);
             JSONObject json = (JSONObject) object;
-            price = json.getString("p");
+            price[0] = json.getString("p");
+            price[1] = json.containsKey("m") ? json.getString("m") : "0";
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -169,7 +177,7 @@ public class JDPageProcessor implements PageProcessor {
         String stock = "";
 
         try {
-            String body = Jsoup.connect(pageConfig.getStockUrl()).ignoreContentType(true).execute().body();
+            String body = Jsoup.connect(pageConfig.getStockUrl()).userAgent(USER_AGENT).ignoreContentType(true).execute().body();
 
             JSONObject jsonObject = (JSONObject) JSONObject.parse(body);
             JSONObject stockJson = (JSONObject) jsonObject.get("stock");
@@ -188,7 +196,7 @@ public class JDPageProcessor implements PageProcessor {
     List<String> fetchIntroImgs(JDPageConfig pageConfig) {
         List<String> list = Lists.newArrayList();
         try {
-            Element body = Jsoup.connect(pageConfig.getDescUrl()).ignoreContentType(true).get().body();
+            Element body = Jsoup.connect(pageConfig.getDescUrl()).userAgent(USER_AGENT).ignoreContentType(true).get().body();
 
             for (Element img : body.select("img")) {
                 String src = img.attr("data-lazyload").replaceAll("\\\\\"", StringUtils.EMPTY);
@@ -207,7 +215,7 @@ public class JDPageProcessor implements PageProcessor {
 
         try {
 
-            Element body = Jsoup.connect(pageConfig.getPhotoUrl()).ignoreContentType(true).get().body();
+            Element body = Jsoup.connect(pageConfig.getPhotoUrl()).userAgent(USER_AGENT).ignoreContentType(true).get().body();
             for (Element script : body.select("script")) {
                 String html = script.html();
                 if (!html.contains("newOutputAllImages")) continue;
@@ -227,6 +235,7 @@ public class JDPageProcessor implements PageProcessor {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("pageConfig.getPhotoUrl()={}", pageConfig.getPhotoUrl());
         }
 
         log.debug("{}", photo);
