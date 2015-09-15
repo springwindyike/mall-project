@@ -6,6 +6,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ishare.mall.common.base.dto.page.PageDTO;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.form.member.MemberForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
@@ -136,4 +138,12 @@ public class MemberController extends BaseController {
 	public String forwardTOMemberList(){
 		return CenterViewConstant.Member.MEMBER_LIST;
 	}
+    /**
+     * 访问找回密码页面
+     * @return
+     */
+    @RequestMapping(value = CenterURIConstant.Member.Password.FIND, method = RequestMethod.GET)
+    public String findPassword() {
+        return CenterViewConstant.Member.Password.FIND_PASSWORD;
+    }
 }
