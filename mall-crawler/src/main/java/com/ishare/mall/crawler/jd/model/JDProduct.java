@@ -50,7 +50,7 @@ public class JDProduct {
 
     @Column(name = "jd_datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyym-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date jdDatetime;
 
     public Long getId() {

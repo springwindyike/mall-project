@@ -1,6 +1,9 @@
 <html>
 <head>
 <#include "../layout/head.ftl">
+    <script>
+        var ctx = '${springMacroRequestContext.contextPath}';
+    </script>
 </head>
 <body>
 <#include "../layout/navbar.ftl">
@@ -124,6 +127,7 @@
         console.log('hello page');
         $('#searchBtn').click(function () {
             $('#searchContent').removeClass('hidden');
+            return false;
         });
     });
 </script>

@@ -34,43 +34,49 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">Dashboard JD Product List</h1>
             <!---->
-            <div id="mysearch">
-                <form class="form-horizontal">
+            <div>
+                <form class="form-horizontal" id="mysearch">
                     <div class="form-inline form-group">
                         <label class="col-sm-2 control-label">商品名称</label>
-                        <input type="text" class="form-control" id="search_name" placeholder="商品名称">
+                        <input type="text" class="form-control" id="search_name" placeholder="商品名称" name="search_name">
                     </div>
                     <div class="form-inline form-group">
                         <label class="col-sm-2 control-label">价格区间</label>
-                        <input type="number" class="form-control" id="search_price_min" placeholder="价格下限"> - <input
-                            type="number" class="form-control" id="search_price_max" placeholder="价格上限">
+                        <input type="number" class="form-control" id="search_price_min" placeholder="价格下限"
+                               name="search_price_min" value=""> - <input
+                            type="number" class="form-control" id="search_price_max" placeholder="价格上限"
+                            name="search_price_max" value="">
                     </div>
                     <div class="form-inline form-group">
                         <label class="col-sm-2 control-label">上架时间</label>
-                        <input type="datetime" class="form-control" id="search_update_time_min" placeholder="开始时间"> -
-                        <input type="datetime" class="form-control" id="search_update_time_max" placeholder="结束时间">
+                        <input type="datetime" class="form-control" id="search_update_time_min"
+                               name="search_update_time_min" placeholder="开始时间" value=""> -
+                        <input type="datetime" class="form-control" id="search_update_time_max"
+                               name="search_update_time_max" placeholder="结束时间" value="">
                     </div>
                     <div class="form-inline form-group">
                         <label class="col-sm-2 control-label">库存</label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox1" value="option1"> 有货
+                            <input type="checkbox" id="search_stock_y" name="search_stock" value="有货"> 有货
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" value="option2"> 无货
+                            <input type="checkbox" id="search_stock_n" name="search_stock" value="无货"> 无货
                         </label>
                     </div>
                     <div class="form-inline form-group">
                         <label class="col-sm-2 control-label">自营</label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox1" value="option1"> 是
+                            <input type="checkbox" id="search_self_y" name="search_self" value="true"> 是
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" value="option2"> 否
+                            <input type="checkbox" id="search_self_n" name="search_self" value="false"> 否
                         </label>
                     </div>
                     <div class="form-inline form-group">
                         <label class="col-sm-4 control-label"></label>
-                        <button type="submit" class="btn btn-primary form-control">搜</button>
+                        <button type="submit" class="btn btn-primary form-control">查询</button>
+                        <button type="reset" class="btn btn-primary form-control">重置</button>
+
                     </div>
                 </form>
             </div>
@@ -118,7 +124,7 @@
                 }
                 },
                 {
-                    label: '更新时间', name: 'updateTime', width: 70, align: 'center', search: false
+                    label: '更新时间', name: 'updateTime', width: 70, align: 'center', search: false, hidden: true
                 }, {
                     label: '上架时间', name: 'jdDatetime', width: 70, align: 'center', search: false
                 },
@@ -133,11 +139,10 @@
             rownumbers: true,
             rowNum: 50,
             pager: '#jqGridPager',
+            toppager: true,
             subGrid: true,
             subGridRowExpanded: function (pid, id) {
-                console.log('pid, id', pid, id);
                 $.getJSON(ctx + '/jd/page/' + id, function (result) {
-                    console.log(result);
                     var p = result;
                     var html = $('#' + pid);
 
@@ -176,27 +181,22 @@
         });
 
         $('#search_update_time_min').datetimepicker({
-            format: "yyyy-mm-dd",
+            format: "yyyy-mm-dd HH:ii:ss",
             autoclose: true,
             todayBtn: true,
             pickerPosition: "bottom-left"
         });
         $('#search_update_time_max').datetimepicker({
-            format: "yyyy-mm-dd",
+            format: "yyyy-mm-dd HH:ii:ss",
             autoclose: true,
             todayBtn: true,
             pickerPosition: "bottom-left"
         });
 
-        $('#mysearch > form > button').click(function () {
-            var name = $('#search_name').val();
-            var priceMin = $('#search_price_min').val();
-            var priceMax = $('#search_price_max').val();
-            var start = $('#search_update_time_min').val();
-            var end = $('#search_update_time_max').val();
-            console.log('查询');
+        $('#mysearch').submit(function () {
+            console.log('查询', $('#mysearch').serialize());
             $('#jqGrid').jqGrid('setGridParam', {
-                //TODO 查询URL要单独重写一个
+                url: ctx + '/jd/lists/search.json?' + $('#mysearch').serialize()
             }).trigger("reloadGrid");
             return false;
         });
