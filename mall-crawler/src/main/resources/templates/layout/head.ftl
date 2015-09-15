@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/ladda-themeless.min.css">
 <script src="${springMacroRequestContext.contextPath}/js/spin.min.js"></script>
 <script src="${springMacroRequestContext.contextPath}/js/ladda.min.js"></script>
+<script src="${springMacroRequestContext.contextPath}/js/bootstrap-waitingfor.js"></script>
 
 <script>
     var ctx = '${springMacroRequestContext.contextPath}';

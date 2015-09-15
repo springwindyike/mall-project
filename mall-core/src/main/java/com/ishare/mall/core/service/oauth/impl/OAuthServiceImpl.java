@@ -6,7 +6,6 @@ import com.ishare.mall.core.service.oauth.OAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.stereotype.Service;
 
 import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.EXPIRE_IN;
 
@@ -15,7 +14,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.EXPIRE
  * Description : OAuthServiceImpl oauth的第三方认证最核心部分
  * Version 1.0
  */
-@Service
+//@Service
 public class OAuthServiceImpl implements OAuthService {
 
     private Cache cache;

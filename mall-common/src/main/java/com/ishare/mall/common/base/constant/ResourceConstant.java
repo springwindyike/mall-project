@@ -25,5 +25,7 @@ public interface ResourceConstant {
         String INVALID_CLIENT_DESCRIPTION = "客户端验证失败，如错误的client_id/client_secret。";
         //授权码错误
         String INVALID_CODE_DESCRIPTION = "客户端Code码错误！";
+        //登录授权传输手机号错误
+        String INVALID_ACCOUNT_DESCRIPTION = "认证账号错误！匿名登录账号必须为手机号";
     }
 }

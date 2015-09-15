@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+import java.util.List;
+
 @RestResource(path = "products", rel = "products")
 public interface JDProductRepository extends JpaRepository<JDProduct, Long>, JpaSpecificationExecutor {
 
     JDProduct findByCode(String code);
 
-    //@Query("select u from JDProduct u where u.name like %?1%")
+    List<JDProduct> findByLink(String link);
+
     Page<JDProduct> findByNameContainingAndPriceBetween(String name, double priceMin, double priceMax, Pageable pageable);
 }

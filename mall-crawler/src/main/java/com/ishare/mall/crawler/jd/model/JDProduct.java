@@ -38,6 +38,7 @@ public class JDProduct {
     @CollectionTable(name = "spider_jd_photo", joinColumns = @JoinColumn(name = "id"))
     private List<String> photo = Lists.newArrayList();
     private double price;
+    private double priceOrigin;
     private String stock;
     private String tag;
 
@@ -123,6 +124,14 @@ public class JDProduct {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getPriceOrigin() {
+        return priceOrigin;
+    }
+
+    public void setPriceOrigin(double priceOrigin) {
+        this.priceOrigin = priceOrigin;
     }
 
     public String getStock() {
