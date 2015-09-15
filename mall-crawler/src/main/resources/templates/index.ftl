@@ -125,6 +125,11 @@
 <#include "layout/foot.ftl">
 <script>
     $(document).ready(function () {
+        $('#fetchAll').click(function () {
+            $.getJSON('fetchAll', function (result) {
+                alert(result.success);
+            });
+        });
 
         $('div#home>table>tbody>tr>td>button').click(function () {
             var btn = $(this);

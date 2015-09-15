@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailResultDTO;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
@@ -63,6 +64,7 @@ public class ProductResource {
         			productType.setLevel(3);
         			product.setBrand(brand);
         			product.setCreateBy(member);
+        			product.setUpdateBy(member);
         			product.setChannel(channel);
         			product.setType(productType);
         			
@@ -74,4 +76,25 @@ public class ProductResource {
 		return productDetailDTO;
     }
 
+    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_DEL, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public ProductDetailResultDTO delProduct(@RequestBody ProductDetailDTO productDetailDTO){
+    	 Product product = new Product();
+    		ProductDetailResultDTO  productDetailResultDTO = new ProductDetailResultDTO();
+         try {
+			productService.delProduct(productDetailDTO.getId());
+			productDetailResultDTO.setSuccess(true);
+			return productDetailResultDTO;
+		
+		} catch (Exception e) {e.printStackTrace();
+			productDetailResultDTO.setSuccess(false);
+			productDetailResultDTO.setCode(200);
+			productDetailResultDTO.setMessage("删除商品失败");
+			return productDetailResultDTO;
+		}
+          
+    	
+    }
 }
