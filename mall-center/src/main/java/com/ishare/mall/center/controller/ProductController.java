@@ -2,6 +2,7 @@ package com.ishare.mall.center.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +24,7 @@ import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailResultDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 
 
@@ -77,4 +80,15 @@ public class ProductController extends BaseController {
 		ProductTypeDTO productTypeDTOResult =  resultDTO.getBody();
 		return productTypeDTOResult;
     }
+    
+    @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_DEL, method = RequestMethod.GET)
+	public String delProduct(@NotEmpty @PathVariable("id") Integer id) {
+		ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+		productDetailDTO.setId(id);
+		ResponseEntity<ProductDetailResultDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_DEL), productDetailDTO, ProductDetailResultDTO.class);
+		ProductDetailResultDTO productDetailDTOResult = resultDTO.getBody();
+		return null;
+	}
 }

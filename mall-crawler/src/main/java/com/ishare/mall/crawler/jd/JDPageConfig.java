@@ -1,5 +1,7 @@
 package com.ishare.mall.crawler.jd;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class JDPageConfig {
 
     private final String PRICE_URL = "http://p.3.cn/prices/get?type=1&skuid=J_";
@@ -12,7 +14,7 @@ public class JDPageConfig {
     private String skuidkey;
     private String cat;
     private String brand;
-    private String venderId;
+    private String venderId = "0";
     private String shopId;
     private int stockState;
     private String priceUrl;
@@ -93,7 +95,7 @@ public class JDPageConfig {
     }
 
     public String getStockUrl() {
-        return STOCK_URL + "skuId=" + skuid + "&venderId=" + venderId + "&cat=" + cat + "&area=" + area + "&buyNum=1&extraParam=" + extraParam + "&ch=1";
+        return STOCK_URL + "skuId=" + skuid + "&venderId=" + (StringUtils.isNotBlank(venderId) ? venderId : "0") + "&cat=" + cat + "&area=" + area + "&buyNum=1&extraParam=" + extraParam + "&ch=1";
     }
 
     public void setStockUrl(String stockUrl) {

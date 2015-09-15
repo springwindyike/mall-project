@@ -19,17 +19,20 @@ public interface CenterURIConstant {
 		// 验证账户名
 		String ACCOUNTVALID = "accountValid";
 	}
-	
+    
+    interface Product{
+   	 String REQUEST_MAPPING   = "/product";
+   	 String REQUEST_MAPPING_SAVE= "/add";
+   	 String REQUEST_MAPPING_DEL="/del/{id}";
+    }
+
+  String INDEX = "index";
+
 	interface Member {
 		String REQUEST_MAPPING = "/member";
 		interface Password {
 			String FIND = "/password/find";
 		}
-	}
-
-	interface Product {
-		String REQUEST_MAPPING = "/product";
-		String REQUEST_MAPPING_SAVE = "/add";
 	}
 
 	interface Order {
