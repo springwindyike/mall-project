@@ -75,4 +75,10 @@ public class ProductServiceImpl implements ProductService {
 		channelRepository.save(product.getChannel());
 		productRepository.save(product);
 	}
+
+	//删除商品
+	@Override
+	public void delProduct(Integer id) {
+		productRepository.delete(id);
+	}
 }
