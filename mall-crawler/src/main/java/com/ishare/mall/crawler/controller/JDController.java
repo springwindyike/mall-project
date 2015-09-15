@@ -145,4 +145,12 @@ public class JDController {
     public String page() {
         return "jd/page";
     }
+
+    @RequestMapping(value = "/page/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    JDProduct getProduct(@PathVariable(value = "id") long id) {
+        JDProduct product = productDao.findOne(id);
+        return product;
+    }
 }

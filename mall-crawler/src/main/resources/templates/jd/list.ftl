@@ -132,7 +132,36 @@
             rowList: [10, 20, 30, 50, 100],
             rownumbers: true,
             rowNum: 50,
-            pager: '#jqGridPager'
+            pager: '#jqGridPager',
+            subGrid: true,
+            subGridRowExpanded: function (pid, id) {
+                console.log('pid, id', pid, id);
+                $.getJSON(ctx + '/jd/page/' + id, function (result) {
+                    console.log(result);
+                    var p = result;
+                    var html = $('#' + pid);
+
+                    var row = '<p>' + p.tag + '</p>';
+
+                    row += '<p>相册：</p><div class="row">';
+                    var photo = p.photo;
+                    for (var index = 0; index < photo.length; index++) {
+                        var img = photo[index];//height="200" width="200"
+                        row += '<div class="col-xs-6 col-md-3"><a href="' + img + '" class="thumbnail"><img src="' + img + '" alt="' + p.name + '"></a></div>';
+                    }
+                    row += '</div>';
+
+                    row += '<p>图文：</p><div class="row">';
+                    var imgs = p.introImgs;
+                    for (var index = 0; index < imgs.length; index++) {
+                        var img = imgs[index];
+                        row += '<div class="col-xs-6 col-md-3"><a href="' + img + '" class="thumbnail"><img src="' + img + '" alt="' + p.name + '"></a></div>';
+                    }
+                    row += '</div>';
+                    html.append(row);
+                });
+                //$('#'+pid).append('<p class="text">hello world</p>');
+            }
         });
 
         $('#jqGrid').navGrid('#jqGridPager', {

@@ -50,6 +50,8 @@ public class JDPageProcessor implements PageProcessor {
         JDPageConfig pageConfig = fetchPageConfig(document);
 
         String tag = document.select("div.breadcrumb").text().trim();
+        tag = StringUtils.strip(tag);
+
         boolean isSelf = document.html().contains("京东自营");
 
         String name = document.select("div#name > h1").text();
