@@ -42,6 +42,8 @@ public interface APPURIConstant {
    	 String REQUEST_MAPPING   = "/product";
    	 String REQUEST_MAPPING_SAVE = "/save";
    	 String REQUEST_MAPPING_DEL ="/del";
+     String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+
    
     }
 

@@ -1,15 +1,25 @@
 package com.ishare.mall.biz.restful.product;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailResultDTO;
 import com.ishare.mall.core.model.information.Brand;
@@ -94,7 +104,40 @@ public class ProductResource {
 			productDetailResultDTO.setMessage("删除商品失败");
 			return productDetailResultDTO;
 		}
-          
-    	
     }
+    
+    /**
+     * 获取当前渠道下所有的product
+     *
+     * @return Page<ProductDTO>
+     */
+    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public ProductDTO findByChannelId(@RequestBody ProductDTO productDTO) {
+        List<ProductDetailDTO> listProductList = new ArrayList<ProductDetailDTO>();
+        int offset = productDTO.getOffset();
+        int limit = productDTO.getLimit();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+        Integer channelId = productDTO.getChannelId();
+        Page<Product> result = productService.findByChannelId(channelId, pageRequest);
+        PageDTO pageDTO = new PageDTO();
+        if(result != null && result.getContent() != null && result.getContent().size()>0){
+            List<Product> listProduct = result.getContent();
+            for (Product product:listProduct){
+               ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+                BeanUtils.copyProperties(product, productDetailDTO);
+                productDetailDTO.setChannelId(product.getChannel().getId());
+                listProductList.add(productDetailDTO);
+            }
+            pageDTO.setContent(listProductList);
+            pageDTO.setTotalPages(result.getTotalPages());
+            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
+            pageDTO.setiTotalRecords(result.getTotalElements());
+            productDTO.setPageDTO(pageDTO);
+        }
+        return productDTO;
+    }
+    
 }
