@@ -25,6 +25,7 @@ public interface CenterURIConstant {
     interface Product{
    	 String REQUEST_MAPPING   = "/product";
    	 String REQUEST_MAPPING_SAVE= "/add";
+   	 String REQUEST_MAPPING_DEL="/del/{id}";
     }
    
     interface Main {

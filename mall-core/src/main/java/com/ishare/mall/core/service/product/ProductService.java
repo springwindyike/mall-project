@@ -20,7 +20,7 @@ public abstract interface ProductService {
     public abstract Product findOne(Integer id);
 
     Product findByCode(String code);
-    
+    public void delProduct(Integer id);
     /**
 	 * 保存Product
 	 *
