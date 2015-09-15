@@ -1,4 +1,4 @@
-package com.ishare.mall.filter;
+package com.ishare.mall.api.filter;
 
 import com.ishare.mall.core.status.Gender;
 import com.ishare.mall.core.utils.convert.GenderConverter;

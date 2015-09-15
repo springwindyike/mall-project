@@ -1,4 +1,4 @@
-package com.ishare.mall.controller;
+package com.ishare.mall.api.controller;
 
 import com.ishare.mall.core.status.Gender;
 

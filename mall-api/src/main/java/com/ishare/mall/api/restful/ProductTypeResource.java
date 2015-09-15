@@ -1,12 +1,10 @@
-package com.ishare.mall.restful;
+package com.ishare.mall.api.restful;
 
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
-
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.collect.Maps;
+import com.ishare.mall.core.model.product.ProductType;
+import com.ishare.mall.core.service.product.ProductTypeService;
+import com.ishare.mall.api.utils.Servlets;
+import com.ishare.mall.api.utils.page.PageUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.collect.Maps;
-import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.product.ProductTypeService;
-import com.ishare.mall.utils.Servlets;
-import com.ishare.mall.utils.page.PageUtils;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 /**
  * Created by YinLin on 2015/8/10.
@@ -91,7 +89,7 @@ public class ProductTypeResource {
 		log.debug("searchParams: {}", searchParams);
 		
 		Page<ProductType> result = productTypeService.search(searchParams, pageRequest);
-		
+
 		log.debug("result {}", result.getContent());
 		
 		return PageUtils.mapper(result, pageRequest, ProductType.class);

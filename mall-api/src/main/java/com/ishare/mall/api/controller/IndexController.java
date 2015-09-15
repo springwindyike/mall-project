@@ -1,4 +1,4 @@
-package com.ishare.mall.controller;
+package com.ishare.mall.api.controller;
 
 import com.google.common.collect.Lists;
 import com.ishare.mall.core.model.information.Channel;
@@ -6,7 +6,7 @@ import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.order.OrderService;
-import com.ishare.mall.utils.Servlets;
+import com.ishare.mall.api.utils.Servlets;
 import org.apache.oltu.oauth2.as.response.OAuthASResponse;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;

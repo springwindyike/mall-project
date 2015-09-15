@@ -1,4 +1,4 @@
-package com.ishare.mall.restful;
+package com.ishare.mall.api.restful;
 
 import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.dto.error.ErrorDTO;
@@ -14,7 +14,7 @@ import com.ishare.mall.core.service.pay.AliPayService;
 import com.ishare.mall.core.service.pay.OrderPayLogService;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PayType;
-import com.ishare.mall.utils.Servlets;
+import com.ishare.mall.api.utils.Servlets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;

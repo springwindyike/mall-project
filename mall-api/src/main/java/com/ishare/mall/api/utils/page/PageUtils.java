@@ -1,4 +1,4 @@
-package com.ishare.mall.utils.page;
+package com.ishare.mall.api.utils.page;
 
 import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.object.BaseObject;

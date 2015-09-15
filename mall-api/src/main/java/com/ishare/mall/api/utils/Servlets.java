@@ -1,4 +1,4 @@
-package com.ishare.mall.utils;
+package com.ishare.mall.api.utils;
 
 import com.google.common.base.Charsets;
 import com.google.common.net.HttpHeaders;

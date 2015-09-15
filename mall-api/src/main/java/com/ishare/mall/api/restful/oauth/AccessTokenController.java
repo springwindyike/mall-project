@@ -1,4 +1,4 @@
-package com.ishare.mall.restful.oauth;
+package com.ishare.mall.api.restful.oauth;
 
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.oauth.OAuthService;

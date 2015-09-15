@@ -1,5 +1,5 @@
 
-package com.ishare.mall.restful;
+package com.ishare.mall.api.restful;
 
 import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
 import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
@@ -29,7 +29,7 @@ import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.service.oauth.OAuthService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-import com.ishare.mall.utils.page.PageUtils;
+import com.ishare.mall.api.utils.page.PageUtils;
 
 /**
  * Created by YinLin on 2015/7/30.

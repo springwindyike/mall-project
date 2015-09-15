@@ -1,12 +1,12 @@
-package com.ishare.mall.restful;
+package com.ishare.mall.api.restful;
 
 import com.ishare.mall.common.base.dto.information.BrandDetailDTO;
 import com.ishare.mall.common.base.dto.information.BrandListDTO;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.service.information.BrandService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-import com.ishare.mall.utils.Servlets;
-import com.ishare.mall.utils.page.PageUtils;
+import com.ishare.mall.api.utils.Servlets;
+import com.ishare.mall.api.utils.page.PageUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

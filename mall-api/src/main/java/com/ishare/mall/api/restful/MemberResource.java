@@ -1,4 +1,4 @@
-package com.ishare.mall.restful;
+package com.ishare.mall.api.restful;
 
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.core.model.member.Member;

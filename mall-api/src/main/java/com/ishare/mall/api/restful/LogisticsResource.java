@@ -1,4 +1,4 @@
-package com.ishare.mall.restful;
+package com.ishare.mall.api.restful;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.json.JSONObject;

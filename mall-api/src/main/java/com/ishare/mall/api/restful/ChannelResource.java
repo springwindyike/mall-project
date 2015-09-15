@@ -1,4 +1,4 @@
-package com.ishare.mall.restful;
+package com.ishare.mall.api.restful;
 
 import java.util.Set;
 
