@@ -10,10 +10,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<link href="resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
-<link href="resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
-<link href="resources/skin/default/skin.css" rel="stylesheet" type="text/css"/>
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/skin/default/skin.css" rel="stylesheet" type="text/css"/>
 
 <!-- <LINK rel="Bookmark" href="/favicon.ico" >
 <LINK rel="Shortcut Icon" href="/favicon.ico" /> -->
@@ -101,6 +101,14 @@
 				</ul>
 			</dd>
 		</dl>
+		<dl id="menu-order">
+			<dt><i class="Hui-iconfont">&#xe627;</i> 订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="${pageContext.request.contextPath}/order/list.dhtml" href="javascript:void(0)">订单列表</a></li>
+				</ul>
+			</dd>
+		</dl>
 		<!--<dl id="menu-page">
 			<dt><i class="Hui-iconfont">&#xe626;</i> 页面管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
@@ -133,7 +141,7 @@
 			<dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="member/offset/1/limit/15.dhtml" href="javascript:">会员列表</a></li>
+					<li><a _href="member/forwardTOMemberList.dhtml" href="javascript:">会员列表</a></li>
 					<li><a _href="member-del.html" href="javascript:">删除的会员</a></li>
 					<li><a _href="member-level.html" href="javascript:">等级管理</a></li>
 					<li><a _href="member-scoreoperation.html" href="javascript:">积分管理</a></li>
@@ -201,10 +209,10 @@
 		</div>
 	</div>
 </section>
-<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="resources/lib/layer/1.9.3/layer.js"></script> 
-<script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
-<script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">
 /*资讯-添加*/
 function article_add(title,url){

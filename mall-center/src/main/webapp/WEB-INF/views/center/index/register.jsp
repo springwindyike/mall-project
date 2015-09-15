@@ -10,10 +10,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<link href="resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
-<link href="resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
-<link href="resources/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
 
 <head>
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -28,11 +28,11 @@
 
 <body>
 <div class="pd-20">
-  <form action="register.dhtml" method="post" class="form form-horizontal" id="form-member-add">
+  <form action="${pageContext.request.contextPath}/register.dhtml" method="post" class="form form-horizontal" id="form-member-add">
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>手机：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空">
+        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空" ajaxurl="accountValid.dhtml" sucmsg="验证通过！">
       </div>
       <div class="col-4"> </div>
     </div>
@@ -103,14 +103,66 @@
   </form>
 </div>
 </div>
-<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="resources/lib/icheck/jquery.icheck.min.js"></script> 
-<script type="text/javascript" src="resources/lib/Validform/5.3.2/Validform.min.js"></script>
-<script type="text/javascript" src="resources/lib/layer/1.9.3/layer.js"></script>
-<script type="text/javascript" src="resources/scripts/H-ui.js"></script> 
-<script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
-<script type="text/javascript" src="resources/scripts/area.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/area.js"></script>
 <script type="text/javascript">
+
+/* 省市县选择 */
+ $(function(){
+
+    add_select(0);
+
+    $('body').on('change', '#area select', function() {
+        var $me = $(this);
+        var $next = $me.next();
+        /**
+         * 如果下一级已经是当前所选地区的子地区，则不进行处理
+         */
+        if ($me.val() == $next.data('pid')) {
+            return;
+        }
+        $me.nextAll().remove();
+        //add_select($me.val());.attr("id"));
+        add_select($me.find("option:selected").attr("id"));
+    });
+
+    function add_select(pid) {
+        var area_names = area['name'+pid];
+        if (!area_names) {
+            return false;
+        }
+        var area_codes = area['code'+pid];
+        var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
+        $select.attr('name', 'city');
+        $select.data('pid', pid);
+        if (area_codes[0] != -1) {
+            area_names.unshift('请选择');
+            area_codes.unshift(-1);
+        }
+        for (var idx in area_codes) {
+            var $option = $('<option>');
+            if(area_codes[idx] == -1){
+            		$option.attr('value', "");
+            }else{
+            	$option.attr('value', area_names[idx]);
+            					}
+            $option.attr('id', area_codes[idx]);
+            $option.text(area_names[idx]);
+            $select.append($option);
+        }
+        var length = $("#area select").length;
+        if(length < 3){
+        $('#area').append($select);
+        }
+    };
+});
+
+//验证
 $(function(){
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
@@ -122,7 +174,7 @@ $(function(){
 		tiptype:2,
 		ajaxPost:true,
 		callback:function(data){
-			if(data.sex=="0"){
+			if(data.success==true){
 				setTimeout(function(){
 					//$.Hidemsg(); 公用方法关闭信息提示框
 					$.Showmsg("注册成功！");
@@ -132,7 +184,7 @@ $(function(){
 					parent.layer.close(index); 
 				},5000);
 			}
-			if(data.sex=="1"){
+			if(data.success==false){
 				setTimeout(function(){
 					$.Showmsg("注册失败！");
 				},2000);
@@ -142,51 +194,6 @@ $(function(){
 	});
 });
 
-/* 省市县选择 */
-     $(function(){
-
-        add_select(0);
-
-        $('body').on('change', '#area select', function() {
-            var $me = $(this);
-            var $next = $me.next();
-            /**
-             * 如果下一级已经是当前所选地区的子地区，则不进行处理
-             */
-            if ($me.val() == $next.data('pid')) {
-                return;
-            }
-            $me.nextAll().remove();
-            //add_select($me.val());.attr("id"));
-            add_select($me.find("option:selected").attr("id"));
-        });
-
-        function add_select(pid) {
-            var area_names = area['name'+pid];
-            if (!area_names) {
-                return false;
-            }
-            var area_codes = area['code'+pid];
-            var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
-            $select.attr('name', 'city');
-            $select.data('pid', pid);
-            if (area_codes[0] != -1) {
-                area_names.unshift('请选择');
-                area_codes.unshift(-1);
-            }
-            for (var idx in area_codes) {
-                var $option = $('<option>');
-                $option.attr('value', area_names[idx]);
-                $option.attr('id', area_codes[idx]);
-                $option.text(area_names[idx]);
-                $select.append($option);
-            }
-            var length = $("#area select").length;
-            if(length < 3){
-            $('#area').append($select);
-            }
-        };
-    });
 </script>
 </body>
 </html>

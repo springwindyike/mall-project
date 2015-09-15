@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.ishare.mall.restful.ProductResource;
+import com.ishare.mall.api.restful.ProductResource;
 import com.ishare.test.TestTemplate;
 
 /**

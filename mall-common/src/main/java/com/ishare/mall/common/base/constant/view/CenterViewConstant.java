@@ -1,34 +1,40 @@
 package com.ishare.mall.common.base.constant.view;
 
 /**
- * Created by YinLin on 2015/9/2.
- * Description :
- * Version 1.0
+ * Created by YinLin on 2015/9/2. Description : Version 1.0
  */
 public interface CenterViewConstant {
-    //首页 view
-    interface Index {
-        String LOGIN = "index/login";
-        String INDEX = "index";
-    	//注册
-    	String REGISTER = "index/register";
-    	//找回密码
-    	String FIND_PASSWORD = "index/find-password";
-    }
-    
-    interface Product {
-    	 String ADD_PRODUCT ="product/addProduct";
-    }
+	// 首页 view
+	interface Index {
+		String LOGIN = "index/login";
+		String INDEX = "index";
+		// 注册
+		String REGISTER = "index/register";
+		// 找回密码
+		String FIND_PASSWORD = "index/find-password";
+	}
 
-    interface Main {
-    	String MAIN = "main/index";
+	interface Product {
+		String ADD_PRODUCT = "product/add";
+	}
 
-    }
+	interface Order {
+		String ADD_ORDER = "order/list";
+	}
 
-    interface Member {
-        String MEMBER_LIST = "member/member-list";
-        String MEMBER_ADD = "member/member-add";
-        String MEMBER_ADD_SUCCESS = "S";
-        String MEMBER_VIEW = "member/member-view";
-    }
+	interface Main {
+		String MAIN = "main/index";
+	}
+
+	interface Member {
+		String MEMBER_LIST = "member/member-list";
+		String MEMBER_ADD = "member/member-add";
+		String MEMBER_ADD_SUCCESS = "S";
+		String MEMBER_VIEW = "member/member-view";
+		interface Password {
+			// 找回密码
+			String FIND_PASSWORD = "member/password/find";
+		}
+		
+	}
 }

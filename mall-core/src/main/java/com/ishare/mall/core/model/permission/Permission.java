@@ -13,7 +13,7 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 @Table(name = TABLE_PERMISSION_NAME)
 public class Permission {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "permission_name")

@@ -11,9 +11,9 @@
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<link href="resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/H-ui.login.css" rel="stylesheet" type="text/css" />
-<link href="resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/H-ui.login.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
 <!-- <script type="text/javascript" src="resources/scripts/test.js">
 </script> -->
 <head>
@@ -32,14 +32,14 @@
 <input type="hidden" id="TenantId" name="TenantId" value="" />
 <div class="header">
 	<span>
-		<a href="javascript:;" onclick="member_add('注册申请','register.dhtml','','555')">立即注册</a> | 
-		<a href="javascript:;" onclick="member_add('找回密码','findPassword.dhtml','','440')">找回密码</a>
+		<a href="javascript:;" onclick="member_add('注册申请','${pageContext.request.contextPath}/register.dhtml','','555')">立即注册</a> | 
+		<a href="javascript:;" onclick="member_add('找回密码','${pageContext.request.contextPath}/member/password/find.dhtml','','440')">找回密码</a>
 	</span>
 </div>
 <div class="error">${error}</div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
-    <form class="form form-horizontal" action="login.dhtml" method="post">
+    <form class="form form-horizontal" action="${pageContext.request.contextPath}/login.dhtml" method="post">
       <div class="row cl">
         <label class="form-label col-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-8">
@@ -55,7 +55,7 @@
       <div class="row cl">
         <div class="formControls col-8 col-offset-3">
           <input class="input-text size-L" type="text" placeholder="验证码" name="verifyCode" style="width:150px;">
-           <img id="imgObj" alt="验证码" src="verifycode.dhtml" /><a href="#" onclick="changeImg()">看不清，换一张</a> </div>
+           <img id="imgObj" alt="验证码" src="${pageContext.request.contextPath}/verifycode.dhtml" /><a href="#" onclick="changeImg()">看不清，换一张</a> </div>
       </div>
       <div class="row">
         <div class="formControls col-8 col-offset-3">
@@ -74,10 +74,10 @@
   </div>
 </div>
 <div class="footer">Copyright 成都平凡谷信息科技有限公司 </div>
-<script type="text/javascript" src="resources/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="resources/scripts/H-ui.js"></script>
-<script type="text/javascript" src="resources/scripts/H-ui.admin.js"></script>
-<script type="text/javascript" src="resources/lib/layer/1.9.3/layer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script>
 <script>
 function changeImg() { 
     var imgSrc = $("#imgObj"); 

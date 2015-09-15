@@ -61,7 +61,7 @@
 
     <filter>
         <filter-name>codefilter</filter-name>
-        <filter-class>com.ishare.mall.filter.SetCodeFilter</filter-class>
+        <filter-class>com.ishare.mall.api.filter.SetCodeFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>codefilter</filter-name>
