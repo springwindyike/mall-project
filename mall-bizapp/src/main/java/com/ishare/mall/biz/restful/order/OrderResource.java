@@ -54,16 +54,17 @@ public class OrderResource {
         List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
         int offset = orderDetailDTO.getOffset();
         int limit = orderDetailDTO.getLimit();
-        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
         Integer channelId = orderDetailDTO.getChannelId();
         Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
+        PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Order> list = result.getContent();
             for (Order order:list){
-                BeanUtils.copyProperties(order, orderDetailDTO);
-                orderDetailDTO.setChannelId(order.getChannel().getId());
-                listOrder.add(orderDetailDTO);
+									OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+									BeanUtils.copyProperties(order, innerOrderDetailDTO);
+									innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+									listOrder.add(innerOrderDetailDTO);
             					}
 			        pageDTO.setContent(listOrder);
 			        pageDTO.setTotalPages(result.getTotalPages());
