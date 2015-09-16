@@ -21,7 +21,7 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
     //货号
     @Column(name = "product_code",length = 15)
     private String code;
@@ -104,11 +104,11 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "product_type_id")
     private ProductType type;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

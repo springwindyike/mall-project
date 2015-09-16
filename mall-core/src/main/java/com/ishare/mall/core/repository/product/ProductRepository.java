@@ -16,7 +16,7 @@ import com.ishare.mall.core.model.product.Product;
  * Description:
  * Version 1.0
  */
-public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor {
+public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor {
     @Query("SELECT p FROM Product p WHERE p.code=?1")
     List<Product> findByCode(String code);
     
