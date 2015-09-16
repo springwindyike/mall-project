@@ -1,6 +1,7 @@
 package com.ishare.mall.core.service.order.impl;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
@@ -11,6 +12,7 @@ import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
 import com.ishare.mall.core.repository.product.ProductStyleRepository;
+import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.status.OrderState;
@@ -43,6 +45,8 @@ public class OrderServiceImpl implements OrderService {
 	private ProductStyleRepository styleRepository;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ChannelService channelService;
 
 	@Override
 	public Order findOne(String id) {
@@ -115,12 +119,15 @@ public class OrderServiceImpl implements OrderService {
 		Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
 		return page;
 	}
+
 	//订单生成流程
 	private void initProcessor(ExchangeDTO exchangeDTO) {
 		Order order = new Order();
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
+		Channel channel = channelService.findByAppId(exchangeDTO.getClientId());
 		order.setOrderId(this.nextOrderId());
 		order.setCreateTime(new Date());
+		order.setChannel(channel);
 		OrderItem orderItem = this.initItemProcessor(order, exchangeDTO);
 	}
 
