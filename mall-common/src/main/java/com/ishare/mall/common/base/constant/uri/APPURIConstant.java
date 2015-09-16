@@ -56,7 +56,7 @@ public interface APPURIConstant {
     //订单
     interface Order{
       	 String REQUEST_MAPPING   = "/order";
-       }
+    }
     //渠道
     interface Channel {
         //渠道

@@ -1,13 +1,16 @@
 
 package com.ishare.mall.api.restful;
 
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.ishare.mall.api.form.OrderForm;
+import com.ishare.mall.api.restful.base.BaseResource;
+import com.ishare.mall.api.service.oauth.OAuthService;
+import com.ishare.mall.api.utils.page.PageUtils;
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderTotalDTO;
+import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
@@ -18,18 +21,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.ishare.mall.common.base.dto.order.OrderTotalDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.service.oauth.OAuthService;
-import com.ishare.mall.core.service.order.OrderService;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
-import com.ishare.mall.api.utils.page.PageUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -38,8 +36,8 @@ import com.ishare.mall.api.utils.page.PageUtils;
  */
 @Controller
 @RequestMapping("/orders")
-public class OrderResource {
-	
+public class OrderResource extends BaseResource {
+
 	@Autowired
 	private OrderService orderService;
 	@Autowired
@@ -47,13 +45,17 @@ public class OrderResource {
     /**
      * 添加订单
      */
-	@RequestMapping(value = "add", method = RequestMethod.POST)
-	public void add() {
-		
+	@RequestMapping(value = "buy", method = RequestMethod.POST)
+	public OrderDetailDTO buy(OrderForm orderForm) {
+		ExchangeDTO exchangeDTO = orderForm.toExchangeDTO();
+		exchangeDTO.setAccount(oAuthService.getAccountByAccessToken(orderForm.getToken()));
+		exchangeDTO.setClientId(oAuthService.getAuthObjectByAccessToken(orderForm.getToken()).getClientId());
+
+		return null;
     }
 
     /**
-     * 确认订单
+     * 确认订单会跳转支付
      */
 	@RequestMapping(value = "confirm", method = RequestMethod.POST)
 	public void confirm() {
