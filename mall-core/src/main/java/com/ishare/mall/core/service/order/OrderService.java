@@ -1,5 +1,7 @@
 package com.ishare.mall.core.service.order;
 
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.core.model.order.Order;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,8 @@ public interface OrderService {
 	 * @return
 	 */
 	Order payComplete(String orderId);
+
+	Order create(ExchangeDTO exchangeDTO);
 	
 	/**
 	 * 根据channel id查询所有的Order
