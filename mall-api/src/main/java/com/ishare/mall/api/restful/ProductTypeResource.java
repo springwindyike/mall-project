@@ -40,8 +40,6 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 public class ProductTypeResource extends BaseResource {
 	
 	private static final Logger log = LoggerFactory.getLogger(ProductTypeResource.class);
-	@Autowired
-	private ProductTypeService productTypeService;
     /**
      * 类型详细信息
      */

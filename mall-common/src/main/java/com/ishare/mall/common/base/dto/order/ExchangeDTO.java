@@ -14,37 +14,29 @@ public class ExchangeDTO {
 
     private String account;
 
-    private Integer productId;
+    private Long productId;
 
     private Long [] attributeIds;
 
     private Long styleId;
-    /* 收货人姓名 */
     private String recipients;
-    //国家
     private String country;
-    //省
     private String province;
-    //市
     private String city;
-    //县 区
     private String district;
-    //详细街道
     private String detail;
-    /* 电子邮箱 */
     private String email;
-    /* 座机 */
     private String tel;
-    /* 手机 */
+
     private String mobile;
     /**购买数量**/
     private Integer num;
 
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

@@ -4,7 +4,6 @@ import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
@@ -43,7 +42,6 @@ public class OrderServiceImpl implements OrderService {
 	public Order findOne(String id) {
 		return orderRepository.findOne(id);
 	}
-
 	@Override
 	public Page<Order> search(Map<String, Object> searchParams, PageRequest pageRequest) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -102,7 +100,6 @@ public class OrderServiceImpl implements OrderService {
 	public Order create(ExchangeDTO exchangeDTO) {
 		Order order = null;
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
-		ProductStyle style = styleRepository.getOne(exchangeDTO.getStyleId());
 		return null;
 	}
 
