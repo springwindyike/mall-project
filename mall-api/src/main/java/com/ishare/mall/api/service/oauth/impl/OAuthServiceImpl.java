@@ -89,6 +89,11 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
+    public OAuthObject getAuthObjectByAccessToken(String accessToken) {
+        return (OAuthObject)cache.get(accessToken).get();
+    }
+
+    @Override
     public long getExpireIn() {
         return EXPIRE_IN;
     }
