@@ -1,10 +1,10 @@
 package com.ishare.mall.api.restful;
 
 import com.google.common.collect.Maps;
+import com.ishare.mall.api.restful.base.BaseResource;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.api.utils.Servlets;
 import com.ishare.mall.api.utils.page.PageUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,11 +35,9 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
  */
 @RestController
 @RequestMapping("/producttypes")
-public class ProductTypeResource {
+public class ProductTypeResource extends BaseResource {
 	
 	private static final Logger log = LoggerFactory.getLogger(ProductTypeResource.class);
-	@Autowired
-	private ProductTypeService productTypeService;
     /**
      * 类型详细信息
      */
@@ -50,7 +48,7 @@ public class ProductTypeResource {
 		productTypeDTO.setId(id);
 		ResponseEntity<ProductTypeDTO> resultEntiy = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultEntiy = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		resultEntiy = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING,APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID),productTypeDTO,ProductTypeDTO.class);
 		//ProductType productType = productTypeService.findOne(id);
 		ProductTypeDTO returnTO = resultEntiy.getBody();
 		//return productType;
@@ -70,7 +68,7 @@ public class ProductTypeResource {
 		productTypeDTO.setOffset(offset);
 		ResponseEntity<ProductTypeDTO> responseEntity = null;
 		RestTemplate restTemplate = new RestTemplate();
-		responseEntity = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		responseEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING,APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_PARAM),productTypeDTO,ProductTypeDTO.class);
 		ProductTypeDTO returnTO = responseEntity.getBody();
 		//PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
 		//Page<ProductType> result = productTypeService.search(null, pageRequest);
@@ -96,7 +94,7 @@ public class ProductTypeResource {
 		productTypeDTO.setMap(searchParams);
 		ResponseEntity<ProductTypeDTO> responseEntity = null;
 		RestTemplate restTemplate = new RestTemplate();
-		responseEntity = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		responseEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING,APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_PARAM),productTypeDTO,ProductTypeDTO.class);
 		ProductTypeDTO returnTO = responseEntity.getBody();
 		//Page<ProductType> result = productTypeService.search(searchParams, pageRequest);
 		//return PageUtils.mapper(result, pageRequest, ProductType.class);
@@ -135,7 +133,7 @@ public class ProductTypeResource {
 		ResponseEntity<ProductTypeDTO> responseEntity = null;
 		//Page<ProductType> result = productTypeService.search(searchParams, pageRequest);
 		RestTemplate restTemplate = new RestTemplate();
-		responseEntity = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		responseEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING,APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_PARAM),productTypeDTO,ProductTypeDTO.class);
 		ProductTypeDTO returnTO = responseEntity.getBody();
 		log.debug("result {}", returnTO.getPageDTO().getContent());
 		return returnTO.getPageDTO();

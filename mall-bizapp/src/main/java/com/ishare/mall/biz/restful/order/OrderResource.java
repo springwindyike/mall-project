@@ -1,8 +1,12 @@
 package com.ishare.mall.biz.restful.order;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.service.order.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -15,12 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.core.service.order.OrderService;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/15.
@@ -54,16 +54,17 @@ public class OrderResource {
         List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
         int offset = orderDetailDTO.getOffset();
         int limit = orderDetailDTO.getLimit();
-        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
         Integer channelId = orderDetailDTO.getChannelId();
         Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
+        PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Order> list = result.getContent();
             for (Order order:list){
-                BeanUtils.copyProperties(order, orderDetailDTO);
-                orderDetailDTO.setChannelId(order.getChannel().getId());
-                listOrder.add(orderDetailDTO);
+									OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+									BeanUtils.copyProperties(order, innerOrderDetailDTO);
+									innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+									listOrder.add(innerOrderDetailDTO);
             					}
 			        pageDTO.setContent(listOrder);
 			        pageDTO.setTotalPages(result.getTotalPages());
@@ -74,4 +75,7 @@ public class OrderResource {
         return orderDetailDTO;
     		}
 
+    public OrderDetailDTO create(@RequestBody ExchangeDTO exchangeDTO) {
+        return null;
+    }
 }

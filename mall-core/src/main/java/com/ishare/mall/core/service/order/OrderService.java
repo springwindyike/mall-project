@@ -1,12 +1,12 @@
 package com.ishare.mall.core.service.order;
 
-import java.util.List;
-import java.util.Map;
-
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.core.model.order.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.ishare.mall.core.model.order.Order;
+import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 	
@@ -25,6 +25,13 @@ public interface OrderService {
 	 * @return
 	 */
 	Order payComplete(String orderId);
+
+	/**
+	 * 创建订单
+	 * @param exchangeDTO
+	 * @return
+	 */
+	Order create(ExchangeDTO exchangeDTO);
 	
 	/**
 	 * 根据channel id查询所有的Order

@@ -1,6 +1,5 @@
 package com.ishare.mall.core.model.product;
 
-import com.google.common.collect.Sets;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
@@ -9,7 +8,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_NAME;
 

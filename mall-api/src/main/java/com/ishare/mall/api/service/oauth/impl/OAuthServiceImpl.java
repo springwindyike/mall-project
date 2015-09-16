@@ -1,10 +1,9 @@
 package com.ishare.mall.api.service.oauth.impl;
 
+import com.ishare.mall.api.service.oauth.OAuthService;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
 import com.ishare.mall.common.base.dto.oauth.OAuthObject;
-import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.api.service.oauth.OAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -25,8 +24,6 @@ public class OAuthServiceImpl implements OAuthService {
 
     private Cache cache;
 
-    @Autowired
-    private ChannelService channelService;
     //核心APP地址
     @Value("#{settings['biz.app.url']}")
     protected String bizAppUrl;

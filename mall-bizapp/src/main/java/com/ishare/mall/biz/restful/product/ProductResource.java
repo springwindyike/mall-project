@@ -98,6 +98,7 @@ public class ProductResource {
 			consumes = {"application/json", "application/xml"})
 	public ProductDetailDTO findByID(@RequestBody ProductDetailDTO productDetailDTO){
 		Product product = productService.findOne(productDetailDTO.getId());
+
 		if(product == null || !product.getVisible()){
 			return productDetailDTO;
 		}
@@ -126,7 +127,7 @@ public class ProductResource {
 	 * @param productListDTO
 	 * @return
 	 */
-	@RequestMapping(value = APPURIConstant.Product.REQUEST_BY_PARAM, method = RequestMethod.POST,
+	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json", "application/xml"},
 			consumes = {"application/json", "application/xml"})
