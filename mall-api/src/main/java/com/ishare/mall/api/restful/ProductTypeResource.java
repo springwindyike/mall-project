@@ -1,10 +1,13 @@
 package com.ishare.mall.api.restful;
 
 import com.google.common.collect.Maps;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.api.utils.Servlets;
 import com.ishare.mall.api.utils.page.PageUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -39,10 +44,17 @@ public class ProductTypeResource {
      * 类型详细信息
      */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ProductType detail(@NotEmpty @PathVariable("id") Integer id) {
+	public ProductTypeDTO detail(@NotEmpty @PathVariable("id") Integer id) {
 		//用findOne立即加载实体对象
-		ProductType productType = productTypeService.findOne(id);
-		return productType;	 
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		productTypeDTO.setId(id);
+		ResponseEntity<ProductTypeDTO> resultEntiy = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultEntiy = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		//ProductType productType = productTypeService.findOne(id);
+		ProductTypeDTO returnTO = resultEntiy.getBody();
+		//return productType;
+		return returnTO;
 	 }
    
     /**
@@ -52,10 +64,18 @@ public class ProductTypeResource {
 	 * @return
      */
 	@RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
-	public Page<ProductType> list(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit) {
-		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
-		Page<ProductType> result = productTypeService.search(null, pageRequest);
-		return PageUtils.mapper(result, pageRequest, ProductType.class);
+	public PageDTO list(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit) {
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		productTypeDTO.setLimit(limit);
+		productTypeDTO.setOffset(offset);
+		ResponseEntity<ProductTypeDTO> responseEntity = null;
+		RestTemplate restTemplate = new RestTemplate();
+		responseEntity = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		ProductTypeDTO returnTO = responseEntity.getBody();
+		//PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+		//Page<ProductType> result = productTypeService.search(null, pageRequest);
+		//return PageUtils.mapper(result, pageRequest, ProductType.class);
+		return returnTO.getPageDTO();
 	}
 	
 	/**
@@ -66,12 +86,21 @@ public class ProductTypeResource {
 	 * @return
 	 */
 	@RequestMapping(value = "/offset/{offset}/limit/{limit}/pid/{pid}", method = RequestMethod.GET)
-	public Page<ProductType> List(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("pid")String pid){
-		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+	public PageDTO List(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("pid")String pid){
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		productTypeDTO.setLimit(limit);
+		productTypeDTO.setOffset(offset);
+		//PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
 		Map<String, Object> searchParams = Maps.newConcurrentMap();
 		searchParams.put("EQ_parent.id", pid);
-		Page<ProductType> result = productTypeService.search(searchParams, pageRequest);
-		return PageUtils.mapper(result, pageRequest, ProductType.class);
+		productTypeDTO.setMap(searchParams);
+		ResponseEntity<ProductTypeDTO> responseEntity = null;
+		RestTemplate restTemplate = new RestTemplate();
+		responseEntity = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		ProductTypeDTO returnTO = responseEntity.getBody();
+		//Page<ProductType> result = productTypeService.search(searchParams, pageRequest);
+		//return PageUtils.mapper(result, pageRequest, ProductType.class);
+		return returnTO.getPageDTO();
 	}
 	
 	
@@ -81,18 +110,36 @@ public class ProductTypeResource {
 	* @return 返回结果
 	*/
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public Page<ProductType> get(final HttpServletRequest request) {
-		PageRequest pageRequest = PageUtils.getPageRequest(request, Sort.Direction.DESC, "id");
-		
+	public PageDTO get(final HttpServletRequest request) {
+		//PageRequest pageRequest = PageUtils.getPageRequest(request, Sort.Direction.DESC, "id");
+		int offset = 1;
+		int limit = 15;
+		if (StringUtils.isNotEmpty(request.getParameter(OFFSET))) {
+			offset = Integer.valueOf(request.getParameter(OFFSET));
+			if (offset <= 0) {
+				offset = 1;
+			}
+		}
+		if (StringUtils.isNotEmpty(request.getParameter(LIMIT))) {
+			limit = Integer.valueOf(request.getParameter(LIMIT));
+			if (limit <= 0) {
+				limit = 15;
+			}
+		}
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		productTypeDTO.setLimit(limit);
+		productTypeDTO.setOffset(offset);
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
-		
+		productTypeDTO.setMap(searchParams);
 		log.debug("searchParams: {}", searchParams);
-		
-		Page<ProductType> result = productTypeService.search(searchParams, pageRequest);
-
-		log.debug("result {}", result.getContent());
-		
-		return PageUtils.mapper(result, pageRequest, ProductType.class);
+		ResponseEntity<ProductTypeDTO> responseEntity = null;
+		//Page<ProductType> result = productTypeService.search(searchParams, pageRequest);
+		RestTemplate restTemplate = new RestTemplate();
+		responseEntity = restTemplate.postForEntity("",productTypeDTO,ProductTypeDTO.class);
+		ProductTypeDTO returnTO = responseEntity.getBody();
+		log.debug("result {}", returnTO.getPageDTO().getContent());
+		return returnTO.getPageDTO();
+		//return PageUtils.mapper(result, pageRequest, ProductType.class);
 	}
 	public static Logger getLog() {
 		return log;

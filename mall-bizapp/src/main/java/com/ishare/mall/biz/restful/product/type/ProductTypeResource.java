@@ -2,6 +2,7 @@ package com.ishare.mall.biz.restful.product.type;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
@@ -9,9 +10,7 @@ import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -66,6 +65,10 @@ public class ProductTypeResource {
 		return null;
     }
 
+    public ProductTypeDTO findByID(@RequestBody ProductTypeDTO productTypeDTO){
+        ProductType productType = productTypeService.findOne(productTypeDTO.getId());
+        return (ProductTypeDTO)MapperUtils.map(productType,ProductTypeDTO.class);
+    }
     public static Logger getLog() {
         return log;
     }
