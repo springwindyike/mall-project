@@ -1,10 +1,6 @@
 package com.ishare.mall.api.restful;
 
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.service.oauth.OAuthService;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
@@ -28,43 +24,43 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/members")
 public class MemberResource {
 	
-	@Autowired
-	private OAuthService oAuthService;
-	
-	@Autowired
-	private MemberService memberService;
-	
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @ResponseBody
-    public Object create() {
-        return null;
-    }
-    
-    /**
-     * 通过accessToken获取到ID查询出memeber信息
-  * @param accessToken
-  * @return Member 返回的数据对象
-	 */
-	@RequestMapping(value = "/accessToken/{accessToken}", method = RequestMethod.GET) 
-	@ResponseBody
-    public Object detail(@NotEmpty @PathVariable("accessToken") String accessToken) throws OAuthSystemException {
-		if (!oAuthService.checkAccessToken(accessToken)) {  
-			// 如果不存在/过期了，返回未验证错误，需重新验证  
-			OAuthResponse response = OAuthRSResponse  
-			        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)  
-			        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)  
-			        .buildHeaderMessage();
-
-			return response;
-		}
-		String account = oAuthService.getAccountByAccessToken(accessToken);
-		Member member = memberService.findByAccount(account);
-		return MapperUtils.map(member, MemberDetailDTO.class);
-	}
-
-    public Member update() {
-        return null;
-    }
+//	@Autowired
+//	private OAuthService oAuthService;
+//
+//	@Autowired
+//	private MemberService memberService;
+//
+//    @RequestMapping(value = "/create", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Object create() {
+//        return null;
+//    }
+//
+//    /**
+//     * 通过accessToken获取到ID查询出memeber信息
+//  * @param accessToken
+//  * @return Member 返回的数据对象
+//	 */
+//	@RequestMapping(value = "/accessToken/{accessToken}", method = RequestMethod.GET)
+//	@ResponseBody
+//    public Object detail(@NotEmpty @PathVariable("accessToken") String accessToken) throws OAuthSystemException {
+//		if (!oAuthService.checkAccessToken(accessToken)) {
+//			// 如果不存在/过期了，返回未验证错误，需重新验证
+//			OAuthResponse response = OAuthRSResponse
+//			        .errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+//			        .setError(OAuthError.ResourceResponse.INVALID_TOKEN)
+//			        .buildHeaderMessage();
+//
+//			return response;
+//		}
+//		String account = oAuthService.getAccountByAccessToken(accessToken);
+//		Member member = memberService.findByAccount(account);
+//		return MapperUtils.map(member, MemberDetailDTO.class);
+//	}
+//
+//    public Member update() {
+//        return null;
+//    }
 
 
 }
