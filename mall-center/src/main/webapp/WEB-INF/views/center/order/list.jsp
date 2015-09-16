@@ -26,15 +26,15 @@
 
 <body class="pos-r">
 <div >
-	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 产品列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 订单管理 <span class="c-gray en">&gt;</span> 订单列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="pd-20">
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
   <tr>
     <td><select name="上架状态" class="input-text" id="上架状态"  style="width:100px; ">
-    <option selected>全部商品</option>
-              <option selected>已上架</option>
-              <option>已下架</option>
+    <option selected>全部订单来源</option>
+              <option selected>享买自营</option>
+              <option>和小宝</option>
           </select></td>
                 <td><select name="" style="width:100px; margin:0 10px; " class="input-text">
               <option>全部分类</option>
@@ -46,40 +46,65 @@
               <option>享买</option>
               <option>锋果</option>
             </select></td>
-    <td><input type="text" name="" id="" placeholder=" 请输入关键字、商品货号" style="width:250px" class="input-text"></td>
+    <td><input type="text" name="" id="" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
 
-    <td><button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜产品</button></td>
+    <td><button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
   </tr>
 </table>
 
 
 		</div>
-		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="product_add('添加产品','product-add.html')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加产品</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+		<div class="cl pd-5 bg-1 bk-gray mt-20"><!--  <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> </span>  --><span class="r">共有数据：<strong>54</strong> 条</span> </div>
 		<div class="mt-20">
 			<table class="table table-border table-bordered table-bg table-hover table-sort">
 				<thead>
 					<tr class="text-c">
-						<th width="40"><input name="" type="checkbox" value=""></th>
-						<th width="40">ID</th>
-						<th width="60">缩略图</th>
-						<th width="100">产品名称</th>
-						<th>描述</th>
-						<th width="100">单价</th>
-						<th width="60">发布状态</th>
-						<th width="100">操作</th>
+						<!-- <th width="40"><input name="" type="checkbox" value=""></th> -->
+						<th width="110">订单号</th>
+						<th width="70">商品图片</th>
+						<th width="120">商品名称</th>
+						<th width="80">购买者</th>
+						<th>顾客留言</th>
+<!-- 						<th>商品来源</th>
+						<th width="110">联系方式</th> -->
+						<th width="70">单价</th>
+						<th width="50">数量</th>
+						<th width="80">生成时间</th>
+						<th width="80">收货人</th>
+						<th width="70">付款</th>
+						<th width="80">订单状态</th>
+						<th width="70">操作</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="text-c va-m">
-						<td><input name="" type="checkbox" value=""></td>
-						<td>001</td>
-						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="pic/product/Thumb/6204.jpg"></a></td>
-						<td class="text-l"><a style="text-decoration:none" onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img title="国内品牌" src="images/gq/cn.gif"> <b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>
-						<td class="text-l">原木的外在,实木条形结构,色泽花纹自然,写意;款式设计吸取实木地板的天然去雕饰之美,在视觉上给人带来深邃联想.多款产品适合搭配不同的风格的室内装饰;功能流露出尊贵典雅的大气韵味。</td>
-						<td><span class="price">356.0</span> 元/平米</td>
+						<!-- <td rowspan="2"><input name="" type="checkbox" value=""></td> -->
+						<td>20150825000002</td>
+						
+						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>
+						<td class="text-l"><a style="text-decoration:none" onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>
+						<td>小明</td>
+						<td>要大一号的，发顺丰。</td>
+<!-- 						<td>中国移动通信 四川分公司</td>
+						<td>18298362843</td> -->
+						<td>121.1元</td>
+						<td>3</td>
+						
+						<td>2015-08-25 19:22:17</td>
+						<td>热的方</td>
+						<td><span class="price">356.0</span> 元</td>
 						<td class="td-status"><span class="label label-success radius">已发布</span></td>
-						<td class="td-manage"><a style="text-decoration:none" onClick="product_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_edit('产品编辑','product-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+						<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit('订单编辑','product-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a><!--  <a style="text-decoration:none" class="ml-5" onClick="product_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> --></td>
 					</tr>
+<%-- 					<tr class="text-c va-m">
+						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>
+						<td class="text-l"><a style="text-decoration:none" onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>
+						<td>中国移动通信 四川分公司</td>
+						<td>18298362843</td>
+						<td>121.1元</td>
+						<td>3</td>
+					</tr> --%>
+					
 				</tbody>
 			</table>
 		</div>
@@ -97,19 +122,86 @@ $('.table-sort').dataTable({
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
 	"aoColumnDefs": [
-	  {"orderable":false,"aTargets":[0,7]}// 制定列不参与排序
+	  {"orderable":false,"aTargets":[0,11]}// 制定列不参与排序
+	],
+	
+	
+	"bProcessing": true,
+	"bServerSide": true,
+	"bStateSave": false,
+	"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+	"sAjaxSource": "${pageContext.request.contextPath}/order/findByChannelId.dhtml",
+	"sAjaxDataProp":"content",
+	"aoColumns": [
+	   { "mDataProp": "id" },
+	   { "mDataProp": "imgUrl" },
+	   { "mDataProp": "name" },
+	   { "mDataProp": "channel" },
+	   { "mDataProp": "mobile" },
+	   { "mDataProp": "price" },
+	   { "mDataProp": "count" },
+	   { "mDataProp": "createTime" },
+	   { "mDataProp": "deliver" },
+	   { "mDataProp": "totlePrice" },
+	   { "mDataProp": null },
+	   { "mDataProp": null }
+	],
+	
+	"createdRow" : function(row, mDataProp, dataIndex){
+	   alert('row = '+row+'mDataProp = ' +mDataProp +'dataIndex = '+dataIndex);
+	   $(row).addClass('text-c');
+	},
+	
+	"columnDefs" : [
+		{
+			"targets" : 0 ,
+			"render" : function(mDataProp, type, full) {
+				return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
+			}
+		},
+		{
+			"targets" : 1 ,
+			"render" : function(mDataProp, type, full) {
+				return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show("'+mDataProp.account+'",\'member-show.html\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+			}
+		},
+		{
+			"targets" : 6 ,
+			"render" : function(mDataProp, type, full) {
+				return '<td class="td-status"><span class="label label-success radius">已启用</span></td>';
+			 }
+		},
+		{
+			"targets" : 7 ,
+			"render" : function(mDataProp, type, full) {
+				return '<td class="td-manage"><a style="text-decoration:none" onClick="member_stop(this,'+mDataProp.account+')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" onclick="member_edit(\'编辑\',\'member-add.html\',\'4\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改密码\',\'change-password.html\',\'10001\',\'600\',\'270\')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:;" onclick="member_del(this,\'1\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
+			}
+		}
 	]
-});
+	});
+	
+	$('.table-sort tbody').on('click', 'tr', function () {
+		if ($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		}
+		else {
+			table.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
+	});
+	
+	
+
 /*图片-添加*/
-function product_add(title,url){
+/* function product_add(title,url){
 	var index = layer.open({
 		type: 2,
 		title: title,
 		content: url
 	});
 	layer.full(index);
-}
-/*图片-查看*/
+} */
+/*图片-查看详情*/
 function product_show(title,url,id){
 	var index = layer.open({
 		type: 2,
@@ -137,7 +229,7 @@ function product_shenhe(obj,id){
     	layer.msg('未通过', {icon:5,time:1000});
 	});	
 }
-/*图片-下架*/
+/*图片-下架  在页面已删除 可改为订但相关*/
 function product_stop(obj,id){
 	layer.confirm('确认要下架吗？',function(index){
 		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
@@ -147,7 +239,7 @@ function product_stop(obj,id){
 	});
 }
 
-/*图片-发布*/
+/*图片-发布 在页面已删除 可改为订但相关*/
 function product_start(obj,id){
 	layer.confirm('确认要发布吗？',function(index){
 		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
@@ -156,7 +248,7 @@ function product_start(obj,id){
 		layer.msg('已发布!',{icon: 6,time:1000});
 	});
 }
-/*图片-申请上线*/
+/*图片-申请上线 在页面已删除 可改为订但相关*/
 function product_shenqing(obj,id){
 	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
 	$(obj).parents("tr").find(".td-manage").html("");
@@ -172,11 +264,11 @@ function product_edit(title,url,id){
 	layer.full(index);
 }
 /*图片-删除*/
-function product_del(obj,id){
+/* function product_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		$(obj).parents("tr").remove();
 		layer.msg('已删除!',{icon:1,time:1000});
 	});
-}
+} */
 </script>
 </body>

@@ -1,5 +1,17 @@
 package com.ishare.mall.core.service.order.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
@@ -8,17 +20,6 @@ import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -84,5 +85,13 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return order;
 	}
+	
+	@Override
+	public Page<Order> findByChannelId(Integer channelId,
+			PageRequest pageRequest) {
+		Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
+		return page;
+	}
+
 
 }
