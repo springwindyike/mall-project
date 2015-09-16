@@ -96,7 +96,7 @@ public class ProductResource extends BaseResource{
         productListDTO.setOffset(offset);
         ResponseEntity<ProductListDTO> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_BY_PARAM),productListDTO,ProductListDTO.class);
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),productListDTO,ProductListDTO.class);
         ProductListDTO resultTO = resultEntity.getBody();
 //        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
 //        Page<Product> result = productService.search(null, pageRequest);
@@ -121,7 +121,7 @@ public class ProductResource extends BaseResource{
         productListDTO.setMap(searchParams);
         ResponseEntity<ProductListDTO> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_BY_PARAM),productListDTO,ProductListDTO.class);
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),productListDTO,ProductListDTO.class);
         ProductListDTO resultTO = resultEntity.getBody();
 //        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
 //        Page<Product> result = productService.search(searchParams, pageRequest);
@@ -147,7 +147,7 @@ public class ProductResource extends BaseResource{
         productListDTO.setMap(searchParams);
         ResponseEntity<ProductListDTO> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_BY_PARAM),productListDTO,ProductListDTO.class);
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),productListDTO,ProductListDTO.class);
         ProductListDTO resultTO = resultEntity.getBody();
 //        Page<Product> result = productService.search(searchParams, pageRequest);
 //        return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
@@ -172,7 +172,7 @@ public class ProductResource extends BaseResource{
         productListDTO.setMap(searchParams);
         ResponseEntity<ProductListDTO> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_BY_PARAM),productListDTO,ProductListDTO.class);
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),productListDTO,ProductListDTO.class);
         ProductListDTO resultTO = resultEntity.getBody();
        // Page<Product> result = productService.search(searchParams, pageRequest);
        // return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
@@ -197,7 +197,7 @@ public class ProductResource extends BaseResource{
         productListDTO.setMap(searchParams);
         ResponseEntity<ProductListDTO> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_BY_PARAM),productListDTO,ProductListDTO.class);
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),productListDTO,ProductListDTO.class);
         ProductListDTO resultTO = resultEntity.getBody();
         //Page<Product> result = productService.search(searchParams, pageRequest);
         //return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
@@ -222,7 +222,7 @@ public class ProductResource extends BaseResource{
        productListDTO.setMap(searchParams);
        ResponseEntity<ProductListDTO> resultEntity = null;
        RestTemplate restTemplate = new RestTemplate();
-       resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_BY_PARAM),productListDTO,ProductListDTO.class);
+       resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),productListDTO,ProductListDTO.class);
        ProductListDTO resultTO = resultEntity.getBody();
        //Page<Product> result = productService.search(searchParams, pageRequest);
        //return PageUtils.mapper(result, pageRequest, ProductListDTO.class);
@@ -260,7 +260,7 @@ public class ProductResource extends BaseResource{
         productListDTO.setMap(searchParams);
         ResponseEntity<ProductListDTO> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_BY_PARAM),productListDTO,ProductListDTO.class);
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),productListDTO,ProductListDTO.class);
         ProductListDTO resultTO = resultEntity.getBody();
         //log.debug("result {}", result.getContent());
         return resultTO.getPageDTO();

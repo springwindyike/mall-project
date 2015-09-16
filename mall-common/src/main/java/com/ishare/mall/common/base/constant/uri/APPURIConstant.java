@@ -35,7 +35,8 @@ public interface APPURIConstant {
     interface ProductType{
     	String REQUEST_MAPPING = "/productType";
     	String REQUEST_MAPPING_FIND_FIRST_LEVEL = "/findFirstLevel";
-    	
+        String REQUEST_MAPPING_FIND_BY_ID = "/findByID";
+        String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
     }
     //产品
     interface Product{
@@ -45,7 +46,7 @@ public interface APPURIConstant {
      String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
      String REQUEST_MAPPING_FIND_ID="/findByID";
      String REQUEST_MAPPING_FIND_CODE="/findByCode";
-     String REQUEST_BY_PARAM="/findByParam";
+     String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
    
     }
 
@@ -58,7 +59,7 @@ public interface APPURIConstant {
       	 String REQUEST_MAPPING   = "/order";
       	 String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
        }
-    }
+
     //渠道
     interface Channel {
         //渠道
