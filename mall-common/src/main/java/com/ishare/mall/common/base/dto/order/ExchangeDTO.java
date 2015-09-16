@@ -14,7 +14,7 @@ public class ExchangeDTO {
 
     private String account;
 
-    private Long productId;
+    private Integer productId;
 
     private Long [] attributeIds;
 
@@ -30,13 +30,13 @@ public class ExchangeDTO {
 
     private String mobile;
     /**购买数量**/
-    private Integer num;
+    private Integer amount;
 
-    public Long getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -144,11 +144,12 @@ public class ExchangeDTO {
         this.clientId = clientId;
     }
 
-    public Integer getNum() {
-        return num;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
+
 }
