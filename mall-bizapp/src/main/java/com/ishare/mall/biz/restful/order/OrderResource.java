@@ -1,6 +1,9 @@
 package com.ishare.mall.biz.restful.order;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,4 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(APPURIConstant.Order.REQUEST_MAPPING)
 public class OrderResource {
 
+    public OrderDetailDTO create(@RequestBody ExchangeDTO exchangeDTO) {
+        return null;
+    }
 }
