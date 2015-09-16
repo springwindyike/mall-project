@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 @Component
@@ -18,10 +17,12 @@ public class AmazonCategoryPageProcessor implements PageProcessor {
 
     private Site site = Site.me().setRetryTimes(30).setSleepTime(10000);
 
+    /*
     public static void main(String[] args) {
         final String url = "http://www.amazon.cn/gp/site-directory/ref=nav_shopall_btn";
         Spider.create(new AmazonCategoryPageProcessor()).addUrl(url).run();
     }
+    */
 
     @Override
     public void process(Page page) {
