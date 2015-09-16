@@ -5,8 +5,6 @@ import com.ishare.mall.api.restful.base.BaseResource;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.api.utils.Servlets;
 import com.ishare.mall.api.utils.page.PageUtils;
 import org.apache.commons.lang3.StringUtils;

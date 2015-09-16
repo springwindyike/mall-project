@@ -98,6 +98,7 @@ public class ProductResource {
 			consumes = {"application/json", "application/xml"})
 	public ProductDetailDTO findByID(@RequestBody ProductDetailDTO productDetailDTO){
 		Product product = productService.findOne(productDetailDTO.getId());
+
 		if(product == null || !product.getVisible()){
 			return productDetailDTO;
 		}

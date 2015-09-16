@@ -6,9 +6,6 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductListDTO;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.service.product.ProductService;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.api.utils.Servlets;
 import com.ishare.mall.api.utils.page.PageUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +75,7 @@ public class ProductResource extends BaseResource{
         resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_CODE),productDetailDTO,ProductDetailDTO.class);
         ProductDetailDTO returnTO = resultEntity.getBody();
 		//return (ProductDetailDTO) MapperUtils.map(product, ProductDetailDTO.class);
-        return (ProductDetailDTO) MapperUtils.map(returnTO,ProductDetailDTO.class);
+        return returnTO;
     }
     
     /**
