@@ -40,6 +40,7 @@ public interface CenterURIConstant {
 	interface Order {
 		String REQUEST_MAPPING = "/order";
 		String REQUEST_MAPPING_SHOW = "/list";
+		String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
 	}
 
 	interface Main {

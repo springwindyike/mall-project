@@ -51,8 +51,6 @@ public class MemberResource {
     @Autowired
     private MemberService memberService;
     @Autowired
-    private OAuthService oAuthService;
-    @Autowired
     private ChannelService channelService;
 
     public static Logger getLog() {
