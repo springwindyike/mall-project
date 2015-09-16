@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.information.BrandRepository;
 import com.ishare.mall.core.repository.information.ChannelRepository;
@@ -80,5 +81,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void delProduct(Integer id) {
 		productRepository.delete(id);
+	}
+
+	@Override
+	public Page<Product> findByChannelId(Integer channelId,PageRequest pageRequest) {
+		Page<Product> page = productRepository.findByChannelId(channelId, pageRequest);
+		return page;
 	}
 }

@@ -18,7 +18,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description: 商品信息
  * Version 1.0
  */
-@Entity(name = TABLE_PRODUCT_NAME)
+@Table(name = TABLE_PRODUCT_NAME)
+@Entity
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

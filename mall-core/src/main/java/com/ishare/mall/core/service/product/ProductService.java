@@ -20,6 +20,9 @@ public abstract interface ProductService {
     public abstract Product findOne(Integer id);
 
     Product findByCode(String code);
+
+    Page<Product> findByChannelId(Integer channelId, PageRequest pageRequest);
+
     public void delProduct(Integer id);
     /**
 	 * 保存Product
