@@ -30,7 +30,6 @@ public class ProductTypeResource {
 
     /**
      * 通过用户账号获取所有的用户权限
-     * @param account 用户账户
      * @return 返回 MemberPermissionDTO JSON
      */
     @RequestMapping(value       = "/findFirstLevel",

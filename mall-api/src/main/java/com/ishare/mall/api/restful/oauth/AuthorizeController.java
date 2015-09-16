@@ -44,6 +44,13 @@ public class AuthorizeController {
     @Autowired
     private OAuthService oAuthService;
 
+    /**
+     * 获取accessToken code
+     * @param model
+     * @param request
+     * @return
+     * @throws URISyntaxException
+     */
     @RequestMapping(value = OpenApiURIConstant.Oauth.AUTHORIZE, method = RequestMethod.GET)
     public Object authorize(Model model, HttpServletRequest request) throws URISyntaxException {
         try {

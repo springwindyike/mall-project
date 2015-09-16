@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.object.BaseObject;
 
 /**
@@ -13,7 +14,10 @@ import com.ishare.mall.common.base.object.BaseObject;
  */
 @JsonAutoDetect
 public class OrderDetailDTO implements BaseObject {
-    private String orderId;
+
+	private static final long serialVersionUID = 1L;
+	
+	private String orderId;
     /* 创建订单者 */
     private String createBy;
     /**更新订单者**/
@@ -47,6 +51,11 @@ public class OrderDetailDTO implements BaseObject {
     private Integer channelId;
     private String expressOrder;//快递单号
     private String expressId;//快递代号
+    
+    private int offset;
+    private int limit;
+    private PageDTO<?> pageDTO;
+    
 	public String getOrderId() {
 		return orderId;
 	}
@@ -160,6 +169,24 @@ public class OrderDetailDTO implements BaseObject {
 	}
 	public void setExpressId(String expressId) {
 		this.expressId = expressId;
+	}
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+	public int getLimit() {
+		return limit;
+	}
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+	public PageDTO getPageDTO() {
+		return pageDTO;
+	}
+	public void setPageDTO(PageDTO pageDTO) {
+		this.pageDTO = pageDTO;
 	}
     
 }

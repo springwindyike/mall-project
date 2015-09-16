@@ -1,5 +1,7 @@
 package com.ishare.mall.api.service.oauth;
 
+import com.ishare.mall.common.base.dto.oauth.OAuthObject;
+
 /**
  * Created by YinLin on 2015/8/12.
  * Description : OAuthService 认证相关
@@ -47,6 +49,13 @@ public interface OAuthService {
      * @return
      */
     String getAccountByAccessToken(String accessToken);
+
+    /**
+     * 通过accessToken得到对象
+     * @param accessToken
+     * @return
+     */
+    OAuthObject getAuthObjectByAccessToken(String accessToken);
 
     /**
      * 获得过期时间
