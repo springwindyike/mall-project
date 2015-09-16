@@ -16,7 +16,7 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 @Entity(name = TABLE_PRODUCT_STYLE_NAME)
 public class ProductStyle extends BaseEntity {
     @Id @GeneratedValue
-    private Integer id;
+    private Long id;
     /**样式名称**/
     @Column(length = 32, nullable = false, name = "product_style_name")
     private String name;
@@ -47,11 +47,11 @@ public class ProductStyle extends BaseEntity {
     @JoinColumn(name = "product_update_by")
     private Member updateBy;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -105,7 +105,7 @@ public class ProductStyle extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public ProductStyle(Integer id) {
+    public ProductStyle(Long id) {
         this.id = id;
     }
 

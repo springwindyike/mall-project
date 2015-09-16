@@ -35,6 +35,8 @@ public class OrderForm {
     private String tel;
     /* 手机 */
     private String mobile;
+    /**购买数量**/
+    private Integer num;
 
     public Integer getProductId() {
         return productId;
@@ -138,6 +140,14 @@ public class OrderForm {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 
     public ExchangeDTO toExchangeDTO() {

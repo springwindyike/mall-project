@@ -37,6 +37,8 @@ public class ExchangeDTO {
     private String tel;
     /* 手机 */
     private String mobile;
+    /**购买数量**/
+    private Integer num;
 
     public Integer getProductId() {
         return productId;
@@ -148,5 +150,13 @@ public class ExchangeDTO {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }
