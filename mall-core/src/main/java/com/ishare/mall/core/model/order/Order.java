@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -30,7 +31,8 @@ import com.ishare.mall.core.status.PaymentWay;
  * Description: 订单类 包括订单项，收货地址，收货人联系方式，订单处理人员，快递单号，快递名称，快递类型
  * Version 1.0
  */
-@Entity(name = TABLE_ORDER_NAME)
+@Entity
+@Table(name = TABLE_ORDER_NAME)
 public class Order implements BaseObject {
     /* 订单号 年份+月+日+当天订单总数*/
     @Id @Column(length = 14, name = "order_id")

@@ -1,9 +1,11 @@
 package com.ishare.mall.common.base.dto.product;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import com.ishare.mall.common.base.object.BaseObject;
@@ -26,6 +28,14 @@ public class ProductTypeDTO implements BaseObject {
 	private List <ProductTypeDTO> child; 
 	
 	private String code;
+
+	private Integer limit;
+
+	private Integer offset;
+
+	private PageDTO pageDTO;
+
+	private Map<String,Object> map;
 	
 	public Integer getId() {
 		return id;
@@ -67,4 +77,35 @@ public class ProductTypeDTO implements BaseObject {
 		this.code = code;
 	}
 
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public Integer getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Integer offset) {
+		this.offset = offset;
+	}
+
+	public PageDTO getPageDTO() {
+		return pageDTO;
+	}
+
+	public void setPageDTO(PageDTO pageDTO) {
+		this.pageDTO = pageDTO;
+	}
+
+	public Map<String, Object> getMap() {
+		return map;
+	}
+
+	public void setMap(Map<String, Object> map) {
+		this.map = map;
+	}
 }
