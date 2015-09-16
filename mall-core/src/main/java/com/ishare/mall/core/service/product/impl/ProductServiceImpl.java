@@ -85,7 +85,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Page<Product> findByChannelId(Integer channelId,PageRequest pageRequest) {
-		Page<Product> page = productRepository.findByChannelId(channelId, pageRequest);
-		return page;
+		try {
+			Page<Product> page = productRepository.findByChannelId(channelId,
+					pageRequest);
+			return page;
+		} catch (Exception e) {
+			e.printStackTrace();
+				return null;
+}
 	}
 }

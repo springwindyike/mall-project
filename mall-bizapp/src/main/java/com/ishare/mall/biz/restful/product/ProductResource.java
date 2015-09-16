@@ -191,13 +191,14 @@ public class ProductResource {
         List<ProductDetailDTO> listProductList = new ArrayList<ProductDetailDTO>();
         int offset = productDTO.getOffset();
         int limit = productDTO.getLimit();
-        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
         Integer channelId = productDTO.getChannelId();
         Page<Product> result = productService.findByChannelId(channelId, pageRequest);
         PageDTO pageDTO = new PageDTO();
+        ProductDTO productD = new ProductDTO();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Product> listProduct = result.getContent();
-            for (Product product:listProduct){
+          for (Product product:listProduct){
                ProductDetailDTO productDetailDTO = new ProductDetailDTO();
                 BeanUtils.copyProperties(product, productDetailDTO);
                 productDetailDTO.setChannelId(product.getChannel().getId());
@@ -207,9 +208,11 @@ public class ProductResource {
             pageDTO.setTotalPages(result.getTotalPages());
             pageDTO.setiTotalDisplayRecords(result.getTotalElements());
             pageDTO.setiTotalRecords(result.getTotalElements());
-            productDTO.setPageDTO(pageDTO);
+            productD.setPageDTO(pageDTO);
         }
-        return productDTO;
+        return productD;
+   
+    
     }
     
 }
