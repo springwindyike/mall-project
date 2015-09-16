@@ -57,7 +57,6 @@ public interface APPURIConstant {
     interface Order{
       	 String REQUEST_MAPPING   = "/order";
       	 String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
-       }
     }
     //渠道
     interface Channel {
