@@ -2,8 +2,6 @@ package com.ishare.mall.api.utils;
 
 import com.google.common.base.Charsets;
 import com.google.common.net.HttpHeaders;
-import com.ishare.mall.core.utils.filter.Collections3;
-import com.ishare.mall.core.utils.filter.Encodes;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -24,7 +22,7 @@ import java.util.Map.Entry;
  */
 public class Servlets {
 
-    // -- 常用数值定义 --//
+    // -- 常用数值定义  --//
     public static final long ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
     private static final Logger log = LoggerFactory.getLogger(Servlets.class);
 
@@ -126,7 +124,7 @@ public class Servlets {
         String agent = request.getHeader("User-Agent");
         boolean isMSIE = (agent != null && agent.toUpperCase().indexOf("MSIE") != -1);
         if (isMSIE) {
-            encodedfileName = Encodes.urlEncode(fileName);
+          //  encodedfileName = Encodes.urlEncode(fileName);
         } else {
             encodedfileName = new String(fileName.getBytes(), Charsets.ISO_8859_1);
         }
@@ -171,9 +169,9 @@ public class Servlets {
      * @see #getParametersStartingWith
      */
     public static String encodeParameterStringWithPrefix(Map<String, Object> params, String prefix) {
-        if (Collections3.isEmpty(params)) {
-            return "";
-        }
+//        if (Collections3.isEmpty(params)) {
+//            return "";
+//        }
 
         if (prefix == null) {
             prefix = "";
@@ -196,7 +194,7 @@ public class Servlets {
      */
     public static String encodeHttpBasic(String userName, String password) {
         String encode = userName + ":" + password;
-        return "Basic " + Encodes.encodeBase64(encode.getBytes());
+        return "Basic "; //+ Encodes.encodeBase64(encode.getBytes());
     }
 
     /**

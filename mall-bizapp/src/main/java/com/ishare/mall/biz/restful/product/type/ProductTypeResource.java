@@ -2,6 +2,7 @@ package com.ishare.mall.biz.restful.product.type;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
@@ -9,10 +10,12 @@ import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +34,6 @@ public class ProductTypeResource {
 
     /**
      * 通过用户账号获取所有的用户权限
-     * @param account 用户账户
      * @return 返回 MemberPermissionDTO JSON
      */
     @RequestMapping(value       = "/findFirstLevel",
@@ -64,6 +66,38 @@ public class ProductTypeResource {
         }
       //  log.debug(roleDTO.toString());
 		return null;
+    }
+
+    /**
+     * 根据ID获取商品类别的详细信息
+     * @param productTypeDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public ProductTypeDTO findByID(@RequestBody ProductTypeDTO productTypeDTO){
+        ProductType productType = productTypeService.findOne(productTypeDTO.getId());
+        return (ProductTypeDTO)MapperUtils.map(productType,ProductTypeDTO.class);
+    }
+
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_PARAM, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public ProductTypeDTO findByParam(@RequestBody ProductTypeDTO productTypeDTO){
+        List<ProductTypeDTO> list = new ArrayList<ProductTypeDTO>();
+        Integer limit = productTypeDTO.getLimit();
+        Integer offset = productTypeDTO.getOffset();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        Page<ProductType> result = null;
+        if(productTypeDTO.getMap() != null && !productTypeDTO.getMap().isEmpty()){
+            result = productTypeService.search(productTypeDTO.getMap(), pageRequest);
+        }else {
+            result = productTypeService.search(null, pageRequest);
+        }
+        return null;
     }
 
     public static Logger getLog() {

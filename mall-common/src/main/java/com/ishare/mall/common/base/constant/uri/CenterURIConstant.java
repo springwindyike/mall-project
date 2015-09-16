@@ -24,6 +24,8 @@ public interface CenterURIConstant {
    	 String REQUEST_MAPPING   = "/product";
    	 String REQUEST_MAPPING_SAVE= "/add";
    	 String REQUEST_MAPPING_DEL="/del/{id}";
+   	 String REQUEST_MAPPING_LIST="/list";
+   	 String REQUEST_MAPPING_FORWORD="/forword";
     }
 
   String INDEX = "index";
@@ -38,6 +40,7 @@ public interface CenterURIConstant {
 	interface Order {
 		String REQUEST_MAPPING = "/order";
 		String REQUEST_MAPPING_SHOW = "/list";
+		String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
 	}
 
 	interface Main {

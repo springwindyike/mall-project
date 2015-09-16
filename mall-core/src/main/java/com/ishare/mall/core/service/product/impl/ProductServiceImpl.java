@@ -1,17 +1,5 @@
 package com.ishare.mall.core.service.product.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.information.BrandRepository;
 import com.ishare.mall.core.repository.information.ChannelRepository;
@@ -21,6 +9,17 @@ import com.ishare.mall.core.repository.product.ProductTypeRepository;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -80,5 +79,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void delProduct(Integer id) {
 		productRepository.delete(id);
+	}
+
+	@Override
+	public Page<Product> findByChannelId(Integer channelId,PageRequest pageRequest) {
+		Page<Product> page = productRepository.findByChannelId(channelId, pageRequest);
+		return page;
 	}
 }

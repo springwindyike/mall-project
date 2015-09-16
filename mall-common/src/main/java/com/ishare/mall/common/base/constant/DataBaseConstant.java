@@ -64,6 +64,7 @@ public interface DataBaseConstant {
         String TABLE_ATTRIBUTE_GROUT_NAME               = TABLE_ATTRIBUTE_NAME + "_group";
         //商品属性表
         String TABLE_PRODUCT_ATTRIBUTE_NAME             = TABLE_PRODUCT_NAME + "_attribute";
-
+        //地区
+        String TABLE_REGION_NAME                        = Common.TABLE_PRE + "region";
     }
 }

@@ -2,7 +2,7 @@ package com.ishare.mall.api.utils.page;
 
 import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.object.BaseObject;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.*;
 
@@ -32,7 +32,7 @@ public class PageUtils {
         List<T> element = page.getContent();
         List<E> resultElement = Lists.newArrayList();
         if (element != null && element.size() > 0) {
-          resultElement = (List<E>) MapperUtils.mapAsList(element, clazzE);
+         // resultElement = (List<E>) MapperUtils.mapAsList(element, clazzE);
         }
         Page<E> result = new PageImpl<E>(resultElement, pageable, page.getTotalElements());
         return result;

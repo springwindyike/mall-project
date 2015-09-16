@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.order;
 
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.core.model.order.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,4 +25,19 @@ public interface OrderService {
 	 * @return
 	 */
 	Order payComplete(String orderId);
+
+	/**
+	 * 创建订单
+	 * @param exchangeDTO
+	 * @return
+	 */
+	Order create(ExchangeDTO exchangeDTO);
+	
+	/**
+	 * 根据channel id查询所有的Order
+	 * @param channelId
+	 * @param pageRequest
+	 * @return
+	 */
+	Page<Order> findByChannelId(Integer channelId, PageRequest pageRequest);
 }

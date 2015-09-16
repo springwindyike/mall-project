@@ -1,7 +1,7 @@
 package com.ishare.mall.api.restful.oauth;
 
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.service.oauth.OAuthService;
+import com.ishare.mall.api.service.oauth.OAuthService;
+import com.ishare.mall.common.base.constant.uri.OpenApiURIConstant;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
 import org.apache.oltu.oauth2.as.request.OAuthAuthzRequest;
@@ -12,6 +12,8 @@ import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_CLIENT_DESCRIPTION;
+import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_ACCOUNT_DESCRIPTION;
 
 /**
  * Created by YinLin on 2015/8/11.
@@ -36,12 +39,19 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
 @Controller
 public class AuthorizeController {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthorizeController.class);
+
     @Autowired
     private OAuthService oAuthService;
-    @Autowired
-    private MemberService memberService;
 
-    @RequestMapping(value = "/authorize", method = RequestMethod.GET)
+    /**
+     * 获取accessToken code
+     * @param model
+     * @param request
+     * @return
+     * @throws URISyntaxException
+     */
+    @RequestMapping(value = OpenApiURIConstant.Oauth.AUTHORIZE, method = RequestMethod.GET)
     public Object authorize(Model model, HttpServletRequest request) throws URISyntaxException {
         try {
             OAuthAuthzRequest oauthRequest = new OAuthAuthzRequest(request);
@@ -54,10 +64,18 @@ public class AuthorizeController {
                                 .buildJSONMessage();
                 return new ResponseEntity(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
             }
+
             //获取客户端account 手机号
             String account = request.getParameter("account");
-            //这里需要用memberService检测 如果没有就创建 检测account合法性
-
+            // 如果没有就创建 检测account合法性
+            if (!oAuthService.checkAccount(account)) {
+                OAuthResponse response =
+                        OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                                .setError(OAuthError.TokenResponse.INVALID_CLIENT)
+                                .setErrorDescription(INVALID_ACCOUNT_DESCRIPTION)
+                                .buildJSONMessage();
+                return new ResponseEntity(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+            }
             //生成授权码
             String authorizationCode = null;
             //responseType目前仅支持CODE，另外还有TOKEN
@@ -88,5 +106,9 @@ public class AuthorizeController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Logger getLog() {
+        return log;
     }
 }
