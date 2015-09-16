@@ -24,9 +24,6 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.EXPIRE
 public class OAuthServiceImpl implements OAuthService {
 
     private Cache cache;
-
-    @Autowired
-    private ChannelService channelService;
     //核心APP地址
     @Value("#{settings['biz.app.url']}")
     protected String bizAppUrl;

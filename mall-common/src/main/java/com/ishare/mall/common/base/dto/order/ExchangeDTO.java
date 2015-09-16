@@ -19,23 +19,15 @@ public class ExchangeDTO {
     private Long [] attributeIds;
 
     private Long styleId;
-    /* 收货人姓名 */
     private String recipients;
-    //国家
     private String country;
-    //省
     private String province;
-    //市
     private String city;
-    //县 区
     private String district;
-    //详细街道
     private String detail;
-    /* 电子邮箱 */
     private String email;
-    /* 电话 */
     private String tel;
-    /* 手机 */
+
     private String mobile;
 
     public Long getProductId() {

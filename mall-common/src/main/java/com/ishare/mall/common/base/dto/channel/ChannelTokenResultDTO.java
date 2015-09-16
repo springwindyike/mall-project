@@ -15,11 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ChannelTokenResultDTO extends GenericDTO {
 
     private Integer id;
-    /**供货商名字**/
     private String name;
-    /**应用ID**/
     private String appId;
-    /**应用秘钥**/
     private String appSecret;
 
     public Integer getId() {

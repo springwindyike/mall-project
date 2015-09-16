@@ -42,8 +42,6 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 public class ProductResource extends BaseResource{
 
     private static final Logger log = LoggerFactory.getLogger(ProductResource.class);
-    @Autowired
-    private ProductService productService;
     /**
      * 通过商品ID获取单个商品信息  格式 /products/{id} GET
      * @param id 商品ID
