@@ -10,8 +10,12 @@ import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,10 +68,38 @@ public class ProductTypeResource {
 		return null;
     }
 
+    /**
+     * 根据ID获取商品类别的详细信息
+     * @param productTypeDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
     public ProductTypeDTO findByID(@RequestBody ProductTypeDTO productTypeDTO){
         ProductType productType = productTypeService.findOne(productTypeDTO.getId());
         return (ProductTypeDTO)MapperUtils.map(productType,ProductTypeDTO.class);
     }
+
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_PARAM, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public ProductTypeDTO findByParam(@RequestBody ProductTypeDTO productTypeDTO){
+        List<ProductTypeDTO> list = new ArrayList<ProductTypeDTO>();
+        Integer limit = productTypeDTO.getLimit();
+        Integer offset = productTypeDTO.getOffset();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        Page<ProductType> result = null;
+        if(productTypeDTO.getMap() != null && !productTypeDTO.getMap().isEmpty()){
+            result = productTypeService.search(productTypeDTO.getMap(), pageRequest);
+        }else {
+            result = productTypeService.search(null, pageRequest);
+        }
+        return null;
+    }
+
     public static Logger getLog() {
         return log;
     }
