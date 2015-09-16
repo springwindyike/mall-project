@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description:样式类
  * Version 1.0
  */
-@Entity(name = TABLE_PRODUCT_STYLE_NAME)
+@Entity
+@Table(name = TABLE_PRODUCT_STYLE_NAME)
 public class ProductStyle extends BaseEntity {
     @Id @GeneratedValue
     private Long id;
