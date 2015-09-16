@@ -19,23 +19,23 @@ public class ExchangeDTO {
     private Long [] attributeIds;
 
     private Long styleId;
-    /* ÊÕ»õÈËĞÕÃû */
+    /* æ”¶è´§äººå§“å */
     private String recipients;
-    //¹ú¼Ò
+    //å›½å®¶
     private String country;
-    //Ê¡
+    //çœ
     private String province;
-    //ÊĞ
+    //å¸‚
     private String city;
-    //ÏØ Çø
+    //å¿ åŒº
     private String district;
-    //ÏêÏ¸½ÖµÀ
+    //è¯¦ç»†è¡—é“
     private String detail;
-    /* µç×ÓÓÊÏä */
+    /* ç”µå­é‚®ç®± */
     private String email;
-    /* µç»° */
+    /* åº§æœº */
     private String tel;
-    /* ÊÖ»ú */
+    /* æ‰‹æœº */
     private String mobile;
 
     public Long getProductId() {

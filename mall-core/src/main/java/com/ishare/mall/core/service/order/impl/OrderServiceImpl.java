@@ -3,8 +3,10 @@ package com.ishare.mall.core.service.order.impl;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
+import com.ishare.mall.core.repository.product.ProductRepository;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
@@ -30,10 +32,13 @@ public class OrderServiceImpl implements OrderService {
 	private OrderRepository orderRepository;
 	@Autowired
 	private GeneratedOrderIdRepository generatedOrderIdRepository;
+	@Autowired
+	private ProductRepository productRepository;
 	@Override
 	public Order findOne(String id) {
 		return orderRepository.findOne(id);
 	}
+
 	@Override
 	public Page<Order> search(Map<String, Object> searchParams, PageRequest pageRequest) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -90,7 +95,8 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Order create(ExchangeDTO exchangeDTO) {
-
+		Order order = null;
+		Product product = productRepository.findOne(exchangeDTO.getProductId());
 		return null;
 	}
 

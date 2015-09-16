@@ -1,6 +1,5 @@
 package com.ishare.mall.core.model.product;
 
-import com.google.common.collect.Sets;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
@@ -9,7 +8,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_NAME;
 
@@ -23,7 +21,7 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     //货号
     @Column(name = "product_code",length = 15)
     private String code;
@@ -106,11 +104,11 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "product_type_id")
     private ProductType type;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
