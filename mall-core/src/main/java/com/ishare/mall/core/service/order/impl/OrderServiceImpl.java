@@ -1,13 +1,17 @@
 package com.ishare.mall.core.service.order.impl;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
 import com.ishare.mall.core.repository.product.ProductStyleRepository;
+import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
@@ -37,6 +41,8 @@ public class OrderServiceImpl implements OrderService {
 	private ProductRepository productRepository;
 	@Autowired
 	private ProductStyleRepository styleRepository;
+	@Autowired
+	private MemberService memberService;
 
 	@Override
 	public Order findOne(String id) {
@@ -108,6 +114,58 @@ public class OrderServiceImpl implements OrderService {
 			PageRequest pageRequest) {
 		Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
 		return page;
+	}
+	//订单生成流程
+	private void initProcessor(ExchangeDTO exchangeDTO) {
+		Order order = new Order();
+		Product product = productRepository.findOne(exchangeDTO.getProductId());
+		order.setOrderId(this.nextOrderId());
+		order.setCreateTime(new Date());
+		OrderItem orderItem = this.initItemProcessor(order, exchangeDTO);
+	}
+
+	/**
+	 * 初始化订单项
+	 * @param order
+	 * @param exchangeDTO
+	 * @return
+	 */
+	private OrderItem initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
+		Product product = productRepository.findOne(exchangeDTO.getProductId());
+		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
+		Member member = memberService.findByAccount(exchangeDTO.getAccount());
+
+		OrderItem orderItem = new OrderItem();
+		orderItem.setOrder(order);
+		//设置样式相关
+		orderItem.setStyleId(exchangeDTO.getStyleId());
+		orderItem.setStyleName(style.getName());
+		//设置商品相关
+		orderItem.setAmount(exchangeDTO.getAmount());
+		orderItem.setProductId(product.getId());
+		orderItem.setProductName(product.getName());
+		orderItem.setImageUrl(style.getImageUrl());
+		return orderItem;
+	}
+
+
+	//获取下一个订单号
+	private String nextOrderId() {
+		Date current=new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String date = sdf.format(current);
+		GeneratedOrderId generatedOrderId = generatedOrderIdRepository.findOne(date);
+		if(null == generatedOrderId){
+			GeneratedOrderId go = new GeneratedOrderId();
+			go.setId(date);
+			go.setOrderId(1);
+			generatedOrderIdRepository.save(go);
+			return String.format("%06d", go.getOrderId());
+		}
+		generatedOrderId.setOrderId(generatedOrderId.getOrderId() + 1);
+		generatedOrderIdRepository.save(generatedOrderId);
+		return String.format("%06d",generatedOrderId.getOrderId()+1);
+
 	}
 
 

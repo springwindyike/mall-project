@@ -1,21 +1,12 @@
 package com.ishare.mall.core.model.order;
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_ITEM_NAME;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.status.OrderItemSort;
 import com.ishare.mall.core.status.OrderItemState;
+
+import javax.persistence.*;
+
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_ITEM_NAME;
 
 /**
  * Created by YinLin on 2015/7/31.
@@ -44,7 +35,7 @@ public class OrderItem extends BaseEntity {
     private String styleName;
     /* 产品样式ID */
     @Column(nullable = false, name = "item_product_style_id",length = 50)
-    private Integer styleId;
+    private Long styleId;
     /* 产品图片地址 */
     @Column(nullable = false, name = "item_product_image_url",length = 200)
     private String imageUrl;
@@ -68,7 +59,7 @@ public class OrderItem extends BaseEntity {
     private Order order;
     public OrderItem(){}
     public OrderItem(String productName, Integer productId, Float productPrice,
-                     Integer amount, String styleName, Integer styleId) {
+                     Integer amount, String styleName, Long styleId) {
         this.productName = productName;
         this.productId = productId;
         this.productPrice = productPrice;
@@ -118,11 +109,11 @@ public class OrderItem extends BaseEntity {
         this.productId = productId;
     }
 
-    public Integer getStyleId() {
+    public Long getStyleId() {
         return styleId;
     }
 
-    public void setStyleId(Integer styleId) {
+    public void setStyleId(Long styleId) {
         this.styleId = styleId;
     }
 
