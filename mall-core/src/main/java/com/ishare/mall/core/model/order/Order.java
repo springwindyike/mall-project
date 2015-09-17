@@ -70,11 +70,11 @@ public class Order implements BaseObject {
     @Column(nullable=false, name = "order_payment_state",length = 5)
     private Boolean paymentState = false;
     /* 订单配送信息 */
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional=true, fetch = FetchType.LAZY)
     @JoinColumn(name = "deliver_id")
     private OrderDeliverInfo orderDeliverInfo;
     /* 订单购买者联系信息 */
-    @OneToOne(cascade = CascadeType.ALL, optional=true)
+    @OneToOne(cascade = CascadeType.ALL, optional=true, fetch = FetchType.LAZY)
     @JoinColumn(name="contact_id")
     private OrderContactInfo orderContactInfo;
     /* 订单项 */
