@@ -64,6 +64,7 @@ public class OrderResource {
 									OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 									BeanUtils.copyProperties(order, innerOrderDetailDTO);
 									innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+									innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 									listOrder.add(innerOrderDetailDTO);
             					}
 			        pageDTO.setContent(listOrder);
