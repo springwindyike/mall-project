@@ -1,24 +1,20 @@
 package com.ishare.mall.common.base.dto.product;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
-import com.ishare.mall.common.base.object.BaseObject;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import java.util.Date;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by YinLin on 2015/8/7.
  * Description: productDTO
  * Version 1.0
  */
-@XmlRootElement
 @JsonAutoDetect
 public class ProductDetailDTO extends GenericDTO {
-    private Integer id;
+
+	private Integer id;
     //货号
     private String code;
     //物品名字

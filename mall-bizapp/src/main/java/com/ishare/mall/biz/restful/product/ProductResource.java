@@ -1,12 +1,20 @@
 package com.ishare.mall.biz.restful.product;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.*;
+import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductStyle;
+import com.ishare.mall.core.model.product.ProductType;
+import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.service.product.ProductStyleService;
+import com.ishare.mall.core.status.Gender;
+import com.ishare.mall.core.status.MemberType;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,17 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.product.ProductService;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.MemberType;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -219,22 +218,26 @@ public class ProductResource {
         Integer channelId = productDTO.getChannelId();
         Page<Product> result = productService.findByChannelId(channelId, pageRequest);
         PageDTO pageDTO = new PageDTO();
-        ProductDTO productD = new ProductDTO();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Product> listProduct = result.getContent();
-          for (Product product:listProduct){
+         for (Product product:listProduct){
                ProductDetailDTO productDetailDTO = new ProductDetailDTO();
                 BeanUtils.copyProperties(product, productDetailDTO);
                 productDetailDTO.setChannelId(product.getChannel().getId());
+                productDetailDTO.setBrandId(product.getBrand().getId());
+                productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
+                productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
+                productDetailDTO.setTypeId(product.getType().getId());
                 listProductList.add(productDetailDTO);
             }
             pageDTO.setContent(listProductList);
             pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
-            pageDTO.setiTotalRecords(result.getTotalElements());
-            productD.setPageDTO(pageDTO);
+            pageDTO.setITotalDisplayRecords(result.getTotalElements());
+            pageDTO.setITotalRecords(result.getTotalElements());
+            productDTO.setPageDTO(pageDTO);
         }
-        return productD;
+		log.debug("xxx");
+        return productDTO;
    
     
     }
