@@ -16,8 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @JsonAutoDetect
-public class ProductDetailDTO extends GenericDTO {
-    private Integer id;
+public class ProductDetailDTO implements BaseObject {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id;
     //货号
     private String code;
     //物品名字

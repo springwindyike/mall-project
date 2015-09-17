@@ -196,22 +196,25 @@ public class ProductResource {
         Integer channelId = productDTO.getChannelId();
         Page<Product> result = productService.findByChannelId(channelId, pageRequest);
         PageDTO pageDTO = new PageDTO();
-        ProductDTO productD = new ProductDTO();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Product> listProduct = result.getContent();
-          for (Product product:listProduct){
+         for (Product product:listProduct){
                ProductDetailDTO productDetailDTO = new ProductDetailDTO();
                 BeanUtils.copyProperties(product, productDetailDTO);
                 productDetailDTO.setChannelId(product.getChannel().getId());
+                productDetailDTO.setBrandId(product.getBrand().getId());
+                productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
+                productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
+                productDetailDTO.setTypeId(product.getType().getId());
                 listProductList.add(productDetailDTO);
             }
             pageDTO.setContent(listProductList);
             pageDTO.setTotalPages(result.getTotalPages());
             pageDTO.setiTotalDisplayRecords(result.getTotalElements());
             pageDTO.setiTotalRecords(result.getTotalElements());
-            productD.setPageDTO(pageDTO);
+            productDTO.setPageDTO(pageDTO);
         }
-        return productD;
+        return productDTO;
    
     
     }
