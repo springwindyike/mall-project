@@ -129,6 +129,11 @@ public class OrderServiceImpl implements OrderService {
 		order.setCreateTime(new Date());
 		order.setChannel(channel);
 		OrderItem orderItem = this.initItemProcessor(order, exchangeDTO);
+		//费用计算
+		//商品费用
+		//运费
+		//总计
+		//保存 返回
 	}
 
 	/**
@@ -151,6 +156,7 @@ public class OrderServiceImpl implements OrderService {
 		orderItem.setAmount(exchangeDTO.getAmount());
 		orderItem.setProductId(product.getId());
 		orderItem.setProductName(product.getName());
+		//设置图片
 		orderItem.setImageUrl(style.getImageUrl());
 		return orderItem;
 	}
