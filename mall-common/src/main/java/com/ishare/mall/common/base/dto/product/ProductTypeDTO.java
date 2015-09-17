@@ -25,8 +25,8 @@ public class ProductTypeDTO implements BaseObject {
 	
 	private String typeName;
 
-	private List <ProductTypeDTO> child; 
-	
+	private List <ProductTypeDTO> child;
+
 	private String code;
 
 	private Integer limit;
