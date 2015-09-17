@@ -111,7 +111,9 @@ public class ProductController extends BaseController {
 		try {
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), productDTO, ProductDTO.class);
 		} catch (Exception e) {
-e.printStackTrace();		}
+			log.debug("error");
+				e.printStackTrace();		
+				}
 		ProductDTO productDTOResult = resultDTO.getBody();
 		model.addAttribute("pageDTO",productDTOResult.getPageDTO());
 		System.out.print("test1111111");
