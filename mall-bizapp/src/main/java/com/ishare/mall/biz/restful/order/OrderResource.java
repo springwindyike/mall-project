@@ -68,8 +68,8 @@ public class OrderResource {
             					}
 			        pageDTO.setContent(listOrder);
 			        pageDTO.setTotalPages(result.getTotalPages());
-			        pageDTO.setiTotalDisplayRecords(result.getTotalElements());
-			        pageDTO.setiTotalRecords(result.getTotalElements());
+			        pageDTO.setITotalDisplayRecords(result.getTotalElements());
+			        pageDTO.setITotalRecords(result.getTotalElements());
 			        orderDetailDTO.setPageDTO(pageDTO);
         				}
         return orderDetailDTO;
