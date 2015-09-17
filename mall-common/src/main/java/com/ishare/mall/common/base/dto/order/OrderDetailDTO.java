@@ -1,13 +1,11 @@
 package com.ishare.mall.common.base.dto.order;
 
-import java.util.Date;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 /**
  * Created by Zhangzhaoxin on 2015/8/27.
@@ -57,7 +55,7 @@ public class OrderDetailDTO extends GenericDTO {
     
     private int offset;
     private int limit;
-    private PageDTO<?> pageDTO;
+    private PageDTO pageDTO;
     
 	public String getOrderId() {
 		return orderId;
