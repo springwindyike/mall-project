@@ -136,7 +136,6 @@ public class ProductResource {
 				ProductStyleDTO productStyleDTO = new ProductStyleDTO();
 				BeanUtils.copyProperties(productStyle,productStyleDTO);
 				listStyle.add(productStyleDTO);
-				log.debug(list.get(0).getProduct().getName());
 			}
 		}
 		ProductDetailDTO returnDTO = (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
