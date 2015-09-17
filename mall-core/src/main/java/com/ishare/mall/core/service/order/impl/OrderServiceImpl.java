@@ -18,6 +18,7 @@ import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -116,7 +117,12 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Page<Order> findByChannelId(Integer channelId,
 			PageRequest pageRequest) {
-		Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
+		Page<Order> page = null;
+		try {
+			page = orderRepository.findByChannelId(channelId, pageRequest);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return page;
 	}
 
