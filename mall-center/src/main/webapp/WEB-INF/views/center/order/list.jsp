@@ -77,30 +77,27 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="text-c va-m">
+					<!-- <tr class="text-c va-m"> -->
 						<!-- <td rowspan="2"><input name="" type="checkbox" value=""></td> -->
-						<td>20150825000002</td>
+<%-- 						<td>20150825000002</td>
 						
 						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>
 						<td class="text-l"><a style="text-decoration:none" onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>
 						<td>小明</td>
 						<td>要大一号的，发顺丰。</td>
-<!-- 						<td>中国移动通信 四川分公司</td>
-						<td>18298362843</td> -->
 						<td>121.1元</td>
 						<td>3</td>
-						
 						<td>2015-08-25 19:22:17</td>
 						<td>热的方</td>
 						<td><span class="price">356.0</span> 元</td>
 						<td class="td-status"><span class="label label-success radius">已发布</span></td>
 						<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit('订单编辑','product-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a><!--  <a style="text-decoration:none" class="ml-5" onClick="product_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> --></td>
-					</tr>
+					</tr> --%>
 <%-- 					<tr class="text-c va-m">
 						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>
 						<td class="text-l"><a style="text-decoration:none" onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>
-						<td>中国移动通信 四川分公司</td>
-						<td>18298362843</td>
+						<td>小明</td>
+						<td>要大一号的，发顺丰。</td>
 						<td>121.1元</td>
 						<td>3</td>
 					</tr> --%>
@@ -120,10 +117,10 @@
 
 $('.table-sort').dataTable({
 	"aaSorting": [[ 0, "desc" ]],//默认第几个排序
-	"bStateSave": true,//状态保存
-	"aoColumnDefs": [
+ 	"bStateSave": true,//状态保存
+/* 	"aoColumnDefs": [
 	  {"orderable":false,"aTargets":[11]}// 制定列不参与排序
-	],
+	],  */
 	
 	
 	"bProcessing": true,
@@ -155,7 +152,7 @@ $('.table-sort').dataTable({
 		{
 			"targets" : 1 ,
 			"render" : function(mDataProp, type, full) {
-				return '<td><a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>'+11111+'</td>';
+				return '<td><a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>';
 			}
 		},
 		{
@@ -172,6 +169,8 @@ $('.table-sort').dataTable({
 		},
 		{
 			"targets" : 11 ,
+			"orderable":false,
+			"aTargets":[11],
 			"render" : function(mDataProp, type, full) {
 				return '<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit(\'订单编辑\',\'product-add.html\',\'10001\')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a></td>';
 			}
