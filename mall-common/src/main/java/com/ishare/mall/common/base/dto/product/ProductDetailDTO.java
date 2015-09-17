@@ -5,6 +5,7 @@ import com.ishare.mall.common.base.object.BaseObject;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -68,7 +69,9 @@ public class ProductDetailDTO implements BaseObject {
     //默认样式图片
     private String defaultImageUrl;
     //库存
-    private Integer inventory; 
+    private Integer inventory;
+
+    private List<ProductStyleDTO> list;
 
     public Integer getId() {
         return id;
@@ -285,5 +288,12 @@ public class ProductDetailDTO implements BaseObject {
 	public void setInventory(Integer inventory) {
 		this.inventory = inventory;
 	}
-    
+
+    public List<ProductStyleDTO> getList() {
+        return list;
+    }
+
+    public void setList(List<ProductStyleDTO> list) {
+        this.list = list;
+    }
 }

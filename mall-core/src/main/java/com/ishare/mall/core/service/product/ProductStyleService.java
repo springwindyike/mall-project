@@ -9,5 +9,5 @@ import java.util.List;
  *
  */
 public interface ProductStyleService {
-    List<ProductStyle> findByProduct(Integer id);
+    List<ProductStyle> findByProductStyle(Integer id);
 }
