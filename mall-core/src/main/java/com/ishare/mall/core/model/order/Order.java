@@ -3,6 +3,7 @@ package com.ishare.mall.core.model.order;
 
 import com.ishare.mall.common.base.object.BaseObject;
 import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PaymentWay;
 
@@ -26,12 +27,14 @@ public class Order implements BaseObject {
     private String orderId;
     /* 创建订单者 */
     
-    @Column(name = "order_create_by",length = 15)
-    private String createBy;
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
+    @JoinColumn(name="create_by_member_id")
+    private Member createBy;
     /**更新订单者**/
-    
-    @Column(name = "order_update_by",length = 15)
-    private String updateBy;
+
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
+    @JoinColumn(name="update_by_member_id")
+    private Member updateBy;
     /* 订单创建时间 */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable=false, name = "order_create_time",length = 20)
@@ -195,22 +198,6 @@ public class Order implements BaseObject {
         return true;
     }
 
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -273,5 +260,21 @@ public class Order implements BaseObject {
 
     public void setExpressId(String expressId) {
         this.expressId = expressId;
+    }
+
+    public Member getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Member createBy) {
+        this.createBy = createBy;
+    }
+
+    public Member getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Member updateBy) {
+        this.updateBy = updateBy;
     }
 }

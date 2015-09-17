@@ -32,6 +32,8 @@ public class ExchangeDTO {
     /**购买数量**/
     private Integer amount;
 
+    private String requirement;
+
     public Integer getProductId() {
         return productId;
     }
@@ -152,4 +154,11 @@ public class ExchangeDTO {
         this.amount = amount;
     }
 
+    public String getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(String requirement) {
+        this.requirement = requirement;
+    }
 }
