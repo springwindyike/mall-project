@@ -117,12 +117,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Page<Order> findByChannelId(Integer channelId,
 			PageRequest pageRequest) {
-		Page<Order> page = null;
-		try {
-			page = orderRepository.findByChannelId(channelId, pageRequest);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
 		return page;
 	}
 
