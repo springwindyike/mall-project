@@ -49,7 +49,7 @@ public class OrderContactInfo extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.MAN;
 	/**所属订单**/
-	@OneToOne(cascade = CascadeType.REFRESH, mappedBy = "orderContactInfo")
+	@OneToOne(cascade = CascadeType.REFRESH, mappedBy = "orderContactInfo", fetch = FetchType.LAZY)
 	private Order order;
 	public Order getOrder() {
 		return order;

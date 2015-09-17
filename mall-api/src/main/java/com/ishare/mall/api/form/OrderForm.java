@@ -36,7 +36,7 @@ public class OrderForm {
     /* 手机 */
     private String mobile;
     /**购买数量**/
-    private Integer num;
+    private Integer amount;
 
     public Integer getProductId() {
         return productId;
@@ -142,18 +142,17 @@ public class OrderForm {
         this.token = token;
     }
 
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
-    }
-
     public ExchangeDTO toExchangeDTO() {
         ExchangeDTO exchangeDTO = new ExchangeDTO();
         BeanUtils.copyProperties(this, exchangeDTO);
        return exchangeDTO;
     }
 
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 }

@@ -1,30 +1,17 @@
 package com.ishare.mall.core.model.order;
 
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import com.ishare.mall.common.base.object.BaseObject;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.status.PaymentWay;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
 
 /**
  * Created by YinLin on 2015/7/31.
@@ -97,7 +84,7 @@ public class Order implements BaseObject {
     @OneToMany(mappedBy = "order", cascade=CascadeType.REMOVE)
     private Set<OrderMessage> orderMessages = new HashSet<OrderMessage>();
     /**各个订单对应的渠道**/
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="channel_id")
     private Channel channel;
   

@@ -48,7 +48,7 @@
             
 			
 		</div>
-		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="product_add('添加产品','add.dhtml')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加产品</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="product_add('添加产品','product-add.html')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加产品</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
 		<div class="mt-20">
 			<table class="table table-border table-bordered table-bg table-hover table-sort">
 				<thead>
@@ -63,7 +63,7 @@
 						<th width="100">操作</th>
 					</tr>
 				</thead>
-				<tbody>
+				<!-- <tbody>
 					<tr class="text-c va-m">
 						<td><input name="" type="checkbox" value=""></td>
 						<td>001</td>
@@ -74,7 +74,7 @@
 						<td class="td-status"><span class="label label-success radius">已发布</span></td>
 						<td class="td-manage"><a style="text-decoration:none" onClick="product_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_edit('产品编辑','product-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 					</tr>
-				</tbody>
+				</tbody> -->
 			</table>
 		</div>
 	</div>
@@ -147,11 +147,70 @@ $(document).ready(function(){
 });
 
 $('.table-sort').dataTable({
-	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+/* 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
 	"aoColumnDefs": [
 	  {"orderable":false,"aTargets":[0,7]}// 制定列不参与排序
-	]
+	] */
+	   "bProcessing": true,
+       "bServerSide": true,
+       "bStateSave": false,
+       "aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+       "sAjaxSource": "${pageContext.request.contextPath}/product/findByChannelId.dhtml",
+       "sAjaxDataProp":"content",
+       "aoColumns": [
+           { "mDataProp": null },
+           { "mDataProp": "id" },
+           { "mDataProp": null },
+           { "mDataProp": "name" },
+           { "mDataProp": "description" },
+           { "mDataProp": "basePrice" },
+           { "mDataProp": null },
+           { "mDataProp": null },
+       ],
+
+       "createdRow" : function(row, mDataProp, dataIndex){
+           //alert('row = '+row+'mDataProp = ' +mDataProp +'dataIndex = '+dataIndex);
+           $(row).addClass('text-c');
+       },
+
+       "columnDefs" : [
+               {
+                   "targets" : 0 ,
+                   "render" : function(mDataProp, type, full) {
+                   return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
+               }
+           },
+
+               {
+                   "targets" : 1 ,
+                   "render" : function(mDataProp, type, full) {
+                   return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show("'+mDataProp.account+'",\'member-show.html\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+               }
+           },
+           {
+               "targets" : 6 ,
+               "render" : function(mDataProp, type, full) {
+                   return '<td class="td-status"><span class="label label-success radius">已启用</span></td>';
+               }
+           },
+
+           {
+               "targets" : 7 ,
+               "render" : function(mDataProp, type, full) {
+                   return '<td class="td-manage"><a style="text-decoration:none" onClick="member_stop(this,'+mDataProp.account+')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" onclick="member_edit(\'编辑\',\'member-add.html\',\'4\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改密码\',\'change-password.html\',\'10001\',\'600\',\'270\')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:;" onclick="member_del(this,\'1\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
+               }
+           },
+       ],
+   });
+   $('.table-sort tbody').on('click', 'tr', function () {
+       if ($(this).hasClass('selected')) {
+           $(this).removeClass('selected');
+       }
+       else {
+           table.$('tr.selected').removeClass('selected');
+           $(this).addClass('selected');
+       }
 });
 /*图片-添加*/
 function product_add(title,url){
