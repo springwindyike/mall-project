@@ -24,7 +24,7 @@ public class Region extends BaseEntity {
     @Column(name = "region_type")
     private Integer type;
 
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Region parent;
 

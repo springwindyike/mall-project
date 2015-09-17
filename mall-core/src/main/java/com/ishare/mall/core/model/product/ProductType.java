@@ -33,14 +33,14 @@ public class ProductType extends BaseEntity {
     @Column(length = 1, nullable = false, name = "type_level")
     private Integer level;
     /**父节点**/
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name ="type_parent_id")
     private ProductType parent;
     /**所有子节点**/
-    @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.REMOVE}, mappedBy="parent")
+    @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.REMOVE}, mappedBy="parent", fetch = FetchType.LAZY)
     private Set<ProductType> childTypes = Sets.newConcurrentHashSet();
     /**所有商品**/
-    @OneToMany(mappedBy = "type", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "type", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Product> products = Sets.newConcurrentHashSet();
 
     public Integer getId() {

@@ -54,7 +54,7 @@ public class OrderItem extends BaseEntity {
     private OrderItemSort exchangeOrBack;
     
     /* 所属订单 */
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
     public OrderItem(){}

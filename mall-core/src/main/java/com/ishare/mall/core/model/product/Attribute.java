@@ -23,7 +23,7 @@ public class Attribute {
     @Column(name = "attr_desc")
     private String description;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "attr_group_id")
     private AttributeGroup attributeGroup;
 

@@ -35,7 +35,7 @@ public class Member extends BaseEntity {
     private String salt;
 
     /**所属渠道**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     private Channel channel;
     /**成员名称**/
