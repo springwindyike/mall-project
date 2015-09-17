@@ -4,6 +4,9 @@ package com.ishare.mall.biz.restful.product;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ishare.mall.common.base.dto.product.*;
+import com.ishare.mall.core.model.product.ProductStyle;
+import com.ishare.mall.core.service.product.ProductStyleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -18,10 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailResultDTO;
-import com.ishare.mall.common.base.dto.product.ProductListDTO;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
@@ -44,7 +43,8 @@ public class ProductResource {
     private static final Logger log = LoggerFactory.getLogger(ProductResource.class);
     @Autowired
     private ProductService productService;
-
+	@Autowired
+	private ProductStyleService productStyleService;
     public static Logger getLog() {
         return log;
     }
@@ -98,11 +98,22 @@ public class ProductResource {
 			consumes = {"application/json", "application/xml"})
 	public ProductDetailDTO findByID(@RequestBody ProductDetailDTO productDetailDTO){
 		Product product = productService.findOne(productDetailDTO.getId());
-
 		if(product == null || !product.getVisible()){
 			return productDetailDTO;
 		}
-		return (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
+		List<ProductStyle> list = productStyleService.findByProductStyle(productDetailDTO.getId());
+		List<ProductStyleDTO> listStyle = new ArrayList<ProductStyleDTO>();
+		if(list != null && list.size()>0){
+			for(ProductStyle productStyle:list){
+				ProductStyleDTO productStyleDTO = new ProductStyleDTO();
+				BeanUtils.copyProperties(productStyle,productStyleDTO);
+				listStyle.add(productStyleDTO);
+				log.debug(list.get(0).getProduct().getName());
+			}
+		}
+		ProductDetailDTO returnDTO = (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
+		returnDTO.setList(listStyle);
+		return returnDTO;
 	}
 
 	/**
@@ -119,7 +130,19 @@ public class ProductResource {
 		if(product == null || !product.getVisible()){
 			return productDetailDTO;
 		}
-		return (ProductDetailDTO)MapperUtils.map(product,ProductDetailDTO.class);
+		List<ProductStyle> list = productStyleService.findByProductStyle(product.getId());
+		List<ProductStyleDTO> listStyle = new ArrayList<ProductStyleDTO>();
+		if(list != null && list.size()>0){
+			for(ProductStyle productStyle:list){
+				ProductStyleDTO productStyleDTO = new ProductStyleDTO();
+				BeanUtils.copyProperties(productStyle,productStyleDTO);
+				listStyle.add(productStyleDTO);
+				log.debug(list.get(0).getProduct().getName());
+			}
+		}
+		ProductDetailDTO returnDTO = (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
+		returnDTO.setList(listStyle);
+		return returnDTO;
 	}
 
 	/**
@@ -155,6 +178,7 @@ public class ProductResource {
 			pageDTO.setContent(list);
 			pageDTO.setTotalPages(result.getTotalPages());
 			pageDTO.setTotalElements(result.getTotalElements());
+			log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
 			productListDTO.setPageDTO(pageDTO);
 		}
 		return productListDTO;
@@ -196,22 +220,25 @@ public class ProductResource {
         Integer channelId = productDTO.getChannelId();
         Page<Product> result = productService.findByChannelId(channelId, pageRequest);
         PageDTO pageDTO = new PageDTO();
-        ProductDTO productD = new ProductDTO();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Product> listProduct = result.getContent();
-          for (Product product:listProduct){
+         for (Product product:listProduct){
                ProductDetailDTO productDetailDTO = new ProductDetailDTO();
                 BeanUtils.copyProperties(product, productDetailDTO);
                 productDetailDTO.setChannelId(product.getChannel().getId());
+                productDetailDTO.setBrandId(product.getBrand().getId());
+                productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
+                productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
+                productDetailDTO.setTypeId(product.getType().getId());
                 listProductList.add(productDetailDTO);
             }
             pageDTO.setContent(listProductList);
             pageDTO.setTotalPages(result.getTotalPages());
             pageDTO.setiTotalDisplayRecords(result.getTotalElements());
             pageDTO.setiTotalRecords(result.getTotalElements());
-            productD.setPageDTO(pageDTO);
+            productDTO.setPageDTO(pageDTO);
         }
-        return productD;
+        return productDTO;
    
     
     }

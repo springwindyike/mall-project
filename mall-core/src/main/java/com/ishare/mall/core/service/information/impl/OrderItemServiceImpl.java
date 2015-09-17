@@ -79,7 +79,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 		newOrderItem.setProductName(orderItems.getProductName());
 		newOrderItem.setProductPrice(orderItems.getProductPrice());
 		newOrderItem.setState(orderItems.getState());
-		newOrderItem.setStyleId(orderItems.getStyleId());
+		//newOrderItem.setStyleId(orderItems.getStyleId());
 		newOrderItem.setStyleName(orderItems.getStyleName());
 		return orderItemRepository.save(newOrderItem);
 	}

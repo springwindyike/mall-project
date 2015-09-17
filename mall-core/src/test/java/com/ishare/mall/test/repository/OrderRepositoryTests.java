@@ -15,6 +15,8 @@ import com.ishare.mall.test.RepositoryTestTemplate;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,7 +75,7 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 		public Order buildOrder() {
 			Order order = new Order();
 			order.setChannel(channelRepository.findOne(1));
-			order.setCreateBy("18298362843");
+			//order.setCreateBy("18298362843");
 			order.setCreateTime(new Date());
 			order.setDeliverFee((float) 15);
 			order.setExpressId("1111111111");
@@ -88,7 +90,7 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 			order.setProductTotalPrice((float) 895);
 			order.setState(OrderState.WAIT_PAYMENT);
 			order.setTotalPrice((float) 999);
-			order.setUpdateBy("12346712912");
+			//order.setUpdateBy("12346712912");
 			order.setUpdateTime(new Date());
 			order.setItems(null);
 			order.setOrderMessages(null);
@@ -131,7 +133,8 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 
     @Override
     public void testRetrieve() {
-
+		 PageRequest pageRequest = new PageRequest(0, PAGE_SIZE, Sort.Direction.ASC, "id");
+		repository.findByChannelId(8, pageRequest);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class ProductResource extends BaseResource{
      * @param id 商品ID
      * @return ProductDetailDTO 返回的数据对象
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET,produces = {"application/json"})
     public ProductDetailDTO get(@NotEmpty @PathVariable("id") Integer id) {
         //用findOne立即加载实体对象
         //Product product = productService.findOne(id);
@@ -63,7 +63,7 @@ public class ProductResource extends BaseResource{
      * @param code 商品ID
      * @return ProductDetailDTO 返回的数据对象
      */
-	@RequestMapping(value = "code/{code}", method = RequestMethod.GET)
+	@RequestMapping(value = "code/{code}", method = RequestMethod.GET,produces = {"application/json"})
 	public ProductDetailDTO getByCode(@NotEmpty @PathVariable("code") String code) {
 		//用findOne立即加载实体对象
 		//Product product = productService.findByCode(code);
@@ -84,7 +84,7 @@ public class ProductResource extends BaseResource{
      * @param limit 分页size
      * @return 返回ProductListDTO
      */
-    @RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET)
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET,produces = {"application/json"})
     public PageDTO get(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit) {
         ProductListDTO productListDTO = new ProductListDTO();
         productListDTO.setLimit(limit);
@@ -106,7 +106,7 @@ public class ProductResource extends BaseResource{
      * @param name 品牌名字
      * @return 返回list
      */
-    @RequestMapping(value = "/offset/{offset}/limit/{limit}/brand/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/brand/{name}", method = RequestMethod.GET,produces = {"application/json"})
     public PageDTO listByBrandName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
         ProductListDTO productListDTO = new ProductListDTO();
         productListDTO.setLimit(limit);
@@ -131,7 +131,7 @@ public class ProductResource extends BaseResource{
      * @param brandId 品牌ID
      * @return 返回list
      */
-    @RequestMapping(value = "/offset/{offset}/limit/{limit}/brandId/{brandId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/brandId/{brandId}", method = RequestMethod.GET,produces = {"application/json"})
     public PageDTO listByBrandId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("brandId")Integer brandId) {
         ProductListDTO productListDTO = new ProductListDTO();
         productListDTO.setLimit(limit);
@@ -156,7 +156,7 @@ public class ProductResource extends BaseResource{
      * @param name 类别名称
      * @return 返回list
      */
-    @RequestMapping(value = "/offset/{offset}/limit/{limit}/type/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/type/{name}", method = RequestMethod.GET,produces = {"application/json"})
     public PageDTO listByTypeName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
        // PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         ProductListDTO productListDTO = new ProductListDTO();
@@ -181,7 +181,7 @@ public class ProductResource extends BaseResource{
      * @param typeId 类别ID
      * @return 返回list
      */
-    @RequestMapping(value = "/offset/{offset}/limit/{limit}/typeId/{typeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}/typeId/{typeId}", method = RequestMethod.GET,produces = {"application/json"})
     public PageDTO listByTypeId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("typeId")String typeId) {
        // PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         ProductListDTO productListDTO = new ProductListDTO();
@@ -206,7 +206,7 @@ public class ProductResource extends BaseResource{
     * @param name 产品名字（关键字）
     * @return 返回list
     */
-   @RequestMapping(value = "/offset/{offset}/limit/{limit}/name/{name}", method = RequestMethod.GET)
+   @RequestMapping(value = "/offset/{offset}/limit/{limit}/name/{name}", method = RequestMethod.GET,produces = {"application/json"})
    public PageDTO listByName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
        //PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
        ProductListDTO productListDTO = new ProductListDTO();
@@ -229,7 +229,7 @@ public class ProductResource extends BaseResource{
      * @param request http请求
      * @return 返回结果
      */
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.GET,produces = {"application/json"})
     public PageDTO get(final HttpServletRequest request) {
         int offset = 1;
         int limit = 15;

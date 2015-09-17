@@ -1,30 +1,18 @@
 package com.ishare.mall.core.model.order;
 
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
+import com.ishare.mall.common.base.object.BaseObject;
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.status.OrderState;
+import com.ishare.mall.core.status.PaymentWay;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.ishare.mall.common.base.object.BaseObject;
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.status.OrderState;
-import com.ishare.mall.core.status.PaymentWay;
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
 
 /**
  * Created by YinLin on 2015/7/31.
@@ -39,12 +27,14 @@ public class Order implements BaseObject {
     private String orderId;
     /* 创建订单者 */
     
-    @Column(name = "order_create_by",length = 15)
-    private String createBy;
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
+    @JoinColumn(name="create_by_member_id")
+    private Member createBy;
     /**更新订单者**/
-    
-    @Column(name = "order_update_by",length = 15)
-    private String updateBy;
+
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
+    @JoinColumn(name="update_by_member_id")
+    private Member updateBy;
     /* 订单创建时间 */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable=false, name = "order_create_time",length = 20)
@@ -80,11 +70,11 @@ public class Order implements BaseObject {
     @Column(nullable=false, name = "order_payment_state",length = 5)
     private Boolean paymentState = false;
     /* 订单配送信息 */
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional=true, fetch = FetchType.LAZY)
     @JoinColumn(name = "deliver_id")
     private OrderDeliverInfo orderDeliverInfo;
     /* 订单购买者联系信息 */
-    @OneToOne(cascade = CascadeType.ALL, optional=true)
+    @OneToOne(cascade = CascadeType.ALL, optional=true, fetch = FetchType.LAZY)
     @JoinColumn(name="contact_id")
     private OrderContactInfo orderContactInfo;
     /* 订单项 */
@@ -97,7 +87,7 @@ public class Order implements BaseObject {
     @OneToMany(mappedBy = "order", cascade=CascadeType.REMOVE)
     private Set<OrderMessage> orderMessages = new HashSet<OrderMessage>();
     /**各个订单对应的渠道**/
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="channel_id")
     private Channel channel;
   
@@ -208,22 +198,6 @@ public class Order implements BaseObject {
         return true;
     }
 
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -286,5 +260,21 @@ public class Order implements BaseObject {
 
     public void setExpressId(String expressId) {
         this.expressId = expressId;
+    }
+
+    public Member getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Member createBy) {
+        this.createBy = createBy;
+    }
+
+    public Member getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Member updateBy) {
+        this.updateBy = updateBy;
     }
 }

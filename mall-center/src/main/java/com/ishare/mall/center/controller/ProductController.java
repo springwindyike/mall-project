@@ -105,7 +105,7 @@ public class ProductController extends BaseController {
 	@ResponseBody
 	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
 		ProductDTO productDTO = new ProductDTO();
-		productDTO.setChannelId(1);
+		productDTO.setChannelId(8);
 		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
 		int displayStart = Integer.parseInt(request.getParameter("iDisplayStart"));
 		int currentPage = displayStart/displayLength+1;
@@ -114,10 +114,7 @@ public class ProductController extends BaseController {
 		ResponseEntity<ProductDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(
-					APPURIConstant.Product.REQUEST_MAPPING,
-					APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),
-					productDTO, ProductDTO.class);
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),productDTO, ProductDTO.class);
 		} catch (Exception e) {
 e.printStackTrace();		}
 		ProductDTO productDTOResult = resultDTO.getBody();

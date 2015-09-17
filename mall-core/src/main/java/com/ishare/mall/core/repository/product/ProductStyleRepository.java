@@ -13,6 +13,6 @@ import java.util.List;
  * Version 1.0
  */
 public interface ProductStyleRepository extends JpaRepository<ProductStyle, Long>, JpaSpecificationExecutor {
-    @Query("SELECT p FROM ProductStyle p WHERE p.product.id =?1")
-    List<ProductStyle> findByProduct(Integer id);
+    @Query("SELECT p FROM ProductStyle p WHERE p.product.id =?1 AND p.visible=TRUE ")
+    List<ProductStyle> findByProductStyle(Integer id);
 }

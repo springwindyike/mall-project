@@ -60,6 +60,7 @@ public class OrikaMapper extends ConfigurableMapper {
         otherDealField.add("brandName");
         otherDealField.add("channelName");
         otherDealField.add("typeName");
+		otherDealField.add("list");
         for (Field field : fields) {
             if (!otherDealField.contains(field.getName())) {
                 classMapBuilder.field(field.getName(), field.getName());
@@ -105,11 +106,15 @@ public class OrikaMapper extends ConfigurableMapper {
 	
 	private void registerOrderClassMap(MapperFactory mapperFactory) {
 		 ClassMapBuilder<Order, OrderDetailDTO>classMapBuilder = mapperFactory.classMap(Order.class, OrderDetailDTO.class);
-		  Field[] fields = OrderDetailDTO.class.getDeclaredFields();
-		  Set<String> otherDealField = new HashSet<String>();
-		  otherDealField.add("channelId");
-		  otherDealField.add("orderDeliverInfoId");
-		  otherDealField.add("orderContactInfoId");
+		 Field[] fields = OrderDetailDTO.class.getDeclaredFields();
+		 Set<String> otherDealField = new HashSet<String>();
+		 otherDealField.add("channelId");
+		 otherDealField.add("orderDeliverInfoId");
+		 otherDealField.add("orderContactInfoId");
+		 otherDealField.add("serialVersionUID");
+		 otherDealField.add("offset");
+		 otherDealField.add("limit");
+		 otherDealField.add("pageDTO");
 
 		  for (Field field : fields) {
 	            if (!otherDealField.contains(field.getName())) {

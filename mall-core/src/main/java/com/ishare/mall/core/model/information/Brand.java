@@ -43,7 +43,7 @@ public class Brand extends BaseEntity {
     /**
      * 一对多所有的该品牌下所有的商品
      */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "brand")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "brand", fetch = FetchType.LAZY)
     private Set<Product> products = Sets.newConcurrentHashSet();
 
     public String getName() {

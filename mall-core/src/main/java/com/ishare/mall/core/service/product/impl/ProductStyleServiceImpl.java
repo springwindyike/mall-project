@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.Style;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class ProductStyleServiceImpl implements ProductStyleService{
     @Autowired
     ProductStyleRepository productStyleRepository;
     @Override
-    public List<ProductStyle> findByProduct(Integer id) {
-        return productStyleRepository.findByProduct(id);
+    public List<ProductStyle> findByProductStyle(Integer id) {
+        return productStyleRepository.findByProductStyle(id);
     }
 }

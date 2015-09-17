@@ -1,27 +1,17 @@
 package com.ishare.mall.core.model.information;
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_CHANNEL_NAME;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import com.google.common.collect.Sets;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_CHANNEL_NAME;
 
 /**
  * Created by YinLin on 2015/8/3.
@@ -98,17 +88,17 @@ public class Channel extends BaseEntity {
     /**
      * 一对多该供应商下所有的成员
      */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel",fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel", fetch = FetchType.LAZY)
     private Set<Member> members = Sets.newConcurrentHashSet();
 
     /**
      * 一对多该供应商下所有的产品
      */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel", fetch = FetchType.LAZY)
     private Set<Product> products = Sets.newConcurrentHashSet();
     
     /* 拥有订单 */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "channel", fetch = FetchType.LAZY)
     private Set<Order> orders = new HashSet<Order>();
     
     public Integer getId() {
