@@ -21,6 +21,7 @@ public class ProductDTO extends GenericDTO {
 	 */
 	private static final long serialVersionUID = 1L;
 
+
 	private Integer id;
 	//货号
 	private String code;
@@ -116,11 +117,11 @@ public class ProductDTO extends GenericDTO {
 		this.limit = limit;
 	}
 
-	public PageDTO  getPageDTO() {
+	public PageDTO getPageDTO() {
 		return pageDTO;
 	}
 
-	public void setPageDTO(PageDTO  pageDTO) {
+	public void setPageDTO(PageDTO pageDTO) {
 		this.pageDTO = pageDTO;
 	}
 

@@ -14,6 +14,7 @@ import java.util.List;
  */
 @XmlRootElement
 @JsonAutoDetect
+@XmlRootElement
 public class ProductDetailDTO extends GenericDTO {
     private static final long serialVersionUID = 1L;
 

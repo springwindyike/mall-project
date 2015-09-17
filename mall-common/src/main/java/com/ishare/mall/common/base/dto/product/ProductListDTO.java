@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @XmlRootElement
 @JsonAutoDetect
-public class ProductListDTO extends GenericDTO implements BaseObject{
+public class ProductListDTO extends GenericDTO{
     //商品ID
     private Integer id;
     //商品名字
