@@ -1,18 +1,19 @@
 package com.ishare.mall.common.base.dto.member;
 
-import java.util.Date;
-
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import com.ishare.mall.common.base.object.BaseObject;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 /**
  * Created by liaochenglei on 2015/8/21.
  * Description: productDTO
  * Version 1.0
  */
+@XmlRootElement
 @JsonAutoDetect
-public class MemberDetailDTO implements BaseObject {
+public class MemberDetailDTO extends GenericDTO {
 	
 	private String account;//用户账号
 	

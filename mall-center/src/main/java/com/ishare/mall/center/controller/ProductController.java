@@ -106,6 +106,7 @@ public class ProductController extends BaseController {
 		int currentPage = displayStart/displayLength+1;
 		productDTO.setLimit(displayLength);
 		productDTO.setOffset(currentPage);
+	  	productDTO.setPageDTO(new PageDTO<ProductDetailDTO>());
 		ResponseEntity<ProductDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {

@@ -3,6 +3,7 @@ package com.ishare.mall.common.base.dto.product;
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
@@ -11,8 +12,10 @@ import java.util.List;
  * Description: productDTO
  * Version 1.0
  */
+@XmlRootElement
 @JsonAutoDetect
 public class ProductDetailDTO extends GenericDTO {
+    private static final long serialVersionUID = 1L;
 
 	private Integer id;
     //货号
