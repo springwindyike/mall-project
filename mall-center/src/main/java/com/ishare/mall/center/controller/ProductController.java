@@ -97,15 +97,15 @@ public class ProductController extends BaseController {
 	}
   
   @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_FORWORD, method = RequestMethod.GET)
- 	public String forwardTOproductList(@CurrentMember MemberDTO memberDTO) {
+ 	public String forwardTOproductList() {
 	  return CenterViewConstant.Product.LIST_PRODUCT;
   }
   
-  @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_LIST, method = RequestMethod.GET)
+  @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
 	@ResponseBody
 	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
 		ProductDTO productDTO = new ProductDTO();
-		productDTO.setChannelId(8);
+		productDTO.setChannelId(1);
 		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
 		int displayStart = Integer.parseInt(request.getParameter("iDisplayStart"));
 		int currentPage = displayStart/displayLength+1;
@@ -113,7 +113,13 @@ public class ProductController extends BaseController {
 		productDTO.setOffset(currentPage);
 		ResponseEntity<ProductDTO> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),productDTO,ProductDTO.class);
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(
+					APPURIConstant.Product.REQUEST_MAPPING,
+					APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),
+					productDTO, ProductDTO.class);
+		} catch (Exception e) {
+e.printStackTrace();		}
 		ProductDTO productDTOResult = resultDTO.getBody();
 		model.addAttribute("pageDTO",productDTOResult.getPageDTO());
 		System.out.print("test1111111");

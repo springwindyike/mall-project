@@ -1,5 +1,6 @@
 package com.ishare.mall.common.base.dto.product;
 
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.object.BaseObject;
 
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @JsonAutoDetect
-public class ProductDTO implements BaseObject {
+public class ProductDTO extends GenericDTO {
     
 	private Integer id;
 	

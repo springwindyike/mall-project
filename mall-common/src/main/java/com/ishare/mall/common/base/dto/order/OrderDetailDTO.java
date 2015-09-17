@@ -2,18 +2,21 @@ package com.ishare.mall.common.base.dto.order;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.object.BaseObject;
 
 /**
  * Created by Zhangzhaoxin on 2015/8/27.
  * Description: productDTO
  * Version 1.0
  */
+@XmlRootElement
 @JsonAutoDetect
-public class OrderDetailDTO implements BaseObject {
+public class OrderDetailDTO extends GenericDTO {
 
 	private static final long serialVersionUID = 1L;
 	

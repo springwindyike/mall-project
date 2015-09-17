@@ -119,10 +119,10 @@
 <script type="text/javascript">	
 
 $('.table-sort').dataTable({
-	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"aaSorting": [[ 0, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
 	"aoColumnDefs": [
-	  {"orderable":false,"aTargets":[0,11]}// 制定列不参与排序
+	  {"orderable":false,"aTargets":[11]}// 制定列不参与排序
 	],
 	
 	
@@ -133,48 +133,47 @@ $('.table-sort').dataTable({
 	"sAjaxSource": "${pageContext.request.contextPath}/order/findByChannelId.dhtml",
 	"sAjaxDataProp":"content",
 	"aoColumns": [
-	   { "mDataProp": "id" },
-	   { "mDataProp": "imgUrl" },
-	   { "mDataProp": "name" },
-	   { "mDataProp": "channel" },
-	   { "mDataProp": "mobile" },
-	   { "mDataProp": "price" },
-	   { "mDataProp": "count" },
+	   { "mDataProp": "orderId" },
+	   { "mDataProp": null },
+	   { "mDataProp": null },
+	   { "mDataProp": "createBy" },
+	   { "mDataProp": "note" },
+	   { "mDataProp": "productTotalPrice" },
+	   { "mDataProp": "orderId" },
 	   { "mDataProp": "createTime" },
-	   { "mDataProp": "deliver" },
-	   { "mDataProp": "totlePrice" },
+	   { "mDataProp": "orderId" },
+	   { "mDataProp": "totalPrice" },
 	   { "mDataProp": null },
 	   { "mDataProp": null }
 	],
 	
 	"createdRow" : function(row, mDataProp, dataIndex){
-	   alert('row = '+row+'mDataProp = ' +mDataProp +'dataIndex = '+dataIndex);
 	   $(row).addClass('text-c');
 	},
 	
 	"columnDefs" : [
 		{
-			"targets" : 0 ,
-			"render" : function(mDataProp, type, full) {
-				return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
-			}
-		},
-		{
 			"targets" : 1 ,
 			"render" : function(mDataProp, type, full) {
-				return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show("'+mDataProp.account+'",\'member-show.html\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+				return '<td><a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>'+11111+'</td>';
 			}
 		},
 		{
-			"targets" : 6 ,
+			"targets" : 2 ,
+			"render" : function(mDataProp, type, full) {
+				return '<td class="text-l"><a style="text-decoration:none" onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>';
+			}
+		},
+		{
+			"targets" : 10 ,
 			"render" : function(mDataProp, type, full) {
 				return '<td class="td-status"><span class="label label-success radius">已启用</span></td>';
 			 }
 		},
 		{
-			"targets" : 7 ,
+			"targets" : 11 ,
 			"render" : function(mDataProp, type, full) {
-				return '<td class="td-manage"><a style="text-decoration:none" onClick="member_stop(this,'+mDataProp.account+')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" onclick="member_edit(\'编辑\',\'member-add.html\',\'4\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改密码\',\'change-password.html\',\'10001\',\'600\',\'270\')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:;" onclick="member_del(this,\'1\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
+				return '<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit(\'订单编辑\',\'product-add.html\',\'10001\')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a></td>';
 			}
 		}
 	]
