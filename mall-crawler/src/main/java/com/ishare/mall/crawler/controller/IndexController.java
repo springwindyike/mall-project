@@ -1,14 +1,14 @@
 package com.ishare.mall.crawler.controller;
 
 import com.google.common.collect.Maps;
-import com.ishare.mall.crawler.jd.JDCrawler;
-import com.ishare.mall.crawler.jd.model.JDCategory;
-import com.ishare.mall.crawler.jd.model.JDProduct;
-import com.ishare.mall.crawler.jd.processor.JDCategoryPageProcessor;
-import com.ishare.mall.crawler.jd.processor.JDListPageProcessor;
-import com.ishare.mall.crawler.jd.processor.JDPageProcessor;
-import com.ishare.mall.crawler.jd.repository.JDCategoryRepository;
-import com.ishare.mall.crawler.jd.repository.JDProductRepository;
+import com.ishare.mall.crawler.site.jd.JDCrawler;
+import com.ishare.mall.crawler.site.jd.model.JDCategory;
+import com.ishare.mall.crawler.site.jd.model.JDProduct;
+import com.ishare.mall.crawler.site.jd.processor.JDCategoryPageProcessor;
+import com.ishare.mall.crawler.site.jd.processor.JDListPageProcessor;
+import com.ishare.mall.crawler.site.jd.processor.JDPageProcessor;
+import com.ishare.mall.crawler.site.jd.repository.JDCategoryRepository;
+import com.ishare.mall.crawler.site.jd.repository.JDProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.ishare.mall.crawler.jd.model;
+package com.ishare.mall.crawler.site.jd.model;
 
 import javax.persistence.*;
 

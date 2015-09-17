@@ -19,6 +19,7 @@ public class App {
         //JDCrawler crawler = context.getBean(JDCrawler.class);
         //crawler.start();
         log.debug("{}", context);
+
     }
 
 }

@@ -1,6 +1,6 @@
-package com.ishare.mall.crawler.jd.processor;
+package com.ishare.mall.crawler.site.jd.processor;
 
-import com.ishare.mall.crawler.jd.model.JDCategory;
+import com.ishare.mall.crawler.site.jd.model.JDCategory;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;

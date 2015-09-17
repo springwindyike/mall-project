@@ -1,9 +1,9 @@
-package com.ishare.mall.crawler.jd;
+package com.ishare.mall.crawler.site.jd;
 
-import com.ishare.mall.crawler.jd.model.JDCategory;
-import com.ishare.mall.crawler.jd.model.JDProduct;
-import com.ishare.mall.crawler.jd.repository.JDCategoryRepository;
-import com.ishare.mall.crawler.jd.repository.JDProductRepository;
+import com.ishare.mall.crawler.site.jd.model.JDCategory;
+import com.ishare.mall.crawler.site.jd.model.JDProduct;
+import com.ishare.mall.crawler.site.jd.repository.JDCategoryRepository;
+import com.ishare.mall.crawler.site.jd.repository.JDProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;

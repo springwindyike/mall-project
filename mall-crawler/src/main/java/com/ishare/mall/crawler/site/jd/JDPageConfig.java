@@ -1,4 +1,4 @@
-package com.ishare.mall.crawler.jd;
+package com.ishare.mall.crawler.site.jd;
 
 import org.apache.commons.lang3.StringUtils;
 

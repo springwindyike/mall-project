@@ -1,7 +1,7 @@
-package com.ishare.mall.crawler.jd.processor;
+package com.ishare.mall.crawler.site.jd.processor;
 
 import com.google.common.collect.Sets;
-import com.ishare.mall.crawler.jd.model.JDProduct;
+import com.ishare.mall.crawler.site.jd.model.JDProduct;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

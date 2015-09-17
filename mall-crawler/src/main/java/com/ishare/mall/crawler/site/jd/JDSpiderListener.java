@@ -1,4 +1,4 @@
-package com.ishare.mall.crawler.jd;
+package com.ishare.mall.crawler.site.jd;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

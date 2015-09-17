@@ -1,7 +1,7 @@
 package com.ishare.mall.crawler;
 
-import com.ishare.mall.crawler.jd.model.JDCategory;
-import com.ishare.mall.crawler.jd.repository.JDCategoryRepository;
+import com.ishare.mall.crawler.site.jd.model.JDCategory;
+import com.ishare.mall.crawler.site.jd.repository.JDCategoryRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

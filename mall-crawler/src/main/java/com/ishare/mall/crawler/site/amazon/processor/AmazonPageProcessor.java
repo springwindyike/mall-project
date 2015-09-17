@@ -1,4 +1,4 @@
-package com.ishare.mall.crawler.amazon.processor;
+package com.ishare.mall.crawler.site.amazon.processor;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
