@@ -28,7 +28,7 @@ public class ProductStyle extends BaseEntity {
     @Column(nullable = false, name = "product_style_visible",length = 5)
     private Boolean visible = Boolean.TRUE;
     /**所属产品**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
     private Product product;
     //创建时间
@@ -40,11 +40,11 @@ public class ProductStyle extends BaseEntity {
     @Column(name = "product_update_time",length = 20)
     private Date updateTime;
     //创建者
-    @ManyToOne(cascade= CascadeType.REFRESH, optional=false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_create_by")
     private Member createBy;
     //更新者
-    @ManyToOne(cascade= CascadeType.REFRESH, optional=false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_update_by")
     private Member updateBy;
 

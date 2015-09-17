@@ -59,7 +59,7 @@ public class OrderDeliverInfo extends BaseEntity {
 	@Column(length = 30)
 	private String requirement;
 	/**所属订单**/
-	@OneToOne(mappedBy = "orderDeliverInfo", cascade = CascadeType.REFRESH)
+	@OneToOne(mappedBy = "orderDeliverInfo", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private Order order;
 	public Order getOrder() {
 		return order;

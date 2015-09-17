@@ -32,7 +32,21 @@ public interface OrderService {
 	 * @return
 	 */
 	Order create(ExchangeDTO exchangeDTO);
-	
+
+	/**
+	 * 确认订单
+	 * @param id
+	 * @return
+	 */
+	Order confirm(String id);
+
+	/**
+	 * 取消订单
+	 * @param id
+	 * @return
+	 */
+	Order cancel(String id);
+
 	/**
 	 * 根据channel id查询所有的Order
 	 * @param channelId

@@ -8,6 +8,7 @@ import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductStyle;
+import com.ishare.mall.core.repository.information.OrderItemRepository;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,8 @@ public class OrderServiceImpl implements OrderService {
 	private ProductRepository productRepository;
 	@Autowired
 	private ProductStyleRepository styleRepository;
+	@Autowired
+	private OrderItemRepository itemRepository;
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -114,6 +118,16 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public Order confirm(String id) {
+		return null;
+	}
+
+	@Override
+	public Order cancel(String id) {
+		return null;
+	}
+
+	@Override
 	public Page<Order> findByChannelId(Integer channelId,
 			PageRequest pageRequest) {
 		Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
@@ -121,19 +135,23 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	//订单生成流程
-	private void initProcessor(ExchangeDTO exchangeDTO) {
+	private Order initProcessor(ExchangeDTO exchangeDTO) {
 		Order order = new Order();
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
 		Channel channel = channelService.findByAppId(exchangeDTO.getClientId());
 		order.setOrderId(this.nextOrderId());
 		order.setCreateTime(new Date());
 		order.setChannel(channel);
-		OrderItem orderItem = this.initItemProcessor(order, exchangeDTO);
+		List<OrderItem> orderItems = this.initItemProcessor(order, exchangeDTO);
 		//费用计算
 		//商品费用
 		//运费
 		//总计
 		//保存 返回
+
+		orderRepository.save(order);
+		itemRepository.save(orderItems);
+		return order;
 	}
 
 	/**
@@ -142,7 +160,10 @@ public class OrderServiceImpl implements OrderService {
 	 * @param exchangeDTO
 	 * @return
 	 */
-	private OrderItem initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
+	private List<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
+
+		List<OrderItem> orderItems = new ArrayList<>();
+		// TODO 暂时单个商品
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
 		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
 		Member member = memberService.findByAccount(exchangeDTO.getAccount());
@@ -158,9 +179,10 @@ public class OrderServiceImpl implements OrderService {
 		orderItem.setProductName(product.getName());
 		//设置图片
 		orderItem.setImageUrl(style.getImageUrl());
-		return orderItem;
-	}
 
+		orderItems.add(orderItem);
+		return orderItems;
+	}
 
 	//获取下一个订单号
 	private String nextOrderId() {
@@ -177,8 +199,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 		generatedOrderId.setOrderId(generatedOrderId.getOrderId() + 1);
 		generatedOrderIdRepository.save(generatedOrderId);
-		return String.format("%06d",generatedOrderId.getOrderId()+1);
-
+		return String.format("%06d",generatedOrderId.getOrderId() + 1);
 	}
 
 
