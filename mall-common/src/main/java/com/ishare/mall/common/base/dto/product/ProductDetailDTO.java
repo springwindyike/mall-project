@@ -12,7 +12,6 @@ import java.util.List;
  * Description: productDTO
  * Version 1.0
  */
-@XmlRootElement
 @JsonAutoDetect
 @XmlRootElement
 public class ProductDetailDTO extends GenericDTO {
