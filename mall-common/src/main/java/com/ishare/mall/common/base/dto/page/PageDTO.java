@@ -81,11 +81,11 @@ public class PageDTO<T extends GenericDTO> {
         this.last = last;
     }
 
-    public List<T> getContent() {
+    public List getContent() {
         return content;
     }
 
-    public void setContent(List<T> content) {
+    public void setContent(List content) {
         this.content = content;
     }
 

@@ -134,7 +134,7 @@ public class ProductResource {
 		if(list != null && list.size()>0){
 			for(ProductStyle productStyle:list){
 				ProductStyleDTO productStyleDTO = new ProductStyleDTO();
-				BeanUtils.copyProperties(productStyle,productStyleDTO);
+				BeanUtils.copyProperties(productStyle, productStyleDTO);
 				listStyle.add(productStyleDTO);
 			}
 		}
@@ -211,23 +211,24 @@ public class ProductResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public ProductDTO findByChannelId(@RequestBody ProductDTO productDTO) {
-        List<ProductDetailDTO> listProductList = new ArrayList<ProductDetailDTO>();
+        List<ProductDTO> listProductList = new ArrayList<>();
         int offset = productDTO.getOffset();
         int limit = productDTO.getLimit();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
         Integer channelId = productDTO.getChannelId();
         Page<Product> result = productService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
+        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Product> listProduct = result.getContent();
          for (Product product:listProduct){
-               ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+               //ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+			 ProductDTO productDetailDTO = new ProductDTO();
                 BeanUtils.copyProperties(product, productDetailDTO);
                 productDetailDTO.setChannelId(product.getChannel().getId());
-                productDetailDTO.setBrandId(product.getBrand().getId());
-                productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
-                productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
-                productDetailDTO.setTypeId(product.getType().getId());
+                //productDetailDTO.setBrandId(product.getBrand().getId());
+                //productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
+                //productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
+                //productDetailDTO.setTypeId(product.getType().getId());
                 listProductList.add(productDetailDTO);
             }
             pageDTO.setContent(listProductList);
@@ -238,8 +239,6 @@ public class ProductResource {
         }
 		log.debug("xxx");
         return productDTO;
-   
-    
     }
     
 }

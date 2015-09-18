@@ -15,6 +15,7 @@ import java.util.List;
 @JsonAutoDetect
 @XmlRootElement
 public class ProductDetailDTO extends GenericDTO {
+    private static final long serialVersionUID = 1L;
 
 	private Integer id;
     //货号
