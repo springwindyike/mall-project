@@ -6,10 +6,12 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Zhangzhaoxin on 2015/8/27.
- * Description: productDTO
+ * Description: OrderDetailDTO
+ * update by YinLin 2015-9-18
  * Version 1.0
  */
 @XmlRootElement
@@ -25,6 +27,7 @@ public class OrderDetailDTO extends GenericDTO {
     private String updateBy;
     /* 订单创建时间 */
     private Date createTime = new Date();
+
     private Date updateTime = new Date();
     /* 订单状态 */
     private String state;
@@ -50,12 +53,22 @@ public class OrderDetailDTO extends GenericDTO {
     private String lockMember;
     /**各个订单对应的渠道**/
     private Integer channelId;
+
     private String expressOrder;//快递单号
+
     private String expressId;//快递代号
     
     private int offset;
+
     private int limit;
+
     private PageDTO pageDTO;
+	//收货人信息
+	private OrderDeliverDTO deliver;
+	//订购者信息
+	private OrderContactDTO contact;
+
+	private List<OrderItemDetailDTO> items;
     
 	public String getOrderId() {
 		return orderId;
@@ -189,5 +202,28 @@ public class OrderDetailDTO extends GenericDTO {
 	public void setPageDTO(PageDTO pageDTO) {
 		this.pageDTO = pageDTO;
 	}
-    
+
+	public OrderDeliverDTO getDeliver() {
+		return deliver;
+	}
+
+	public void setDeliver(OrderDeliverDTO deliver) {
+		this.deliver = deliver;
+	}
+
+	public OrderContactDTO getContact() {
+		return contact;
+	}
+
+	public void setContact(OrderContactDTO contact) {
+		this.contact = contact;
+	}
+
+	public List<OrderItemDetailDTO> getItems() {
+		return items;
+	}
+
+	public void setItems(List<OrderItemDetailDTO> items) {
+		this.items = items;
+	}
 }

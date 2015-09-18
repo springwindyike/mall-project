@@ -1,6 +1,9 @@
 package com.ishare.mall.core.service.order.impl;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
@@ -22,6 +25,7 @@ import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -116,10 +120,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Order create(ExchangeDTO exchangeDTO) {
-		Order order = null;
-		Product product = productRepository.findOne(exchangeDTO.getProductId());
-		return null;
+	public OrderDetailDTO create(ExchangeDTO exchangeDTO) {
+		return initProcessor(exchangeDTO);
 	}
 
 	@Override
@@ -140,9 +142,9 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	//订单生成流程
-	private Order initProcessor(ExchangeDTO exchangeDTO) {
+	private OrderDetailDTO initProcessor(ExchangeDTO exchangeDTO) {
 		Order order = new Order();
-		Product product = productRepository.findOne(exchangeDTO.getProductId());
+		OrderDetailDTO detailDTO = new OrderDetailDTO();
 		Channel channel = channelService.findByAppId(exchangeDTO.getClientId());
 		Member buyer = memberService.findByAccount(exchangeDTO.getAccount());
 		order.setOrderId(this.nextOrderId());
@@ -170,7 +172,11 @@ public class OrderServiceImpl implements OrderService {
 		orderRepository.save(order);
 		itemRepository.save(orderItems);
 		deliverRepository.save(orderDeliverInfo);
-		return order;
+		//设置收货人信息
+		detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
+		//设置订单项
+		detailDTO.setItems((List<OrderItemDetailDTO>) MapperUtils.mapAsList(orderItems, OrderItemDetailDTO.class));
+		return detailDTO;
 	}
 
 	/**
@@ -224,6 +230,7 @@ public class OrderServiceImpl implements OrderService {
 		orderItem.setProductPrice(product.getSellPrice());
 
 		orderItems.add(orderItem);
+
 		return orderItems;
 	}
 
