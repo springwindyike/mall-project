@@ -61,7 +61,7 @@ public class FetchServiceTests {
         for (int index = 0; index < urls.length; index++) {
             urls[index] = fetchUrls.getContent().get(index).getLink();
         }*/
-        fetchService.fetchPageUrl(FetchSite.JD, true, "http://item.jd.com/953778.html");
+        fetchService.fetchPageUrl(FetchSite.DANG_DANG, true, "http://product.dangdang.com/60600067.html", "http://product.dangdang.com/1226813133.html");
 
         Assert.assertTrue(true);
     }
