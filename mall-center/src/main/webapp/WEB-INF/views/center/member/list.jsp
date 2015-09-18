@@ -117,7 +117,7 @@
                     {
                         "targets" : 1 ,
                         "render" : function(mDataProp, type, full) {
-                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show("'+mDataProp.account+'",\'member-show.html\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show("'+mDataProp.account+'",\'${pageContext.request.contextPath}/memberView/account/'+mDataProp.account+'.dhtml\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
                     }
                 },
                 {

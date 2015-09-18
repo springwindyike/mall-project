@@ -1,6 +1,7 @@
 package com.ishare.mall.core.service.order;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.core.model.order.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +32,7 @@ public interface OrderService {
 	 * @param exchangeDTO
 	 * @return
 	 */
-	Order create(ExchangeDTO exchangeDTO);
+	OrderDetailDTO create(ExchangeDTO exchangeDTO);
 
 	/**
 	 * 确认订单

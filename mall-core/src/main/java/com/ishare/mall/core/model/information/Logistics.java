@@ -2,15 +2,17 @@ package com.ishare.mall.core.model.information;
 
 import com.ishare.mall.core.model.base.BaseEntity;
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_LOGISTICS_NAME;
 import javax.persistence.*;
+
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_LOGISTICS_NAME;
 
 /**
  * Created by YinLin on 2015/8/3.
  * Description: 物流公司信息 对接物流公司信息，主要由平台管理对接
  * Version 1.0
  */
-@Entity(name = TABLE_LOGISTICS_NAME)
+@Entity
+@Table(name = TABLE_LOGISTICS_NAME)
 public class Logistics extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

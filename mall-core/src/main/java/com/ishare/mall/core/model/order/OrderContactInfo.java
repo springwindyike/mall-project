@@ -11,7 +11,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * 订购者联系信息
  *
  */
-@Entity(name = TABLE_ORDER_CONTACT_INFO_NAME)
+@Entity
+@Table(name = TABLE_ORDER_CONTACT_INFO_NAME)
 public class OrderContactInfo extends BaseEntity {
 	@Id @GeneratedValue
 	private Integer id;

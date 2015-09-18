@@ -16,7 +16,7 @@ public interface GeneratedOrderIdRepository extends JpaRepository<GeneratedOrder
 
 
 	@Modifying
-	@Query("update t_order_id oi set oi.id = ?1 where oi.orderId = ?2")
+	@Query("update GeneratedOrderId oi set oi.id = ?1 where oi.orderId = ?2")
 	int setFixedOrderIdFor(String id, String orderId);
 
 
