@@ -54,7 +54,7 @@
 				<thead>
 					<tr class="text-c">
 						<th width="40"><input name="" type="checkbox" value=""></th>
-						<th width="40">ID</th>
+						<th width="40">产品ID号</th>
 						<th width="60">缩略图</th>
 						<th width="100">产品名称</th>
 						<th>描述</th>
@@ -63,8 +63,8 @@
 						<th width="100">操作</th>
 					</tr>
 				</thead>
-				<!-- <tbody>
-					<tr class="text-c va-m">
+				<tbody>
+				<!-- 	<tr class="text-c va-m">
 						<td><input name="" type="checkbox" value=""></td>
 						<td>001</td>
 						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="pic/product/Thumb/6204.jpg"></a></td>
@@ -73,8 +73,8 @@
 						<td><span class="price">356.0</span> 元/平米</td>
 						<td class="td-status"><span class="label label-success radius">已发布</span></td>
 						<td class="td-manage"><a style="text-decoration:none" onClick="product_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_edit('产品编辑','product-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
-					</tr>
-				</tbody> -->
+					</tr> -->
+				</tbody>
 			</table>
 		</div>
 	</div>
@@ -137,7 +137,7 @@ function showCode(str) {
 	code.append("<li>"+str+"</li>");
 }
 		
-$(document).ready(function(){
+/* $(document).ready(function(){
 	var t = $("#treeDemo");
 	t = $.fn.zTree.init(t, setting, zNodes);
 	demoIframe = $("#testIframe");
@@ -145,17 +145,17 @@ $(document).ready(function(){
 	var zTree = $.fn.zTree.getZTreeObj("tree");
 	zTree.selectNode(zTree.getNodeByParam("id",'11'));
 });
-
+ */
 $('.table-sort').dataTable({
-/* 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
-	"aoColumnDefs": [
+	/* "aoColumnDefs": [
 	  {"orderable":false,"aTargets":[0,7]}// 制定列不参与排序
 	] */
 	   "bProcessing": true,
        "bServerSide": true,
        "bStateSave": false,
-       "aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+       "aLengthMenu":[[1, 5, 15, 30], [1, 5, 15, 30]],
        "sAjaxSource": "${pageContext.request.contextPath}/product/findByChannelId.dhtml",
        "sAjaxDataProp":"content",
        "aoColumns": [
@@ -182,12 +182,12 @@ $('.table-sort').dataTable({
                }
            },
 
-               {
-                   "targets" : 1 ,
+              {
+                   "targets" : 2 ,
                    "render" : function(mDataProp, type, full) {
-                   return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show("'+mDataProp.account+'",\'member-show.html\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+                	   return '<td><a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>';
                }
-           },
+           }, 
            {
                "targets" : 6 ,
                "render" : function(mDataProp, type, full) {
