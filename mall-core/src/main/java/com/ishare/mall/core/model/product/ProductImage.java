@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description : 产品图片类
  * Version 1.0
  */
-@Entity(name = TABLE_PRODUCT_STYLE_IMAGE_NAME)
+@Entity
+@Table(name = TABLE_PRODUCT_STYLE_IMAGE_NAME)
 public class ProductImage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

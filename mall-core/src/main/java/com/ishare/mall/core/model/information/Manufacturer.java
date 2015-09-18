@@ -11,7 +11,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description:厂商
  * Version 1.0
  */
-@Entity(name=TABLE_MANUFACTURER_NAME)
+@Entity
+@Table(name=TABLE_MANUFACTURER_NAME)
 public class Manufacturer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

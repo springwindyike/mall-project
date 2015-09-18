@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description:
  * Version 1.0
  */
-@Entity(name = TABLE_ORDER_ITEM_NAME)
+@Entity
+@Table(name = TABLE_ORDER_ITEM_NAME)
 public class OrderItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

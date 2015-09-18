@@ -3,6 +3,7 @@ package com.ishare.mall.core.model.order;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_ID_NAME;
 
@@ -10,7 +11,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * create by YinLin
  * 订单ID生成表
  */
-@Entity(name = TABLE_ORDER_ID_NAME)
+@Entity
+@Table(name = TABLE_ORDER_ID_NAME)
 public class GeneratedOrderId {
 	@Id
 	@Column(length = 5)
