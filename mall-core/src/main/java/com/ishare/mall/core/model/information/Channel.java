@@ -20,7 +20,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  *              可以通过该账号管理渠道所有信息，包括店员管理
  * Version 1.0
  */
-@Entity(name = TABLE_CHANNEL_NAME)
+@Entity
+@Table(name = TABLE_CHANNEL_NAME)
 public class Channel extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

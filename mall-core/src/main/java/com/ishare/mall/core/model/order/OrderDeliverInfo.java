@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * @author yinlin
  *
  */
-@Entity(name = TABLE_ORDER_DELIVER_INFO_NAME)
+@Entity
+@Table(name = TABLE_ORDER_DELIVER_INFO_NAME)
 public class OrderDeliverInfo extends BaseEntity {
 	@Id @GeneratedValue
 	private Integer id;

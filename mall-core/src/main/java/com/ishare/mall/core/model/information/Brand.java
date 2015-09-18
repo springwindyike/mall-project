@@ -14,7 +14,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description:品牌实体
  * Version 1.0
  */
-@Entity(name = TABLE_BRAND_NAME)
+@Entity
+@Table(name = TABLE_BRAND_NAME)
 public class Brand extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

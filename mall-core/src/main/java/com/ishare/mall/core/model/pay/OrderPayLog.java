@@ -14,7 +14,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description : 支付信息LOG 入库
  * Version 1.0
  */
-@Entity(name = TABLE_ORDER_PAY_LOG_NAME)
+@Entity
+@Table(name = TABLE_ORDER_PAY_LOG_NAME)
 public class OrderPayLog {
     @Id
     @GeneratedValue
