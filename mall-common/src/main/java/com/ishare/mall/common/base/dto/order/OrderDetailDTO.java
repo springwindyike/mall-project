@@ -1,11 +1,16 @@
 package com.ishare.mall.common.base.dto.order;
 
-import com.ishare.mall.common.base.dto.generic.GenericDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
 
 /**
  * Created by Zhangzhaoxin on 2015/8/27.
@@ -24,7 +29,7 @@ public class OrderDetailDTO extends GenericDTO {
     /**更新订单者**/
     private String updateBy;
     /* 订单创建时间 */
-    private Date createTime = new Date();
+    private String createTime;
     private Date updateTime = new Date();
     /* 订单状态 */
     private String state;
@@ -53,6 +58,10 @@ public class OrderDetailDTO extends GenericDTO {
     private String expressOrder;//快递单号
     private String expressId;//快递代号
     
+    private Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+    //收件人
+    private String recipients;
+    
     private int offset;
     private int limit;
     private PageDTO pageDTO;
@@ -75,11 +84,11 @@ public class OrderDetailDTO extends GenericDTO {
 	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
 	}
-	public Date getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setCreateTime(String createTime) {
+		this.createTime =  createTime;
 	}
 	public Date getUpdateTime() {
 		return updateTime;
@@ -188,6 +197,18 @@ public class OrderDetailDTO extends GenericDTO {
 	}
 	public void setPageDTO(PageDTO pageDTO) {
 		this.pageDTO = pageDTO;
+	}
+	public Set<OrderItemDetailDTO> getItems() {
+		return items;
+	}
+	public void setItems(Set<OrderItemDetailDTO> items) {
+		this.items = items;
+	}
+	public String getRecipients() {
+		return recipients;
+	}
+	public void setRecipients(String recipients) {
+		this.recipients = recipients;
 	}
     
 }
