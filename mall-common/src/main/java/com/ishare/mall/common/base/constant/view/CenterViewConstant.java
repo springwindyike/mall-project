@@ -30,10 +30,10 @@ public interface CenterViewConstant {
 	}
 
 	interface Member {
-		String MEMBER_LIST = "member/member-list";
-		String MEMBER_ADD = "member/member-add";
+		String MEMBER_LIST = "member/list";
+		String MEMBER_ADD = "member/add";
 		String MEMBER_ADD_SUCCESS = "S";
-		String MEMBER_VIEW = "member/member-view";
+		String MEMBER_VIEW = "member/view";
 		interface Password {
 			// 找回密码
 			String FIND_PASSWORD = "member/password/find";

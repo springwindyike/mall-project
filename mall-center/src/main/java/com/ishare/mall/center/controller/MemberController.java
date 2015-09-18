@@ -112,7 +112,7 @@ public class MemberController extends BaseController {
 	}
 
 	/**
-	 *
+	 *跳转到add页面
 	 * @return to add member page
 	 */
 	@RequestMapping(value = "/addMemberPage")
@@ -134,6 +134,10 @@ public class MemberController extends BaseController {
 		return CenterViewConstant.Member.MEMBER_LIST;
 	}
 
+	/**
+	 * 跳转到list 页面
+	 * @return
+	 */
 	@RequestMapping(value = "forwardTOMemberList")
 	public String forwardTOMemberList(){
 		return CenterViewConstant.Member.MEMBER_LIST;
@@ -146,4 +150,21 @@ public class MemberController extends BaseController {
     public String findPassword() {
         return CenterViewConstant.Member.Password.FIND_PASSWORD;
     }
+
+	/**
+	 * 根据account查询member view
+	 * @param account
+	 * @return
+	 */
+	@RequestMapping(value = "/memberView/account/{account}",method = RequestMethod.GET)
+	public String memberView(@NotEmpty @PathVariable("account") String account,Model model){
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setAccount(account);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),memberDTO,MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
+		model.addAttribute("memberDetailDTO",memberDTOResult);
+		return CenterViewConstant.Member.MEMBER_VIEW;
+	}
 }
