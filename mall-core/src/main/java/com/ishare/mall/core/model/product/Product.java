@@ -81,12 +81,12 @@ public class Product extends BaseEntity {
     private Integer inventory;
     @JsonIgnore
     //创建者
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_create_by")
     private Member createBy;
     //更新者
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_update_by")
     private Member updateBy;
 
@@ -96,12 +96,12 @@ public class Product extends BaseEntity {
     private Brand brand;//品牌
 
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_channel_id")
     private Channel channel;
 
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_type_id")
     private ProductType type;
     //是否自营
@@ -116,6 +116,9 @@ public class Product extends BaseEntity {
     //第三方Tag
     @Column(name = "origin_tag")
     private String tag;
+    //第三方code码
+    @Column(name = "origin_code")
+    private String originCode;
 
     public Integer getId() {
         return id;
@@ -335,6 +338,14 @@ public class Product extends BaseEntity {
 
     public String getTag() {
         return tag;
+    }
+
+    public String getOriginCode() {
+        return originCode;
+    }
+
+    public void setOriginCode(String originCode) {
+        this.originCode = originCode;
     }
 
     public void setTag(String tag) {
