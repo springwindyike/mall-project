@@ -3,6 +3,7 @@ package com.ishare.mall.core.model.product;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.information.Origin;
 import com.ishare.mall.core.model.member.Member;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -103,6 +104,18 @@ public class Product extends BaseEntity {
     @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "product_type_id")
     private ProductType type;
+    //是否自营
+    @Column(name = "is_self")
+    private Boolean self;
+    //第三方外键
+    @Column(name = "origin_id")
+    private Origin origin;
+    //第三方link
+    @Column(name = "origin_link")
+    private String link;
+    //第三方Tag
+    @Column(name = "origin_tag")
+    private String tag;
 
     public Integer getId() {
         return id;
@@ -296,7 +309,39 @@ public class Product extends BaseEntity {
 		this.inventory = inventory;
 	}
 
-	@Override
+    public Boolean getSelf() {
+        return self;
+    }
+
+    public void setSelf(Boolean self) {
+        this.self = self;
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
