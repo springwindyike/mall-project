@@ -75,6 +75,10 @@
     </mvc:interceptors>
 	-->
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-
+		<property name="converters">
+			<set>
+				<bean class="org.springframework.core.convert.support.StringToEnumConverterFactory"/>
+			</set>
+		</property>
 	</bean>
 </beans>
