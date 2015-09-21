@@ -61,11 +61,18 @@ public class ProductController extends BaseController {
     	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
     	productDetailDTO.setBrandId(1);
     	productDetailDTO.setChannelId(1);
-    	productDetailDTO.setTypeId(addProductForm.getTypeId());
+    	productDetailDTO.setTypeId(1);
     	productDetailDTO.setCreateByAccount("18566469285");
     	ResponseEntity<ProductDetailDTO> resultDTO = null;
     	RestTemplate restTemplate = new RestTemplate();
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_SAVE),productDetailDTO,ProductDetailDTO.class);
+			try {
+				resultDTO = restTemplate.postForEntity(this.buildBizAppURI(
+						APPURIConstant.Product.REQUEST_MAPPING,
+						APPURIConstant.Product.REQUEST_MAPPING_SAVE),
+						productDetailDTO, ProductDetailDTO.class);
+			} catch (Exception e) {
+e.printStackTrace();
+}
 			ProductDetailDTO productDTOResult = resultDTO.getBody();
         return CenterViewConstant.Product.ADD_PRODUCT;
     }

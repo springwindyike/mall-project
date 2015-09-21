@@ -303,6 +303,7 @@ public class MemberResource {
         member.setCreateBy(memberRegisterDTO.getAccount());
         member.setMemberType(MemberType.ADMIN);
         member.setCreateTime(date);
+        member.setUse(true);//这里将账户账户设置为可用
         
         channel.setUpdateBy(memberRegisterDTO.getAccount());
         channel.setName(memberRegisterDTO.getChannel());

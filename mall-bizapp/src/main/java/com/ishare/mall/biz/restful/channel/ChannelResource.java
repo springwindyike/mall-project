@@ -1,13 +1,19 @@
 package com.ishare.mall.biz.restful.channel;
 
+import com.ishare.mall.common.base.constant.CommonConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
+import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
+import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
 import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,4 +62,26 @@ public class ChannelResource {
         }
         return null;
     }
+    
+    /**
+     * 通过account查询出channel是否存在
+     * @return Channel 返回的数据对象
+     */
+    @RequestMapping(value 	= APPURIConstant.Channel.REQUEST_MAPPING_FIND_VALID_BY_NAME, method = RequestMethod.POST,
+            				headers 	= "Accept=application/xml, application/json",
+        							produces = {"application/json", "application/xml"},
+        							consumes = {"application/json", "application/xml"})
+    public ValidformRespDTO findValidByAccount(@RequestBody ChannelTokenResultDTO channelRegisterDTO) {
+        Channel channel = channelService.findByName(channelRegisterDTO.getName());
+        ValidformRespDTO validformRespDTO = new ValidformRespDTO();
+        if(null != channel){
+		        validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_FAIL_INFO);
+		        validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_FAIL_STATUS);
+	    			}else{
+		        validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_SUCCESS_INFO);
+		        validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_SUCCESS_STATUS);
+        				}
+         return validformRespDTO;
+    	}
+    
 }

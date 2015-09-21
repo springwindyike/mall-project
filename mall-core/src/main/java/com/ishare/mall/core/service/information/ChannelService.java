@@ -14,5 +14,6 @@ public interface ChannelService {
     Channel findOne(Integer id);
     Channel findByAppId(String appId);
     Channel findByAppSecret(String appSecret);
+    Channel findByName(String name);
     Set<Order> findAllOrderByChannelId(Integer id);
 }
