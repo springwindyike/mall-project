@@ -15,9 +15,10 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 @Table(name = TABLE_ORDER_ID_NAME)
 public class GeneratedOrderId {
 	@Id
-	@Column(length = 5)
+	@Column(name = "id", length = 14)
 	private String id;
-	@Column(nullable = false, name = "order_id",length = 14)
+
+	@Column(nullable = false, name = "order_id")
 	private Integer orderId = 0;
 
 	public String getId() {

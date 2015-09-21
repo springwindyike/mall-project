@@ -303,6 +303,7 @@ public class MemberResource {
         member.setCreateBy(memberRegisterDTO.getAccount());
         member.setMemberType(MemberType.ADMIN);
         member.setCreateTime(date);
+        member.setUse(true);//这里将账户账户设置为可用
         
         channel.setUpdateBy(memberRegisterDTO.getAccount());
         channel.setName(memberRegisterDTO.getChannel());
@@ -342,4 +343,44 @@ public class MemberResource {
     	System.out.println(area[1]);
 //    	System.out.println(area[2]);
 	}
+
+
+    /**
+     * 修改member信息
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public MemberDTO changePassword(@RequestBody MemberDTO memberDTO){
+        List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
+        Member member = memberService.findByAccount(memberDTO.getAccount());
+        if (member != null){
+            member.setPassword(memberDTO.getPassword());
+            memberService.saveMember(member);
+        }
+        Channel channel = channelService.findOne(8);
+        member.setChannel(channel);
+        memberService.saveMember(member);
+        PageRequest pageRequest = new PageRequest(1,15,Sort.Direction.DESC,"updateTime");
+        Integer channelId = memberDTO.getChannelId();
+        Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
+        PageDTO pageDTO = new PageDTO();
+        if(result != null && result.getContent() != null && result.getContent().size()>0){
+            List<Member> listMember = result.getContent();
+            for (Member memberPage:listMember){
+                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                BeanUtils.copyProperties(memberPage, memberDetailDTO);
+                memberDetailDTO.setChannelId(memberPage.getChannel().getId());
+                memberDetailDTO.setSex(memberPage.getSex().getName());
+                memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
+                listMemberList.add(memberDetailDTO);
+            }
+            pageDTO.setContent(listMemberList);
+            pageDTO.setTotalPages(result.getTotalPages());
+            memberDTO.setPageDTO(pageDTO);
+        }
+        return memberDTO;
+    }
 }

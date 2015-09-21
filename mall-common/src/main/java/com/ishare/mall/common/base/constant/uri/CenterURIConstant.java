@@ -17,7 +17,9 @@ public interface CenterURIConstant {
 		// 找回密码
 		String FIND_PASSWORD = "findPassword";
 		// 验证账户名
-		String ACCOUNTVALID = "accountValid";
+		String ACCOUNT_VALID = "accountValid";
+		//注册验证Channel
+		String CHANNEL_VALID = "channelValid";
 	}
     
     interface Product{

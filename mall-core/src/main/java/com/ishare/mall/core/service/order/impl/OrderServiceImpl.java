@@ -21,8 +21,10 @@ import com.ishare.mall.core.repository.product.ProductStyleRepository;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.status.DeliverWay;
 import com.ishare.mall.core.status.OrderItemState;
 import com.ishare.mall.core.status.OrderState;
+import com.ishare.mall.core.status.PaymentWay;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 
@@ -168,21 +170,27 @@ public class OrderServiceImpl implements OrderService {
 		order.setTotalPrice(total + transFee);
 		//实际支付
 		order.setPayableFee(total + transFee);
+
+		order.setPaymentWay(PaymentWay.NET);
+
+		order.setState(OrderState.WAIT_PAYMENT);
+
+		order.setPaymentState(false);
 		//保存 返回
 		//修改商品库存
 		order.setCreateBy(buyer);
 		//收货人
 		OrderDeliverInfo orderDeliverInfo = this.initDeliverProcessor(order, exchangeDTO);
 		try {
-			//orderDeliverInfo = deliverRepository.save(orderDeliverInfo);
-			//order.setOrderDeliverInfo(orderDeliverInfo);
-			order = orderRepository.save(order);
-			log.debug(order.toString());
+			deliverRepository.save(orderDeliverInfo);
+			order.setOrderDeliverInfo(orderDeliverInfo);
+			orderRepository.save(order);
+			///log.debug(order.toString());
 			for (OrderItem item : orderItems) {
 				item.setOrder(order);
 				log.debug(item.toString());
 			}
-			orderItems = itemRepository.save(orderItems);
+			itemRepository.save(orderItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -213,6 +221,7 @@ public class OrderServiceImpl implements OrderService {
 		orderDeliverInfo.setRecipients(exchangeDTO.getRecipients());
 		orderDeliverInfo.setTel(exchangeDTO.getTel());
 		orderDeliverInfo.setRequirement(exchangeDTO.getRequirement());
+		orderDeliverInfo.setDeliverWay(DeliverWay.EXPRESS_DELIVERY);
 		return orderDeliverInfo;
 	}
 
@@ -266,8 +275,8 @@ public class OrderServiceImpl implements OrderService {
 		generatedOrderId.setOrderId(generatedOrderId.getOrderId() + 1);
 		generatedOrderIdRepository.save(generatedOrderId);
 		System.out.println("date : " + date);
-		System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId() + 1));
-		return date + String.format("%06d", generatedOrderId.getOrderId() + 1);
+		System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId()));
+		return date + String.format("%06d", generatedOrderId.getOrderId());
 	}
 
 

@@ -19,7 +19,12 @@ public class ChannelTokenResultDTO extends GenericDTO {
     private String appId;
     private String appSecret;
 
-    public Integer getId() {
+    
+    public ChannelTokenResultDTO() {
+
+	}
+
+	public Integer getId() {
         return id;
     }
 
