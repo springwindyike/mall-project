@@ -81,34 +81,35 @@ public class Product extends BaseEntity {
     private Integer inventory;
     @JsonIgnore
     //创建者
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_create_by", nullable = true)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "create_by_member_id")
     private Member createBy;
     //更新者
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_update_by", nullable = true)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "update_by_member_id")
     private Member updateBy;
 
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
-    @JoinColumn(name = "product_brand_id", nullable = true)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_brand_id")
     private Brand brand;//品牌
 
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_channel_id", nullable = true)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_channel_id")
     private Channel channel;
 
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_type_id", nullable = true)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_type_id")
     private ProductType type;
     //是否自营
     @Column(name = "is_self")
     private Boolean self;
     //第三方外键
-    @Column(name = "origin_id", nullable = true)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "origin_id")
     private Origin origin;
     //第三方link
     @Column(name = "origin_link")
