@@ -5,6 +5,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.center.form.member.MemberUpdatePasswordForm;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -164,7 +165,19 @@ public class MemberController extends BaseController {
 		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),memberDTO,MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("memberDetailDTO",memberDTOResult);
+		model.addAttribute("memberDetailDTO",memberDTOResult.getMemberDetailDTO());
 		return CenterViewConstant.Member.MEMBER_VIEW;
+	}
+
+	@RequestMapping(value = "/changePassword")
+	public String update(MemberUpdatePasswordForm memberUpdateForm,Model model){
+		MemberDTO memberDTO = new MemberDTO();
+		BeanUtils.copyProperties(memberUpdateForm,memberDTO);
+		ResponseEntity<MemberDTO> resultEntity = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD),memberDTO,MemberDTO.class);
+		MemberDTO memberDTOResult = resultEntity.getBody();
+		model.addAttribute("memberDetailDTO",memberDTOResult.getMemberDetailDTO());
+		return null;
 	}
 }
