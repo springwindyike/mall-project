@@ -291,6 +291,9 @@ function product_edit(title,url,id){
 /*图片-删除*/
 function product_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			  url: 'del/'+id+'.dhtml',
+			});
 		$(obj).parents("tr").remove();
 		layer.msg('已删除!',{icon:1,time:1000});
 	});

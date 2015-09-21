@@ -21,11 +21,14 @@ import com.ishare.mall.core.repository.product.ProductStyleRepository;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.status.OrderItemState;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +43,8 @@ import java.util.*;
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
+
+	private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 	
 	@Autowired
 	private OrderRepository orderRepository;
@@ -144,10 +149,12 @@ public class OrderServiceImpl implements OrderService {
 		OrderDetailDTO detailDTO = new OrderDetailDTO();
 		Channel channel = channelService.findByAppId(exchangeDTO.getClientId());
 		Member buyer = memberService.findByAccount(exchangeDTO.getAccount());
-		order.setOrderId(this.nextOrderId());
+		String orderId = this.nextOrderId();
+		log.debug("ID : " + orderId);
+		order.setOrderId(orderId);
 		order.setCreateTime(new Date());
 		order.setChannel(channel);
-		Set<OrderItem> orderItems = this.initItemProcessor(order, exchangeDTO);
+		List<OrderItem> orderItems = this.initItemProcessor(order, exchangeDTO);
 		Float total = 0f;
 		//费用计算
 		for (OrderItem orderItem : orderItems) {
@@ -166,13 +173,24 @@ public class OrderServiceImpl implements OrderService {
 		order.setCreateBy(buyer);
 		//收货人
 		OrderDeliverInfo orderDeliverInfo = this.initDeliverProcessor(order, exchangeDTO);
-		orderRepository.save(order);
-		itemRepository.save(orderItems);
-		deliverRepository.save(orderDeliverInfo);
+		try {
+			//orderDeliverInfo = deliverRepository.save(orderDeliverInfo);
+			//order.setOrderDeliverInfo(orderDeliverInfo);
+			order = orderRepository.save(order);
+			log.debug(order.toString());
+			for (OrderItem item : orderItems) {
+				item.setOrder(order);
+				log.debug(item.toString());
+			}
+			orderItems = itemRepository.save(orderItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		//设置收货人信息
 		detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
 		//设置订单项
-		detailDTO.setItems((Set<OrderItemDetailDTO>) MapperUtils.mapAsList(orderItems, OrderItemDetailDTO.class));
+		detailDTO.setItems((Set<OrderItemDetailDTO>) MapperUtils.mapAsSet(orderItems, OrderItemDetailDTO.class));
 		return detailDTO;
 	}
 
@@ -184,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	private OrderDeliverInfo initDeliverProcessor(Order order, ExchangeDTO exchangeDTO) {
 		OrderDeliverInfo orderDeliverInfo = new OrderDeliverInfo();
-		orderDeliverInfo.setOrder(order);
+		//orderDeliverInfo.setOrder(order);
 		orderDeliverInfo.setCountry(exchangeDTO.getCountry());
 		orderDeliverInfo.setProvince(exchangeDTO.getProvince());
 		orderDeliverInfo.setCity(exchangeDTO.getCity());
@@ -204,25 +222,26 @@ public class OrderServiceImpl implements OrderService {
 	 * @param exchangeDTO
 	 * @return
 	 */
-	private Set<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
+	private List<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
 
-		Set<OrderItem> orderItems = new HashSet<>();
+		List<OrderItem> orderItems = new ArrayList<>();
 		// TODO 暂时单个商品
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
 		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
-		Member member = memberService.findByAccount(exchangeDTO.getAccount());
 
 		OrderItem orderItem = new OrderItem();
 		orderItem.setOrder(order);
 		//设置样式相关
 		orderItem.setStyleId(exchangeDTO.getStyleId());
-		orderItem.setStyleName(style.getName());
+		if (style != null) {
+			orderItem.setStyleName(style.getName());
+			orderItem.setImageUrl(style.getImageUrl());
+		}
 		//设置商品相关
 		orderItem.setAmount(exchangeDTO.getAmount());
 		orderItem.setProductId(product.getId());
 		orderItem.setProductName(product.getName());
-		//设置图片
-		orderItem.setImageUrl(style.getImageUrl());
+		orderItem.setState(OrderItemState.COMPLETE_VERIFY);
 		//销售价格
 		orderItem.setProductPrice(product.getSellPrice());
 
@@ -242,11 +261,13 @@ public class OrderServiceImpl implements OrderService {
 			go.setId(date);
 			go.setOrderId(1);
 			generatedOrderIdRepository.save(go);
-			return String.format("%06d", go.getOrderId());
+			return date + String.format("%06d", go.getOrderId());
 		}
 		generatedOrderId.setOrderId(generatedOrderId.getOrderId() + 1);
 		generatedOrderIdRepository.save(generatedOrderId);
-		return String.format("%06d",generatedOrderId.getOrderId() + 1);
+		System.out.println("date : " + date);
+		System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId() + 1));
+		return date + String.format("%06d", generatedOrderId.getOrderId() + 1);
 	}
 
 
