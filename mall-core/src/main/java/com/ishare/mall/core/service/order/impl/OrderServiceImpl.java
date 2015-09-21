@@ -35,10 +35,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -150,7 +147,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderId(this.nextOrderId());
 		order.setCreateTime(new Date());
 		order.setChannel(channel);
-		List<OrderItem> orderItems = this.initItemProcessor(order, exchangeDTO);
+		Set<OrderItem> orderItems = this.initItemProcessor(order, exchangeDTO);
 		Float total = 0f;
 		//费用计算
 		for (OrderItem orderItem : orderItems) {
@@ -175,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
 		//设置收货人信息
 		detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
 		//设置订单项
-		detailDTO.setItems((List<OrderItemDetailDTO>) MapperUtils.mapAsList(orderItems, OrderItemDetailDTO.class));
+		detailDTO.setItems((Set<OrderItemDetailDTO>) MapperUtils.mapAsList(orderItems, OrderItemDetailDTO.class));
 		return detailDTO;
 	}
 
@@ -207,9 +204,9 @@ public class OrderServiceImpl implements OrderService {
 	 * @param exchangeDTO
 	 * @return
 	 */
-	private List<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
+	private Set<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
 
-		List<OrderItem> orderItems = new ArrayList<>();
+		Set<OrderItem> orderItems = new HashSet<>();
 		// TODO 暂时单个商品
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
 		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
