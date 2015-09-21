@@ -1,14 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2015/9/1
-  Time: 16:23
-  To change this template use File | Settings | File Templates.
---%>
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
@@ -29,7 +24,7 @@
 	<form action="${pageContext.request.contextPath}/member/changePassword.dhtml" method="post" class="form form-horizontal" id="form-change-password">
 		<div class="row cl">
 			<label class="form-label col-4"><span class="c-red">*</span>账户：</label>
-			<div class="formControls col-4"> 张三 </div>
+			<div class="formControls col-4">${memberDetailDTO.name}</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">

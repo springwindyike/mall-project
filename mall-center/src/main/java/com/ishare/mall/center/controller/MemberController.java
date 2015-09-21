@@ -169,7 +169,7 @@ public class MemberController extends BaseController {
 		return CenterViewConstant.Member.MEMBER_VIEW;
 	}
 
-	@RequestMapping(value = "/changePassword")
+	@RequestMapping(value = "/changePassword",method = RequestMethod.POST)
 	public String update(MemberUpdatePasswordForm memberUpdateForm,Model model){
 		MemberDTO memberDTO = new MemberDTO();
 		BeanUtils.copyProperties(memberUpdateForm,memberDTO);
@@ -180,7 +180,7 @@ public class MemberController extends BaseController {
 		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
 	}
 
-	@RequestMapping(value = "/forward2ChangePassword/account/{account}")
+	@RequestMapping(value = "/forward2ChangePassword/account/{account}",method = RequestMethod.GET)
 	public String forward2ChangePassword(@NotEmpty @PathVariable("account") String account,Model model){
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
