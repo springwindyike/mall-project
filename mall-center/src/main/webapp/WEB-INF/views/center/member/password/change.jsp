@@ -1,14 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2015/9/1
-  Time: 16:23
-  To change this template use File | Settings | File Templates.
---%>
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
@@ -26,23 +21,23 @@
 
 <body>
 <div class="pd-20">
-	<form action="/" method="post" class="form form-horizontal" id="form-change-password">
+	<form action="${pageContext.request.contextPath}/member/changePassword.dhtml" method="post" class="form form-horizontal" id="form-change-password">
 		<div class="row cl">
 			<label class="form-label col-4"><span class="c-red">*</span>账户：</label>
-			<div class="formControls col-4"> 张三 </div>
+			<div class="formControls col-4">${memberDetailDTO.name}</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-4"><span class="c-red">*</span>新密码：</label>
 			<div class="formControls col-4">
-				<input type="password" class="input-text" autocomplete="off" placeholder="不修改请留空" name="new-password" id="new-password" datatype="*6-18" ignore="ignore" >
+				<input type="password" class="input-text" autocomplete="off" placeholder="不修改请留空" name="password" id="password" datatype="*6-18" ignore="ignore" >
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-4"><span class="c-red">*</span>确认密码：</label>
 			<div class="formControls col-4">
-				<input type="password" class="input-text" autocomplete="off" placeholder="不修改请留空" name="new-password2" id="new-password2" recheck="new-password" datatype="*6-18" errormsg="您两次输入的密码不一致！" ignore="ignore" >
+				<input type="password" class="input-text" autocomplete="off" placeholder="不修改请留空" name="repassword" id="repassword" recheck="new-password" datatype="*6-18" errormsg="您两次输入的密码不一致！" ignore="ignore" >
 			</div>
 			<div class="col-4"> </div>
 		</div>
@@ -60,15 +55,35 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script>
 $(function(){
-	$("#form-change-password").Validform({
+//	$("#form-change-password").Validform({
+//		tiptype:2,
+//		callback:function(form){
+//			form[0].submit();
+//			var index = parent.layer.getFrameIndex(window.name);
+//			parent.layer.close(index);
+//		}
+//	});
+	$("#form-member-add").Validform({
 		tiptype:2,
-		callback:function(form){
-			form[0].submit();
-			var index = parent.layer.getFrameIndex(window.name);
-			parent.layer.close(index);
+		ajaxPost:true,
+		callback:function(data){
+			if(data=="S"){
+				setTimeout(function(){
+					//$.Hidemsg(); 公用方法关闭信息提示框
+					$.Showmsg("修改成功！");
+					/* var index = parent.layer.getFrameIndex(window.name); */
+					/* parent.layer.close(index); */
+				},2000);
+				setTimeout(function(){
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.window.location.reload();
+					parent.layer.close(index);
+				},3000);
+
+			}
 		}
 	});
-	
+
 });
 </script>
 </body>

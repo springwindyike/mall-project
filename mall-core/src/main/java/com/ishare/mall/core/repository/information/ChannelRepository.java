@@ -1,10 +1,12 @@
 package com.ishare.mall.core.repository.information;
 
-import com.ishare.mall.core.model.information.Channel;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import com.ishare.mall.core.model.information.Channel;
 
 /**
  * Created by YinLin on 2015/8/12.
@@ -16,4 +18,6 @@ public interface ChannelRepository extends JpaRepository<Channel, Integer>, JpaS
     List<Channel> findByAppId(String appId);
     //@Query("SELECT c FROM t_channel c WHERE c.appSecret=?1")
     List<Channel> findByAppSecret(String appSecret);
+    @Query("SELECT c FROM Channel c WHERE c.name=?1")
+    List<Channel> findByName(String name);
 }

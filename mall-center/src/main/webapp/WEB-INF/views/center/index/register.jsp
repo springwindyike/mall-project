@@ -74,7 +74,7 @@
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>公司名称：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="channel" name="channel" datatype="*2-16" nullmsg="公司名称不能为空">
+        <input type="text" class="input-text" value="" placeholder="" id="channel" name="channel" datatype="*2-16" nullmsg="公司名称不能为空" ajaxurl="channelValid.dhtml" sucmsg="验证通过！">
       </div>
       <div class="col-4"> </div>
     </div>

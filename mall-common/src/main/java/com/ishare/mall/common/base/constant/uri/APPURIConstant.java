@@ -16,7 +16,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_ADD_MEMBER_PAGE = "/addMemberPage";
         String REQUEST_MAPPING_FIND_BY_CONDITION = "/findBySearchCondition";
         String REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT = "/findValidByAccount";
-        
+        String REQUEST_MAPPING_CHANGE_PASSWORD = "/changePassword";
         String REQUEST_MAPPING_REGISTER_MEMBER = "/registerMember";
         //通过账号获取用户信息用于登录
         String REQUEST_MAPPING_QUERY_BY_ACCOUNT = "/queryByAccount";
@@ -72,5 +72,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BY_APP_SECRET = "/app/secret/";
         //通过Secret获取渠道信息参数
         String REQUEST_MAPPING_GET_BY_APP_SECRET_PARAM = "{secret}";
+        //通过渠道名称查询重复
+        String REQUEST_MAPPING_FIND_VALID_BY_NAME = "/findValidByName";
     }
 }
