@@ -1,6 +1,6 @@
 package com.ishare.mall.core.form;
 
-import com.ishare.mall.core.status.OrderItemState;
+import com.ishare.mall.common.base.enumeration.OrderItemState;
 
 public class AddOrderItemForm {
     private Integer id;

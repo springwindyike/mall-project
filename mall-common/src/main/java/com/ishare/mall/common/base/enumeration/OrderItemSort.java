@@ -1,4 +1,4 @@
-package com.ishare.mall.core.status;
+package com.ishare.mall.common.base.enumeration;
 
 public enum OrderItemSort {
 	/*退货 */

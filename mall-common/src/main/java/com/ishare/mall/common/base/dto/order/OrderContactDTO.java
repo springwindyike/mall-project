@@ -14,27 +14,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonAutoDetect
 public class OrderContactDTO extends GenericDTO {
     private Integer id;
-    /* ¹ºÂòÈËĞÕÃû */
+    /* è´­ä¹°äººå§“å */
     private String buyerName;
-    //¹ú¼Ò
+    //å›½å®¶
     private String country;
-    //Ê¡
+    //çœ
     private String province;
-    //ÊĞ
+    //å¸‚
     private String city;
-    //ÏØ Çø
+    //å¿ åŒº
     private String district;
-    //ÏêÏ¸½ÖµÀ
+    //è¯¦ç»†è¡—é“
     private String detail;
-    /* µç×ÓÓÊÏä */
+    /* ç”µå­é‚®ç®± */
     private String email;
-    /* ÓÊ±à */
+    /* é‚®ç¼– */
     private String postalCode;
-    /* ×ù»ú */
+    /* åº§æœº */
     private String tel;
-    /* ÊÖ»ú */
+    /* æ‰‹æœº */
     private String mobile;
-    /* ĞÔ±ğ */
+    /* æ€§åˆ« */
     private String sex;
 
     public Integer getId() {

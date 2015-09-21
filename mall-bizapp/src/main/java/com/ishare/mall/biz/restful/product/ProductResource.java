@@ -4,6 +4,8 @@ package com.ishare.mall.biz.restful.product;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.*;
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
@@ -12,8 +14,6 @@ import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.service.product.ProductStyleService;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.MemberType;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +86,30 @@ public class ProductResource {
 		return productDetailDTO;
     }
 
+    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public ProductDetailDTO updateProduct(@RequestBody ProductDetailDTO productDetailDTO){
+            Product product = new Product();
+            BeanUtils.copyProperties(productDetailDTO, product);
+        			Brand brand = new Brand();
+        			brand.setId(productDetailDTO.getBrandId());
+        			ProductType productType = new ProductType();
+        			productType.setId(productDetailDTO.getTypeId());
+        			productType.setCode("1001001001");
+        			productType.setName("衬衫");
+        			productType.setNote("非常好");
+        			productType.setLevel(3);
+        			product.setBrand(brand);
+        			product.setType(productType);
+        			try {
+						productService.updateProduct(product);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+		return productDetailDTO;
+    }
 	/**
 	 * 根据商品ID 查询商品详细信息
 	 * @param productDetailDTO
@@ -237,7 +261,6 @@ public class ProductResource {
             pageDTO.setITotalRecords(result.getTotalElements());
             productDTO.setPageDTO(pageDTO);
         }
-		log.debug("xxx");
         return productDTO;
     }
     

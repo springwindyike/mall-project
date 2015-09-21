@@ -12,6 +12,7 @@ import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailResultDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -76,6 +77,45 @@ e.printStackTrace();
 			ProductDetailDTO productDTOResult = resultDTO.getBody();
         return CenterViewConstant.Product.ADD_PRODUCT;
     }
+    
+    @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST)
+    public String updateProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
+    	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
+    	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+    /*	productDetailDTO.setName(apf.getProductName());
+    	productDetailDTO.setDescription(apf.getDescription());
+    	productDetailDTO.setTypeCode(apf.getTypeCode());
+    	productDetailDTO.setBasePrice(apf.getBasePrice());
+    	productDetailDTO.setMarketPrice(apf.getMarketPrice());
+    	productDetailDTO.setInventory(apf.getInventory());*/
+    	BeanUtils.copyProperties(addProductForm,productDetailDTO);
+    	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
+    	productDetailDTO.setBrandId(1);
+    	productDetailDTO.setChannelId(1);
+    	productDetailDTO.setTypeId(1);
+    	productDetailDTO.setCreateByAccount("18566469285");
+    	ResponseEntity<ProductDetailDTO> resultDTO = null;
+    	RestTemplate restTemplate = new RestTemplate();
+			try {
+				resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_UPDATE),productDetailDTO, ProductDetailDTO.class);
+			} catch (Exception e) {
+e.printStackTrace();
+}
+			ProductDetailDTO productDTOResult = resultDTO.getBody();
+        return CenterViewConstant.Product.ADD_PRODUCT;
+    }
+    
+    @RequestMapping(value =  CenterURIConstant.Product.REQUEST_MAPPING_FIND_BY_ID, method = RequestMethod.GET,produces = {"application/json"})
+    public ProductDetailDTO findById(@NotEmpty @PathVariable("id") Integer id) {
+        ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+        productDetailDTO.setId(id);
+        ResponseEntity<ProductDetailDTO> resultEntity = null;
+        RestTemplate restTemplate = new RestTemplate();
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,ProductDetailDTO.class);
+        ProductDetailDTO returnTO =  resultEntity.getBody();
+        return returnTO;
+    }
+    
     @RequestMapping(value = "/allType", produces = {"application/json"})
     @ResponseBody
     public ProductTypeDTO getType() {

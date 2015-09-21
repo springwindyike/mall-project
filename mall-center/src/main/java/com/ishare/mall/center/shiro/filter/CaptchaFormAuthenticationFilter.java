@@ -22,7 +22,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 
     private static final Logger log = LoggerFactory.getLogger(CaptchaFormAuthenticationFilter.class);
 
-    public CaptchaFormAuthenticationFilter() {log.debug("account : ");}
+    public CaptchaFormAuthenticationFilter() {}
 
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {

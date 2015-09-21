@@ -1,11 +1,11 @@
 package com.ishare.mall.core.model.order;
 
 
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.common.base.object.BaseObject;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.status.OrderState;
-import com.ishare.mall.core.status.PaymentWay;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -91,7 +91,7 @@ public class Order implements BaseObject {
     @Column(name = "express_order", nullable = true, length = 15)
     private String expressOrder;//快递单号
     
-    @Column(name = "express_id", nullable = false, length = 15)
+    @Column(name = "express_id", nullable = true, length = 15)
     private String expressId;//快递代号
     
     public Order(){}

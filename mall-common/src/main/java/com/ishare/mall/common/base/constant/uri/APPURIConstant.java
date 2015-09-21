@@ -42,11 +42,12 @@ public interface APPURIConstant {
     interface Product{
    	 String REQUEST_MAPPING   = "/product";
    	 String REQUEST_MAPPING_SAVE = "/save";
+   	 String REQUEST_MAPPING_UPDATE = "/update";
    	 String REQUEST_MAPPING_DEL ="/del";
-     String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
-     String REQUEST_MAPPING_FIND_ID="/findByID";
-     String REQUEST_MAPPING_FIND_CODE="/findByCode";
-     String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
+      String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+      String REQUEST_MAPPING_FIND_ID="/findByID";
+      String REQUEST_MAPPING_FIND_CODE="/findByCode";
+      String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
    
     }
 

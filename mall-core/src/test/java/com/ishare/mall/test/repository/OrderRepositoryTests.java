@@ -1,5 +1,9 @@
 package com.ishare.mall.test.repository;
 
+import com.ishare.mall.common.base.enumeration.DeliverWay;
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderContactInfo;
@@ -7,12 +11,7 @@ import com.ishare.mall.core.model.order.OrderDeliverInfo;
 import com.ishare.mall.core.repository.information.ChannelRepository;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
-import com.ishare.mall.core.status.DeliverWay;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.OrderState;
-import com.ishare.mall.core.status.PaymentWay;
 import com.ishare.mall.test.RepositoryTestTemplate;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

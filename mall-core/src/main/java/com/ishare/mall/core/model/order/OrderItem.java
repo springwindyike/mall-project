@@ -1,8 +1,8 @@
 package com.ishare.mall.core.model.order;
 
+import com.ishare.mall.common.base.enumeration.OrderItemSort;
+import com.ishare.mall.common.base.enumeration.OrderItemState;
 import com.ishare.mall.core.model.base.BaseEntity;
-import com.ishare.mall.core.status.OrderItemSort;
-import com.ishare.mall.core.status.OrderItemState;
 
 import javax.persistence.*;
 

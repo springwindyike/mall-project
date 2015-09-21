@@ -1,7 +1,8 @@
 package com.ishare.mall.core.model.pay;
 
-import com.ishare.mall.core.status.CostType;
-import com.ishare.mall.core.status.PayType;
+
+import com.ishare.mall.common.base.enumeration.CostType;
+import com.ishare.mall.common.base.enumeration.PayType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

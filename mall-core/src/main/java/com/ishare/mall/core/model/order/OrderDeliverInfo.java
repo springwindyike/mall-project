@@ -1,8 +1,8 @@
 package com.ishare.mall.core.model.order;
 
+import com.ishare.mall.common.base.enumeration.DeliverWay;
+import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.core.model.base.BaseEntity;
-import com.ishare.mall.core.status.DeliverWay;
-import com.ishare.mall.core.status.Gender;
 
 import javax.persistence.*;
 

@@ -1,6 +1,7 @@
 package com.ishare.mall.core.model.product;
 
-import com.ishare.mall.core.status.ValueType;
+
+import com.ishare.mall.common.base.enumeration.ValueType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

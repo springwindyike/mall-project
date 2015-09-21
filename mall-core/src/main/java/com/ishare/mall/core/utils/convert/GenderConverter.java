@@ -1,6 +1,6 @@
 package com.ishare.mall.core.utils.convert;
 
-import com.ishare.mall.core.status.Gender;
+import com.ishare.mall.common.base.enumeration.Gender;
 import org.apache.commons.beanutils.Converter;
 
 /**

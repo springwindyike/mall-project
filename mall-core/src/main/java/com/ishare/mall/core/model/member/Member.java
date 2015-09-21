@@ -1,9 +1,9 @@
 package com.ishare.mall.core.model.member;
 
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.MemberType;
 
 import javax.persistence.*;
 import java.util.Date;

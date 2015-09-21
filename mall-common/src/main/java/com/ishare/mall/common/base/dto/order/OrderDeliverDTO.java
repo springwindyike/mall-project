@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by YinLin on 2015/9/18.
- * Description : ÊÕ¼şÈËĞÅÏ¢
+ * Description : æ”¶ä»¶äººä¿¡æ¯
  * Version 1.0
  */
 @XmlRootElement
@@ -15,30 +15,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class OrderDeliverDTO extends GenericDTO {
 
     private Integer id;
-    /* ÊÕ»õÈËĞÕÃû */
+    /* æ”¶è´§äººå§“å */
     private String recipients;
-    //¹ú¼Ò
+    //å›½å®¶
     private String country;
-    //Ê¡
+    //çœ
     private String province;
-    //ÊĞ
+    //å¸‚
     private String city;
-    //ÏØ Çø
+    //å¿ åŒº
     private String district;
-    //ÏêÏ¸½ÖµÀ
+    //è¯¦ç»†è¡—é“
     private String detail;
-    /* µç×ÓÓÊÏä */
+    /* ç”µå­é‚®ç®± */
     private String email;
-    /* ÓÊ±à */
+    /* é‚®ç¼– */
     private String postalCode;
-    /* ×ù»ú */
+    /* åº§æœº */
     private String tel;
-    /* ÊÖ»ú */
+    /* æ‰‹æœº */
     private String mobile;
-    /* ĞÔ±ğ */
-    /**ÅäËÍ·½Ê½**/
+    /* æ€§åˆ« */
+    /**é…é€æ–¹å¼**/
     private String deliverWay;
-    /**Ê±¼äÒªÇó**/
+    /**æ—¶é—´è¦æ±‚**/
     private String requirement;
 
     public Integer getId() {
