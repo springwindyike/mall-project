@@ -1,4 +1,4 @@
-package com.ishare.mall.core.status;
+package com.ishare.mall.common.base.enumeration;
 
 /**
  * Created by YinLin on 2015/9/6.

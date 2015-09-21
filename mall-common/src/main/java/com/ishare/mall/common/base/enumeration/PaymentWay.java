@@ -1,4 +1,4 @@
-package com.ishare.mall.core.status;
+package com.ishare.mall.common.base.enumeration;
 /**支付方式**/
 public enum PaymentWay {
 	/**网上支付**/

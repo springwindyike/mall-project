@@ -1,19 +1,11 @@
 package com.ishare.mall.test.repository;
 
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.member.MemberRepository;
 import com.ishare.mall.core.repository.product.ProductStyleRepository;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.MemberType;
 import com.ishare.mall.test.RepositoryTestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 

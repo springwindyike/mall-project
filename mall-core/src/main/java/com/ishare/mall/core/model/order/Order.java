@@ -1,11 +1,11 @@
 package com.ishare.mall.core.model.order;
 
 
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.common.base.object.BaseObject;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.status.OrderState;
-import com.ishare.mall.core.status.PaymentWay;
 
 import javax.persistence.*;
 import java.util.Date;
