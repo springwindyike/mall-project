@@ -177,7 +177,18 @@ public class MemberController extends BaseController {
 		RestTemplate restTemplate = new RestTemplate();
 		resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD),memberDTO,MemberDTO.class);
 		MemberDTO memberDTOResult = resultEntity.getBody();
+		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
+	}
+
+	@RequestMapping(value = "/forward2ChangePassword/account/{account}")
+	public String forward2ChangePassword(@NotEmpty @PathVariable("account") String account,Model model){
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setAccount(account);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
+		MemberDTO memberDTOResult = resultDTO.getBody();
 		model.addAttribute("memberDetailDTO",memberDTOResult.getMemberDetailDTO());
-		return null;
+		return CenterViewConstant.Member.MEMBER_CHANGE_PASSWORD;
 	}
 }
