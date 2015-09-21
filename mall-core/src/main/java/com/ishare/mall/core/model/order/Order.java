@@ -23,16 +23,16 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 @Table(name = TABLE_ORDER_NAME)
 public class Order implements BaseObject {
     /* 订单号 年份+月+日+当天订单总数*/
-    @Id @Column(length = 14, name = "order_id")
+    @Id @Column(length = 17, name = "id")
     private String orderId;
     /* 创建订单者 */
     
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=true)
     @JoinColumn(name="create_by_member_id")
     private Member createBy;
     /**更新订单者**/
 
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=true)
     @JoinColumn(name="update_by_member_id")
     private Member updateBy;
     /* 订单创建时间 */
@@ -77,9 +77,6 @@ public class Order implements BaseObject {
     @OneToOne(cascade = CascadeType.ALL, optional=true, fetch = FetchType.LAZY)
     @JoinColumn(name="contact_id")
     private OrderContactInfo orderContactInfo;
-    /* 订单项 */
-    @OneToMany(mappedBy="order", cascade=CascadeType.ALL)
-    private Set<OrderItem> items = new HashSet<OrderItem>();
     /* 对订单进行加锁的用户,如果值为null,代表订单未被加锁,否则,订单被加锁 */
     @Column(length = 20, name = "order_lock_member")
     private String lockMember;
@@ -91,10 +88,10 @@ public class Order implements BaseObject {
     @JoinColumn(name="channel_id")
     private Channel channel;
   
-    @Column(name = "express_order",nullable=false,length = 15)
+    @Column(name = "express_order", nullable = true, length = 15)
     private String expressOrder;//快递单号
     
-    @Column(name = "express_id", nullable=false,length=15)
+    @Column(name = "express_id", nullable = false, length = 15)
     private String expressId;//快递代号
     
     public Order(){}
@@ -154,16 +151,6 @@ public class Order implements BaseObject {
     }
     public void setOrderContactInfo(OrderContactInfo orderContactInfo) {
         this.orderContactInfo = orderContactInfo;
-    }
-    public Set<OrderItem> getItems() {
-        return items;
-    }
-    public void setItems(Set<OrderItem> items) {
-        this.items = items;
-    }
-    public void addOrderItem(OrderItem item){
-        this.items.add(item);
-        item.setOrder(this);
     }
     
     public Channel getChannel() {
@@ -276,5 +263,31 @@ public class Order implements BaseObject {
 
     public void setUpdateBy(Member updateBy) {
         this.updateBy = updateBy;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId='" + orderId + '\'' +
+                ", createBy=" + createBy +
+                ", updateBy=" + updateBy +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", state=" + state +
+                ", productTotalPrice=" + productTotalPrice +
+                ", deliverFee=" + deliverFee +
+                ", totalPrice=" + totalPrice +
+                ", payableFee=" + payableFee +
+                ", note='" + note + '\'' +
+                ", paymentWay=" + paymentWay +
+                ", paymentState=" + paymentState +
+                ", orderDeliverInfo=" + orderDeliverInfo +
+                ", orderContactInfo=" + orderContactInfo +
+                ", lockMember='" + lockMember + '\'' +
+                ", orderMessages=" + orderMessages +
+                ", channel=" + channel +
+                ", expressOrder='" + expressOrder + '\'' +
+                ", expressId='" + expressId + '\'' +
+                '}';
     }
 }

@@ -55,7 +55,7 @@ public class OrderItem extends BaseEntity {
     private OrderItemSort exchangeOrBack;
     
     /* 所属订单 */
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
     public OrderItem(){}
@@ -170,5 +170,31 @@ public class OrderItem extends BaseEntity {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", productId=" + productId +
+                ", productPrice=" + productPrice +
+                ", amount=" + amount +
+                ", styleName='" + styleName + '\'' +
+                ", styleId=" + styleId +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", state=" + state +
+                ", createBy='" + createBy + '\'' +
+                ", exchangeOrBack=" + exchangeOrBack +
+                ", order=" + order +
+                '}';
     }
 }
