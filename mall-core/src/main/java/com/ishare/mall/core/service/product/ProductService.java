@@ -28,4 +28,5 @@ public abstract interface ProductService {
 	 * @return
 	 */
     void saveProduct(Product product);
+    void updateProduct(Product product);
 }
