@@ -1,64 +1,52 @@
 package com.ishare.mall.common.base.dto.order;
 
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by YinLin on 2015/9/16.
- * Description :
+ * Created by YinLin on 2015/9/18.
+ * Description : 收件人信息
  * Version 1.0
  */
 @XmlRootElement
 @JsonAutoDetect
-public class ExchangeDTO {
+public class OrderDeliverDTO extends GenericDTO {
 
-    private String clientId;
-
-    private String account;
-
-    private Integer productId;
-
-    private Long [] attributeIds;
-
-    private Long styleId;
+    private Integer id;
+    /* 收货人姓名 */
     private String recipients;
+    //国家
     private String country;
+    //省
     private String province;
+    //市
     private String city;
+    //县 区
     private String district;
+    //详细街道
     private String detail;
+    /* 电子邮箱 */
     private String email;
+    /* 邮编 */
+    private String postalCode;
+    /* 座机 */
     private String tel;
-
+    /* 手机 */
     private String mobile;
-    /**璐拱鏁伴噺**/
-    private Integer amount;
-
+    /* 性别 */
+    /**配送方式**/
+    private String deliverWay;
+    /**时间要求**/
     private String requirement;
 
-    public Integer getProductId() {
-        return productId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Long[] getAttributeIds() {
-        return attributeIds;
-    }
-
-    public void setAttributeIds(Long[] attributeIds) {
-        this.attributeIds = attributeIds;
-    }
-
-    public Long getStyleId() {
-        return styleId;
-    }
-
-    public void setStyleId(Long styleId) {
-        this.styleId = styleId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getRecipients() {
@@ -117,6 +105,14 @@ public class ExchangeDTO {
         this.email = email;
     }
 
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
     public String getTel() {
         return tel;
     }
@@ -133,28 +129,12 @@ public class ExchangeDTO {
         this.mobile = mobile;
     }
 
-    public String getAccount() {
-        return account;
+    public String getDeliverWay() {
+        return deliverWay;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setDeliverWay(String deliverWay) {
+        this.deliverWay = deliverWay;
     }
 
     public String getRequirement() {

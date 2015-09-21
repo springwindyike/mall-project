@@ -3,6 +3,7 @@ package com.ishare.mall.core.model.product;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.information.Origin;
 import com.ishare.mall.core.model.member.Member;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -80,12 +81,12 @@ public class Product extends BaseEntity {
     private Integer inventory;
     @JsonIgnore
     //创建者
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_create_by")
     private Member createBy;
     //更新者
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_update_by")
     private Member updateBy;
 
@@ -95,14 +96,29 @@ public class Product extends BaseEntity {
     private Brand brand;//品牌
 
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_channel_id")
     private Channel channel;
 
     @JsonIgnore
-    @ManyToOne(cascade= CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_type_id")
     private ProductType type;
+    //是否自营
+    @Column(name = "is_self")
+    private Boolean self;
+    //第三方外键
+    @Column(name = "origin_id")
+    private Origin origin;
+    //第三方link
+    @Column(name = "origin_link")
+    private String link;
+    //第三方Tag
+    @Column(name = "origin_tag")
+    private String tag;
+    //第三方code码
+    @Column(name = "origin_code")
+    private String originCode;
 
     public Integer getId() {
         return id;
@@ -296,7 +312,47 @@ public class Product extends BaseEntity {
 		this.inventory = inventory;
 	}
 
-	@Override
+    public Boolean getSelf() {
+        return self;
+    }
+
+    public void setSelf(Boolean self) {
+        this.self = self;
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public String getOriginCode() {
+        return originCode;
+    }
+
+    public void setOriginCode(String originCode) {
+        this.originCode = originCode;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
