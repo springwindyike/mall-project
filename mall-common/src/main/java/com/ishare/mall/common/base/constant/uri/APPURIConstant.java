@@ -72,5 +72,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BY_APP_SECRET = "/app/secret/";
         //通过Secret获取渠道信息参数
         String REQUEST_MAPPING_GET_BY_APP_SECRET_PARAM = "{secret}";
+        //通过渠道名称查询重复
+        String REQUEST_MAPPING_FIND_VALID_BY_NAME = "/findValidByName";
     }
 }

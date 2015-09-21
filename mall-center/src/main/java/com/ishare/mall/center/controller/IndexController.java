@@ -30,6 +30,7 @@ import com.ishare.mall.center.form.register.RegisterForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
@@ -135,13 +136,29 @@ public class IndexController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = CenterURIConstant.Index.ACCOUNTVALID, method = RequestMethod.POST)
+    @RequestMapping(value = CenterURIConstant.Index.ACCOUNT_VALID, method = RequestMethod.POST)
     public ValidformRespDTO accountValid(@RequestParam("name") String name, @RequestParam("param") String param) {
     	MemberRegisterDTO memberRegisterDTO = new MemberRegisterDTO();
     	memberRegisterDTO.setAccount(param);
 			ResponseEntity<ValidformRespDTO> resultDTO = null;
 			RestTemplate restTemplate = new RestTemplate();
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT), memberRegisterDTO, ValidformRespDTO.class);
+			ValidformRespDTO validformRespDTO = resultDTO.getBody();
+			return validformRespDTO;
+    }
+    
+    /**
+     * Channel验证（公司名称）
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = CenterURIConstant.Index.CHANNEL_VALID, method = RequestMethod.POST)
+    public ValidformRespDTO channelValid(@RequestParam("name") String name, @RequestParam("param") String param) {
+    	ChannelTokenResultDTO channelRegisterDTO = new ChannelTokenResultDTO();
+    	channelRegisterDTO.setName(param);
+			ResponseEntity<ValidformRespDTO> resultDTO = null;
+			RestTemplate restTemplate = new RestTemplate();
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_FIND_VALID_BY_NAME), channelRegisterDTO, ValidformRespDTO.class);
 			ValidformRespDTO validformRespDTO = resultDTO.getBody();
 			return validformRespDTO;
     }
