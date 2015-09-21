@@ -73,11 +73,6 @@ public class MemberRealm extends AuthorizingRealm {
             log.debug("account : 15928972087 用户不存在！");
             throw new UnknownAccountException();
         }
-        log.debug(memberDTO.getCredentialsSalt());
-        int len = (ByteSource.Util.bytes(memberDTO.getCredentialsSalt())).getBytes().length;
-        log.debug("len : " + len);
-        log.debug("0x01 : " + 0x01);
-        log.debug("(len & 0x01)" + (len & 0x01));
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 memberDTO.getAccount(),
                 memberDTO.getPassword(),
