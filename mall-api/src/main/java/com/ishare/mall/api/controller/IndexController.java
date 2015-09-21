@@ -1,16 +1,12 @@
 package com.ishare.mall.api.controller;
 
 
-
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
-import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_CLIENT_DESCRIPTION;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -20,7 +16,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
 @Controller
 @RequestMapping("/index")
 public class IndexController {
-//    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+   private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 //    @Autowired
 //    private ChannelService channelService;
 //    @Autowired
@@ -31,14 +27,12 @@ public class IndexController {
 //        return "success";
 //    }
 
-//    @RequestMapping(value = "show", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Product show() {
-//        Product product = new Product();
-//        product.setBasePrice(10.0f);
-//        product.setCode("1001001000");
-//        return product;
-//    }
+    @RequestMapping(value = "show", method = RequestMethod.GET)
+    @ResponseBody
+    public String show(TestForm testForm) {
+        log.debug(testForm.getGender().getName());
+        return "success";
+    }
 
 //    @RequestMapping(value = "list", method = RequestMethod.GET)
 //    @ResponseBody
