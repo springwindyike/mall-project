@@ -14,6 +14,7 @@ import com.ishare.mall.common.base.dto.generic.GenericDTO;
  * Description: productDTO
  * Version 1.0
  */
+@XmlRootElement
 @JsonAutoDetect
 public class ProductDetailDTO extends GenericDTO {
     private static final long serialVersionUID = 1L;
