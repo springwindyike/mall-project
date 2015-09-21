@@ -206,24 +206,24 @@ public class MemberResource {
         Channel channel = channelService.findOne(8);
         member.setChannel(channel);
         memberService.saveMember(member);
-        PageRequest pageRequest = new PageRequest(1,15,Sort.Direction.DESC,"createTime");
-        Integer channelId = memberDTO.getChannelId();
-        Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Member> listMember = result.getContent();
-            for (Member memberPage:listMember){
-                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-                BeanUtils.copyProperties(memberPage, memberDetailDTO);
-                memberDetailDTO.setChannelId(memberPage.getChannel().getId());
-                memberDetailDTO.setSex(memberPage.getSex().getName());
-                memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
-                listMemberList.add(memberDetailDTO);
-            }
-            pageDTO.setContent(listMemberList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            memberDTO.setPageDTO(pageDTO);
-        }
+//        PageRequest pageRequest = new PageRequest(0,15,Sort.Direction.DESC,"createTime");
+//        Integer channelId = memberDTO.getChannelId();
+//        Page<Member> result = memberService.findByChannelId(8, pageRequest);
+//        PageDTO pageDTO = new PageDTO();
+//        if(result != null && result.getContent() != null && result.getContent().size()>0){
+//            List<Member> listMember = result.getContent();
+//            for (Member memberPage:listMember){
+//                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+//                BeanUtils.copyProperties(memberPage, memberDetailDTO);
+//                memberDetailDTO.setChannelId(memberPage.getChannel().getId());
+//                memberDetailDTO.setSex(memberPage.getSex().getName());
+//                memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
+//                listMemberList.add(memberDetailDTO);
+//            }
+//            pageDTO.setContent(listMemberList);
+//            pageDTO.setTotalPages(result.getTotalPages());
+//            memberDTO.setPageDTO(pageDTO);
+//        }
         return memberDTO;
     }
 
@@ -358,28 +358,27 @@ public class MemberResource {
         Member member = memberService.findByAccount(memberDTO.getAccount());
         if (member != null){
             member.setPassword(memberDTO.getPassword());
+            Channel channel = channelService.findOne(8);
+            member.setChannel(channel);
             memberService.saveMember(member);
-        }
-        Channel channel = channelService.findOne(8);
-        member.setChannel(channel);
-        memberService.saveMember(member);
-        PageRequest pageRequest = new PageRequest(1,15,Sort.Direction.DESC,"updateTime");
-        Integer channelId = memberDTO.getChannelId();
-        Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Member> listMember = result.getContent();
-            for (Member memberPage:listMember){
-                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-                BeanUtils.copyProperties(memberPage, memberDetailDTO);
-                memberDetailDTO.setChannelId(memberPage.getChannel().getId());
-                memberDetailDTO.setSex(memberPage.getSex().getName());
-                memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
-                listMemberList.add(memberDetailDTO);
-            }
-            pageDTO.setContent(listMemberList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            memberDTO.setPageDTO(pageDTO);
+//            PageRequest pageRequest = new PageRequest(0,15,Sort.Direction.DESC,"updateTime");
+//            Integer channelId = memberDTO.getChannelId();
+//            Page<Member> result = memberService.findByChannelId(8, pageRequest);
+//            PageDTO pageDTO = new PageDTO();
+//            if(result != null && result.getContent() != null && result.getContent().size()>0){
+//                List<Member> listMember = result.getContent();
+//                for (Member memberPage:listMember){
+//                    MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+//                    BeanUtils.copyProperties(memberPage, memberDetailDTO);
+//                    memberDetailDTO.setChannelId(memberPage.getChannel().getId());
+//                    memberDetailDTO.setSex(memberPage.getSex().getName());
+//                    memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
+//                    listMemberList.add(memberDetailDTO);
+//                }
+//                pageDTO.setContent(listMemberList);
+//                pageDTO.setTotalPages(result.getTotalPages());
+//                memberDTO.setPageDTO(pageDTO);
+//            }
         }
         return memberDTO;
     }

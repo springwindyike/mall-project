@@ -24,20 +24,21 @@
 	<form action="${pageContext.request.contextPath}/member/changePassword.dhtml" method="post" class="form form-horizontal" id="form-change-password">
 		<div class="row cl">
 			<label class="form-label col-4"><span class="c-red">*</span>账户：</label>
-			<div class="formControls col-4">${memberDetailDTO.name}</div>
+			<div class="formControls col-4">${memberDetailDTO.account}</div>
+			<input type="hidden" class="input-text" name="account" id="account" value="${memberDetailDTO.account}">
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-4"><span class="c-red">*</span>新密码：</label>
-			<div class="formControls col-4">
-				<input type="password" class="input-text" autocomplete="off" placeholder="不修改请留空" name="password" id="password" datatype="*6-18" ignore="ignore" >
+			<label class="form-label col-3"><span class="c-red">*</span>密码：</label>
+			<div class="formControls col-5">
+				<input type="password" class="input-text" autocomplete="off" placeholder="" name="password" id="password" datatype="*6-18" nullmsg="密码不能为空" >
 			</div>
 			<div class="col-4"> </div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-4"><span class="c-red">*</span>确认密码：</label>
-			<div class="formControls col-4">
-				<input type="password" class="input-text" autocomplete="off" placeholder="不修改请留空" name="repassword" id="repassword" recheck="new-password" datatype="*6-18" errormsg="您两次输入的密码不一致！" ignore="ignore" >
+			<label class="form-label col-3"><span class="c-red">*</span>确认密码：</label>
+			<div class="formControls col-5">
+				<input type="password" class="input-text" autocomplete="off" placeholder="" name="repassword" id="repassword" recheck="password" datatype="*6-18" errormsg="您两次输入的密码不一致！"nullmsg="请确认密码">
 			</div>
 			<div class="col-4"> </div>
 		</div>
@@ -63,7 +64,7 @@ $(function(){
 //			parent.layer.close(index);
 //		}
 //	});
-	$("#form-member-add").Validform({
+	$("#form-change-password").Validform({
 		tiptype:2,
 		ajaxPost:true,
 		callback:function(data){

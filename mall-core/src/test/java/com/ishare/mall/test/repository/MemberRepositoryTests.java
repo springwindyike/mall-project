@@ -46,18 +46,18 @@ public class MemberRepositoryTests extends RepositoryTestTemplate {
 
 	@Override
 	public void testRetrieve() {
-//		Member member = new Member();
-//		member.setSex(Gender.MAN);
-//		member.setAccount("123456");
-//		member.setCreateBy("123456");
-//
-//		Channel channel = channelService.findOne(8);
-//		member.setChannel(channel);
-//		member.setMobile("18011111111");
-//		member.setMemberType(MemberType.MEMBER);
-//		PageRequest pageRequest = new PageRequest(0,1, Sort.Direction.DESC, "account");
-//		Page<Member> memberPage = null; //memberRepository.findByAccountLikeOrNameLikeOrMobileLike("123456", "123456", "123456", pageRequest);
-//		List<Member> list = memberPage.getContent();
+		Member member = new Member();
+		member.setSex(Gender.MAN);
+		member.setAccount("123456");
+		member.setCreateBy("123456");
+
+		Channel channel = channelService.findOne(8);
+		member.setChannel(channel);
+		member.setMobile("18011111111");
+		member.setMemberType(MemberType.MEMBER);
+		PageRequest pageRequest = new PageRequest(1,15, Sort.Direction.DESC, "account");
+		Page<Member> memberPage = null; //memberRepository.findByAccountLikeOrNameLikeOrMobileLike("123456", "123456", "123456", pageRequest);
+		List<Member> list = memberPage.getContent();
 //
 //		System.out.println("totalElements = "+memberPage.getTotalElements()+"totalPage"+memberPage.getTotalPages() +
 //				"content" + memberPage.getContent().size()+"size"+memberPage.getSize());

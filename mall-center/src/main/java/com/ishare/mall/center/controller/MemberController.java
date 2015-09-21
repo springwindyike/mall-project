@@ -169,8 +169,9 @@ public class MemberController extends BaseController {
 		return CenterViewConstant.Member.MEMBER_VIEW;
 	}
 
-	@RequestMapping(value = "/changePassword",method = RequestMethod.POST)
-	public String update(MemberUpdatePasswordForm memberUpdateForm,Model model){
+	@ResponseBody
+	@RequestMapping(value = "/changePassword")
+	public String changePassword(MemberUpdatePasswordForm memberUpdateForm,Model model){
 		MemberDTO memberDTO = new MemberDTO();
 		BeanUtils.copyProperties(memberUpdateForm,memberDTO);
 		ResponseEntity<MemberDTO> resultEntity = null;
