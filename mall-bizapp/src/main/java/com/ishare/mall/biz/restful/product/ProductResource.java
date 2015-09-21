@@ -261,7 +261,6 @@ public class ProductResource {
             pageDTO.setITotalRecords(result.getTotalElements());
             productDTO.setPageDTO(pageDTO);
         }
-		log.debug("xxx");
         return productDTO;
     }
     
