@@ -1,12 +1,16 @@
 package com.ishare.mall.api.controller;
 
 
+import com.ishare.mall.api.restful.base.BaseResource;
+import com.ishare.mall.common.base.dto.test.TestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/index")
-public class IndexController {
+public class IndexController extends BaseResource {
    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 //    @Autowired
 //    private ChannelService channelService;
@@ -29,9 +33,15 @@ public class IndexController {
 
     @RequestMapping(value = "show", method = RequestMethod.GET)
     @ResponseBody
-    public String show(TestForm testForm) {
+    public TestDTO show(TestForm testForm) {
         log.debug(testForm.getGender().getName());
-        return "success";
+        ResponseEntity<TestDTO> resultEntiy = null;
+        TestDTO testDTO = new TestDTO();
+        testDTO.setGender(testForm.getGender());
+        RestTemplate restTemplate = new RestTemplate();
+        resultEntiy = restTemplate.postForEntity(this.buildBizAppURI("/test", "/gender"), testDTO, TestDTO.class);
+        testDTO = resultEntiy.getBody();
+        return testDTO;
     }
 
 //    @RequestMapping(value = "list", method = RequestMethod.GET)
