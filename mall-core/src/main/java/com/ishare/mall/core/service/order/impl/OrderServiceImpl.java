@@ -1,6 +1,9 @@
 package com.ishare.mall.core.service.order.impl;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
@@ -18,10 +21,14 @@ import com.ishare.mall.core.repository.product.ProductStyleRepository;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.status.OrderItemState;
 import com.ishare.mall.core.status.OrderState;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 
+import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,14 +38,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
+
+	private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 	
 	@Autowired
 	private OrderRepository orderRepository;
@@ -116,10 +122,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Order create(ExchangeDTO exchangeDTO) {
-		Order order = null;
-		Product product = productRepository.findOne(exchangeDTO.getProductId());
-		return null;
+	public OrderDetailDTO create(ExchangeDTO exchangeDTO) {
+		return initProcessor(exchangeDTO);
 	}
 
 	@Override
@@ -140,12 +144,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	//订单生成流程
-	private Order initProcessor(ExchangeDTO exchangeDTO) {
+	private OrderDetailDTO initProcessor(ExchangeDTO exchangeDTO) {
 		Order order = new Order();
-		Product product = productRepository.findOne(exchangeDTO.getProductId());
+		OrderDetailDTO detailDTO = new OrderDetailDTO();
 		Channel channel = channelService.findByAppId(exchangeDTO.getClientId());
 		Member buyer = memberService.findByAccount(exchangeDTO.getAccount());
-		order.setOrderId(this.nextOrderId());
+		String orderId = this.nextOrderId();
+		log.debug("ID : " + orderId);
+		order.setOrderId(orderId);
 		order.setCreateTime(new Date());
 		order.setChannel(channel);
 		List<OrderItem> orderItems = this.initItemProcessor(order, exchangeDTO);
@@ -167,10 +173,25 @@ public class OrderServiceImpl implements OrderService {
 		order.setCreateBy(buyer);
 		//收货人
 		OrderDeliverInfo orderDeliverInfo = this.initDeliverProcessor(order, exchangeDTO);
-		orderRepository.save(order);
-		itemRepository.save(orderItems);
-		deliverRepository.save(orderDeliverInfo);
-		return order;
+		try {
+			//orderDeliverInfo = deliverRepository.save(orderDeliverInfo);
+			//order.setOrderDeliverInfo(orderDeliverInfo);
+			order = orderRepository.save(order);
+			log.debug(order.toString());
+			for (OrderItem item : orderItems) {
+				item.setOrder(order);
+				log.debug(item.toString());
+			}
+			orderItems = itemRepository.save(orderItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//设置收货人信息
+		detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
+		//设置订单项
+		detailDTO.setItems((Set<OrderItemDetailDTO>) MapperUtils.mapAsSet(orderItems, OrderItemDetailDTO.class));
+		return detailDTO;
 	}
 
 	/**
@@ -181,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	private OrderDeliverInfo initDeliverProcessor(Order order, ExchangeDTO exchangeDTO) {
 		OrderDeliverInfo orderDeliverInfo = new OrderDeliverInfo();
-		orderDeliverInfo.setOrder(order);
+		//orderDeliverInfo.setOrder(order);
 		orderDeliverInfo.setCountry(exchangeDTO.getCountry());
 		orderDeliverInfo.setProvince(exchangeDTO.getProvince());
 		orderDeliverInfo.setCity(exchangeDTO.getCity());
@@ -207,23 +228,25 @@ public class OrderServiceImpl implements OrderService {
 		// TODO 暂时单个商品
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
 		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
-		Member member = memberService.findByAccount(exchangeDTO.getAccount());
 
 		OrderItem orderItem = new OrderItem();
 		orderItem.setOrder(order);
 		//设置样式相关
 		orderItem.setStyleId(exchangeDTO.getStyleId());
-		orderItem.setStyleName(style.getName());
+		if (style != null) {
+			orderItem.setStyleName(style.getName());
+			orderItem.setImageUrl(style.getImageUrl());
+		}
 		//设置商品相关
 		orderItem.setAmount(exchangeDTO.getAmount());
 		orderItem.setProductId(product.getId());
 		orderItem.setProductName(product.getName());
-		//设置图片
-		orderItem.setImageUrl(style.getImageUrl());
+		orderItem.setState(OrderItemState.COMPLETE_VERIFY);
 		//销售价格
 		orderItem.setProductPrice(product.getSellPrice());
 
 		orderItems.add(orderItem);
+
 		return orderItems;
 	}
 
@@ -238,11 +261,13 @@ public class OrderServiceImpl implements OrderService {
 			go.setId(date);
 			go.setOrderId(1);
 			generatedOrderIdRepository.save(go);
-			return String.format("%06d", go.getOrderId());
+			return date + String.format("%06d", go.getOrderId());
 		}
 		generatedOrderId.setOrderId(generatedOrderId.getOrderId() + 1);
 		generatedOrderIdRepository.save(generatedOrderId);
-		return String.format("%06d",generatedOrderId.getOrderId() + 1);
+		System.out.println("date : " + date);
+		System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId() + 1));
+		return date + String.format("%06d", generatedOrderId.getOrderId() + 1);
 	}
 
 

@@ -1,19 +1,6 @@
 
 package com.ishare.mall.core.utils.mapper;
 
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
-
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.converter.builtin.PassThroughConverter;
-import ma.glasnost.orika.impl.ConfigurableMapper;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.metadata.ClassMapBuilder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
@@ -22,6 +9,17 @@ import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.converter.builtin.PassThroughConverter;
+import ma.glasnost.orika.impl.ConfigurableMapper;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.metadata.ClassMapBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -61,6 +59,7 @@ public class OrikaMapper extends ConfigurableMapper {
         otherDealField.add("channelName");
         otherDealField.add("typeName");
 		otherDealField.add("list");
+		otherDealField.add("serialVersionUID");
         for (Field field : fields) {
             if (!otherDealField.contains(field.getName())) {
                 classMapBuilder.field(field.getName(), field.getName());
@@ -78,53 +77,57 @@ public class OrikaMapper extends ConfigurableMapper {
 	}
 
 	private void registerMemberClassMap(MapperFactory mapperFactory) {
-		 ClassMapBuilder<Member, MemberDetailDTO>classMapBuilder = mapperFactory.classMap(Member.class, MemberDetailDTO.class);
-		  Field[] fields = MemberDetailDTO.class.getDeclaredFields();
-		  Set<String> otherDealField = new HashSet<String>();
-		  otherDealField.add("channelId");
-		  for (Field field : fields) {
-	            if (!otherDealField.contains(field.getName())) {
-	                classMapBuilder.field(field.getName(), field.getName());
-	            }
-	        }
-		  classMapBuilder.field("channel.id", "channelId");
-		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+		ClassMapBuilder<Member, MemberDetailDTO>classMapBuilder = mapperFactory.classMap(Member.class, MemberDetailDTO.class);
+		Field[] fields = MemberDetailDTO.class.getDeclaredFields();
+		Set<String> otherDealField = new HashSet<String>();
+		otherDealField.add("channelId");
+		for (Field field : fields) {
+			if (!otherDealField.contains(field.getName())) {
+				classMapBuilder.field(field.getName(), field.getName());
+			}
+		}
+		classMapBuilder.field("channel.id", "channelId");
+		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	
 	private void registerProductTypeClassMap(MapperFactory mapperFactory) {
-		 ClassMapBuilder<ProductType, ProductTypeDTO>classMapBuilder = mapperFactory.classMap(ProductType.class, ProductTypeDTO.class);
-		  Field[] fields = ProductTypeDTO.class.getDeclaredFields();
-		  Set<String> otherDealField = new HashSet<String>();
-		  otherDealField.add("parentId");
-		  otherDealField.add("typeName");
-		  classMapBuilder.field("parent.id", "parentId");
-		  classMapBuilder.field("id", "id");
-		  classMapBuilder.field("code", "code");
-		  classMapBuilder.field("name", "typeName");
-		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+		ClassMapBuilder<ProductType, ProductTypeDTO>classMapBuilder = mapperFactory.classMap(ProductType.class, ProductTypeDTO.class);
+		Field[] fields = ProductTypeDTO.class.getDeclaredFields();
+		Set<String> otherDealField = new HashSet<String>();
+		otherDealField.add("parentId");
+		otherDealField.add("typeName");
+		classMapBuilder.field("parent.id", "parentId");
+		classMapBuilder.field("id", "id");
+		classMapBuilder.field("code", "code");
+		classMapBuilder.field("name", "typeName");
+		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	
 	private void registerOrderClassMap(MapperFactory mapperFactory) {
-		 ClassMapBuilder<Order, OrderDetailDTO>classMapBuilder = mapperFactory.classMap(Order.class, OrderDetailDTO.class);
-		 Field[] fields = OrderDetailDTO.class.getDeclaredFields();
-		 Set<String> otherDealField = new HashSet<String>();
-		 otherDealField.add("channelId");
-		 otherDealField.add("orderDeliverInfoId");
-		 otherDealField.add("orderContactInfoId");
-		 otherDealField.add("serialVersionUID");
-		 otherDealField.add("offset");
-		 otherDealField.add("limit");
-		 otherDealField.add("pageDTO");
+		ClassMapBuilder<Order, OrderDetailDTO>classMapBuilder = mapperFactory.classMap(Order.class, OrderDetailDTO.class);
+		Field[] fields = OrderDetailDTO.class.getDeclaredFields();
+		Set<String> otherDealField = new HashSet<String>();
+		otherDealField.add("channelId");
+		otherDealField.add("orderDeliverInfoId");
+		otherDealField.add("orderContactInfoId");
+		otherDealField.add("serialVersionUID");
+		otherDealField.add("offset");
+		otherDealField.add("limit");
+		otherDealField.add("pageDTO");
+		otherDealField.add("recipients");
+		otherDealField.add("deliver");
+		otherDealField.add("contact");
+		otherDealField.add("items");
 
-		  for (Field field : fields) {
-	            if (!otherDealField.contains(field.getName())) {
-	                classMapBuilder.field(field.getName(), field.getName());
-	            }
-	        }
-		  classMapBuilder.field("channel.id", "channelId");
-		  classMapBuilder.field("orderDeliverInfo.id", "orderDeliverInfoId");
-		  classMapBuilder.field("orderContactInfo.id", "orderContactInfoId");
-		  mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+		for (Field field : fields) {
+			if (!otherDealField.contains(field.getName())) {
+				classMapBuilder.field(field.getName(), field.getName());
+			}
+		}
+		classMapBuilder.field("channel.id", "channelId");
+		classMapBuilder.field("orderDeliverInfo.id", "orderDeliverInfoId");
+		classMapBuilder.field("orderContactInfo.id", "orderContactInfoId");
+		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	@Override
 	public void configureFactoryBuilder(DefaultMapperFactory.Builder builder) {

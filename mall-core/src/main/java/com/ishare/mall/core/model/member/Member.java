@@ -35,7 +35,7 @@ public class Member extends BaseEntity {
     private String salt;
 
     /**所属渠道**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     private Channel channel;
     /**成员名称**/
@@ -129,7 +129,7 @@ public class Member extends BaseEntity {
         this.updateBy = updateBy;
     }
 
-    public boolean isUse() {
+    public boolean getUse() {
         return use;
     }
 

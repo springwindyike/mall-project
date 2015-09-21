@@ -66,5 +66,7 @@ public interface DataBaseConstant {
         String TABLE_PRODUCT_ATTRIBUTE_NAME             = TABLE_PRODUCT_NAME + "_attribute";
         //地区
         String TABLE_REGION_NAME                        = Common.TABLE_PRE + "region";
+        //第三方信息
+        String TABLE_ORIGIN_NAME                        = Common.TABLE_PRE + "origin";
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,24 @@ public class OrderResource {
 									BeanUtils.copyProperties(order, innerOrderDetailDTO);
 									innerOrderDetailDTO.setChannelId(order.getChannel().getId());
 									innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
-									listOrder.add(innerOrderDetailDTO);
+									innerOrderDetailDTO.setState(order.getState().getName());
+									innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+									
+									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+									String newTime =  sdf.format(order.getCreateTime());
+									innerOrderDetailDTO.setCreateTime(newTime);
+									
+//									Iterator<OrderItem> it = order.getItems().iterator();
+//									Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+//									while (it.hasNext()) {
+//										OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+//									  OrderItem orderItem = it.next();
+//									  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+//									  orderItemDetailDTO.setState(orderItem.getState().getName());
+//									  items.add(orderItemDetailDTO);
+//									}
+//									innerOrderDetailDTO.setItems(items);
+//									listOrder.add(innerOrderDetailDTO);
             					}
 			        pageDTO.setContent(listOrder);
 			        pageDTO.setTotalPages(result.getTotalPages());

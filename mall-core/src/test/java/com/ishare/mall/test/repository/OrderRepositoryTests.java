@@ -92,7 +92,7 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 			order.setTotalPrice((float) 999);
 			//order.setUpdateBy("12346712912");
 			order.setUpdateTime(new Date());
-			order.setItems(null);
+			//order.setItems(null);
 			order.setOrderMessages(null);
 			return order;
 		}
