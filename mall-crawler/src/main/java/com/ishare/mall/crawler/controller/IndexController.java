@@ -1,14 +1,11 @@
 package com.ishare.mall.crawler.controller;
 
 import com.google.common.collect.Maps;
-import com.ishare.mall.crawler.site.jd.JDCrawler;
 import com.ishare.mall.crawler.site.jd.model.JDCategory;
 import com.ishare.mall.crawler.site.jd.model.JDProduct;
 import com.ishare.mall.crawler.site.jd.processor.JDCategoryPageProcessor;
-import com.ishare.mall.crawler.site.jd.processor.JDListPageProcessor;
 import com.ishare.mall.crawler.site.jd.processor.JDPageProcessor;
 import com.ishare.mall.crawler.site.jd.repository.JDCategoryRepository;
-import com.ishare.mall.crawler.site.jd.repository.JDProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import us.codecraft.webmagic.Spider;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,18 +23,11 @@ public class IndexController {
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    JDCrawler crawler;
-
-    @Autowired
     JDCategoryRepository jdCategoryRepository;
 
     @Autowired
-    JDProductRepository jdProductRepository;
-
-    @Autowired
     JDCategoryPageProcessor categoryPageProcessor;
-    @Autowired
-    JDListPageProcessor listPageProcessor;
+
     @Autowired
     JDPageProcessor pageProcessor;
 
@@ -54,10 +42,6 @@ public class IndexController {
     public String init() {
         log.debug("初始化");
 
-        Spider spider = crawler.init();
-
-        log.debug("{}, {}, {}", spider.getUUID(), spider.getStartTime(), spider.getStatus());
-
         return "index";
     }
 
@@ -68,12 +52,8 @@ public class IndexController {
         Map<String, Object> result = Maps.newHashMap();
         boolean bln = false;
         try {
-            List<JDProduct> list = jdProductRepository.findAll();
-            String[] urls = new String[list.size()];
-            for (int index = 0; index < urls.length; index++) {
-                urls[index] = list.get(index).getLink();
-            }
-            crawler.start(pageProcessor, urls);
+
+
             bln = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +69,7 @@ public class IndexController {
         Map<String, Object> result = Maps.newHashMap();
         boolean bln = false;
         try {
-            crawler.start(listPageProcessor, url);
+
             bln = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +87,6 @@ public class IndexController {
         Map<String, Object> result = Maps.newHashMap();
         boolean bln = false;
         try {
-            crawler.start(pageProcessor, url);
             bln = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +100,7 @@ public class IndexController {
     @RequestMapping(value = "product/{id}")
     public String page(@PathVariable(value = "id") long id, Model model) {
 
-        JDProduct product = jdProductRepository.findOne(id);
+        JDProduct product = new JDProduct();//jdProductRepository.findOne(id);
         model.addAttribute("product", product);
 
         return "product";

@@ -1,57 +1,30 @@
 package com.ishare.mall.crawler.site.jd.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by dongqi on 15/9/7.
- */
-@Entity
-@Table(name = "spider_jd_product")
 public class JDProduct {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String link;
     private String name;
     private String code;//skuid 唯一值
 
-    @Type(type = "yes_no")
-    @Column(name = "is_self")
     private boolean self;
 
-    @ElementCollection
-    @CollectionTable(name = "spider_jd_product_attr", joinColumns = @JoinColumn(name = "id"))
     private Map<String, String> attributes = Maps.newHashMap();
-    @ElementCollection
-    @CollectionTable(name = "spider_jd_intro_image", joinColumns = @JoinColumn(name = "id"))
     private List<String> introImgs = Lists.newArrayList();
-    @ElementCollection
-    @CollectionTable(name = "spider_jd_photo", joinColumns = @JoinColumn(name = "id"))
     private List<String> photo = Lists.newArrayList();
     private double price;
     private double priceOrigin;
     private String stock;
     private String tag;
-
-    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-
-    @Column(name = "jd_datetime")
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date jdDatetime;
 
     public Long getId() {

@@ -178,4 +178,26 @@ public class BasePageData {
     public void setCode(String code) {
         this.code = code;
     }
+
+    @Override
+    public String toString() {
+        return "BasePageData{" +
+                "id=" + id +
+                ", fetchUrl=" + fetchUrl +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", link='" + link + '\'' +
+                ", priceText='" + priceText + '\'' +
+                ", priceOriginText='" + priceOriginText + '\'' +
+                ", stock='" + stock + '\'' +
+                ", tag='" + tag + '\'' +
+                ", datetimeText='" + datetimeText + '\'' +
+                ", self=" + self +
+                ", thirdPartyShopName='" + thirdPartyShopName + '\'' +
+                ", updateTime=" + updateTime +
+                ", attributes=" + attributes +
+                ", introImages=" + introImages +
+                ", photos=" + photos +
+                '}';
+    }
 }

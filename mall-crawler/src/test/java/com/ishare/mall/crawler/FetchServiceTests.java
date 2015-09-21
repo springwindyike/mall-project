@@ -3,6 +3,7 @@ package com.ishare.mall.crawler;
 
 import com.ishare.mall.crawler.model.FetchSite;
 import com.ishare.mall.crawler.model.FetchUrl;
+import com.ishare.mall.crawler.model.FetchUrlType;
 import com.ishare.mall.crawler.repository.FetchUrlRepository;
 import com.ishare.mall.crawler.service.FetchService;
 import org.junit.Assert;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
 public class FetchServiceTests {
@@ -24,13 +27,17 @@ public class FetchServiceTests {
     @Autowired
     FetchUrlRepository fetchUrlRepository;
 
-    @Test
-    public void testFetch() {
-        /*
+    //@Test
+    public void testFetchCategory() {
         fetchService.fetchCategoryUrl("http://category.dangdang.com", true);
         fetchService.fetchCategoryUrl("http://www.jd.com/allSort.aspx", true);
         fetchService.fetchCategoryUrl("http://www.amazon.cn/gp/site-directory", true);
-        */
+        /**/
+        Assert.assertTrue(true);
+    }
+
+    //@Test
+    public void testFetchList() {
         PageRequest pageRequest = new PageRequest(123, 1);
         Page<FetchUrl> fetchUrls = null;
         String[] urls = null;
@@ -47,22 +54,47 @@ public class FetchServiceTests {
         for (int index = 0; index < urls.length; index++) {
             urls[index] = fetchUrls.getContent().get(index).getLink();
         }
-        fetchService.fetchListUrl(true, urls);*/
-        /*
+        fetchService.fetchListUrl(true, urls);
+
         fetchUrls = fetchUrlRepository.findByFetchSiteAndType(FetchSite.DANG_DANG, FetchUrlType.LIST, pageRequest);
         urls = new String[fetchUrls.getContent().size()];
         for (int index = 0; index < urls.length; index++) {
             urls[index] = fetchUrls.getContent().get(index).getLink();
         }
         fetchService.fetchListUrl(true, urls);
-
+        */
         fetchUrls = fetchUrlRepository.findByFetchSiteAndType(FetchSite.JD, FetchUrlType.PAGE, pageRequest);
         urls = new String[fetchUrls.getContent().size()];
         for (int index = 0; index < urls.length; index++) {
             urls[index] = fetchUrls.getContent().get(index).getLink();
-        }*/
-        fetchService.fetchPageUrl(FetchSite.DANG_DANG, true, "http://product.dangdang.com/60600067.html", "http://product.dangdang.com/1226813133.html");
+        }
+        fetchService.fetchListUrl(true, urls);
+    }
 
+    @Test
+    public void testFetchDangdangPage() {
+        fetchPage(FetchSite.DANG_DANG, true);
         Assert.assertTrue(true);
+    }
+
+    public void testFetchJDPage() {
+        fetchPage(FetchSite.JD, true);
+        Assert.assertTrue(true);
+    }
+
+    public void testFetchAmazonPage() {
+        fetchPage(FetchSite.AMAZON, true);
+        Assert.assertTrue(true);
+    }
+
+    void fetchPage(FetchSite fetchSite, boolean store) {
+        Page<FetchUrl> page = fetchUrlRepository.findByFetchSiteAndType(fetchSite, FetchUrlType.PAGE, new PageRequest(0, 10));
+
+        List<FetchUrl> fetchUrlList = page.getContent();
+        String[] urls = new String[fetchUrlList.size()];
+        for (int index = 0; index < urls.length; index++) {
+            urls[index] = fetchUrlList.get(index).getLink();
+        }
+        fetchService.fetchPageUrl(fetchSite, store, urls);
     }
 }
