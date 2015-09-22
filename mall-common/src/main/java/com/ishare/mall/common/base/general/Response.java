@@ -58,5 +58,6 @@ public class Response extends GenericDTO {
     public interface Status {
         int OK = 200;
         boolean SUCCESS = true;
+        boolean FAILURE = false;
     }
 }
