@@ -6,6 +6,7 @@ import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.*;
 import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.enumeration.MemberType;
+import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
@@ -15,6 +16,7 @@ import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.service.product.ProductStyleService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,7 +58,7 @@ public class ProductResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public ProductDetailDTO saveProduct(@RequestBody ProductDetailDTO productDetailDTO){
+    public Response saveProduct(@RequestBody ProductDetailDTO productDetailDTO){
             Product product = new Product();
             BeanUtils.copyProperties(productDetailDTO, product);
         			Brand brand = new Brand();
@@ -80,10 +84,15 @@ public class ProductResource {
         			
         			try {
 						productService.saveProduct(product);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-		return productDetailDTO;
+					} catch (Exception e) { 
+										log.error(e.getMessage(), e);
+		            Response response = new Response();
+		            response.setMessage("系统错误");
+		            response.setSuccess(false);
+		            return response;
+		            }
+        			 Response response = new Response();
+        			return response;
     }
 
     @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST,
