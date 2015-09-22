@@ -5,6 +5,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.form.member.MemberUpdatePasswordForm;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 
@@ -47,6 +48,7 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "/findByChannelId", method = RequestMethod.GET)
 	@ResponseBody
+	//public PageDTO findByChannelId(@CurrentMember MemberDTO memberDTO, HttpServletRequest request, Model model) {
 	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setChannelId(8);
@@ -171,13 +173,13 @@ public class MemberController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/changePassword")
-	public String changePassword(MemberUpdatePasswordForm memberUpdateForm,Model model){
+	public String changePassword(MemberUpdatePasswordForm memberUpdateForm){
 		MemberDTO memberDTO = new MemberDTO();
 		BeanUtils.copyProperties(memberUpdateForm,memberDTO);
 		ResponseEntity<MemberDTO> resultEntity = null;
 		RestTemplate restTemplate = new RestTemplate();
 		resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD),memberDTO,MemberDTO.class);
-		MemberDTO memberDTOResult = resultEntity.getBody();
+		//MemberDTO memberDTOResult = resultEntity.getBody();
 		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
 	}
 
@@ -191,5 +193,15 @@ public class MemberController extends BaseController {
 		MemberDTO memberDTOResult = resultDTO.getBody();
 		model.addAttribute("memberDetailDTO",memberDTOResult.getMemberDetailDTO());
 		return CenterViewConstant.Member.MEMBER_CHANGE_PASSWORD;
+	}
+	@ResponseBody
+	@RequestMapping(value = "/delete/account/{account}")
+	public String delete(@NotEmpty @PathVariable("account") String account){
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setAccount(account);
+		ResponseEntity<MemberDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_DELETE), memberDTO, MemberDTO.class);
+		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
 	}
 }

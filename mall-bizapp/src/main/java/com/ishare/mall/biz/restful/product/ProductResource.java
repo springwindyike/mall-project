@@ -113,7 +113,7 @@ public class ProductResource {
     			product.setUpdateBy(member);
     			product.setChannel(channel);
     			product.setType(productType);
-    			
+    			product.setId(productDetailDTO.getId());
     			try {
 					productService.saveProduct(product);
 				} catch (Exception e) {

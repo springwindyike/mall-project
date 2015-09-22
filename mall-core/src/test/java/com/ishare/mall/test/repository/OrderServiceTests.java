@@ -2,6 +2,7 @@ package com.ishare.mall.test.repository;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.test.RepositoryTestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class OrderServiceTests extends RepositoryTestTemplate {
     }
 
     @Override
-    public void testRetrieve() {
+    public void testRetrieve() throws OrderServiceException {
         ExchangeDTO exchangeDTO = new ExchangeDTO();
         this.initExchangeDTO(exchangeDTO);
         OrderDetailDTO orderDetailDTO = orderService.create(exchangeDTO);
