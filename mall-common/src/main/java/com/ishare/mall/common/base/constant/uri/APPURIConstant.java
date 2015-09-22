@@ -58,10 +58,14 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BY_ID = "/{id}";
     }
     //订单
-    interface Order{
-      	 String REQUEST_MAPPING   = "/order";
-      	 String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
-       }
+    interface Order {
+        //订单
+        String REQUEST_MAPPING   = "/order";
+        //根据渠道ID获取订单
+        String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        //创建订单
+        String REQUEST_MAPPING_CREATE = "/create";
+    }
 
     //渠道
     interface Channel {
