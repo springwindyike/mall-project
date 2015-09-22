@@ -284,7 +284,7 @@ function product_edit(title,url,id){
 	var index = layer.open({
 		type: 2,
 		title: title,
-		content: url
+		content: 'del/'+id+'.dhtml
 	});
 	layer.full(index);
 }
