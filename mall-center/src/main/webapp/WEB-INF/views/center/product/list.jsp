@@ -156,7 +156,7 @@ $('.table-sort').dataTable({
 	   "bProcessing": true,
        "bServerSide": true,
        "bStateSave": false,
-       "aLengthMenu":[[1, 5, 15, 30], [1, 5, 15, 30]],
+       "aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
        "sAjaxSource": "${pageContext.request.contextPath}/product/findByChannelId.dhtml",
        "sAjaxDataProp":"content",
        "aoColumns": [
