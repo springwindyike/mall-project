@@ -20,6 +20,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_REGISTER_MEMBER = "/registerMember";
         //通过账号获取用户信息用于登录
         String REQUEST_MAPPING_QUERY_BY_ACCOUNT = "/queryByAccount";
+        String REQUEST_MAPPING_DELETE = "/delete";
     }
 
     //权限

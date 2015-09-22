@@ -21,7 +21,7 @@ import java.util.Map;
 public class BinaryUploader {
 
 	public static final State save(HttpServletRequest request,
-			Map<String, Object> conf) {
+								   Map<String, Object> conf) {
 		FileItemStream fileStream = null;
 		boolean isAjaxUpload = request.getHeader( "X_Requested_With" ) != null;
 
@@ -32,9 +32,9 @@ public class BinaryUploader {
 		ServletFileUpload upload = new ServletFileUpload(
 				new DiskFileItemFactory());
 
-        if ( isAjaxUpload ) {
-            upload.setHeaderEncoding( "UTF-8" );
-        }
+		if ( isAjaxUpload ) {
+			upload.setHeaderEncoding( "UTF-8" );
+		}
 
 		try {
 			FileItemIterator iterator = upload.getItemIterator(request);

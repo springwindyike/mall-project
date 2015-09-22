@@ -185,10 +185,10 @@ public class OrderServiceImpl implements OrderService {
 			order.setOrderDeliverInfo(orderDeliverInfo);
 			orderRepository.save(order);
 			///log.debug(order.toString());
-			for (OrderItem item : orderItems) {
-				item.setOrder(order);
-				log.debug(item.toString());
-			}
+//			for (OrderItem item : orderItems) {
+//				item.setOrder(order);
+//				log.debug(item.toString());
+//			}
 			itemRepository.save(orderItems);
 		} catch (Exception e) {
 			e.printStackTrace();
