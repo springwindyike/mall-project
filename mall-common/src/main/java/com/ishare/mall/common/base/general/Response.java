@@ -17,9 +17,11 @@ public class Response extends GenericDTO {
     //错误码
     private Integer code;
     //是否操作成功
-    private boolean success;
+    private boolean success = true;
     //数据返回数据对象
     private Object data;
+    //错误消息
+    private String message;
 
     public Integer getCode() {
         return code;
@@ -43,5 +45,13 @@ public class Response extends GenericDTO {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

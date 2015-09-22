@@ -1,6 +1,8 @@
 package com.ishare.mall.biz.restful.test;
 
 import com.ishare.mall.common.base.dto.test.TestDTO;
+import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.exception.OrderServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,5 +26,18 @@ public class TestResource {
     public TestDTO test(@RequestBody TestDTO testDTO) {
         log.debug(testDTO.getGender().getName());
         return testDTO;
+    }
+
+    @RequestMapping(value = "/exp", method = RequestMethod.GET,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"})
+    public Response test2() {
+        System.out.println("来咯");
+        if (true)
+            throw new OrderServiceException("错误");
+        Response response = new Response();
+        response.setMessage("成功");
+        response.setData("成功啦");
+        return response;
     }
 }
