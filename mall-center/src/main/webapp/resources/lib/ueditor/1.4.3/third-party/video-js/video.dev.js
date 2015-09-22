@@ -4878,11 +4878,11 @@ vjs.BigPlayButton.prototype.onClick = function(){
 };
 /**
  * @fileoverview Media Technology Controller - Base class for media playback
- * technology controllers like Flash and HTML5
+ * technology controller like Flash and HTML5
  */
 
 /**
- * Base class for media (HTML5 Video, Flash) controllers
+ * Base class for media (HTML5 Video, Flash) controller
  * @param {vjs.Player|Object} player  Central player instance
  * @param {Object=} options Options object
  * @constructor

@@ -1,15 +1,70 @@
 package com.ishare.mall.common.base.exception;
 
+import com.ishare.mall.common.base.constant.BaseConstant;
+import com.ishare.mall.common.base.constant.IShareErrorConstant;
+import com.ishare.mall.common.base.utils.PropertyUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Created by YinLin on 2015/9/9.
  * Description :
  * Version 1.0
  */
-public class BaseException extends Exception {
+public class BaseException extends RuntimeException {
 
-    protected String errorCode;
+    private static final Log log = LogFactory.getLog(BaseException.class);
 
-    protected String errorMsg;
+    private String systemName;
+    private String errorCode;
+    private String message;
+
+    public BaseException(String systemName, String errorPropertyKey, String message, Throwable cause) {
+        super(message, cause);
+        this.errorCode = getErrorCode(errorPropertyKey);
+    }
+
+    public BaseException(String systemName, String errorPropertyKey, Throwable cause) {
+        super("BaseException", cause);
+        this.errorCode = getErrorCode(errorPropertyKey);
+        this.systemName = systemName;
+    }
+
+    public BaseException(String systemName, String errorPropertyKey) {
+        this.errorCode = getErrorCode(errorPropertyKey);
+        this.systemName = systemName;
+    }
+
+    public BaseException(String message) {
+        super(message);
+        this.message = message;
+    }
+
+    public BaseException(Throwable th) {
+        super(th);
+    }
+
+    public BaseException(String mgs, Throwable th) {
+        super(mgs, th);
+    }
+
+    public String getErrorCode(String propKey) {
+        String errorCode = IShareErrorConstant.ERROR_NULL;
+        try {
+            return PropertyUtil.getPropertyValue(BaseConstant.Prop.ERROR_CODE, propKey);
+        } catch (Exception ex) {
+            log.error("[Ishare] error occurred: PropertyUtil get " + BaseConstant.Prop.ERROR_CODE + " " + propKey + " failure!", ex);
+        }
+        return errorCode;
+    }
+
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
+    }
 
     public String getErrorCode() {
         return errorCode;
@@ -19,31 +74,11 @@ public class BaseException extends Exception {
         this.errorCode = errorCode;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    public BaseException() {
-        super();
-    }
-
-    public BaseException(String message) {
-        super(message);
-    }
-
-    public BaseException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public BaseException(Throwable cause) {
-        super(cause);
-    }
-
-    protected BaseException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

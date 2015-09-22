@@ -69,7 +69,7 @@
             <mvc:mapping path="/*/*/create"/>
             <mvc:mapping path="/*/*/delete/*"/>
             <mvc:mapping path="/*/*/update"/>
-            <bean class="com.tianyu.jty.system.interceptor.LogInterceptor"></bean>
+            <bean class="LogInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
 	-->

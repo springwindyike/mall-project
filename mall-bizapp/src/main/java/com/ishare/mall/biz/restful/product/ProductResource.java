@@ -91,25 +91,36 @@ public class ProductResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public ProductDetailDTO updateProduct(@RequestBody ProductDetailDTO productDetailDTO){
-            Product product = new Product();
-            BeanUtils.copyProperties(productDetailDTO, product);
-        			Brand brand = new Brand();
-        			brand.setId(productDetailDTO.getBrandId());
-        			ProductType productType = new ProductType();
-        			productType.setId(productDetailDTO.getTypeId());
-        			productType.setCode("1001001001");
-        			productType.setName("衬衫");
-        			productType.setNote("非常好");
-        			productType.setLevel(3);
-        			product.setBrand(brand);
-        			product.setType(productType);
-        			try {
-						productService.updateProduct(product);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-		return productDetailDTO;
-    }
+        Product product = new Product();
+        BeanUtils.copyProperties(productDetailDTO, product);
+    			Brand brand = new Brand();
+    			brand.setId(productDetailDTO.getBrandId());
+    			Member member = new Member();
+    			member.setAccount(productDetailDTO.getCreateByAccount());
+    			member.setMemberType(MemberType.MEMBER);
+    			member.setSex(Gender.MAN);
+    			Channel channel = new Channel();
+    			channel.setId(productDetailDTO.getChannelId());
+    			member.setChannel(channel);
+    			ProductType productType = new ProductType();
+    			productType.setId(productDetailDTO.getTypeId());
+    			productType.setCode("1001001001");
+    			productType.setName("衬衫");
+    			productType.setNote("非常好");
+    			productType.setLevel(3);
+    			product.setBrand(brand);
+    			product.setCreateBy(member);
+    			product.setUpdateBy(member);
+    			product.setChannel(channel);
+    			product.setType(productType);
+    			
+    			try {
+					productService.saveProduct(product);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	return productDetailDTO;
+}
 	/**
 	 * 根据商品ID 查询商品详细信息
 	 * @param productDetailDTO
