@@ -63,4 +63,9 @@ public interface MemberService {
 
 	Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account,String name,String mobile,PageRequest pageRequest);
 
+	/**
+	 * 更新用户信息
+	 * @param member
+	 */
+	void update(Member member);
 }

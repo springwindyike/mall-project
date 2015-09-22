@@ -21,6 +21,7 @@ public interface APPURIConstant {
         //通过账号获取用户信息用于登录
         String REQUEST_MAPPING_QUERY_BY_ACCOUNT = "/queryByAccount";
         String REQUEST_MAPPING_DELETE = "/delete";
+        String REQUEST_MAPPING_UPDATE = "/update";
     }
 
     //权限
