@@ -5,6 +5,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.form.member.MemberUpdatePasswordForm;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 
@@ -47,6 +48,7 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "/findByChannelId", method = RequestMethod.GET)
 	@ResponseBody
+	//public PageDTO findByChannelId(@CurrentMember MemberDTO memberDTO, HttpServletRequest request, Model model) {
 	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setChannelId(8);
