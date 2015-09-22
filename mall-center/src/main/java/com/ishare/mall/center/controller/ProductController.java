@@ -144,7 +144,7 @@ e.printStackTrace();
         return returnTO;
     }
     
-    @RequestMapping(value = "/allType", produces = {"application/json"})
+    @RequestMapping(value = CenterURIConstant.Product.ALL_TYPE_PRODUCT, produces = {"application/json"})
     @ResponseBody
     public ProductTypeDTO getType() {
     	ResponseEntity<ProductTypeDTO> resultDTO = null;
