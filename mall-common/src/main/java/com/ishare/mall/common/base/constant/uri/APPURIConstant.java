@@ -21,6 +21,7 @@ public interface APPURIConstant {
         //通过账号获取用户信息用于登录
         String REQUEST_MAPPING_QUERY_BY_ACCOUNT = "/queryByAccount";
         String REQUEST_MAPPING_DELETE = "/delete";
+        String REQUEST_MAPPING_UPDATE = "/update";
     }
 
     //权限
@@ -57,10 +58,14 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BY_ID = "/{id}";
     }
     //订单
-    interface Order{
-      	 String REQUEST_MAPPING   = "/order";
-      	 String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
-       }
+    interface Order {
+        //订单
+        String REQUEST_MAPPING   = "/order";
+        //根据渠道ID获取订单
+        String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        //创建订单
+        String REQUEST_MAPPING_CREATE = "/create";
+    }
 
     //渠道
     interface Channel {

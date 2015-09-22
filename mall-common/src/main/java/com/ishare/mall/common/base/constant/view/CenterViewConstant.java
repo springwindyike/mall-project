@@ -36,6 +36,7 @@ public interface CenterViewConstant {
 		String MEMBER_ADD_SUCCESS = "S";
 		String MEMBER_UPDATE_SUCCESS = "S";
 		String MEMBER_VIEW = "member/view";
+		String MEMBER_UPDATE = "member/update";
 		String MEMBER_CHANGE_PASSWORD = "/member/password/change";
 		interface Password {
 			// 找回密码

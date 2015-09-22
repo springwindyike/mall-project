@@ -78,4 +78,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberRepository.findByAccountLikeOrNameLikeOrMobileLike(account, name, mobile, pageRequest);
 	}
 
+	@Override
+	public void update(Member member) {
+		memberRepository.save(member);
+	}
+
 }
