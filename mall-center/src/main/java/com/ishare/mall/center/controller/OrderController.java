@@ -36,13 +36,13 @@ public class OrderController extends BaseController {
 	}
 
 	/**
-	 * 访问注册页面
+	 * 访问列表页面
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
 	public String register() {
-		return CenterViewConstant.Order.ADD_ORDER;
+		return CenterViewConstant.Order.LIST_ORDER;
 	}
 
 	/**
