@@ -20,4 +20,5 @@ public abstract interface OrderItemService {
 	public abstract Page<OrderItem> search(Map<String, Object> searchParams, PageRequest pageRequest);
 	List<OrderItem> createNewOrderItems(List<OrderItem> orderItemsList);
 	OrderItem createNewOrderItem(AddOrderItemForm addOrderItem);
+	List<OrderItem> findByOrderId(String orderId);
 }

@@ -378,4 +378,26 @@ public class MemberResource {
         }
         return memberDTO;
     }
+
+    /**
+     * 修改member信息
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public MemberDTO update(@RequestBody MemberDTO memberDTO){
+        Member member = memberService.findByAccount(memberDTO.getAccount());
+        if (member != null){
+            member.setMobile(memberDTO.getMobile());
+            member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
+            member.setName(memberDTO.getName());
+            Channel channel = channelService.findOne(8);
+            member.setChannel(channel);
+            memberService.update(member);
+        }
+        return memberDTO;
+    }
+
 }
