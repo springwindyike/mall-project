@@ -18,6 +18,7 @@ public interface CenterViewConstant {
     interface Product {
     	 String ADD_PRODUCT ="product/add";
     	 String LIST_PRODUCT ="product/list";
+    	 String UPDATE_PRODUCT= "product/update";
     }
 
 

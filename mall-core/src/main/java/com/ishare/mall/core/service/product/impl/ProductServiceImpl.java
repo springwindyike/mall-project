@@ -77,12 +77,11 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void updateProduct(Product product) {
-		// TODO Auto-generated method stub
-		//productTypeResponsitory.updateProductType(product.getType().getName(),product.getType().getCode(),product.getType().getNote(),product.getType().getLevel(),product.getType().getId());
-		//memberRepository.save(product.getCreateBy());
-		//brandRepository.updateBrand(product.getBrand().getName(),product.getBrand().getLogoUrl(),product.getBrand().getCountry(),product.getBrand().getProvince(),product.getBrand().getCity(),product.getBrand().getDistrict(),product.getBrand().getDetail(),product.getBrand().getId());
-	//	channelRepository.save(product.getChannel());
-		//productRepository.updateProduct(product.getCode(),product.getName(),product.getTypeCode(),product.getBasePrice(),product.getMarketPrice(),product.getDescription(),product.getUpdateTime(),product.getInventory(),product.getId());
+		productTypeResponsitory.save(product.getType());
+		memberRepository.save(product.getCreateBy());
+		brandRepository.save(product.getBrand());
+		channelRepository.save(product.getChannel());
+		productRepository.save(product);
 	}
 	//删除商品
 	@Override
