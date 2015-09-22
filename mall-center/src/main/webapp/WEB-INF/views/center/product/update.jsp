@@ -35,12 +35,12 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
 <div class="pd-20">
-	 <c:url var="saveUrl" value="/product/add.dhtml" />
+	 <c:url var="saveUrl" value="/product/update/${productDetailDTO.id}.dhtml" />
     <form:form modelAttribute="productAttribute" action="${saveUrl}"  method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>产品标题：</label>
 			<div class="formControls col-10">
-			<form:input type="text" class="input-text" value="" placeholder="" id="" path="productName"/>
+			<form:input type="text" class="input-text" value="${productDetailDTO.name}" placeholder="" id="" path="productName"/>
 			</div>
 		</div>
 		<div class="row cl">
@@ -59,17 +59,17 @@
 				</span> </div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
-				<form:input type="text" class="input-text" value="0" placeholder="" id="" name=""  path="inventory"/>
+				<form:input type="text" class="input-text" value="${productDetailDTO.inventory}" placeholder="" id="" name=""  path="inventory"/>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-2">产品进价：</label>${type}
+			<label class="form-label col-2">产品进价：</label>
 			<div class="formControls col-4">
-			<form:input type="text" path="basePrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
+			<form:input type="text" path="basePrice" id="" placeholder="" value="${productDetailDTO.basePrice}" class="input-text" style="width:90%"/>
 				元</div>
 			<label class="form-label col-2">市场价格：</label>
 			<div class="formControls col-4">
-					<form:input type="text" path="marketPrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
+					<form:input type="text" path="marketPrice" id="" placeholder="" value="${productDetailDTO.marketPrice}" class="input-text" style="width:90%"/>
 				元</div>
 		</div>
 		<div class="row cl">

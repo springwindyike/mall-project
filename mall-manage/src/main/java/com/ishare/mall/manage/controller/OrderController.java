@@ -1,4 +1,4 @@
-package com.ishare.mall.center.controller;
+package com.ishare.mall.manage.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
+import com.ishare.mall.common.base.constant.view.ManageViewConstant;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.manage.controller.base.BaseController;
 
 /**
- * Created by ZhangZhaoxin on 2015/9/14. 
+ * Created by ZhangZhaoxin on 2015/9/22. 
  * Description : 
  * Version 1.0
  */
 @Controller
-@RequestMapping(CenterURIConstant.Order.REQUEST_MAPPING)
+@RequestMapping(ManageURIConstant.Order.REQUEST_MAPPING)
 public class OrderController extends BaseController {
 
 	private static final Logger log = LoggerFactory
@@ -40,9 +40,9 @@ public class OrderController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
 	public String register() {
-		return CenterViewConstant.Order.LIST_ORDER;
+		return ManageViewConstant.Order.LIST_ORDER;
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class OrderController extends BaseController {
 	 *
 	 * @return Page<OrderDetailDTO>
 	 */
-	@RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
 	@ResponseBody
 	public PageDTO<?> findByChannelId(HttpServletRequest request, Model model) {
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
@@ -67,4 +67,5 @@ public class OrderController extends BaseController {
 		model.addAttribute("pageDTO",orderDTOResult.getPageDTO());
 		return orderDTOResult.getPageDTO();
 	}
+	
 }

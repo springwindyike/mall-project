@@ -9,6 +9,7 @@ import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,12 @@ public class OrderItemServiceImpl implements OrderItemService {
 		//newOrderItem.setStyleId(orderItems.getStyleId());
 		newOrderItem.setStyleName(orderItems.getStyleName());
 		return orderItemRepository.save(newOrderItem);
+	}
+
+	@Override
+	public List<OrderItem> findByOrderId(String orderId) {
+    List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
+    return orderItemList;
 	}
 
 //	public Order buildOrder(AddOrderItemForm orderItems) {

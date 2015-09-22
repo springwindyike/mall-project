@@ -1,12 +1,12 @@
 package com.ishare.mall.biz.restful.order;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.order.ExchangeDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.core.service.order.OrderService;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,9 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.OrderItem;
+import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.service.information.OrderItemService;
+import com.ishare.mall.core.service.order.OrderService;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/15.
@@ -35,6 +42,8 @@ public class OrderResource {
     private static final Logger log = LoggerFactory.getLogger(OrderResource.class);
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderItemService orderItemService;
     @Autowired
     private ChannelService channelService;
 
@@ -73,17 +82,19 @@ public class OrderResource {
 									String newTime =  sdf.format(order.getCreateTime());
 									innerOrderDetailDTO.setCreateTime(newTime);
 									
-//									Iterator<OrderItem> it = order.getItems().iterator();
-//									Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
-//									while (it.hasNext()) {
-//										OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
-//									  OrderItem orderItem = it.next();
-//									  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-//									  orderItemDetailDTO.setState(orderItem.getState().getName());
-//									  items.add(orderItemDetailDTO);
-//									}
-//									innerOrderDetailDTO.setItems(items);
-//									listOrder.add(innerOrderDetailDTO);
+									List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+									
+									Iterator<OrderItem> it = orderItems.iterator();
+									Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+									while (it.hasNext()) {
+										OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+									  OrderItem orderItem = it.next();
+									  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+									  orderItemDetailDTO.setState(orderItem.getState().getName());
+									  items.add(orderItemDetailDTO);
+									}
+									innerOrderDetailDTO.setItems(items);
+									listOrder.add(innerOrderDetailDTO);
             					}
 			        pageDTO.setContent(listOrder);
 			        pageDTO.setTotalPages(result.getTotalPages());

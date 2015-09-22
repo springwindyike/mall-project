@@ -3,8 +3,10 @@ package com.ishare.mall.api.controller;
 
 import com.ishare.mall.api.restful.base.BaseResource;
 import com.ishare.mall.common.base.dto.test.TestDTO;
+import com.ishare.mall.common.base.general.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,7 @@ public class IndexController extends BaseResource {
 //        return "success";
 //    }
 
-    @RequestMapping(value = "show", method = RequestMethod.GET)
+    @RequestMapping(value = "show", method = RequestMethod.GET, produces = {"application/json"})
     @ResponseBody
     public TestDTO show(TestForm testForm) {
         log.debug(testForm.getGender().getName());
@@ -42,6 +44,29 @@ public class IndexController extends BaseResource {
         resultEntiy = restTemplate.postForEntity(this.buildBizAppURI("/test", "/gender"), testDTO, TestDTO.class);
         testDTO = resultEntiy.getBody();
         return testDTO;
+    }
+
+    @RequestMapping(value = "test", method = RequestMethod.GET, produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity test() {
+        ResponseEntity<Response> resultEntiy = null;
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            resultEntiy = restTemplate.getForEntity(this.buildBizAppURI("/test", "/exp"), Response.class);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            Response response = new Response();
+            response.setMessage("系统错误");
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Response r = resultEntiy.getBody();
+
+        if (!r.isSuccess()){
+            System.out.println("系统错误");
+            return new ResponseEntity(r, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(r, HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "list", method = RequestMethod.GET)

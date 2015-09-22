@@ -30,6 +30,7 @@ public interface CenterURIConstant {
    	 String REQUEST_MAPPING_FIND_BY_ID="/findById/{id}";
    	 String REQUEST_MAPPING_FIND_BY_CHANNEL_ID="/findByChannelId";
    	 String REQUEST_MAPPING_FORWORD="/forword";
+   	 String ALL_TYPE_PRODUCT ="/allType";
     }
 
   String INDEX = "index";

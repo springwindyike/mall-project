@@ -23,7 +23,7 @@ public interface CenterViewConstant {
 
 
 	interface Order {
-		String ADD_ORDER = "order/list";
+		String LIST_ORDER = "order/list";
 	}
 
 	interface Main {
