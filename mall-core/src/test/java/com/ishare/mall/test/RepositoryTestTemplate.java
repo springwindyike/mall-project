@@ -1,5 +1,6 @@
 package com.ishare.mall.test;
 
+import com.ishare.mall.core.exception.OrderServiceException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public abstract class RepositoryTestTemplate extends TestTemplate {
      * 测试 查询 方法
      */
     @Test
-    public abstract void testRetrieve();
+    public abstract void testRetrieve() throws OrderServiceException;
 
     /**
      * 测试 修改 方法
