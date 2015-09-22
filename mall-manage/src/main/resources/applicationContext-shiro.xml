@@ -17,7 +17,7 @@
 	</bean>
 	
 	<!-- Shiro Filter -->
-	<bean id="myCaptchaFilter" class="com.tianyu.jty.system.utils.FormAuthenticationCaptchaFilter"/>
+	<bean id="myCaptchaFilter" class="com.ishare.mall.manage.system.utils.FormAuthenticationCaptchaFilter"/>
 	
 	<!-- Shiro Filter -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">

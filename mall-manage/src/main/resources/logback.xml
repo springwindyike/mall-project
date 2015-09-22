@@ -7,7 +7,7 @@
 	</appender>
 
 	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/jty.log</file>
+		<file>logs/ishare.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>logs/jty.%d{yyyy-MM-dd}.log</fileNamePattern>
 		</rollingPolicy>
@@ -22,13 +22,9 @@
 	    </filter> 过滤器只打印错误日志 -->
 	</appender>
 
-	<logger name="com.tianyu.jty" level="DEBUG">
+	<logger name="com.ishare.mall" level="DEBUG">
 		<appender-ref ref="console" />
 	</logger>
-	<logger name="cn.taoci" level="DEBUG">
-		<appender-ref ref="console" />
-	</logger>
-
 	<!--log4jdbc -->
 	<logger name="jdbc.sqltiming" level="DEBUG"/>
 

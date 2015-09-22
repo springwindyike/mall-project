@@ -18,7 +18,7 @@
 	<context:property-placeholder ignore-unresolvable="true" location="classpath*:/application.properties" />
 	
 	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
-	<context:component-scan base-package="com.tianyu.jty,com.ishare.mall">
+	<context:component-scan base-package="com.ishare.mall">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
@@ -41,7 +41,7 @@
 			
 			</props>
 		</property>
-		<property name="packagesToScan" value="com.tianyu.jty" /><!-- 如果多个，用“,”分隔 -->
+		<property name="packagesToScan" value="com.ishare.mall" /><!-- 如果多个，用“,”分隔 -->
 	</bean>
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

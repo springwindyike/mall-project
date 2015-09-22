@@ -77,8 +77,16 @@
             <mvc:mapping path="/*/*/create"/>
             <mvc:mapping path="/*/*/delete/*"/>
             <mvc:mapping path="/*/*/update"/>
-            <bean class="com.tianyu.jty.system.interceptor.LogInterceptor"></bean>
+            <bean class="LogInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
 	-->
+	<!--枚举类型自动转换-->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="org.springframework.core.convert.support.StringToEnumConverterFactory"/>
+			</set>
+		</property>
+	</bean>
 </beans>
