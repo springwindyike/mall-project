@@ -14,11 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @JsonAutoDetect
 public class Response extends GenericDTO {
-    //´íÎóÂë
+    //é”™è¯¯ç 
     private Integer code;
-    //ÊÇ·ñ²Ù×÷³É¹¦
+    //æ˜¯å¦æ“ä½œæˆåŠŸ
     private boolean success;
-    //Êı¾İ·µ»ØÊı¾İ¶ÔÏó
+    //æ•°æ®è¿”å›æ•°æ®å¯¹è±¡
     private Object data;
 
     public Integer getCode() {
