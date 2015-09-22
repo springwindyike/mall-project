@@ -12,7 +12,7 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpecificationExecutor {
 	List<Member> findByAccount(String account);
 
-	@Query("SELECT  m FROM Member m WHERE m.channel.id = ?1")
+	@Query("SELECT  m FROM Member m WHERE m.channel.id = ?1 and m.use = true")
 	Page<Member> findByChannelId(Integer channelId, Pageable pageable);
 
 	@Query("SELECT m FROM Member m, MemberRole mr WHERE mr.role.id=?1 AND m.id = mr.member.id")

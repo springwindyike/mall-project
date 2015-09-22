@@ -354,31 +354,27 @@ public class MemberResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public MemberDTO changePassword(@RequestBody MemberDTO memberDTO){
-        List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         Member member = memberService.findByAccount(memberDTO.getAccount());
         if (member != null){
             member.setPassword(memberDTO.getPassword());
             Channel channel = channelService.findOne(8);
             member.setChannel(channel);
             memberService.saveMember(member);
-//            PageRequest pageRequest = new PageRequest(0,15,Sort.Direction.DESC,"updateTime");
-//            Integer channelId = memberDTO.getChannelId();
-//            Page<Member> result = memberService.findByChannelId(8, pageRequest);
-//            PageDTO pageDTO = new PageDTO();
-//            if(result != null && result.getContent() != null && result.getContent().size()>0){
-//                List<Member> listMember = result.getContent();
-//                for (Member memberPage:listMember){
-//                    MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-//                    BeanUtils.copyProperties(memberPage, memberDetailDTO);
-//                    memberDetailDTO.setChannelId(memberPage.getChannel().getId());
-//                    memberDetailDTO.setSex(memberPage.getSex().getName());
-//                    memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
-//                    listMemberList.add(memberDetailDTO);
-//                }
-//                pageDTO.setContent(listMemberList);
-//                pageDTO.setTotalPages(result.getTotalPages());
-//                memberDTO.setPageDTO(pageDTO);
-//            }
+        }
+        return memberDTO;
+    }
+
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_DELETE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public MemberDTO delete(@RequestBody MemberDTO memberDTO){
+        Member member = memberService.findByAccount(memberDTO.getAccount());
+        if (member != null){
+            member.setUse(false);
+            Channel channel = channelService.findOne(8);
+            member.setChannel(channel);
+            memberService.saveMember(member);
         }
         return memberDTO;
     }
