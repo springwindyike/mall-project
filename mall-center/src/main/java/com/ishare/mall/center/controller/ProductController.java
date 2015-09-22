@@ -64,6 +64,7 @@ public class ProductController extends BaseController {
     	productDetailDTO.setInventory(apf.getInventory());*/
     	BeanUtils.copyProperties(addProductForm,productDetailDTO);
     	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
+    	productDetailDTO.setName(addProductForm.getProductName());
     	productDetailDTO.setBrandId(1);
     	productDetailDTO.setChannelId(1);
     	productDetailDTO.setTypeId(1);
