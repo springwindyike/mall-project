@@ -304,8 +304,7 @@ public class ProductResource {
             pageDTO.setTotalPages(result.getTotalPages());
             pageDTO.setITotalDisplayRecords(result.getTotalElements());
             pageDTO.setITotalRecords(result.getTotalElements());
-            productDTO.setPageDTO(pageDTO);
-            response.setData(productDTO);
+            response.setData(pageDTO);
         }
         return response;
     }

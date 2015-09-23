@@ -182,7 +182,6 @@ e.printStackTrace();
 		int currentPage = displayStart/displayLength+1;
 		productDTO.setLimit(displayLength);
 		productDTO.setOffset(currentPage);
-	  	productDTO.setPageDTO(new PageDTO<ProductDetailDTO>());
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
@@ -191,10 +190,9 @@ e.printStackTrace();
 			log.debug("error");
 				e.printStackTrace();		
 				}
-		ProductDTO productDTOResult = (ProductDTO) resultDTO.getBody().getData();
-		model.addAttribute("pageDTO",productDTOResult.getPageDTO());
-		System.out.print("test1111111");
-		return productDTOResult.getPageDTO();
+		PageDTO pageDTO = (PageDTO) resultDTO.getBody().getData();
+		model.addAttribute("pageDTO",pageDTO);
+		return pageDTO;
 	}
   
 	@RequestMapping(value = "/findBySearchCondition/{searchCondition}")
