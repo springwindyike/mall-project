@@ -1,12 +1,15 @@
 package com.ishare.mall.common.base.general;
 
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.test.TestDTO;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
 import java.io.Serializable;
 
 /**
@@ -20,6 +23,7 @@ import java.io.Serializable;
 @XmlSeeAlso(
         {
                 TestDTO.class,
+                ProductDetailDTO.class
         }
 )
 @JsonAutoDetect

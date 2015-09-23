@@ -88,10 +88,10 @@ e.printStackTrace();
 
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
         productDetailDTO.setId(id);
-        ResponseEntity<ProductDetailDTO> resultEntity = null;
+        ResponseEntity<Response> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,ProductDetailDTO.class);
-        ProductDetailDTO returnTO =  resultEntity.getBody();
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,Response.class);
+        ProductDetailDTO returnTO =  (ProductDetailDTO) resultEntity.getBody().getData();
         model.addAttribute("productDetailDTO", returnTO);
         return CenterViewConstant.Product.UPDATE_PRODUCT;
     
@@ -117,18 +117,20 @@ e.printStackTrace();
     	productDetailDTO.setTypeId(1);
     	productDetailDTO.setId(id);
     	productDetailDTO.setCreateByAccount("18566469285");
-    	ResponseEntity<ProductDetailDTO> resultDTO = null;
+    	ResponseEntity<Response> resultDTO = null;
     	RestTemplate restTemplate = new RestTemplate();
 			try {
 				resultDTO = restTemplate.postForEntity(this.buildBizAppURI(
 						APPURIConstant.Product.REQUEST_MAPPING,
 						APPURIConstant.Product.REQUEST_MAPPING_SAVE),
-						productDetailDTO, ProductDetailDTO.class);
+						productDetailDTO, Response.class);
 			} catch (Exception e) {
 e.printStackTrace();
 }
-			ProductDetailDTO productDTOResult = resultDTO.getBody();
-			return CenterViewConstant.Product.LIST_PRODUCT;
+			if(resultDTO.getBody().isSuccess()){
+				return CenterViewConstant.Product.LIST_PRODUCT;
+			}
+			return null;
     }
     
     @RequestMapping(value =  CenterURIConstant.Product.REQUEST_MAPPING_FIND_BY_ID, method = RequestMethod.GET,produces = {"application/json"})
