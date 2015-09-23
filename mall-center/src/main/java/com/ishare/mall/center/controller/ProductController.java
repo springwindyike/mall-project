@@ -28,7 +28,6 @@ import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailResultDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.general.Response;
 
