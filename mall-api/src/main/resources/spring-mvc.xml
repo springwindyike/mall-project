@@ -36,8 +36,8 @@
 		<property name="defaultContentType" value="application/json"/>
 		<property name="mediaTypes">
 			<value>
-				json=application/json
 				xml=application/xml
+				json=application/json
 			</value>
 		</property>
 	</bean>

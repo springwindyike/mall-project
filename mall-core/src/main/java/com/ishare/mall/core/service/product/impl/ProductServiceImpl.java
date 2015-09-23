@@ -1,14 +1,8 @@
 package com.ishare.mall.core.service.product.impl;
 
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.repository.information.BrandRepository;
-import com.ishare.mall.core.repository.information.ChannelRepository;
-import com.ishare.mall.core.repository.member.MemberRepository;
-import com.ishare.mall.core.repository.product.ProductRepository;
-import com.ishare.mall.core.repository.product.ProductTypeRepository;
-import com.ishare.mall.core.service.product.ProductService;
-import com.ishare.mall.core.utils.filter.DynamicSpecifications;
-import com.ishare.mall.core.utils.filter.SearchFilter;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +12,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.repository.information.BrandRepository;
+import com.ishare.mall.core.repository.information.ChannelRepository;
+import com.ishare.mall.core.repository.member.MemberRepository;
+import com.ishare.mall.core.repository.product.ProductRepository;
+import com.ishare.mall.core.repository.product.ProductTypeRepository;
+import com.ishare.mall.core.service.product.ProductService;
+import com.ishare.mall.core.utils.filter.DynamicSpecifications;
+import com.ishare.mall.core.utils.filter.SearchFilter;
 
 /**
  * Created by liaochenglei on 2015/9/22.
@@ -67,12 +69,16 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void saveProduct(Product product) {
-		// TODO Auto-generated method stub
-		productTypeResponsitory.save(product.getType());
-		memberRepository.save(product.getCreateBy());
-		brandRepository.save(product.getBrand());
-		channelRepository.save(product.getChannel());
-		productRepository.save(product);
+		try {
+			// TODO Auto-generated method stub
+			productTypeResponsitory.save(product.getType());
+			memberRepository.save(product.getCreateBy());
+			brandRepository.save(product.getBrand());
+			channelRepository.save(product.getChannel());
+			productRepository.save(product);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("产品保存失败");}
 	}
 
 	@Override
@@ -86,14 +92,18 @@ public class ProductServiceImpl implements ProductService {
 	//删除商品
 	@Override
 	public void delProduct(Integer id) {
-		productRepository.delete(id);
+		try {
+			productRepository.delete(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("产品删除失败");
+		}
 	}
 
 	@Override
 	public Page<Product> findByChannelId(Integer channelId,PageRequest pageRequest) {
 		try {
-			Page<Product> page = productRepository.findByChannelId(channelId,
-					pageRequest);
+			Page<Product> page = productRepository.findByChannelId(channelId,pageRequest);
 			return page;
 		} catch (Exception e) {
 			e.printStackTrace();

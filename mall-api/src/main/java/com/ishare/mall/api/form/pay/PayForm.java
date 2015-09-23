@@ -1,10 +1,10 @@
-package com.ishare.mall.core.form.order;
+package com.ishare.mall.api.form.pay;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Created by YinLin on 2015/8/27.
- * Description :
+ * Description : 支付form
  * Version 1.0
  */
 

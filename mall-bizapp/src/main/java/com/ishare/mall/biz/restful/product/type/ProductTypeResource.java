@@ -38,10 +38,7 @@ public class ProductTypeResource {
      * 通过用户账号获取所有的用户权限
      * @return 返回 MemberPermissionDTO JSON
      */
-    @RequestMapping(value       = "/findFirstLevel",
-            method      = RequestMethod.GET,
-            headers     = "Accept=application/xml, application/json",
-            produces    = {"application/json", "application/xml"})
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL, method = RequestMethod.GET,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
     public ProductTypeDTO getProductTypeAll() {
         //查找第一级菜单
         List<ProductType> productTypeList = productTypeService.findByLevel(1);

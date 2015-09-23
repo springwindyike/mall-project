@@ -14,4 +14,5 @@ public interface BaseConstant {
     interface Prop {
         String ERROR_CODE = "properties/ErrorCodes.properties";
     }
+
 }

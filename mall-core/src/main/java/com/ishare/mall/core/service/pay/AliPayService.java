@@ -3,6 +3,7 @@ package com.ishare.mall.core.service.pay;
 import com.ishare.mall.common.base.dto.pay.AliPayDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.dto.pay.AliRefundNotifyDTO;
+import com.ishare.mall.common.base.exception.service.pay.AliPayServiceException;
 
 import java.util.Map;
 
@@ -12,11 +13,12 @@ import java.util.Map;
  * Version 1.0
  */
 public interface AliPayService {
+
     /**
      * 构建支付宝提交Form
      * @return String
      */
-    String create(AliPayDTO aliPayDTO);
+    String create(AliPayDTO aliPayDTO) throws AliPayServiceException;
 
     /**
      * 支付宝支付成功或者退款成功返回结果验证
