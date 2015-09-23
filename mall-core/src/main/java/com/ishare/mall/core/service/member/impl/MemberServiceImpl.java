@@ -2,6 +2,7 @@ package com.ishare.mall.core.service.member.impl;
 
 import java.util.List;
 
+import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,12 +51,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member findByAccount(String account) {
+	public Member findByAccount(String account) throws MemberServiceException{
 		List<Member> members = memberRepository.findByAccount(account);
 		return members != null && members.size() > 0 ? members.get(0) : null;
 	}
 
-	public Page<Member> findByChannelId(Integer channelId, PageRequest pageRequest) {
+	public Page<Member> findByChannelId(Integer channelId, PageRequest pageRequest) throws MemberServiceException{
 		Page<Member> page = memberRepository.findByChannelId(channelId, pageRequest);
 		return page;
 	}
@@ -67,19 +68,19 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void saveMember(Member member) {
+	public void saveMember(Member member) throws MemberServiceException{
 		channelRepository.save(member.getChannel());
 		passwordHelper.encryptPassword(member);
 		memberRepository.save(member);
 	}
 
 	@Override
-	public Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account, String name, String mobile,PageRequest pageRequest) {
+	public Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account, String name, String mobile,PageRequest pageRequest) throws MemberServiceException{
 		return memberRepository.findByAccountLikeOrNameLikeOrMobileLike(account, name, mobile, pageRequest);
 	}
 
 	@Override
-	public void update(Member member) {
+	public void update(Member member) throws MemberServiceException {
 		memberRepository.save(member);
 	}
 
