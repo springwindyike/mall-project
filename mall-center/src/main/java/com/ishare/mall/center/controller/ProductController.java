@@ -30,6 +30,7 @@ import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailResultDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.common.base.general.Response;
 
 
 /**
@@ -71,17 +72,17 @@ public class ProductController extends BaseController {
     	productDetailDTO.setChannelId(1);
     	productDetailDTO.setTypeId(1);
     	productDetailDTO.setCreateByAccount("18566469285");
-    	ResponseEntity<ProductDetailDTO> resultDTO = null;
+    	ResponseEntity<Response> resultDTO = null;
     	RestTemplate restTemplate = new RestTemplate();
 			try {
 				resultDTO = restTemplate.postForEntity(this.buildBizAppURI(
 						APPURIConstant.Product.REQUEST_MAPPING,
 						APPURIConstant.Product.REQUEST_MAPPING_SAVE),
-						productDetailDTO, ProductDetailDTO.class);
+						productDetailDTO, Response.class);
 			} catch (Exception e) {
 e.printStackTrace();
 }
-			ProductDetailDTO productDTOResult = resultDTO.getBody();
+			ProductDetailDTO productDTOResult = (ProductDetailDTO) resultDTO.getBody().getData();
 			return CenterViewConstant.Product.LIST_PRODUCT;
     }
     

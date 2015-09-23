@@ -1,12 +1,17 @@
 package com.ishare.mall.biz.restful.order;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.OrderItem;
+import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.service.information.OrderItemService;
+import com.ishare.mall.core.service.order.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,16 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.order.ExchangeDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.model.order.OrderItem;
-import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.core.service.information.OrderItemService;
-import com.ishare.mall.core.service.order.OrderService;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/15.
@@ -105,7 +102,22 @@ public class OrderResource {
         return orderDetailDTO;
     		}
 
-    public OrderDetailDTO create(@RequestBody ExchangeDTO exchangeDTO) {
-        return null;
+    /**
+     * 创建订单
+     * @param exchangeDTO
+     * @return Response
+     * @throws OrderServiceException
+     */
+    @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_CREATE,
+                    method      = RequestMethod.POST,
+                    headers     = "Accept=application/xml, application/json",
+                    produces    = {"application/json", "application/xml"},
+                    consumes    = {"application/json", "application/xml"})
+    public Response create(@RequestBody ExchangeDTO exchangeDTO) throws OrderServiceException{
+        OrderDetailDTO orderDetailDTO = orderService.create(exchangeDTO);
+        Response response = new Response();
+        response.setCode(Response.Status.OK);
+        response.setData(orderDetailDTO);
+        return response;
     }
 }

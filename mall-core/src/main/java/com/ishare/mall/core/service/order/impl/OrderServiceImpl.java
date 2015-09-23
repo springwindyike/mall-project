@@ -4,10 +4,9 @@ import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
-import com.ishare.mall.common.base.enumeration.DeliverWay;
 import com.ishare.mall.common.base.enumeration.OrderItemState;
 import com.ishare.mall.common.base.enumeration.OrderState;
-import com.ishare.mall.common.base.enumeration.PaymentWay;
+import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
@@ -169,11 +168,11 @@ public class OrderServiceImpl implements OrderService {
 		order.setTotalPrice(total + transFee);
 		//实际支付
 		order.setPayableFee(total + transFee);
-
-		order.setPaymentWay(PaymentWay.NET);
-
+		//支付方式
+		order.setPaymentWay(exchangeDTO.getPaymentWay());
+		//等待支付状态 TODO 如果这里的支付方式可选货到付款之后需要变动
 		order.setState(OrderState.WAIT_PAYMENT);
-
+		//是否支付
 		order.setPaymentState(false);
 		//保存 返回
 		//修改商品库存
@@ -181,19 +180,13 @@ public class OrderServiceImpl implements OrderService {
 		//收货人
 		OrderDeliverInfo orderDeliverInfo = this.initDeliverProcessor(order, exchangeDTO);
 		try {
-			deliverRepository.save(orderDeliverInfo);
 			order.setOrderDeliverInfo(orderDeliverInfo);
 			orderRepository.save(order);
-			///log.debug(order.toString());
-//			for (OrderItem item : orderItems) {
-//				item.setOrder(order);
-//				log.debug(item.toString());
-//			}
 			itemRepository.save(orderItems);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("订单保存失败");
 		}
-
 		//设置收货人信息
 		detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
 		//设置订单项
@@ -220,7 +213,8 @@ public class OrderServiceImpl implements OrderService {
 		orderDeliverInfo.setRecipients(exchangeDTO.getRecipients());
 		orderDeliverInfo.setTel(exchangeDTO.getTel());
 		orderDeliverInfo.setRequirement(exchangeDTO.getRequirement());
-		orderDeliverInfo.setDeliverWay(DeliverWay.EXPRESS_DELIVERY);
+		//设置快递方式
+		orderDeliverInfo.setDeliverWay(exchangeDTO.getDeliverWay());
 		return orderDeliverInfo;
 	}
 
@@ -277,6 +271,4 @@ public class OrderServiceImpl implements OrderService {
 		System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId()));
 		return date + String.format("%06d", generatedOrderId.getOrderId());
 	}
-
-
 }

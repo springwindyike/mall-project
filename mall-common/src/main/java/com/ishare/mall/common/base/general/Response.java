@@ -17,7 +17,7 @@ public class Response extends GenericDTO {
     //错误码
     private Integer code;
     //是否操作成功
-    private boolean success = true;
+    private boolean success = Status.SUCCESS;
     //数据返回数据对象
     private Object data;
     //错误消息
@@ -53,5 +53,11 @@ public class Response extends GenericDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public interface Status {
+        int OK = 200;
+        boolean SUCCESS = true;
+        boolean FAILURE = false;
     }
 }
