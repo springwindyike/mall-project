@@ -14,7 +14,7 @@ public interface OrderService {
 	
 	Page<Order> search(Map<String, Object> searchParams, PageRequest pageRequest);
 	
-	Order findOne(String id);
+	Order findOne(String id) throws OrderServiceException;
 
 	List<Order> findTotalSales();
 	
