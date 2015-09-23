@@ -54,37 +54,35 @@ public class ProductController extends BaseController {
     }
     
     @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_SAVE, method = RequestMethod.POST)
-    public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
-    	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
-    	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-    /*	productDetailDTO.setName(apf.getProductName());
-    	productDetailDTO.setDescription(apf.getDescription());
-    	productDetailDTO.setTypeCode(apf.getTypeCode());
-    	productDetailDTO.setBasePrice(apf.getBasePrice());
-    	productDetailDTO.setMarketPrice(apf.getMarketPrice());
-    	productDetailDTO.setInventory(apf.getInventory());*/
-    	BeanUtils.copyProperties(addProductForm,productDetailDTO);
-    	if(jsonObject.has("url") ){
-    	 	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
-    	}
-    	productDetailDTO.setName(addProductForm.getProductName());
-    	productDetailDTO.setBrandId(1);
-    	productDetailDTO.setChannelId(1);
-    	productDetailDTO.setTypeId(1);
-    	productDetailDTO.setCreateByAccount("18566469285");
-    	ResponseEntity<Response> resultDTO = null;
-    	RestTemplate restTemplate = new RestTemplate();
-			try {
-				resultDTO = restTemplate.postForEntity(this.buildBizAppURI(
-						APPURIConstant.Product.REQUEST_MAPPING,
-						APPURIConstant.Product.REQUEST_MAPPING_SAVE),
-						productDetailDTO, Response.class);
-			} catch (Exception e) {
+    public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
+	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+/*	productDetailDTO.setName(apf.getProductName());
+	productDetailDTO.setDescription(apf.getDescription());
+	productDetailDTO.setTypeCode(apf.getTypeCode());
+	productDetailDTO.setBasePrice(apf.getBasePrice());
+	productDetailDTO.setMarketPrice(apf.getMarketPrice());
+	productDetailDTO.setInventory(apf.getInventory());*/
+	BeanUtils.copyProperties(addProductForm,productDetailDTO);
+	if(jsonObject.has("url") ){
+	 	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
+	}
+	productDetailDTO.setName(addProductForm.getProductName());
+	productDetailDTO.setBrandId(1);
+	productDetailDTO.setChannelId(1);
+	productDetailDTO.setTypeId(1);
+	productDetailDTO.setCreateByAccount("18566469285");
+	ResponseEntity<Response> resultDTO = null;
+	RestTemplate restTemplate = new RestTemplate();
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(
+					APPURIConstant.Product.REQUEST_MAPPING,
+					APPURIConstant.Product.REQUEST_MAPPING_SAVE),
+					productDetailDTO, Response.class);
+		} catch (Exception e) {
 e.printStackTrace();
 }
-			ProductDetailDTO productDTOResult = (ProductDetailDTO) resultDTO.getBody().getData();
-			return CenterViewConstant.Product.LIST_PRODUCT;
-    }
+		ProductDetailDTO productDTOResult = (ProductDetailDTO) resultDTO.getBody().getData();
+		return CenterViewConstant.Product.LIST_PRODUCT;}
     
     @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_UPDATE, method = RequestMethod.GET)
     public String updateProductGet(@NotEmpty @PathVariable("id") Integer id,Model model,@ModelAttribute("productAttribute") AddProductForm apf	) {
