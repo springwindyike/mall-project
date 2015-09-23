@@ -4,6 +4,7 @@ import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Map;
 
 /**
  * Created by YinLin on 2015/9/22.
@@ -13,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @JsonAutoDetect
-public class Response extends GenericDTO {
+public class Response<T extends GenericDTO> extends GenericDTO {
     //错误码
     private Integer code;
     //是否操作成功
@@ -23,6 +24,7 @@ public class Response extends GenericDTO {
     //错误消息
     private String message;
 
+    private Map<String,T> map;
     public Integer getCode() {
         return code;
     }
@@ -53,6 +55,14 @@ public class Response extends GenericDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     public interface Status {

@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.form.member.MemberUpdatePasswordForm;
+import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 
+import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.center.controller.base.BaseController;
@@ -230,7 +229,23 @@ public class MemberController extends BaseController {
 		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),memberDTO,MemberDTO.class);
 		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("memberDetailDTO",memberDTOResult.getMemberDetailDTO());
+		model.addAttribute("memberDetailDTO", memberDTOResult.getMemberDetailDTO());
 		return CenterViewConstant.Member.MEMBER_UPDATE;
+	}
+
+	/**
+	 * 注册账号验证
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = CenterURIConstant.Index.ACCOUNT_VALID, method = RequestMethod.POST)
+	public ValidformRespDTO accountValid(@RequestParam("name") String name, @RequestParam("param") String param) {
+		MemberRegisterDTO memberRegisterDTO = new MemberRegisterDTO();
+		memberRegisterDTO.setAccount(param);
+		ResponseEntity<ValidformRespDTO> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT), memberRegisterDTO, ValidformRespDTO.class);
+		ValidformRespDTO validformRespDTO = resultDTO.getBody();
+		return validformRespDTO;
 	}
 }
