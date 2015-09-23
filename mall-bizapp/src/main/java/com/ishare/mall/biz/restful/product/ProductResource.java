@@ -270,13 +270,22 @@ public class ProductResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public ProductDTO findByChannelId(@RequestBody ProductDTO productDTO) {
+    public Response findByChannelId(@RequestBody ProductDTO productDTO) {
         List<ProductDTO> listProductList = new ArrayList<>();
         int offset = productDTO.getOffset();
         int limit = productDTO.getLimit();
+        Response response = new Response();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
         Integer channelId = productDTO.getChannelId();
-        Page<Product> result = productService.findByChannelId(channelId, pageRequest);
+        Page<Product> result;
+		try {
+			result = productService.findByChannelId(channelId, pageRequest);
+		} catch (ProductServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
         PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Product> listProduct = result.getContent();
@@ -296,8 +305,9 @@ public class ProductResource {
             pageDTO.setITotalDisplayRecords(result.getTotalElements());
             pageDTO.setITotalRecords(result.getTotalElements());
             productDTO.setPageDTO(pageDTO);
+            response.setData(productDTO);
         }
-        return productDTO;
+        return response;
     }
     
 }

@@ -1,16 +1,19 @@
 package com.ishare.mall.common.base.general;
 
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.test.TestDTO;
-
-import org.codehaus.jackson.annotate.JsonAutoDetect;
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import java.io.Serializable;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.common.base.dto.test.TestDTO;
 
 /**
  * Created by YinLin on 2015/9/22.
@@ -23,7 +26,10 @@ import java.io.Serializable;
 @XmlSeeAlso(
         {
                 TestDTO.class,
-                ProductDetailDTO.class
+                ProductDetailDTO.class,
+                ProductDTO.class,
+                PageDTO.class,
+                ProductTypeDTO.class
         }
 )
 @JsonAutoDetect

@@ -110,8 +110,8 @@ public class ProductServiceImpl implements ProductService {
 			Page<Product> page = productRepository.findByChannelId(channelId,pageRequest);
 			return page;
 		} catch (Exception e) {
-			e.printStackTrace();
-				return null;
-}
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("查询产品失败");
+		}
 	}
 }

@@ -137,21 +137,21 @@ e.printStackTrace();
     public ProductDetailDTO findById(@NotEmpty @PathVariable("id") Integer id) {
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
         productDetailDTO.setId(id);
-        ResponseEntity<ProductDetailDTO> resultEntity = null;
+        ResponseEntity<Response> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,ProductDetailDTO.class);
-        ProductDetailDTO returnTO =  resultEntity.getBody();
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,Response.class);
+        ProductDetailDTO returnTO =  (ProductDetailDTO) resultEntity.getBody().getData();
         return returnTO;
     }
     
     @RequestMapping(value = CenterURIConstant.Product.ALL_TYPE_PRODUCT, produces = {"application/json"})
     @ResponseBody
     public ProductTypeDTO getType() {
-    	ResponseEntity<ProductTypeDTO> resultDTO = null;
+    	ResponseEntity<Response> resultDTO = null;
 		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL), ProductTypeDTO.class);
-		ProductTypeDTO productTypeDTOResult =  resultDTO.getBody();
+		resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL), Response.class);
+		ProductTypeDTO productTypeDTOResult =  (ProductTypeDTO) resultDTO.getBody().getData();
 		return productTypeDTOResult;
     }
     
@@ -183,15 +183,15 @@ e.printStackTrace();
 		productDTO.setLimit(displayLength);
 		productDTO.setOffset(currentPage);
 	  	productDTO.setPageDTO(new PageDTO<ProductDetailDTO>());
-		ResponseEntity<ProductDTO> resultDTO = null;
+		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), productDTO, ProductDTO.class);
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), productDTO, Response.class);
 		} catch (Exception e) {
 			log.debug("error");
 				e.printStackTrace();		
 				}
-		ProductDTO productDTOResult = resultDTO.getBody();
+		ProductDTO productDTOResult = (ProductDTO) resultDTO.getBody().getData();
 		model.addAttribute("pageDTO",productDTOResult.getPageDTO());
 		System.out.print("test1111111");
 		return productDTOResult.getPageDTO();
