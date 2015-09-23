@@ -26,7 +26,8 @@
       <label class="form-label col-3"><span class="c-red">*</span>账号：</label>
 
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="${memberDetailDTO.account}" placeholder="" id="account" name="account" readonly="readonly">
+        <input type="text" class="input-text" value="${memberDetailDTO.account}" placeholder="" id="account" name="account" readonly="readonly"
+               style="border-style:none;">
       </div>
       <div class="col-4"></div>
     </div>

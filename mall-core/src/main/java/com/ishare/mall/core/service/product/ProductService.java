@@ -37,7 +37,7 @@ public abstract interface ProductService {
      * @param pageRequest
      * @return
      */
-    Page<Product> findByChannelId(Integer channelId, PageRequest pageRequest) throws ProductServiceException;
+    Page<Product> findByChannelId(Integer channelId, PageRequest pageRequest) throws ProductServiceException;;
 
     /**
      * 根据产品id删除产品
