@@ -229,20 +229,18 @@ public class ProductResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public ProductDetailResultDTO delProduct(@RequestBody ProductDetailDTO productDetailDTO){
+    public Response delProduct(@RequestBody ProductDetailDTO productDetailDTO){
     	 Product product = new Product();
-    		ProductDetailResultDTO  productDetailResultDTO = new ProductDetailResultDTO();
+    	Response response = new Response();
          try {
 			productService.delProduct(productDetailDTO.getId());
-			productDetailResultDTO.setSuccess(true);
-			return productDetailResultDTO;
-		
-		} catch (Exception e) {e.printStackTrace();
-			productDetailResultDTO.setSuccess(false);
-			productDetailResultDTO.setCode(200);
-			productDetailResultDTO.setMessage("删除商品失败");
-			return productDetailResultDTO;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
 		}
+         return response;
     }
     
     /**

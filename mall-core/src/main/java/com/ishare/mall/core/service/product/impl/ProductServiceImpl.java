@@ -76,8 +76,9 @@ public class ProductServiceImpl implements ProductService {
 			brandRepository.save(product.getBrand());
 			channelRepository.save(product.getChannel());
 			productRepository.save(product);
-		} catch (Exception e) {log.error(e.getMessage(), e);
-		throw new ProductServiceException("产品保存失败");}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("产品保存失败");}
 	}
 
 	@Override
@@ -91,7 +92,12 @@ public class ProductServiceImpl implements ProductService {
 	//删除商品
 	@Override
 	public void delProduct(Integer id) {
-		productRepository.delete(id);
+		try {
+			productRepository.delete(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("产品删除失败");
+		}
 	}
 
 	@Override

@@ -158,12 +158,13 @@ e.printStackTrace();
 	public String delProduct(@NotEmpty @PathVariable("id") Integer id) {
 		ProductDetailDTO productDetailDTO = new ProductDetailDTO();
 		productDetailDTO.setId(id);
-		ResponseEntity<ProductDetailResultDTO> resultDTO = null;
+		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_DEL), productDetailDTO, ProductDetailResultDTO.class);
-		ProductDetailResultDTO productDetailDTOResult = resultDTO.getBody();
-		return null;
-	}
+		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_DEL), productDetailDTO, Response.class);
+		if (resultDTO.getBody().isSuccess()){
+				return "success";
+  }	 return null;
+  }
   
   @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_FORWORD, method = RequestMethod.GET)
  	public String forwardTOproductList() {
