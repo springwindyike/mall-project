@@ -1,5 +1,7 @@
 package com.ishare.mall.biz.restful.test;
 
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.test.TestDTO;
 import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.general.Response;
@@ -9,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/21.
@@ -20,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestResource {
     private static final Logger log = LoggerFactory.getLogger(TestResource.class);
     @RequestMapping(value = "/gender", method = RequestMethod.GET,
-            produces = {"application/json", "application/xml"})
+            produces = { "application/json"})
     public Response test() {
        // log.debug(testDTO.getGender().getName());
         TestDTO testDTO1 = new TestDTO();
@@ -29,6 +34,17 @@ public class TestResource {
         response.setCode(200);
         response.setMessage("成功");
         response.setData(testDTO1);
+        PageDTO<ProductDTO> pageDTO = new PageDTO();
+        List<ProductDTO> productDTOs = new ArrayList<>();
+        for (int i = 0; i < 10 ; i++) {
+            ProductDTO productDTO = new ProductDTO();
+            productDTO.setId(i);
+            productDTO.setCode("1234");
+            productDTOs.add(productDTO);
+        }
+        pageDTO.setContent(productDTOs);
+        testDTO1.setPageDTO(pageDTO);
+        testDTO1.setList(productDTOs);
         return response;
     }
 
