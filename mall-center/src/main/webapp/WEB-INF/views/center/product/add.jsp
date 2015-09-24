@@ -46,15 +46,15 @@
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				 <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="order_edit('选择菜单','${pageContext.request.contextPath}/order/edit.dhtml','10001')"/>
+				 <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="order_edit()"/>
 				</span> </div>
-				<div id="menu" style="visibility:hidden" class="form-label">
-				<form:select path="typeCode" class="select">
+				<div id="menu" <!-- style="visibility:hidden" -->  class="form-label">
+			<%-- 	<form:select path="typeCode" class="select">
 					 <form:option value="1000100101">衬衫</form:option>  
 		 			 <form:option value="1000100101">衬衫</form:option>  
 		  		 <form:option value="1000100101">衬衫</form:option>  
 		   	 <form:option value="1000100101">衬衫</form:option>  
-					</form:select>
+					</form:select> --%>
 				</div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
@@ -798,12 +798,54 @@ $(function(){
 
 	var ue = UE.getEditor('editor');
 });
-
+var obj=[];
 function order_edit(){
-	
-$("#menu")[0].style.visibility = 'visible';
+	 var str="";
+	 $.ajax({
+        type: "get",
+        dataType: "json",
+        url: "${pageContext.request.contextPath}/productType/firstLevel.dhtml",
+        success: function (msg) {
+       			 	var jsonData = eval(msg);
+		        	$.each(jsonData.child, function(index, jsonOne) {
+		        		obj.push(jsonOne);
+		         	str+='<div id ='+index+'><a onclick=dispaly_child_sort();>'+jsonOne.typeName+'</a></div>';
+		        				});
+		        	layer_open(str);
+                         }
+        })
 };
-
+function layer_open(m) {
+	layer.closeAll('page');
+	var index =layer.open({
+	    type: 1,
+	    title: '选择分类',
+	    closeBtn: true,
+	    shadeClose: true,
+	    area: ['700px', '530px'],
+	    content: m
+	});
+};
+var i =0
+function dispaly_child_sort(){
+	 var str="";
+	$.ajax({
+        type: "get",
+        dataType: "json",
+        url: "${pageContext.request.contextPath}/productType/childLevel/"+obj[i].id+".dhtml",
+        success: function (msg) {
+       			 	var jsonData = eval(msg);
+		        	$.each(jsonData.child, function(index, jsonOne) {
+		        		if (i==1){
+		        			console.log(obj);
+		        		}
+		        		obj.push(jsonOne);
+		        		str+='<div id ='+index+'><a onclick=dispaly_child_sort();>'+jsonOne.typeName+'</a></div>';}	)	;
+		        	layer_open(str);
+                         }}
+	)
+	i++;
+};
 </script>
 </body>
 </html>
