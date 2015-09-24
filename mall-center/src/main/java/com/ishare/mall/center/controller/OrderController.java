@@ -41,7 +41,7 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
-	public String register() {
+	public String list() {
 		return CenterViewConstant.Order.LIST_ORDER;
 	}
 
