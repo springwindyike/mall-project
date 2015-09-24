@@ -67,16 +67,6 @@ public class PaymentResource extends BaseResource {
     @AccessToken
     @RequestMapping(value = "/pay",method = {RequestMethod.POST, RequestMethod.GET}, produces = {"application/json"})
     public Object pay(Model model, @Valid PayForm payForm, BindingResult br, HttpServletResponse response) {
-        if (true) {
-            return "error/404";
-        }
-        if (true) {
-            Response res = new Response();
-            res.setSuccess(false);
-            res.setMessage("Test");
-            return new ResponseEntity(res, HttpStatus.NOT_FOUND);
-        }
-
         if (br.hasErrors()) {
             log.debug(br.toString());
             for (ObjectError objectError : br.getAllErrors()) {
@@ -169,9 +159,9 @@ public class PaymentResource extends BaseResource {
             return new ResponseEntity(err, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        //String payFormHtml = (String) payHtml.getData();
-        //model.addAttribute("returnContent", payFormHtml);
-       // log.debug(payFormHtml);
+        String payFormHtml = (String) payHtml.getData();
+        model.addAttribute("returnContent", payFormHtml);
+        log.debug(payFormHtml);
         return "pay/pay";
     }
 

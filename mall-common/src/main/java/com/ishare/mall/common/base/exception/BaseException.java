@@ -5,6 +5,7 @@ import com.ishare.mall.common.base.constant.IShareErrorConstant;
 import com.ishare.mall.common.base.utils.PropertyUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 
 /**
  * Created by YinLin on 2015/9/9.
@@ -18,10 +19,24 @@ public class BaseException extends RuntimeException {
     private String systemName;
     private String errorCode;
     private String message;
+    private HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
+
+    public BaseException(String systemName, String errorPropertyKey, String message, HttpStatus status, Throwable cause) {
+        super(message, cause);
+        this.errorCode = getErrorCode(errorPropertyKey);
+        this.status = status;
+    }
 
     public BaseException(String systemName, String errorPropertyKey, String message, Throwable cause) {
         super(message, cause);
         this.errorCode = getErrorCode(errorPropertyKey);
+    }
+
+    public BaseException(String systemName, String errorPropertyKey, HttpStatus status, Throwable cause) {
+        super("BaseException", cause);
+        this.errorCode = getErrorCode(errorPropertyKey);
+        this.systemName = systemName;
+        this.status = status;
     }
 
     public BaseException(String systemName, String errorPropertyKey, Throwable cause) {
@@ -30,9 +45,21 @@ public class BaseException extends RuntimeException {
         this.systemName = systemName;
     }
 
+    public BaseException(String systemName, HttpStatus status, String errorPropertyKey) {
+        this.errorCode = getErrorCode(errorPropertyKey);
+        this.systemName = systemName;
+        this.status = status;
+    }
+
     public BaseException(String systemName, String errorPropertyKey) {
         this.errorCode = getErrorCode(errorPropertyKey);
         this.systemName = systemName;
+    }
+
+    public BaseException(String message, HttpStatus status) {
+        super(message);
+        this.message = message;
+        this.status = status;
     }
 
     public BaseException(String message) {
@@ -80,5 +107,17 @@ public class BaseException extends RuntimeException {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(HttpStatus status) {
+        this.status = status;
+    }
+
+    public static Log getLog() {
+        return log;
     }
 }
