@@ -14,11 +14,11 @@ public interface CommonConstant {
    
     interface ValidForm {
     	/** 验证通过 信息 */
-        String VALIDFORM_SUCCESS_INFO = "验证通过！";
+        String VALIDFORM_SUCCESS_INFO = "恭喜你，可以注册！";
         /** 验证通过 符号 */
         String VALIDFORM_SUCCESS_STATUS = "y";
         /** 验证失败 信息 */
-        String VALIDFORM_FAIL_INFO = "验证失败！";
+        String VALIDFORM_FAIL_INFO = "对不起，您填写的信息已存在！";
         /** 验证失败 符号 */
         String VALIDFORM_FAIL_STATUS = "n";
     }

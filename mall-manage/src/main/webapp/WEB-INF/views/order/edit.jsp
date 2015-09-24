@@ -21,7 +21,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 		<meta http-equiv="Cache-Control" content="no-siteapp" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>注册申请</title>
+		<title>编辑订单</title>
 		<meta name="keywords" content="享买开放平台">
 		<meta name="description" content="享买开放平台">
 </head>
@@ -32,7 +32,7 @@
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>手机：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空" ajaxurl="accountValid.dhtml" sucmsg="恭喜你，可以注册！">
+        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空" ajaxurl="accountValid.dhtml" sucmsg="验证通过！">
       </div>
       <div class="col-4"> </div>
     </div>
@@ -109,58 +109,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/area.js"></script>
 <script type="text/javascript">
-
-/* 省市县选择 */
- $(function(){
-
-    add_select(0);
-
-    $('body').on('change', '#area select', function() {
-        var $me = $(this);
-        var $next = $me.next();
-        /**
-         * 如果下一级已经是当前所选地区的子地区，则不进行处理
-         */
-        if ($me.val() == $next.data('pid')) {
-            return;
-        }
-        $me.nextAll().remove();
-        //add_select($me.val());.attr("id"));
-        add_select($me.find("option:selected").attr("id"));
-    });
-
-    function add_select(pid) {
-        var area_names = area['name'+pid];
-        if (!area_names) {
-            return false;
-        }
-        var area_codes = area['code'+pid];
-        var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
-        $select.attr('name', 'city');
-        $select.data('pid', pid);
-        if (area_codes[0] != -1) {
-            area_names.unshift('请选择');
-            area_codes.unshift(-1);
-        }
-        for (var idx in area_codes) {
-            var $option = $('<option>');
-            if(area_codes[idx] == -1){
-            		$option.attr('value', "");
-            }else{
-            	$option.attr('value', area_names[idx]);
-            					}
-            $option.attr('id', area_codes[idx]);
-            $option.text(area_names[idx]);
-            $select.append($option);
-        }
-        var length = $("#area select").length;
-        if(length < 3){
-        $('#area').append($select);
-        }
-    };
-});
 
 //验证
 $(function(){
@@ -177,7 +126,7 @@ $(function(){
 			if(data.success==true){
 				setTimeout(function(){
 					//$.Hidemsg(); 公用方法关闭信息提示框
-					$.Showmsg("注册成功！");
+					$.Showmsg("提交成功！");
 				},2000);
 				setTimeout(function(){
 					var index = parent.layer.getFrameIndex(window.name);
@@ -186,7 +135,7 @@ $(function(){
 			}
 			if(data.success==false){
 				setTimeout(function(){
-					$.Showmsg("注册失败！");
+					$.Showmsg("提交失败！");
 				},2000);
 			}
 

@@ -25,13 +25,11 @@ public class ApiExceptionHandler {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public ResponseEntity handleUnexpectedLogicError(ApiLogicException ex) {
-        //log.error(ex.getMessage(), ex);
-        System.out.println("Here");
         Response response = new Response();
-        response.setCode(500);
+        response.setCode(ex.getStatus().value());
         response.setSuccess(false);
         response.setMessage(ex.getMessage());
-        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(response, ex.getStatus());
     }
 
     public ResponseEntity handleUnexpectedAccessTokenError() {
@@ -45,10 +43,10 @@ public class ApiExceptionHandler {
         log.error(e.getMessage(), e);
         Response response = new Response();
         response.setCode(500);
+        response.setSuccess(false);
         response.setMessage("Server error");
         return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     public static Logger getLog() {
         return log;
     }
