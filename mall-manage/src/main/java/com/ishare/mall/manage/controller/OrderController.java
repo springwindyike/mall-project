@@ -41,10 +41,47 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
-	public String register() {
+	public String list() {
 		return ManageViewConstant.Order.LIST_ORDER;
 	}
-
+	
+	/**
+	 * 访问编辑页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_EDIT, method = RequestMethod.GET)
+	public String edit() {
+		return ManageViewConstant.Order.EDIT_ORDER;
+	}
+	
+	/**
+	 * 访问发货页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER, method = RequestMethod.GET)
+	public String deliver() {
+		return ManageViewConstant.Order.DELIVER_ORDER;
+	}
+	/**
+	 * 访问物流页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_LOGISTICS, method = RequestMethod.GET)
+	public String logistics() {
+		return ManageViewConstant.Order.LOGISTICS_ORDER;
+	}
+	/**
+	 * 访问取消页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL, method = RequestMethod.GET)
+	public String cancel() {
+		return ManageViewConstant.Order.CANCEL_ORDER;
+	}
 	/**
 	 * 获取当前渠道下所有的order
 	 *

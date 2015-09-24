@@ -87,7 +87,6 @@ public class OrderResource {
 										OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
 									  OrderItem orderItem = it.next();
 									  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-									  orderItemDetailDTO.setState(orderItem.getState().getName());
 									  items.add(orderItemDetailDTO);
 									}
 									innerOrderDetailDTO.setItems(items);
