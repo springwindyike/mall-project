@@ -1,9 +1,19 @@
 package com.ishare.mall.common.base.general;
 
-import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.common.base.dto.test.TestDTO;
 
 /**
  * Created by YinLin on 2015/9/22.
@@ -12,14 +22,27 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
+@XmlAccessorType(value = XmlAccessType.PROPERTY)
+@XmlSeeAlso(
+        {
+                TestDTO.class,
+                ProductDetailDTO.class,
+                ProductDTO.class,
+                PageDTO.class,
+                ProductTypeDTO.class
+        }
+)
 @JsonAutoDetect
-public class Response extends GenericDTO {
+public class Response<T> implements Serializable {
+
+    private static final long serialVersionUID = 3886269150595934287L;
+
     //错误码
     private Integer code;
     //是否操作成功
     private boolean success = Status.SUCCESS;
     //数据返回数据对象
-    private Object data;
+    private T data;
     //错误消息
     private String message;
 
@@ -39,11 +62,11 @@ public class Response extends GenericDTO {
         this.success = success;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 

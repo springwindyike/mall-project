@@ -1,4 +1,4 @@
-package com.ishare.mall.api.form;
+package com.ishare.mall.api.form.order;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.enumeration.DeliverWay;

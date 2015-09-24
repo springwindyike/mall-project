@@ -2,6 +2,7 @@ package com.ishare.mall.biz.restful.order;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
@@ -12,6 +13,8 @@ import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -72,7 +72,7 @@ public class OrderResource {
 									BeanUtils.copyProperties(order, innerOrderDetailDTO);
 									innerOrderDetailDTO.setChannelId(order.getChannel().getId());
 									innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
-									innerOrderDetailDTO.setState(order.getState().getName());
+									innerOrderDetailDTO.setState(order.getState());
 									innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
 									
 									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -117,6 +117,22 @@ public class OrderResource {
         Response response = new Response();
         response.setCode(Response.Status.OK);
         response.setData(orderDetailDTO);
+        return response;
+    }
+    @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ID,
+            method      = RequestMethod.GET,
+            headers     = "Accept=application/xml, application/json",
+            produces    = {"application/json", "application/xml"})
+    public Response find(@NotEmpty @PathVariable("id") String id) throws OrderServiceException {
+        Response response = new Response();
+        Order order = orderService.findOne(id);
+        try {
+            OrderDetailDTO orderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDeliverDTO.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new OrderServiceException("类型转换错误");
+        }
         return response;
     }
 }

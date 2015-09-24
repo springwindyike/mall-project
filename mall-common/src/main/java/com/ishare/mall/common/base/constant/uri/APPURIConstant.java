@@ -65,6 +65,15 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
         //创建订单
         String REQUEST_MAPPING_CREATE = "/create";
+        //通过订单ID获取订单详情
+        String REQUEST_MAPPING_FIND_BY_ID = "/{id}";
+    }
+    //支付
+    interface AliPay {
+        //支付宝
+        String REQUEST_MAPPING = "/alipay";
+        //构建支付HTML
+        String REQUEST_MAPPING_CREATE_PAY_HTML = "/create";
     }
 
     //渠道

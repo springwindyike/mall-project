@@ -64,8 +64,13 @@ public class OrderServiceImpl implements OrderService {
 	private ChannelService channelService;
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public Order findOne(String id) {
-		return orderRepository.findOne(id);
+		Order order = orderRepository.findOne(id);
+		if (order == null) {
+			throw new OrderServiceException("订单不存在");
+		}
+		return order;
 	}
 	@Override
 	public Page<Order> search(Map<String, Object> searchParams, PageRequest pageRequest) {

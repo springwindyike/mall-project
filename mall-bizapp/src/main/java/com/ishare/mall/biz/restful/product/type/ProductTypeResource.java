@@ -1,24 +1,23 @@
 package com.ishare.mall.biz.restful.product.type;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.product.ProductTypeService;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.model.product.ProductType;
+import com.ishare.mall.core.service.product.ProductTypeService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
  * Created by YinLin on 2015/9/7.
@@ -38,13 +37,19 @@ public class ProductTypeResource {
      * 通过用户账号获取所有的用户权限
      * @return 返回 MemberPermissionDTO JSON
      */
-    @RequestMapping(value       = "/findFirstLevel",
-            method      = RequestMethod.GET,
-            headers     = "Accept=application/xml, application/json",
-            produces    = {"application/json", "application/xml"})
-    public ProductTypeDTO getProductTypeAll() {
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL, method = RequestMethod.GET,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
+    public Response getProductTypeAll() {
         //查找第一级菜单
-        List<ProductType> productTypeList = productTypeService.findByLevel(1);
+        List<ProductType> productTypeList;
+        Response response = new Response();
+		try {
+			productTypeList = productTypeService.findByLevel(1);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+	}
         ProductTypeDTO returnProductDTO = new ProductTypeDTO();
         if (productTypeList != null && productTypeList.size() > 0) {
             //转换DTO
@@ -55,18 +60,26 @@ public class ProductTypeResource {
         			   List<ProductTypeDTO> productChildTypes = 	(List<ProductTypeDTO>) MapperUtils.mapAsList(chidlrenProductTypeList, ProductTypeDTO.class);
             		   ptd.setChild(productChildTypes);
             		   for (ProductTypeDTO ptdt:productChildTypes){
-            			   List<ProductType> chidlrenTwoProductTypeList = productTypeService.findByParentId(ptdt.getId());
-            			   if(chidlrenTwoProductTypeList != null){
-            				   List<ProductTypeDTO> productTwoChildTypes = 	(List<ProductTypeDTO>) MapperUtils.mapAsList(chidlrenTwoProductTypeList, ProductTypeDTO.class);
-            				   ptdt.setChild(productTwoChildTypes);
+            			   List<ProductType> chidlrenTwoProductTypeList;
+						try {
+							chidlrenTwoProductTypeList = productTypeService.findByParentId(ptdt.getId());
+						} catch (Exception e) {
+							log.error(e.getMessage(), e);
+							response.setMessage("系统错误");
+							response.setSuccess(false);
+							return response;
+					}
+        if(chidlrenTwoProductTypeList != null){
+        List<ProductTypeDTO> productTwoChildTypes = 	(List<ProductTypeDTO>) MapperUtils.mapAsList(chidlrenTwoProductTypeList, ProductTypeDTO.class);
+        ptdt.setChild(productTwoChildTypes);
             			   }
             		   }
         		   }
                }
         	returnProductDTO.setChild(productFirstTypes);
-        	return returnProductDTO;
+        	response.setData(returnProductDTO);
+        	return response;
         }
-      //  log.debug(roleDTO.toString());
 		return null;
     }
 

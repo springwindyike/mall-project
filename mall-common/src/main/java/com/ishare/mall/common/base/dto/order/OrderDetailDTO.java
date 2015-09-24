@@ -1,15 +1,15 @@
 package com.ishare.mall.common.base.dto.order;
 
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-
-import com.ishare.mall.common.base.dto.generic.GenericDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
 
 
 /**
@@ -34,7 +34,7 @@ public class OrderDetailDTO extends GenericDTO {
 
     private Date updateTime = new Date();
     /* 订单状态 */
-    private String state;
+    private OrderState state;
     /* 商品总金额 */
     private Float productTotalPrice = 0f;
     /* 配送费 */
@@ -46,7 +46,7 @@ public class OrderDetailDTO extends GenericDTO {
     /* 顾客附言 */
     private String note;
     /* 支付方式 */
-    private String paymentWay;
+    private PaymentWay paymentWay;
     /* 支付状态 */
     private Boolean paymentState = false;
     /* 订单配送信息 */
@@ -106,10 +106,10 @@ public class OrderDetailDTO extends GenericDTO {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	public String getState() {
+	public OrderState getState() {
 		return state;
 	}
-	public void setState(String state) {
+	public void setState(OrderState state) {
 		this.state = state;
 	}
 	public Float getProductTotalPrice() {
@@ -142,10 +142,10 @@ public class OrderDetailDTO extends GenericDTO {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public String getPaymentWay() {
+	public PaymentWay getPaymentWay() {
 		return paymentWay;
 	}
-	public void setPaymentWay(String paymentWay) {
+	public void setPaymentWay(PaymentWay paymentWay) {
 		this.paymentWay = paymentWay;
 	}
 	public Boolean getPaymentState() {

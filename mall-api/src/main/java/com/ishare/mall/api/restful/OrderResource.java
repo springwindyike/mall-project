@@ -2,7 +2,7 @@
 package com.ishare.mall.api.restful;
 
 import com.ishare.mall.api.annotation.AccessToken;
-import com.ishare.mall.api.form.OrderForm;
+import com.ishare.mall.api.form.order.OrderForm;
 import com.ishare.mall.api.restful.base.BaseResource;
 import com.ishare.mall.api.service.oauth.OAuthService;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
@@ -43,6 +43,7 @@ public class OrderResource extends BaseResource {
     @ResponseBody
 	public ResponseEntity create(OrderForm orderForm) {
 		ExchangeDTO exchangeDTO = orderForm.toExchangeDTO();
+        //从缓存中通过accessToken获取用户信息
 		exchangeDTO.setAccount(oAuthService.getAccountByAccessToken(orderForm.getToken()));
 		exchangeDTO.setClientId(oAuthService.getAuthObjectByAccessToken(orderForm.getToken()).getClientId());
         ResponseEntity<Response> responseEntity = null;

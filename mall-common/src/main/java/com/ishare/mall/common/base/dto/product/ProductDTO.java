@@ -80,8 +80,6 @@ public class ProductDTO extends GenericDTO {
     
     private int limit;
 
-    private PageDTO pageDTO;
-
     //默认样式图片
     private String defaultImageUrl;
 
@@ -116,15 +114,7 @@ public class ProductDTO extends GenericDTO {
 	public void setLimit(int limit) {
 		this.limit = limit;
 	}
-
-	public PageDTO getPageDTO() {
-		return pageDTO;
-	}
-
-	public void setPageDTO(PageDTO pageDTO) {
-		this.pageDTO = pageDTO;
-	}
-
+	
 	public String getDefaultImageUrl() {
 		return defaultImageUrl;
 	}

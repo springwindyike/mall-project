@@ -36,12 +36,12 @@
 		<property name="defaultContentType" value="application/json"/>
 		<property name="mediaTypes">
 			<value>
-				json=application/json
 				xml=application/xml
+				json=application/json
 			</value>
 		</property>
 	</bean>
-	
+
 	<!-- 定义JSP文件的位置 --> 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/"/>

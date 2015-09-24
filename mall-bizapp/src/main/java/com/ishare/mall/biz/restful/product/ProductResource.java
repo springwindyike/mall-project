@@ -7,6 +7,7 @@ import com.ishare.mall.common.base.dto.product.*;
 import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
@@ -59,48 +60,49 @@ public class ProductResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public Response saveProduct(@RequestBody ProductDetailDTO productDetailDTO){
-            Product product = new Product();
-            BeanUtils.copyProperties(productDetailDTO, product);
-        			Brand brand = new Brand();
-        			brand.setId(productDetailDTO.getBrandId());
-        			Member member = new Member();
-        			member.setAccount(productDetailDTO.getCreateByAccount());
-        			member.setMemberType(MemberType.MEMBER);
-        			member.setSex(Gender.MAN);
-        			Channel channel = new Channel();
-        			channel.setId(productDetailDTO.getChannelId());
-        			member.setChannel(channel);
-        			ProductType productType = new ProductType();
-        			productType.setId(productDetailDTO.getTypeId());
-        			productType.setCode("1001001001");
-        			productType.setName("衬衫");
-        			productType.setNote("非常好");
-        			productType.setLevel(3);
-        			product.setBrand(brand);
-        			product.setCreateBy(member);
-        			product.setUpdateBy(member);
-        			product.setChannel(channel);
-        			product.setType(productType);
-        			
-        			try {
-						productService.saveProduct(product);
-					} catch (Exception e) { 
-										log.error(e.getMessage(), e);
-		            Response response = new Response();
-		            response.setMessage("系统错误");
-		            response.setSuccess(false);
-		            return response;
-		            }
-        			 Response response = new Response();
-        			return response;
-    }
+        Product product = new Product();
+        BeanUtils.copyProperties(productDetailDTO, product);
+    			Brand brand = new Brand();
+    			brand.setId(productDetailDTO.getBrandId());
+    			Member member = new Member();
+    			member.setAccount(productDetailDTO.getCreateByAccount());
+    			member.setMemberType(MemberType.MEMBER);
+    			member.setSex(Gender.MAN);
+    			Channel channel = new Channel();
+    			channel.setId(productDetailDTO.getChannelId());
+    			member.setChannel(channel);
+    			ProductType productType = new ProductType();
+    			productType.setId(productDetailDTO.getTypeId());
+    			productType.setCode("1001001001");
+    			productType.setName("衬衫");
+    			productType.setNote("非常好");
+    			productType.setLevel(3);
+    			product.setBrand(brand);
+    			product.setCreateBy(member);
+    			product.setUpdateBy(member);
+    			product.setChannel(channel);
+    			product.setType(productType);
+    			
+    			try {
+					productService.saveProduct(product);
+				} catch (Exception e) { 
+									log.error(e.getMessage(), e);
+	            Response response = new Response();
+	            response.setMessage("系统错误");
+	            response.setSuccess(false);
+	            return response;
+	            }
+    			 Response response = new Response();
+    			return response;
+}
 
     @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public ProductDetailDTO updateProduct(@RequestBody ProductDetailDTO productDetailDTO){
+    public Response updateProduct(@RequestBody ProductDetailDTO productDetailDTO){
         Product product = new Product();
+        Response response = new Response();
         BeanUtils.copyProperties(productDetailDTO, product);
     			Brand brand = new Brand();
     			brand.setId(productDetailDTO.getBrandId());
@@ -126,9 +128,13 @@ public class ProductResource {
     			try {
 					productService.saveProduct(product);
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e.getMessage(), e);
+					response.setMessage("系统错误");
+					response.setSuccess(false);
+					return response;
+
 				}
-	return productDetailDTO;
+	return response;
 }
 	/**
 	 * 根据商品ID 查询商品详细信息
@@ -139,12 +145,23 @@ public class ProductResource {
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json", "application/xml"},
 			consumes = {"application/json", "application/xml"})
-	public ProductDetailDTO findByID(@RequestBody ProductDetailDTO productDetailDTO){
-		Product product = productService.findOne(productDetailDTO.getId());
-		if(product == null || !product.getVisible()){
-			return productDetailDTO;
+	public Response findByID(@RequestBody ProductDetailDTO productDetailDTO){
+		Product product;
+		List<ProductStyle> list;
+		Response response = new Response();
+		try {
+			product = productService.findOne(productDetailDTO.getId());
+			list = productStyleService.findByProductStyle(productDetailDTO.getId());
+		} catch (ProductServiceException e) {
+				log.error(e.getMessage(), e);
+				response.setMessage("系统错误");
+				response.setSuccess(false);
+				return response;
 		}
-		List<ProductStyle> list = productStyleService.findByProductStyle(productDetailDTO.getId());
+		if(!product.getVisible()){
+			response.setData(null);
+			return response;
+		}
 		List<ProductStyleDTO> listStyle = new ArrayList<ProductStyleDTO>();
 		if(list != null && list.size()>0){
 			for(ProductStyle productStyle:list){
@@ -156,7 +173,8 @@ public class ProductResource {
 		}
 		ProductDetailDTO returnDTO = (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
 		returnDTO.setList(listStyle);
-		return returnDTO;
+		response.setData(returnDTO);
+		return response;
 	}
 
 	/**
@@ -229,20 +247,18 @@ public class ProductResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public ProductDetailResultDTO delProduct(@RequestBody ProductDetailDTO productDetailDTO){
+    public Response delProduct(@RequestBody ProductDetailDTO productDetailDTO){
     	 Product product = new Product();
-    		ProductDetailResultDTO  productDetailResultDTO = new ProductDetailResultDTO();
+    	Response response = new Response();
          try {
 			productService.delProduct(productDetailDTO.getId());
-			productDetailResultDTO.setSuccess(true);
-			return productDetailResultDTO;
-		
-		} catch (Exception e) {e.printStackTrace();
-			productDetailResultDTO.setSuccess(false);
-			productDetailResultDTO.setCode(200);
-			productDetailResultDTO.setMessage("删除商品失败");
-			return productDetailResultDTO;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
 		}
+         return response;
     }
     
     /**
@@ -254,13 +270,22 @@ public class ProductResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public ProductDTO findByChannelId(@RequestBody ProductDTO productDTO) {
+    public Response findByChannelId(@RequestBody ProductDTO productDTO) {
         List<ProductDTO> listProductList = new ArrayList<>();
         int offset = productDTO.getOffset();
         int limit = productDTO.getLimit();
+        Response response = new Response();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
         Integer channelId = productDTO.getChannelId();
-        Page<Product> result = productService.findByChannelId(channelId, pageRequest);
+        Page<Product> result;
+		try {
+			result = productService.findByChannelId(channelId, pageRequest);
+		} catch (ProductServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
         PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
         if(result != null && result.getContent() != null && result.getContent().size()>0){
             List<Product> listProduct = result.getContent();
@@ -279,9 +304,9 @@ public class ProductResource {
             pageDTO.setTotalPages(result.getTotalPages());
             pageDTO.setITotalDisplayRecords(result.getTotalElements());
             pageDTO.setITotalRecords(result.getTotalElements());
-            productDTO.setPageDTO(pageDTO);
+            response.setData(pageDTO);
         }
-        return productDTO;
+        return response;
     }
     
 }
