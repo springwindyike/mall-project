@@ -8,6 +8,8 @@ import com.ishare.mall.common.base.general.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,14 +42,19 @@ public class IndexController extends BaseResource {
     @ResponseBody
     public TestDTO show(TestForm testForm) {
         log.debug(testForm.getGender().getName());
-        ResponseEntity<Response> resultEntiy = null;
+        ResponseEntity<Response<TestDTO>> resultEntiy;
         TestDTO testDTO = new TestDTO();
         testDTO.setGender(testForm.getGender());
-        try {
-            resultEntiy = restTemplate.getForEntity(this.buildBizAppURI("/test", "/gender"), Response.class);
-        } catch (Exception e) {
-           throw e;
-        }
+        resultEntiy = restTemplate.exchange(this.buildBizAppURI("/test", "/gender"),
+                HttpMethod.GET, null, new ParameterizedTypeReference<Response<TestDTO>>() {
+        });
+//        Response<TestDTO> response = restTemplate.getForObject(this.buildBizAppURI("/test", "/gender"), Response.class);
+//        System.out.println("哈哈哈哈");
+//        try {
+//            resultEntiy = restTemplate.getForEntity(this.buildBizAppURI("/test", "/gender"), Response.class);
+//        } catch (Exception e) {
+//           throw e;
+//        }
         Response response = resultEntiy.getBody();
         testDTO = (TestDTO) response.getData();
         return testDTO;
