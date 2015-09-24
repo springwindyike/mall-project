@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.product.ProductType;
@@ -106,6 +107,27 @@ public class ProductTypeResource {
      	return response;
     }
 
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_CHILDREN_LEVEL, method = RequestMethod.POST,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
+    public Response getProductChildType(@RequestBody ProductTypeDTO productTypeDTO) {
+    	  List<ProductType> productTypeList;
+      Response response = new Response();
+      ProductTypeDTO returnProductDTO = new ProductTypeDTO();
+    	try {
+			productTypeList = productTypeService.findByParentId(productTypeDTO.getParentId());
+		        if (productTypeList != null && productTypeList.size() > 0) {
+		            //转换DTO
+		        	List<ProductTypeDTO> productFirstTypes = 	(List<ProductTypeDTO>) MapperUtils.mapAsList(productTypeList, ProductTypeDTO.class);
+		        	returnProductDTO.setChild(productFirstTypes);
+		        	response.setData(returnProductDTO);
+		        	}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+	}
+     	return response;
+    }
     /**
      * 根据ID获取商品类别的详细信息
      * @param productTypeDTO
@@ -142,6 +164,8 @@ public class ProductTypeResource {
         }
         return returnTO;
     }
+    
+    
 
 //    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_PARAM, method = RequestMethod.POST,
 //            headers = "Accept=application/xml, application/json",

@@ -1,11 +1,14 @@
 package com.ishare.mall.center.controller;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.center.controller.base.BaseController;
@@ -32,12 +35,34 @@ public class ProductTypeController extends BaseController {
 
     @RequestMapping(value = CenterURIConstant.ProductType.REQUEST_MAPPING_FITST_LEVEL, produces = {"application/json"})
     @ResponseBody
-    public ProductTypeDTO getType() {
+    public ProductTypeDTO getFirstLevelType() {
     	ResponseEntity<Response> resultDTO = null;
-		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIRST_LEVEL), Response.class);
+		try {
+			resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIRST_LEVEL), Response.class);
+		} catch (RestClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ProductTypeDTO productTypeDTOResult =  (ProductTypeDTO) resultDTO.getBody().getData();
 		return productTypeDTOResult;
     }
+    
+    @RequestMapping(value = CenterURIConstant.ProductType.REQUEST_MAPPING_CHILDREN_LEVEL, produces = {"application/json"})
+    @ResponseBody
+	public ProductTypeDTO getChildLevel(
+			@NotEmpty @PathVariable("parentId") Integer parentId) {
+		ResponseEntity<Response> resultDTO = null;
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		productTypeDTO.setParentId(parentId);
+		RestTemplate restTemplate = new RestTemplate();
+		try {
+	        resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING,APPURIConstant.ProductType.REQUEST_MAPPING_CHILDREN_LEVEL),productTypeDTO,Response.class);
+		} catch (RestClientException e) {
+			e.printStackTrace();
+		}
+		ProductTypeDTO productTypeDTOResult = (ProductTypeDTO) resultDTO
+				.getBody().getData();
+		return productTypeDTOResult;
+	}
 }

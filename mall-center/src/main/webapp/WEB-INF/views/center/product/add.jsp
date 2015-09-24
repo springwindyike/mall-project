@@ -46,8 +46,16 @@
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				 <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="openPastFromManage()"/>
+				 <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="order_edit('选择菜单','${pageContext.request.contextPath}/order/edit.dhtml','10001')"/>
 				</span> </div>
+				<div id="menu" style="visibility:hidden" class="form-label">
+				<form:select path="typeCode" class="select">
+					 <form:option value="1000100101">衬衫</form:option>  
+		 			 <form:option value="1000100101">衬衫</form:option>  
+		  		 <form:option value="1000100101">衬衫</form:option>  
+		   	 <form:option value="1000100101">衬衫</form:option>  
+					</form:select>
+				</div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
 				<form:input type="text" class="input-text" value="" placeholder="" id="" name=""  path="inventory"/>
@@ -790,11 +798,12 @@ $(function(){
 
 	var ue = UE.getEditor('editor');
 });
-function openPastFromManage() {
-    var window_name = "菜单名称";
-    var options = "status=no,resizable=no,top=200,left=300,width=580,height=500,scrollbars=yes,center:Yes;"; 
-    var info = window.open("www.baidu.com", window_name, options);
-}
+
+function order_edit(){
+	
+$("#menu")[0].style.visibility = 'visible';
+};
+
 </script>
 </body>
 </html>
