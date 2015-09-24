@@ -34,7 +34,7 @@ public class ProductTypeResource {
     private ProductTypeService productTypeService;
 
     /**
-     * 通过用户账号获取所有的用户权限
+     * 通过用户账号获取所有的用户菜单，一次性三级菜单都进行返回
      * @return 返回 MemberPermissionDTO JSON
      */
     @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL, method = RequestMethod.GET,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
@@ -81,6 +81,29 @@ public class ProductTypeResource {
         	return response;
         }
 		return null;
+    }
+    
+    
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIRST_LEVEL, method = RequestMethod.GET,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
+    public Response getProductFirstType() {
+    	  List<ProductType> productTypeList;
+      Response response = new Response();
+      ProductTypeDTO returnProductDTO = new ProductTypeDTO();
+    	try {
+			productTypeList = productTypeService.findByLevel(1);
+		        if (productTypeList != null && productTypeList.size() > 0) {
+		            //转换DTO
+		        	List<ProductTypeDTO> productFirstTypes = 	(List<ProductTypeDTO>) MapperUtils.mapAsList(productTypeList, ProductTypeDTO.class);
+		        	returnProductDTO.setChild(productFirstTypes);
+		        	response.setData(returnProductDTO);
+		        	}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+	}
+     	return response;
     }
 
     /**

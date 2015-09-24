@@ -46,24 +46,15 @@
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				<!-- <input id ='selectType'class="select" value ='请选择商品分类'/> -->
-				 <form:select path="typeCode" class="select">
-<!-- 					<option path="typeCode" value="1000100101">衬衫</option>
- -->					 <form:option value="1000100101">衬衫</form:option>  
-				 </form:select>
-					<!-- 	<div id ='showType' class="content_wrap">
-							<div class="zTreeDemoBackground left form-label">
-								<ul id="treeDemo" class="ztree"></ul>
-							</div>
-						</div> -->
+				 <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="openPastFromManage()"/>
 				</span> </div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
-				<form:input type="text" class="input-text" value="0" placeholder="" id="" name=""  path="inventory"/>
+				<form:input type="text" class="input-text" value="" placeholder="" id="" name=""  path="inventory"/>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-2">产品进价：</label>${type}
+			<label class="form-label col-2">产品进价：</label>
 			<div class="formControls col-4">
 			<form:input type="text" path="basePrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
 				元</div>
@@ -799,33 +790,11 @@ $(function(){
 
 	var ue = UE.getEditor('editor');
 });
-/* $("#selectType").click(function(){
-	$.ajax({
-		   type: "GET",
-		   url:  'http://localhost:8100/center/product/allType.dhtml',
-		   data: '',
-		   dataType: "json",
-		   complete: function(data){
-			 
-		   }
-				   });
-	var setting = {	};
-	var zNodes =[
-		{ name:"父节点1 - 展开", open:true,
-			children: [
-				{ name:"父节点11 - 折叠",
-					children: [
-						{ name:"叶子节点111"},
-						{ name:"叶子节点112"},
-						{ name:"叶子节点113"},
-						{ name:"叶子节点114"}
-					]}
-			]}
-
-	];
-	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-	$("#showType").show();
-}); */
+function openPastFromManage() {
+    var window_name = "菜单名称";
+    var options = "status=no,resizable=no,top=200,left=300,width=580,height=500,scrollbars=yes,center:Yes;"; 
+    var info = window.open("www.baidu.com", window_name, options);
+}
 </script>
 </body>
 </html>
