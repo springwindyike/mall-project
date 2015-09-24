@@ -10,12 +10,17 @@ import com.ishare.mall.center.form.member.MemberUpdatePasswordForm;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 
+import com.ishare.mall.common.base.dto.test.TestDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+import com.ishare.mall.common.base.general.Response;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +44,8 @@ import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 @RequestMapping(APPURIConstant.Member.REQUEST_MAPPING)
 public class MemberController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(MemberController.class);
-
+	@Autowired
+	private RestTemplate restTemplate;
 	/**
 	 * 获取当前渠道下所有的member
 	 *
@@ -48,7 +54,7 @@ public class MemberController extends BaseController {
 	@RequestMapping(value = "/findByChannelId", method = RequestMethod.GET)
 	@ResponseBody
 	//public PageDTO findByChannelId(@CurrentMember MemberDTO memberDTO, HttpServletRequest request, Model model) {
-	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
+	public PageDTO findByChannelId(HttpServletRequest request, Model model) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setChannelId(8);
 		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
@@ -56,13 +62,22 @@ public class MemberController extends BaseController {
 		int currentPage = displayStart/displayLength+1;
 		memberDTO.setLimit(displayLength);
 		memberDTO.setOffset(currentPage);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), memberDTO, MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("pageDTO",memberDTOResult.getPageDTO());
-		System.out.print("test1111111");
-		return memberDTOResult.getPageDTO();
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),
+					HttpMethod.POST, null, new ParameterizedTypeReference<Response<MemberDTO>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response.isSuccess()){
+			MemberDTO memberDTOResult = (MemberDTO)response.getData();
+			model.addAttribute("pageDTO", memberDTOResult.getPageDTO());
+			return memberDTOResult.getPageDTO();
+		}else {
+			throw new Exception(response.getMessage());
+		}
 	}
 
 	@RequestMapping(value = "/offset/{offset}/limit/{limit}/roleId/{roleId}", method = RequestMethod.POST)

@@ -7,6 +7,8 @@ import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
 import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.enumeration.MemberType;
+import com.ishare.mall.common.base.exception.member.MemberServiceException;
+import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -126,33 +128,41 @@ public class MemberResource {
      */
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
+            produces = {"application/json"},
             consumes = {"application/json", "application/xml"})
-    public MemberDTO findByChannelId(@RequestBody MemberDTO memberDTO) {
+    public Response findByChannelId(@RequestBody MemberDTO memberDTO) {
         List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
+        Response response = new Response();
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
-        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
-        Integer channelId = memberDTO.getChannelId();
-        Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Member> listMember = result.getContent();
-            for (Member member:listMember){
-                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-                BeanUtils.copyProperties(member, memberDetailDTO);
-                memberDetailDTO.setChannelId(member.getChannel().getId());
-                memberDetailDTO.setSex(member.getSex().getName());
-                memberDetailDTO.setMemberType(member.getMemberType().getName());
-                listMemberList.add(memberDetailDTO);
+        try{
+            PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+            Integer channelId = memberDTO.getChannelId();
+            Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
+            PageDTO pageDTO = new PageDTO();
+            if(result != null && result.getContent() != null && result.getContent().size()>0){
+                List<Member> listMember = result.getContent();
+                for (Member member:listMember){
+                    MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                    BeanUtils.copyProperties(member, memberDetailDTO);
+                    memberDetailDTO.setChannelId(member.getChannel().getId());
+                    memberDetailDTO.setSex(member.getSex().getName());
+                    memberDetailDTO.setMemberType(member.getMemberType().getName());
+                    listMemberList.add(memberDetailDTO);
+                }
+                pageDTO.setContent(listMemberList);
+                pageDTO.setTotalPages(result.getTotalPages());
+                pageDTO.setITotalDisplayRecords(result.getTotalElements());
+                pageDTO.setITotalRecords(result.getTotalElements());
+                memberDTO.setPageDTO(pageDTO);
             }
-            pageDTO.setContent(listMemberList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setITotalDisplayRecords(result.getTotalElements());
-            pageDTO.setITotalRecords(result.getTotalElements());
-            memberDTO.setPageDTO(pageDTO);
+            response.setData(memberDTO);
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
         }
-        return memberDTO;
+        return response;
     }
 
     /**
