@@ -83,11 +83,15 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void updateProduct(Product product) {
-		productTypeResponsitory.save(product.getType());
-		memberRepository.save(product.getCreateBy());
-		brandRepository.save(product.getBrand());
-		channelRepository.save(product.getChannel());
-		productRepository.save(product);
+		try {
+			productTypeResponsitory.save(product.getType());
+			memberRepository.save(product.getCreateBy());
+			brandRepository.save(product.getBrand());
+			channelRepository.save(product.getChannel());
+			productRepository.save(product);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("产品更新失败");}
 	}
 	//删除商品
 	@Override
@@ -106,8 +110,8 @@ public class ProductServiceImpl implements ProductService {
 			Page<Product> page = productRepository.findByChannelId(channelId,pageRequest);
 			return page;
 		} catch (Exception e) {
-			e.printStackTrace();
-				return null;
-}
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("查询产品失败");
+		}
 	}
 }

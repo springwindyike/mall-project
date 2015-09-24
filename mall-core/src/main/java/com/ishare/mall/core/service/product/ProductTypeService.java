@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.ishare.mall.core.exception.ProductTypeServiceException;
 import com.ishare.mall.core.model.product.ProductType;
 
 /**
@@ -15,11 +16,11 @@ import com.ishare.mall.core.model.product.ProductType;
  */
 public abstract interface ProductTypeService {
 
-    public abstract Page<ProductType> search(Map<String, Object> searchParams, PageRequest pageRequest);
+    public abstract Page<ProductType> search(Map<String, Object> searchParams, PageRequest pageRequest)throws ProductTypeServiceException;
 
-    public abstract ProductType findOne(Integer id);
+    public abstract ProductType findOne(Integer id) throws ProductTypeServiceException;
 
-    public abstract List<ProductType> findByLevel(Integer id);
+    public abstract List<ProductType> findByLevel(Integer id)throws ProductTypeServiceException;
     
-    public abstract List<ProductType>findByParentId(Integer pariendId);
+    public abstract List<ProductType>findByParentId(Integer pariendId)throws ProductTypeServiceException;
 }
