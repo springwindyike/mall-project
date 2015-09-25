@@ -3,20 +3,15 @@ package com.ishare.mall.biz.restful.channel;
 import com.ishare.mall.common.base.constant.CommonConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
-import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+import com.ishare.mall.common.base.exception.service.channel.ChannelServiceException;
+import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -34,16 +29,19 @@ public class ChannelResource {
      * @param id
      * @return
      */
-    @RequestMapping(value       = APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_ID + APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_ID_PARAM,
+    @RequestMapping(value       = APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_ID,
                     method      = RequestMethod.GET,
                     headers     = "Accept=application/xml, application/json",
-                    produces    = {"application/json", "application/xml"})
-    public ChannelTokenResultDTO getByAppId(@NotEmpty @PathVariable("id")String id) {
+                    produces    = {"application/json"})
+    public Response<ChannelTokenResultDTO> getByAppId(@NotEmpty @PathVariable("id")String id) {
         Channel channel = channelService.findByAppId(id);
         if (channel != null) {
-            return (ChannelTokenResultDTO)MapperUtils.map(channel, ChannelTokenResultDTO.class);
+            Response response = new Response();
+            response.setCode(200);
+            response.setData((ChannelTokenResultDTO)MapperUtils.map(channel, ChannelTokenResultDTO.class));
+            return response;
         }
-        return null;
+        throw new ChannelServiceException("未找到");
     }
 
     /**
@@ -51,16 +49,19 @@ public class ChannelResource {
      * @param secret
      * @return
      */
-    @RequestMapping(value       = APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_SECRET + APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_SECRET_PARAM,
+    @RequestMapping(value       = APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_SECRET,
                     method      = RequestMethod.GET,
                     headers     = "Accept=application/xml, application/json",
-                    produces    = {"application/json", "application/xml"})
-    public ChannelTokenResultDTO getByAppSecret(@NotEmpty @PathVariable("secret") String secret) {
+                    produces    = {"application/json"})
+    public Response<ChannelTokenResultDTO> getByAppSecret(@NotEmpty @PathVariable("secret") String secret) {
         Channel channel = channelService.findByAppSecret(secret);
         if (channel != null) {
-            return (ChannelTokenResultDTO)MapperUtils.map(channel, ChannelTokenResultDTO.class);
+            Response response = new Response();
+            response.setCode(200);
+            response.setData((ChannelTokenResultDTO)MapperUtils.map(channel, ChannelTokenResultDTO.class));
+            return response;
         }
-        return null;
+        throw new ChannelServiceException("未找到");
     }
     
     /**

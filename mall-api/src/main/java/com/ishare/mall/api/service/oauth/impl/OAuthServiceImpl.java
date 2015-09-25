@@ -1,7 +1,7 @@
 package com.ishare.mall.api.service.oauth.impl;
 
+import com.ishare.mall.api.service.channel.ChannelService;
 import com.ishare.mall.api.service.oauth.OAuthService;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
 import com.ishare.mall.common.base.dto.oauth.OAuthObject;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.EXPIRE_IN;
 
@@ -30,6 +28,8 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.EXPIRE
  */
 @Service
 public class OAuthServiceImpl implements OAuthService {
+    @Autowired
+    private ChannelService channelService;
 
     private static final Logger log = LoggerFactory.getLogger(OAuthServiceImpl.class);
 
@@ -65,12 +65,13 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public void addAccessToken(String accessToken, String account, String clientId) {
+    public OAuthObject addAccessToken(String accessToken, String account, String clientId) {
         OAuthObject authObject = new OAuthObject();
-        authObject.setAccount(accessToken);
+        authObject.setAccessToken(accessToken);
         authObject.setAccount(account);
         authObject.setClientId(clientId);
         this.cache.put(accessToken, authObject);
+        return authObject;
     }
 
     @Override
@@ -111,21 +112,24 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public boolean checkClientId(String clientId) {
-        ResponseEntity<ChannelTokenResultDTO> resultDTO = null;
-        RestTemplate restTemplate = new RestTemplate();
-        resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_ID + clientId), ChannelTokenResultDTO.class);
-        ChannelTokenResultDTO channelTokenResultDTO = resultDTO.getBody();
+        ChannelTokenResultDTO channelTokenResultDTO;
+        try {
+            channelTokenResultDTO = channelService.findByAppId(clientId);
+        } catch (Exception e) {
+            return false;
+        }
         return channelTokenResultDTO != null;
     }
 
     @Override
     public boolean checkClientSecret(String clientId, String clientSecret) {
-        ResponseEntity<ChannelTokenResultDTO> resultDTO = null;
-        RestTemplate restTemplate = new RestTemplate();
-        resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_GET_BY_APP_SECRET + clientSecret), ChannelTokenResultDTO.class);
-        ChannelTokenResultDTO channelTokenResultDTO = resultDTO.getBody();
-        if (channelTokenResultDTO == null) return false;
-        return clientId.equals(channelTokenResultDTO.getAppId());
+        ChannelTokenResultDTO channelTokenResultDTO;
+        try {
+            channelTokenResultDTO = channelService.findByAppId(clientId);
+        } catch (Exception e) {
+            return false;
+        }
+        return clientSecret.equals(channelTokenResultDTO.getAppSecret());
     }
 
     @Override
@@ -153,17 +157,10 @@ public class OAuthServiceImpl implements OAuthService {
         OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
         try {
             final String accessToken = oauthIssuerImpl.accessToken();
-            OAuthObject authObject = new OAuthObject();
-            authObject.setAccessToken(accessToken);
-            authObject.setAccount(account);
-            authObject.setClientId(appid);
-            this.cache.put(accessToken, authObject);
-            log.debug("accessToken : " + accessToken);
-            return authObject;
+            return this.addAccessToken(accessToken, account, appid);
         } catch (OAuthSystemException e) {
             e.printStackTrace();
             throw new ApiLogicException("token:获取失败", HttpStatus.BAD_REQUEST);
         }
-
     }
 }
