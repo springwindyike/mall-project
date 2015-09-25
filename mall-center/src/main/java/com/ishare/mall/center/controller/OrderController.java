@@ -18,6 +18,7 @@ import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.general.Response;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/14. 
@@ -60,11 +61,17 @@ public class OrderController extends BaseController {
 		int currentPage = displayStart/displayLength+1;
 		orderDetailDTO.setLimit(displayLength);
 		orderDetailDTO.setOffset(currentPage);
-		ResponseEntity<OrderDetailDTO> resultDTO = null;
+		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), orderDetailDTO, OrderDetailDTO.class);
-		OrderDetailDTO orderDTOResult = resultDTO.getBody();
-		model.addAttribute("pageDTO",orderDTOResult.getPageDTO());
-		return orderDTOResult.getPageDTO();
+		
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), orderDetailDTO, Response.class);
+		} catch (Exception e) {
+			log.debug("error");
+			e.printStackTrace();		
+		}
+		PageDTO pageDTO = (PageDTO) resultDTO.getBody().getData();
+		model.addAttribute("pageDTO",pageDTO);
+		return pageDTO;
 	}
 }

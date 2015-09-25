@@ -2,13 +2,16 @@ package com.ishare.mall.manage.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +19,9 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
 import com.ishare.mall.common.base.constant.view.ManageViewConstant;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderResultDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.controller.base.BaseController;
 
 /**
@@ -61,8 +66,42 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER, method = RequestMethod.GET)
-	public String deliver() {
+	public String deliver(@NotEmpty @PathVariable("id") String id, HttpServletRequest request) {
+		request.setAttribute("orderId", id);
 		return ManageViewConstant.Order.DELIVER_ORDER;
+	}
+	/**
+	 * 访问发货页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER_SUBMIT, method = RequestMethod.POST)
+	public OrderResultDTO deliverSubmit(
+			@NotEmpty @RequestParam("orderId") String orderId,
+			@NotEmpty @RequestParam("expressId") String expressId, 
+			@NotEmpty @RequestParam("expressOrder") String expressOrder, 
+			@NotEmpty @RequestParam("note") String note) {
+		OrderResultDTO orderResultDTO = new OrderResultDTO();
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(orderId);
+		orderDetailDTO.setExpressId(expressId);
+		orderDetailDTO.setExpressOrder(expressOrder);
+		ResponseEntity<Response> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_DELIVER), orderDetailDTO, Response.class);
+		} catch (Exception e) {
+			log.debug("error");
+			e.printStackTrace();
+			orderResultDTO.setMessage("发货失败！");
+			orderResultDTO.setSuccess(false);
+			return orderResultDTO;
+		}
+		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		orderResultDTO.setMessage("发货成功！");
+		orderResultDTO.setSuccess(true);
+		orderResultDTO.setOrderDetailDTO(orderDetailDTO);
+		return orderResultDTO;
 	}
 	/**
 	 * 访问物流页面
@@ -83,6 +122,15 @@ public class OrderController extends BaseController {
 		return ManageViewConstant.Order.CANCEL_ORDER;
 	}
 	/**
+	 * 访问取消页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL, method = RequestMethod.POST)
+	public String cancelSubmit(@NotEmpty @PathVariable("logistics") Integer logistics) {
+		return ManageViewConstant.Order.CANCEL_ORDER;
+	}
+	/**
 	 * 获取当前渠道下所有的order
 	 *
 	 * @return Page<OrderDetailDTO>
@@ -97,12 +145,17 @@ public class OrderController extends BaseController {
 		int currentPage = displayStart/displayLength+1;
 		orderDetailDTO.setLimit(displayLength);
 		orderDetailDTO.setOffset(currentPage);
-		ResponseEntity<OrderDetailDTO> resultDTO = null;
+		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), orderDetailDTO, OrderDetailDTO.class);
-		OrderDetailDTO orderDTOResult = resultDTO.getBody();
-		model.addAttribute("pageDTO",orderDTOResult.getPageDTO());
-		return orderDTOResult.getPageDTO();
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), orderDetailDTO, Response.class);
+		} catch (Exception e) {
+			log.debug("error");
+			e.printStackTrace();
+		}
+		PageDTO pageDTO = (PageDTO) resultDTO.getBody().getData();
+		model.addAttribute("pageDTO",pageDTO);
+		return pageDTO;
 	}
 	
 }

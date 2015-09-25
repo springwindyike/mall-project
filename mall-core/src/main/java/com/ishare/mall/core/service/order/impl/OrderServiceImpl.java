@@ -7,6 +7,7 @@ import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.enumeration.OrderItemState;
 import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
@@ -27,6 +28,7 @@ import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,55 +76,76 @@ public class OrderServiceImpl implements OrderService {
 	}
 	@Override
 	public Page<Order> search(Map<String, Object> searchParams, PageRequest pageRequest) {
-		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		Specification<Order> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Order.class);
-		Page<Order> page = orderRepository.findAll(spec, pageRequest);
-		return page;
+		try {
+			Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+			Specification<Order> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Order.class);
+			Page<Order> page = orderRepository.findAll(spec, pageRequest);
+			return page;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("订单搜索失败");
+		}
     }
 
 	public List<Order> findTotalSales() {
-
-		return orderRepository.findAll();
+		try {
+			return orderRepository.findAll();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("查询订单失败");
+		}
 	}
 	
 	@Override
 	public List<Order> findByCreateBy(String createBy) {
 	    List<Order> order = orderRepository.findByCreateBy(createBy);
-	    if (order == null || order.size() == 0) return null;
+	    if (order == null || order.size() == 0){
+	    	throw new OrderServiceException("没有找到符合要求的订单");
+	    }
 	    return order;
 	}
 	
 	@Override
 	public Order createNewOrder(Order order) {
-		Date current=new Date();
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-		String date=sdf.format(current);
-		GeneratedOrderId generatedOrderId = generatedOrderIdRepository.findOne(date);
-		if(null == generatedOrderId){
-			GeneratedOrderId go = new GeneratedOrderId();
-			go.setId(date);
-			go.setOrderId(1);
-			generatedOrderIdRepository.save(go);
-			String orderIdStr = String.format("%06d", go.getOrderId());     
+		try {
+			Date current=new Date();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+			String date=sdf.format(current);
+			GeneratedOrderId generatedOrderId = generatedOrderIdRepository.findOne(date);
+			if(null == generatedOrderId){
+				GeneratedOrderId go = new GeneratedOrderId();
+				go.setId(date);
+				go.setOrderId(1);
+				generatedOrderIdRepository.save(go);
+				String orderIdStr = String.format("%06d", go.getOrderId());     
+				order.setOrderId(date + orderIdStr);
+				return orderRepository.save(order);
+			}
+			generatedOrderId.setOrderId(generatedOrderId.getOrderId()+1);
+			generatedOrderIdRepository.save(generatedOrderId);
+			String orderIdStr = String.format("%06d",generatedOrderId.getOrderId()+1);
 			order.setOrderId(date + orderIdStr);
 			return orderRepository.save(order);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("订单保存失败");
 		}
-		generatedOrderId.setOrderId(generatedOrderId.getOrderId()+1);
-		generatedOrderIdRepository.save(generatedOrderId);
-		String orderIdStr = String.format("%06d",generatedOrderId.getOrderId()+1);
-		order.setOrderId(date + orderIdStr);
-		return orderRepository.save(order);
 		
 	}
 
 	@Override
 	public Order payComplete(String orderId) {
-		Order order = orderRepository.findOne(orderId);
-		if (order != null) {
-			order.setState(OrderState.WAIT_DELIVER);
-			order = orderRepository.save(order);
+		try {
+			Order order = orderRepository.findOne(orderId);
+			if (order != null) {
+				order.setState(OrderState.WAIT_DELIVER);
+				order = orderRepository.save(order);
+			}
+			return order;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("支付出错");
 		}
-		return order;
 	}
 
 	@Override
@@ -144,8 +167,13 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Page<Order> findByChannelId(Integer channelId,
 			PageRequest pageRequest) {
-		Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
-		return page;
+		try {
+			Page<Order> page = orderRepository.findByChannelId(channelId, pageRequest);
+			return page;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("查询订单失败");
+		}
 	}
 
 	//订单生成流程
@@ -275,5 +303,14 @@ public class OrderServiceImpl implements OrderService {
 		System.out.println("date : " + date);
 		System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId()));
 		return date + String.format("%06d", generatedOrderId.getOrderId());
+	}
+	@Override
+	public Order updateOrder(Order order) throws OrderServiceException {
+		try {
+			return orderRepository.save(order);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("订单修改失败");
+		}
 	}
 }

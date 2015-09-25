@@ -28,7 +28,7 @@
 
 <body>
 <div class="pd-20">
-  <form action="${pageContext.request.contextPath}/register.dhtml" method="post" class="form form-horizontal" id="form-member-cancel">
+  <form action="${pageContext.request.contextPath}/cancel.dhtml" method="post" class="form form-horizontal" id="form-member-cancel">
     <div class="row cl">
       <label class="form-label col-3">取消原因：</label>
       <div class="formControls col-5">

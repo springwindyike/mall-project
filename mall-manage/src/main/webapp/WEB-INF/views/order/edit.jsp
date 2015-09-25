@@ -29,77 +29,8 @@
 <body>
 <div class="pd-20">
   <form action="${pageContext.request.contextPath}/register.dhtml" method="post" class="form form-horizontal" id="form-member-add">
-    <div class="row cl">
-      <label class="form-label col-3"><span class="c-red">*</span>手机：</label>
-      <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="account" name="account"  datatype="m" nullmsg="手机不能为空" ajaxurl="accountValid.dhtml" sucmsg="验证通过！">
-      </div>
-      <div class="col-4"> </div>
-    </div>
-			<div class="row cl">
-				<label class="form-label col-3"><span class="c-red">*</span>密码：</label>
-				<div class="formControls col-5">
-					<input type="password" class="input-text" autocomplete="off" placeholder="" name="password" id="password" datatype="*6-18" nullmsg="密码不能为空" >
-				</div>
-				<div class="col-4"> </div>
-			</div>
-			<div class="row cl">
-				<label class="form-label col-3"><span class="c-red">*</span>确认密码：</label>
-				<div class="formControls col-5">
-					<input type="password" class="input-text" autocomplete="off" placeholder="" name="repassword" id="repassword" recheck="password" datatype="*6-18" errormsg="您两次输入的密码不一致！"nullmsg="请确认密码">
-				</div>
-				<div class="col-4"> </div>
-			</div>
-    <div class="row cl">
-      <label class="form-label col-3"><span class="c-red">*</span>邮箱：</label>
-      <div class="formControls col-5">
-        <input type="text" class="input-text" placeholder="@" name="email" id="email" datatype="e" nullmsg="请输入邮箱！">
-      </div>
-      <div class="col-4"> </div>
-    </div>
-    <div class="row cl">
-      <label class="form-label col-3"><span class="c-red">*</span>性别：</label>
-      <div class="formControls col-5 skin-minimal">
-        <div class="radio-box">
-          <input type="radio" id="sex-1" name="sex" value="1" datatype="*" nullmsg="请选择性别！">
-          <label for="sex-1">男</label>
-        </div>
-        <div class="radio-box">
-          <input type="radio" id="sex-2" name="sex" value="0">
-          <label for="sex-2">女</label>
-        </div>
-      </div>
-      <div class="col-4"> </div>
-    </div>
-    <div class="row cl">
-      <label class="form-label col-3"><span class="c-red">*</span>公司名称：</label>
-      <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="channel" name="channel" datatype="*2-16" nullmsg="公司名称不能为空" ajaxurl="channelValid.dhtml" sucmsg="验证通过！">
-      </div>
-      <div class="col-4"> </div>
-    </div>
-    <div class="row cl">
-      <label class="form-label col-3">所在城市：</label>
-      <div class="formControls col-5">
-	      	<span class="select-box" id="area">
-	      	
-	        </span> 
-        </div>
-      <div class="col-4"> </div>
-    </div>
-    <div class="row cl">
-      <label class="form-label col-3">备注：</label>
-      <div class="formControls col-5">
-        <textarea name="note" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
-        <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
-      </div>
-      <div class="col-4"> </div>
-    </div>
-    <div class="row cl">
-      <div class="col-9 col-offset-3">
-        <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-      </div>
-    </div>
+  
+  
   </form>
 </div>
 </div>

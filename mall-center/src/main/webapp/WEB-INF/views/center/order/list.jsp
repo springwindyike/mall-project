@@ -191,13 +191,11 @@ $('.table-sort').dataTable({
 		{
 			"targets" : 10 ,
 			"render" : function(mDataProp, type, full) {
-				/* return '<span class="label label-success radius">已启用</span>'; */
-				var itemHtml = "";
-				for (var i = 0; i < mDataProp.items.length; i++) 
-					{
-					itemHtml = mDataProp.items[i].state;
-					}
-				return itemHtml;
+				var itemHtml = mDataProp.stateValue;
+				if(itemHtml == '已取消' || itemHtml == '待审核' ){
+					return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
+				}
+				return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>'; 
 			 }
 		}/* ,
 		{

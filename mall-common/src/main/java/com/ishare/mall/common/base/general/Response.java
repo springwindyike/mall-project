@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
@@ -29,7 +30,8 @@ import com.ishare.mall.common.base.dto.test.TestDTO;
                 ProductDetailDTO.class,
                 ProductDTO.class,
                 PageDTO.class,
-                ProductTypeDTO.class
+                ProductTypeDTO.class,
+                OrderDetailDTO.class
         }
 )
 @JsonAutoDetect

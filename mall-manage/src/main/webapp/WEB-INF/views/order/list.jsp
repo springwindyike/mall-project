@@ -158,7 +158,7 @@ $('.table-sort').dataTable({
 		{
 			"targets" : 10 ,
 			"render" : function(mDataProp, type, full) {
-				var itemHtml = mDataProp.state;
+				var itemHtml = mDataProp.stateValue;
 				if(itemHtml == '已取消' || itemHtml == '待审核' ){
 					return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
 				}
@@ -176,7 +176,7 @@ $('.table-sort').dataTable({
 					return '<td class="td-manage">'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 					+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
+					+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 					+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 					+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
@@ -188,7 +188,7 @@ $('.table-sort').dataTable({
 				return '<td class="td-manage">'
 				+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 				+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
-				+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
+				+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 				+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 				+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 				+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
@@ -226,7 +226,7 @@ function order_edit(title,url,id){
 function order_deliver(title,url,id){
 	var index = layer.open({
 		type: 2,
-		area: ['700px', '530px'],
+		area: ['700px', '330px'],
 		title: title,
    fix: false, //不固定
    maxmin: true,
@@ -250,7 +250,7 @@ function order_logistics(title,url,id){
 function order_cancel(title,url,id){
 	var index = layer.open({
 		type: 2,
-		area: ['700px', '530px'],
+		area: ['700px', '330px'],
 		title: title,
    fix: false, //不固定
    maxmin: true,
