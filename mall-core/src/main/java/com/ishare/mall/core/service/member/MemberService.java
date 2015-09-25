@@ -62,7 +62,7 @@ public interface MemberService {
 	 */
 	void saveMember(Member member)throws MemberServiceException;
 
-	Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account,String name,String mobile,PageRequest pageRequest)throws MemberServiceException;
+	Page<Member> findBycondition(String account,String name,String mobile,Integer channelId,PageRequest pageRequest)throws MemberServiceException;
 
 	/**
 	 * 更新用户信息

@@ -25,7 +25,6 @@
                                               href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
-    <form action="" method="post" class="form form-horizontal" id="form-member-search">
         <div class="text-c"> 日期范围：
             <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin"
                    class="input-text Wdate" style="width:120px;">
@@ -37,7 +36,6 @@
             <button type="submit" onclick="searchMember()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
             </button>
         </div>
-    </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
                                                                class="btn btn-danger radius"><i class="Hui-iconfont">
         &#xe6e2;</i> 批量删除</a> <a href="javascript:"
@@ -75,8 +73,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
+    var targetTable;
+    var url = "${pageContext.request.contextPath}/member/findByChannelId.dhtml";
     $(function () {
-        $('.table-sort').dataTable({
+         targetTable = $('.table-sort').DataTable({
 //            "aaSorting": [[1, "desc"]],//默认第几个排序
 //            "bStateSave": true,//状态保存
 //            "aoColumnDefs": [
@@ -88,8 +88,11 @@
             "bServerSide": true,
             "bStateSave": false,
             "aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
-            "sAjaxSource": "${pageContext.request.contextPath}/member/findByChannelId.dhtml",
-            "sAjaxDataProp":"content",
+            "ajax": {
+                url:url,
+                "dataSrc": "content"
+            },
+           //"sAjaxDataProp":"content",
             "aoColumns": [
                 { "mDataProp": null },
                 { "mDataProp": null },
@@ -117,7 +120,7 @@
                     {
                         "targets" : 1 ,
                         "render" : function(mDataProp, type, full) {
-                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show('+mDataProp.name+',\'${pageContext.request.contextPath}/member/memberView/account/'+mDataProp.account+'.dhtml\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show(\'\',\'${pageContext.request.contextPath}/member/memberView/account/'+mDataProp.account+'.dhtml\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
                     }
                 },
                 {
@@ -134,15 +137,6 @@
     }
                 },
             ],
-        });
-        $('.table-sort tbody').on('click', 'tr', function () {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-            }
-            else {
-                table.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
         });
     });
     /*用户-添加*/
@@ -195,9 +189,17 @@
     /*根据条件查询*/
     function searchMember(){
         var searchCondition = $("#searchCondition").val();
-        var url = '${pageContext.request.contextPath}'+'/member/findBySearchCondition/'+searchCondition+'.dhtml';
-        $("#form-member-search").attr("action",url);
-        $("#form-member-search").submit();
+        url = '${pageContext.request.contextPath}'+'/member/findBySearchCondition/'+searchCondition+'.dhtml';
+        targetTable.ajax.url(url).load();
+//        targetTable.ajax.load(url);
+//        var oSettings = targetTable.fnSettings();
+//        oSettings.sAjaxSource = url;
+     //   targetTable.ajax.reload();
+        //alert(oSettings.sAjaxSource);
+      // targetTable.ajaxPost(oSettings.sAjaxSource);
+//        targetTable.sAjaxSource(url);
+//        $("#form-member-search").attr("action",url);
+//        $("#form-member-search").submit();
     }
 </script>
 </body>

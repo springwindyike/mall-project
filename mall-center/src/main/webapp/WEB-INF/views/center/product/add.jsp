@@ -46,24 +46,23 @@
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				<!-- <input id ='selectType'class="select" value ='请选择商品分类'/> -->
-				 <form:select path="typeCode" class="select">
-<!-- 					<option path="typeCode" value="1000100101">衬衫</option>
- -->					 <form:option value="1000100101">衬衫</form:option>  
-				 </form:select>
-					<!-- 	<div id ='showType' class="content_wrap">
-							<div class="zTreeDemoBackground left form-label">
-								<ul id="treeDemo" class="ztree"></ul>
-							</div>
-						</div> -->
+				 <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="order_edit()"/>
 				</span> </div>
+				<div id="menu" <!-- style="visibility:hidden" -->  class="form-label">
+			<%-- 	<form:select path="typeCode" class="select">
+					 <form:option value="1000100101">衬衫</form:option>  
+		 			 <form:option value="1000100101">衬衫</form:option>  
+		  		 <form:option value="1000100101">衬衫</form:option>  
+		   	 <form:option value="1000100101">衬衫</form:option>  
+					</form:select> --%>
+				</div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
-				<form:input type="text" class="input-text" value="0" placeholder="" id="" name=""  path="inventory"/>
+				<form:input type="text" class="input-text" value="" placeholder="" id="" name=""  path="inventory"/>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-2">产品进价：</label>${type}
+			<label class="form-label col-2">产品进价：</label>
 			<div class="formControls col-4">
 			<form:input type="text" path="basePrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
 				元</div>
@@ -799,33 +798,54 @@ $(function(){
 
 	var ue = UE.getEditor('editor');
 });
-/* $("#selectType").click(function(){
+var obj=[];
+function order_edit(){
+	 var str="";
+	 $.ajax({
+        type: "get",
+        dataType: "json",
+        url: "${pageContext.request.contextPath}/productType/firstLevel.dhtml",
+        success: function (msg) {
+       			 	var jsonData = eval(msg);
+		        	$.each(jsonData.child, function(index, jsonOne) {
+		        		obj.push(jsonOne);
+		         	str+='<div id ='+index+'><a onclick=dispaly_child_sort();>'+jsonOne.typeName+'</a></div>';
+		        				});
+		        	layer_open(str);
+                         }
+        })
+};
+function layer_open(m) {
+	layer.closeAll('page');
+	var index =layer.open({
+	    type: 1,
+	    title: '选择分类',
+	    closeBtn: true,
+	    shadeClose: true,
+	    area: ['700px', '530px'],
+	    content: m
+	});
+};
+var i =0
+function dispaly_child_sort(){
+	 var str="";
 	$.ajax({
-		   type: "GET",
-		   url:  'http://localhost:8100/center/product/allType.dhtml',
-		   data: '',
-		   dataType: "json",
-		   complete: function(data){
-			 
-		   }
-				   });
-	var setting = {	};
-	var zNodes =[
-		{ name:"父节点1 - 展开", open:true,
-			children: [
-				{ name:"父节点11 - 折叠",
-					children: [
-						{ name:"叶子节点111"},
-						{ name:"叶子节点112"},
-						{ name:"叶子节点113"},
-						{ name:"叶子节点114"}
-					]}
-			]}
-
-	];
-	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-	$("#showType").show();
-}); */
+        type: "get",
+        dataType: "json",
+        url: "${pageContext.request.contextPath}/productType/childLevel/"+obj[i].id+".dhtml",
+        success: function (msg) {
+       			 	var jsonData = eval(msg);
+		        	$.each(jsonData.child, function(index, jsonOne) {
+		        		if (i==1){
+		        			console.log(obj);
+		        		}
+		        		obj.push(jsonOne);
+		        		str+='<div id ='+index+'><a onclick=dispaly_child_sort();>'+jsonOne.typeName+'</a></div>';}	)	;
+		        	layer_open(str);
+                         }}
+	)
+	i++;
+};
 </script>
 </body>
 </html>
