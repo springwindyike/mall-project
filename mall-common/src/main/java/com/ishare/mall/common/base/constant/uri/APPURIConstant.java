@@ -22,6 +22,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_QUERY_BY_ACCOUNT = "/queryByAccount";
         String REQUEST_MAPPING_DELETE = "/delete";
         String REQUEST_MAPPING_UPDATE = "/update";
+        //检测是否存在 如果不存在则创建
+        String REQUEST_MAPPING_CHECK_AND_CREATE = "/check";
     }
 
     //权限
