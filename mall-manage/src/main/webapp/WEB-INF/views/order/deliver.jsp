@@ -8,6 +8,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
@@ -28,16 +29,24 @@
 
 <body>
 <div class="pd-20">
-  <form action="${pageContext.request.contextPath}/register.dhtml" method="post" class="form form-horizontal" id="form-member-deliver">
+  <form action="${pageContext.request.contextPath}/deliver.dhtml" method="post" class="form form-horizontal" id="form-member-deliver">
+  		<input name="orderId" type="hidden" value="${orderId }"/>
     <div class="row cl">
-      <label class="form-label col-3">请选择物流公司：</label>
+      <label class="form-label col-3"><span class="c-red">*</span>请选择物流公司：</label>
       <div class="formControls col-5">
 	      	<span class="select-box" id="logistics">
-	      					
+	      	
 	        </span> 
         </div>
       <div class="col-4"> </div>
     </div>
+			<div class="row cl">
+				 <label class="form-label col-3"><span class="c-red">*</span>运单号码：</label>
+				 <div class="formControls col-5">
+						<input type="text" class="input-text" autocomplete="off" placeholder="" name="expressOrder" id="expressOrder" datatype="*5-30" nullmsg="运单号码不能为空" >
+					</div>
+					<div class="col-4"> </div>
+				</div>
     <div class="row cl">
       <label class="form-label col-3">备注：</label>
       <div class="formControls col-5">
@@ -72,7 +81,7 @@ $(function(){
 	      		 }
 				var logistics_codes = logistics['id'];
 				var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择物流公司！" style="width:253px">');
-				$select.attr('name', 'logistics');
+				$select.attr('name', 'expressId');
 				if (logistics_codes[0] != -1) {
 						logistics_names.unshift('请选择');
 						logistics_codes.unshift(-1);
