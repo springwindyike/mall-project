@@ -38,6 +38,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
  * Version 1.0
  */
 @Controller
+@Deprecated
 public class AuthorizeController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthorizeController.class);

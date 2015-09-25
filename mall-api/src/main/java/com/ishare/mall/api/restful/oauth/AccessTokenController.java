@@ -35,6 +35,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
  * Version 1.0
  */
 @RestController
+@Deprecated
 public class AccessTokenController {
 
     private static final Logger log = LoggerFactory.getLogger(AccessTokenController.class);

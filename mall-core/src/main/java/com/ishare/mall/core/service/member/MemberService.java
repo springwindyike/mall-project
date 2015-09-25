@@ -1,5 +1,7 @@
 package com.ishare.mall.core.service.member;
 
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.core.model.member.Member;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,14 @@ import org.springframework.data.domain.PageRequest;
  * Version 1.0
  */
 public interface MemberService {
+
+	interface Default {
+		//默认创建
+		String DEFAULT_PASSWORD 	= "default";
+		Gender DEFAULT_SEX			= Gender.MAN;
+		MemberType DEFAULT_TYPE		= MemberType.CLERK;
+	}
+
 	/**
 	 * 通过账号ID查找
 	 * @param id
@@ -23,7 +33,7 @@ public interface MemberService {
 	 * @param account
 	 * @return
 	 */
-	Member checkAndCreateByAccount(String account, Integer channelId);
+	Member checkAndCreateByAccount(String account, String appId) throws MemberServiceException;
 
 	/**
 	 * @param mobile

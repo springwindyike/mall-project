@@ -15,6 +15,7 @@ import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.utils.UuidUtils;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -434,6 +434,26 @@ public class MemberResource {
             response.setMessage(e.getMessage());
             response.setSuccess(false);
         }
+        return response;
+    }
+
+    /**
+     * 检测是否存在 如果不存在则新建
+     * @param checkAndCreateDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_CHECK_AND_CREATE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response check(@RequestBody CheckAndCreateDTO checkAndCreateDTO) {
+        if (StringUtils.isNotBlank(checkAndCreateDTO.getAccount())) {
+                memberService.checkAndCreateByAccount(checkAndCreateDTO.getAccount(), checkAndCreateDTO.getClientId());
+        } else {
+            throw new MemberServiceException("用户创建失败");
+        }
+        Response response = new Response();
+        response.setCode(200);
         return response;
     }
 

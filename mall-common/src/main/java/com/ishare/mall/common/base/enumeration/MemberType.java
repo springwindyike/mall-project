@@ -11,7 +11,14 @@ public enum MemberType {
         public String getName() {
             return "管理员";
         }
-    },MEMBER {
+    },
+    CLERK {
+        @Override
+        public String getName() {
+            return "办事员";
+        }
+    }
+    ,MEMBER {
         @Override
         public String getName() {
             return "普通成员";
