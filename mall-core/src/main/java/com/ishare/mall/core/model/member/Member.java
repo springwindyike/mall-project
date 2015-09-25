@@ -55,7 +55,7 @@ public class Member extends BaseEntity {
     private String updateBy;
     /**是否可用**/
     @Column(name = "member_use",length = 5)
-    private boolean use;
+    private boolean use = true;
     /**性别要求**/
     @Enumerated(EnumType.STRING)
     @Column(length = 5, nullable = false)

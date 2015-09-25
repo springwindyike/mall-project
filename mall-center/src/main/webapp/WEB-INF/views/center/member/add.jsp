@@ -27,7 +27,7 @@
 
             <div class="formControls col-5">
                 <input type="text" class="input-text" value="" placeholder="" id="account" name="account"
-                       datatype="*2-16" nullmsg="账号不能为空">
+                       datatype="*2-16" nullmsg="账号不能为空" ajaxurl="accountValid.dhtml" sucmsg="验证通过！">
             </div>
             <div class="col-4"></div>
         </div>

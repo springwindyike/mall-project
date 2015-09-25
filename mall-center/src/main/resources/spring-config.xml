@@ -23,6 +23,14 @@
 	<util:properties id="settings" location="classpath:config/config.properties" />
 	<import resource="classpath:spring-config-cache.xml"/>
 	<!--<import resource="classpath:shiro/spring-config-shiro.xml"/>-->
-
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+			</list>
+		</property>
+	</bean>
 
 </beans>
