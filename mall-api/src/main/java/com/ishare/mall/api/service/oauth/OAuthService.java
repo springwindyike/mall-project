@@ -31,7 +31,7 @@ public interface OAuthService {
      * @param accessToken
      * @param account
      */
-    void addAccessToken(String accessToken, String account, String clientId);
+    OAuthObject addAccessToken(String accessToken, String account, String clientId);
 
     /**
      * 检测authCode
