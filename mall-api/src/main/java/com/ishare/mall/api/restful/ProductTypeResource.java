@@ -3,18 +3,16 @@ package com.ishare.mall.api.restful;
 import com.google.common.collect.Maps;
 import com.ishare.mall.api.restful.base.BaseResource;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.api.utils.Servlets;
-import com.ishare.mall.api.utils.page.PageUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.ishare.mall.common.base.general.Response;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 /**
  * Created by YinLin on 2015/8/10.
@@ -36,23 +29,39 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 @RestController
 @RequestMapping("/producttypes")
 public class ProductTypeResource extends BaseResource {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(ProductTypeResource.class);
+	@Autowired
+	private RestTemplate restTemplate;
     /**
      * 类型详细信息
      */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET,produces = {"application/json"})
-	public ProductTypeDTO detail(@NotEmpty @PathVariable("id") Integer id) {
+	public ResponseEntity detail(@NotEmpty @PathVariable("id") Integer id) {
 		//用findOne立即加载实体对象
+		Response response;
 		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
 		productTypeDTO.setId(id);
-		ResponseEntity<ProductTypeDTO> resultEntiy = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultEntiy = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING,APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID),productTypeDTO,ProductTypeDTO.class);
-		//ProductType productType = productTypeService.findOne(id);
-		ProductTypeDTO returnTO = resultEntiy.getBody();
-		//return productType;
-		return returnTO;
+		ResponseEntity<Response<ProductTypeDTO>> resultEntity = null;
+		HttpEntity<ProductTypeDTO> requestDTO = new HttpEntity<ProductTypeDTO>(productTypeDTO);
+		try {
+			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<ProductTypeDTO>>() {
+			});
+		}catch (Exception e){
+			log.error(e.getMessage());
+			response = new Response();
+			response.setSuccess(Response.Status.FAILURE);
+			response.setMessage("系统错误");
+			return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		//获取返回结果
+		response = resultEntity.getBody();
+		//返回结果有错
+		if (response == null || !response.isSuccess()){
+			return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity(response, HttpStatus.OK);
 	 }
    
 //    /**

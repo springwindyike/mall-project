@@ -143,8 +143,8 @@ public class ProductResource {
 	 */
 	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_ID, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
-			produces = {"application/json", "application/xml"},
-			consumes = {"application/json", "application/xml"})
+			produces = {"application/json"},
+			consumes = {"application/json"})
 	public Response findByID(@RequestBody ProductDetailDTO productDetailDTO){
 		Product product;
 		List<ProductStyle> list;
@@ -158,7 +158,7 @@ public class ProductResource {
 				response.setSuccess(false);
 				return response;
 		}
-		if(!product.getVisible()){
+		if(product == null || !product.getVisible()){
 			response.setData(null);
 			return response;
 		}
@@ -166,9 +166,8 @@ public class ProductResource {
 		if(list != null && list.size()>0){
 			for(ProductStyle productStyle:list){
 				ProductStyleDTO productStyleDTO = new ProductStyleDTO();
-				BeanUtils.copyProperties(productStyle,productStyleDTO);
+				BeanUtils.copyProperties(productStyle, productStyleDTO);
 				listStyle.add(productStyleDTO);
-				log.debug(list.get(0).getProduct().getName());
 			}
 		}
 		ProductDetailDTO returnDTO = (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
@@ -184,25 +183,35 @@ public class ProductResource {
 	 */
 	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_CODE, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
-			produces = {"application/json", "application/xml"},
-			consumes = {"application/json", "application/xml"})
-	public ProductDetailDTO findByCode(@RequestBody ProductDetailDTO productDetailDTO){
+			produces = {"application/json",},
+			consumes = {"application/json",})
+	public Response findByCode(@RequestBody ProductDetailDTO productDetailDTO){
+		Response response = new Response();
 		Product product = productService.findByCode(productDetailDTO.getCode());
 		if(product == null || !product.getVisible()){
-			return productDetailDTO;
+			response.setMessage("商品不存在");
+			response.setData(product);
+			return response;
 		}
 		List<ProductStyle> list = productStyleService.findByProductStyle(product.getId());
 		List<ProductStyleDTO> listStyle = new ArrayList<ProductStyleDTO>();
-		if(list != null && list.size()>0){
-			for(ProductStyle productStyle:list){
-				ProductStyleDTO productStyleDTO = new ProductStyleDTO();
-				BeanUtils.copyProperties(productStyle, productStyleDTO);
-				listStyle.add(productStyleDTO);
+		try{
+			if(list != null && list.size()>0){
+				for(ProductStyle productStyle:list){
+					ProductStyleDTO productStyleDTO = new ProductStyleDTO();
+					BeanUtils.copyProperties(productStyle, productStyleDTO);
+					listStyle.add(productStyleDTO);
+				}
 			}
+			ProductDetailDTO returnDTO = (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
+			returnDTO.setList(listStyle);
+			response.setData(returnDTO);
+		}catch (ProductServiceException e){
+			log.error(e.getMessage());
+			response.setSuccess(false);
+			response.setMessage(e.getMessage());
 		}
-		ProductDetailDTO returnDTO = (ProductDetailDTO)MapperUtils.map(product, ProductDetailDTO.class);
-		returnDTO.setList(listStyle);
-		return returnDTO;
+		return response;
 	}
 
 	/**
@@ -212,36 +221,45 @@ public class ProductResource {
 	 */
 	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
-			produces = {"application/json", "application/xml"},
-			consumes = {"application/json", "application/xml"})
-	public ProductListDTO findByParam(@RequestBody ProductListDTO productListDTO){
+			produces = {"application/json",},
+			consumes = {"application/json",})
+	public Response findByParam(@RequestBody ProductListDTO productListDTO){
 		List<ProductListDTO> list = new ArrayList<ProductListDTO>();
 		Integer offset = productListDTO.getOffset();
 		Integer limit = productListDTO.getLimit();
-		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+		PageDTO pageDTO = new PageDTO();
+		Response response = new Response();
 		Page<Product> result = null;
-		if(productListDTO.getMap() != null && !productListDTO.getMap().isEmpty()){
-			result = productService.search(productListDTO.getMap(), pageRequest);
-		}else {
-			result = productService.search(null, pageRequest);
+		try{
+			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+			if(productListDTO.getMap() != null && !productListDTO.getMap().isEmpty()){
+				result = productService.search(productListDTO.getMap(), pageRequest);
+			}else {
+				result = productService.search(null, pageRequest);
+			}
+			if(result != null && result.getSize() > 0 && result.getContent() != null && result.getContent().size() >0){
+				List<Product> productList = result.getContent();
+				for (Product product:productList){
+					if(!product.getVisible()) continue;
+					ProductListDTO productDTO = new ProductListDTO();
+					BeanUtils.copyProperties(product,productDTO);
+					list.add(productDTO);
+				}
+				pageDTO.setContent(list);
+				pageDTO.setTotalPages(result.getTotalPages());
+				pageDTO.setTotalElements(result.getTotalElements());
+				log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
+				productListDTO.setPageDTO(pageDTO);
+			}
+			response.setData(productListDTO);
+		}catch (ProductServiceException e){
+			log.error(e.getMessage());
+			response.setMessage(e.getMessage());
+			response.setSuccess(false);
 		}
 
-		PageDTO pageDTO = new PageDTO();
-		if(result != null && result.getSize() > 0 && result.getContent() != null && result.getContent().size() >0){
-			List<Product> productList = result.getContent();
-			for (Product product:productList){
-				if(!product.getVisible()) continue;
-				ProductListDTO productDTO = new ProductListDTO();
-				BeanUtils.copyProperties(product,productDTO);
-				list.add(productDTO);
-			}
-			pageDTO.setContent(list);
-			pageDTO.setTotalPages(result.getTotalPages());
-			pageDTO.setTotalElements(result.getTotalElements());
-			log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
-			productListDTO.setPageDTO(pageDTO);
-		}
-		return productListDTO;
+
+		return response;
 	}
     @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_DEL, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
