@@ -159,7 +159,7 @@ public class OAuthServiceImpl implements OAuthService {
             final String accessToken = oauthIssuerImpl.accessToken();
             return this.addAccessToken(accessToken, account, appid);
         } catch (OAuthSystemException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             throw new ApiLogicException("token:获取失败", HttpStatus.BAD_REQUEST);
         }
     }
