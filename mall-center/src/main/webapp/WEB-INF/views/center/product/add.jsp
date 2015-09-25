@@ -798,7 +798,7 @@ $(function(){
 
 	var ue = UE.getEditor('editor');
 });
-var obj=[];
+
 function order_edit(){
 	 var str="";
 	 $.ajax({
@@ -808,14 +808,12 @@ function order_edit(){
         success: function (msg) {
        			 	var jsonData = eval(msg);
 		        	$.each(jsonData.child, function(index, jsonOne) {
-		        		obj.push(jsonOne);
-		         	str+='<div id ='+index+'><a onclick=dispaly_child_sort();>'+jsonOne.typeName+'</a></div>';
-		        				});
+		         str+="<div><tr id =productName><a onclick=dispaly_child_sort("+jsonOne.id+")>"+jsonOne.typeName+"</a></tr></div>";}	)	;
 		        	layer_open(str);
-                         }
-        })
+                         }}
+		)
 };
-function layer_open(m) {
+function layer_open(i) {
 	layer.closeAll('page');
 	var index =layer.open({
 	    type: 1,
@@ -823,28 +821,36 @@ function layer_open(m) {
 	    closeBtn: true,
 	    shadeClose: true,
 	    area: ['700px', '530px'],
-	    content: m
+	    content: i
 	});
 };
-var i =0
-function dispaly_child_sort(){
+
+var i = 0;
+function dispaly_child_sort(parentId){
 	 var str="";
-	$.ajax({
-        type: "get",
-        dataType: "json",
-        url: "${pageContext.request.contextPath}/productType/childLevel/"+obj[i].id+".dhtml",
-        success: function (msg) {
-       			 	var jsonData = eval(msg);
-		        	$.each(jsonData.child, function(index, jsonOne) {
-		        		if (i==1){
-		        			console.log(obj);
-		        		}
-		        		obj.push(jsonOne);
-		        		str+='<div id ='+index+'><a onclick=dispaly_child_sort();>'+jsonOne.typeName+'</a></div>';}	)	;
-		        	layer_open(str);
-                         }}
-	)
-	i++;
+	 if (i==2){
+			$.ajax({
+		        type: "get",
+		        dataType: "json",
+		        url: "${pageContext.request.contextPath}/productType/findById/"+parentId+".dhtml",
+		        success: function (msg) {
+		        	alert(msg.typeName+msg.code);
+		                       }
+		              })
+	 } else {
+			$.ajax({
+		        type: "get",
+		        dataType: "json",
+		        url: "${pageContext.request.contextPath}/productType/childLevel/"+parentId+".dhtml",
+		        success: function (msg) {
+		       			 	var jsonData = eval(msg);
+				        	$.each(jsonData.child, function(index, jsonOne) {
+				        		 str+="<div><tr id =productName><a onclick=dispaly_child_sort("+jsonOne.id+")>"+jsonOne.typeName+"</a></tr></div>";}	)	;
+				        	layer_open(str);
+				        	i++;
+		                       }
+		              })
+	 }
 };
 </script>
 </body>

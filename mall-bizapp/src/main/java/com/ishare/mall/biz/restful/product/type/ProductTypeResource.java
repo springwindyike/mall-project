@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.exception.ProductTypeServiceException;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
@@ -127,12 +128,36 @@ public class ProductTypeResource {
 	}
      	return response;
     }
+    
+    /**
+     * 
+     * @param productTypeDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID, method = RequestMethod.POST,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
+    public Response findById(@RequestBody ProductTypeDTO productTypeDTO) {
+    	ProductType productType ;
+    	 Response response = new Response();
+    	try {
+			productType = productTypeService.findOne(productTypeDTO.getId());
+			if(productType != null){
+				ProductTypeDTO returnDTO = 	(ProductTypeDTO) MapperUtils.map(productType, ProductTypeDTO.class);
+				response.setData(returnDTO);
+			}
+		} catch (ProductTypeServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+	}
+         return response;
+    }
     /**
      * 根据ID获取商品类别的详细信息
      * @param productTypeDTO
      * @return
      */
-    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID, method = RequestMethod.POST,
+/*    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
@@ -162,7 +187,7 @@ public class ProductTypeResource {
             returnTO.setChild(productTypeDTOChildList);
         }
         return returnTO;
-    }
+    }*/
     
     
 

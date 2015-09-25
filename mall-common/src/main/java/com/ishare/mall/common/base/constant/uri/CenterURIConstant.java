@@ -58,6 +58,7 @@ public interface CenterURIConstant {
 		 String REQUEST_MAPPING   = "/productType";
 		 String REQUEST_MAPPING_FITST_LEVEL = "/firstLevel";
 		 String REQUEST_MAPPING_CHILDREN_LEVEL = "/childLevel/{parentId}";
+		 String REQUEST_MAPPING_FIND_BY_ID = "/findById/{id}";
 
 	}
 }
