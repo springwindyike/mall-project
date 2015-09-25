@@ -5,12 +5,10 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.form.member.MemberUpdatePasswordForm;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 
-import com.ishare.mall.common.base.dto.test.TestDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
 import com.ishare.mall.common.base.general.Response;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -20,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -57,20 +56,27 @@ public class MemberController extends BaseController {
 	public PageDTO findByChannelId(HttpServletRequest request, Model model) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setChannelId(8);
-		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
-		int displayStart = Integer.parseInt(request.getParameter("iDisplayStart"));
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
+		System.out.println(request.getParameter("draw"));
+		System.out.println(request.getParameter("length"));
+
 		int currentPage = displayStart/displayLength+1;
 		memberDTO.setLimit(displayLength);
 		memberDTO.setOffset(currentPage);
 		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
 		try{
 			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),
-					HttpMethod.POST, null, new ParameterizedTypeReference<Response<MemberDTO>>(){});
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>(){});
 		}catch (Exception e){
 			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID+"error");
 			throw new Exception(e.getMessage());
 		}
 		Response response = resultDTO.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
 		if(response.isSuccess()){
 			MemberDTO memberDTOResult = (MemberDTO)response.getData();
 			model.addAttribute("pageDTO", memberDTOResult.getPageDTO());
@@ -101,13 +107,29 @@ public class MemberController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/findByAccount/{account}", method = RequestMethod.GET)
-	public String findByAccount(@NotEmpty @PathVariable("account") String account) {
+	public String findByAccount(@NotEmpty @PathVariable("account") String account,Model model) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
-		ResponseEntity<MemberDTO> resultDTO = null;
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
+		HttpEntity<MemberDTO> resquestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),
+					HttpMethod.POST, resquestDTO, new ParameterizedTypeReference<Response<MemberDTO>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if (response.isSuccess()){
+			MemberDTO memberResultDTO = (MemberDTO)response.getData();
+			model.addAttribute("memberDetailDTO",memberResultDTO.getMemberDetailDTO());
+		}else {
+			throw new Exception(response.getMessage());
+		}
 		return CenterViewConstant.Member.MEMBER_VIEW;
 	}
 
@@ -118,13 +140,25 @@ public class MemberController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/saveMember")
-	public String saveMember(MemberForm memberForm){
+	public String saveMember(MemberForm memberForm) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		BeanUtils.copyProperties(memberForm, memberDTO);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER),memberDTO,MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if (!response.isSuccess()){
+			throw new Exception(response.getMessage());
+		}
 		return CenterViewConstant.Member.MEMBER_ADD_SUCCESS;
 	}
 
@@ -138,17 +172,42 @@ public class MemberController extends BaseController {
 	}
 
 	@RequestMapping(value = "/findBySearchCondition/{searchCondition}")
-	public String findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model){
+	@ResponseBody
+	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setMobile(searchCondition);
 		memberDTO.setAccount(searchCondition);
 		memberDTO.setName(searchCondition);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION),memberDTO,MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("pageDTO",memberDTOResult.getPageDTO());
-		return CenterViewConstant.Member.MEMBER_LIST;
+		memberDTO.setChannelId(8);
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
+		System.out.println(request.getParameter("draw"));
+		System.out.println(request.getParameter("length"));
+
+		int currentPage = displayStart/displayLength+1;
+		memberDTO.setLimit(displayLength);
+		memberDTO.setOffset(currentPage);
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app " + APPURIConstant.Member.REQUEST_MAPPING + APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION + "error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response != null) {
+			if(response.isSuccess()){
+				memberDTO = (MemberDTO)response.getData();
+				model.addAttribute("pageDTO",memberDTO.getPageDTO());
+				return memberDTO.getPageDTO();
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else{
+			throw new Exception("get response error");
+		}
 	}
 
 	/**
@@ -174,61 +233,132 @@ public class MemberController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/memberView/account/{account}",method = RequestMethod.GET)
-	public String memberView(@NotEmpty @PathVariable("account") String account,Model model){
+	public String memberView(@NotEmpty @PathVariable("account") String account,Model model) throws Exception {
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),memberDTO,MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("memberDetailDTO",memberDTOResult.getMemberDetailDTO());
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+//		RestTemplate restTemplate = new RestTemplate();
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try {
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {
+					});
+		} catch (Exception e) {
+			log.error("call bizp app " + APPURIConstant.Member.REQUEST_MAPPING + APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT + "error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if (response != null) {
+			if (response.isSuccess()) {
+				memberDTO = (MemberDTO) response.getData();
+				model.addAttribute("memberDetailDTO", memberDTO.getMemberDetailDTO());
+			} else {
+				throw new Exception(response.getMessage());
+			}
+		}
 		return CenterViewConstant.Member.MEMBER_VIEW;
 	}
-
 	@ResponseBody
 	@RequestMapping(value = "/changePassword")
-	public String changePassword(MemberUpdatePasswordForm memberUpdateForm){
+	public String changePassword(MemberUpdatePasswordForm memberUpdateForm) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		BeanUtils.copyProperties(memberUpdateForm, memberDTO);
-		ResponseEntity<MemberDTO> resultEntity = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD),memberDTO,MemberDTO.class);
-		//MemberDTO memberDTOResult = resultEntity.getBody();
+		ResponseEntity<Response<MemberDTO>> resultEntity = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try{
+			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultEntity.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if(response != null && !response.isSuccess()){
+			throw new Exception(response.getMessage());
+		}
 		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
 	}
 
 	@RequestMapping(value = "/forward2ChangePassword/account/{account}",method = RequestMethod.GET)
-	public String forward2ChangePassword(@NotEmpty @PathVariable("account") String account,Model model){
+	public String forward2ChangePassword(@NotEmpty @PathVariable("account") String account,Model model) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT), memberDTO, MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("memberDetailDTO", memberDTOResult.getMemberDetailDTO());
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if(response != null){
+			if(response.isSuccess()){
+				MemberDTO memberDTOResult = (MemberDTO)response.getData();
+				model.addAttribute("memberDetailDTO", memberDTOResult.getMemberDetailDTO());
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else {
+			throw new Exception("get response error");
+		}
 		return CenterViewConstant.Member.MEMBER_CHANGE_PASSWORD;
 	}
 	@ResponseBody
 	@RequestMapping(value = "/delete/account/{account}")
-	public String delete(@NotEmpty @PathVariable("account") String account){
+	public String delete(@NotEmpty @PathVariable("account") String account) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_DELETE), memberDTO, MemberDTO.class);
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_DELETE),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_DELETE+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if (response != null && !response.isSuccess()){
+			throw new Exception(response.getMessage());
+		}
 		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/update")
-	public String update(MemberForm memberForm){
+	public String update(MemberForm memberForm) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		BeanUtils.copyProperties(memberForm, memberDTO);
-		ResponseEntity<MemberDTO> resultEntity = null;
-		RestTemplate restTemplate = new RestTemplate();
-		//resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD),memberDTO,MemberDTO.class);
-		//MemberDTO memberDTOResult = resultEntity.getBody();
-		restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_UPDATE), memberDTO, MemberDTO.class);
+		ResponseEntity<Response<MemberDTO>> resultEntity = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try{
+			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_UPDATE),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_UPDATE+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultEntity.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if(response != null && !response.isSuccess()){
+			throw new Exception(response.getMessage());
+		}
 		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
 	}
 
@@ -237,14 +367,29 @@ public class MemberController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/forward2UpdatePage/account/{account}")
-	public String forward2UpdatePage(@NotEmpty @PathVariable("account") String account,Model model){
+	public String forward2UpdatePage(@NotEmpty @PathVariable("account") String account,Model model) throws  Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setAccount(account);
-		ResponseEntity<MemberDTO> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),memberDTO,MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("memberDetailDTO", memberDTOResult.getMemberDetailDTO());
+		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
+		try {
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response != null){
+			if(response.isSuccess()){
+				MemberDTO memberDTOResult = (MemberDTO)response.getData();
+				model.addAttribute("memberDetailDTO", memberDTOResult.getMemberDetailDTO());
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else {
+			throw new Exception("get response error");
+		}
 		return CenterViewConstant.Member.MEMBER_UPDATE;
 	}
 

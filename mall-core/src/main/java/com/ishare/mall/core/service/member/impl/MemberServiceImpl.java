@@ -75,8 +75,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Page<Member> findByAccountLikeOrNameLikeOrMobileLike(String account, String name, String mobile,PageRequest pageRequest) throws MemberServiceException{
-		return memberRepository.findByAccountLikeOrNameLikeOrMobileLike(account, name, mobile, pageRequest);
+	public Page<Member> findBycondition(String account, String name, String mobile,Integer channelId,PageRequest pageRequest) throws MemberServiceException{
+		return memberRepository.findBycondition(account, name, mobile, channelId, pageRequest);
 	}
 
 	@Override
