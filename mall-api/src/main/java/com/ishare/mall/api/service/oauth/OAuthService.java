@@ -1,6 +1,7 @@
 package com.ishare.mall.api.service.oauth;
 
 import com.ishare.mall.common.base.dto.oauth.OAuthObject;
+import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 
 /**
  * Created by YinLin on 2015/8/12.
@@ -8,6 +9,16 @@ import com.ishare.mall.common.base.dto.oauth.OAuthObject;
  * Version 1.0
  */
 public interface OAuthService {
+
+    interface Request {
+        String APP_ID = "appid";
+        String APP_SECRET = "secret";
+        String GRANT_TYPE = "grant_type";
+    }
+
+    interface CheckValue {
+        String GRANT_TYPE = "client_credential";
+    }
     /**
      * 添加 auth code
      * @param authCode
@@ -82,4 +93,6 @@ public interface OAuthService {
      * @param account
      */
     boolean checkAccount(String account);
+
+    OAuthObject createToken(String type, String appid, String secret, String account) throws ApiLogicException;
 }

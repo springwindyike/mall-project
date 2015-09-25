@@ -18,9 +18,10 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by YinLin on 2015/9/24.
- * Description :
+ * Description : 客户端
  * Version 1.0
  */
+
 @Service
 public class OrderServiceImpl extends BaseService implements OrderService {
 
@@ -30,7 +31,9 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     public OrderDetailDTO findOne(String id) throws ApiLogicException {
+
         ResponseEntity<Response<OrderDetailDTO>> responseEntity;
+
         try {
             responseEntity = restTemplate.exchange(
                     this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ID),
@@ -43,9 +46,10 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         Response<OrderDetailDTO> response = responseEntity.getBody();
 
-        if (!response.isSuccess()) {
+        if (!response.isSuccess() || response.getData() == null) {
             throw new ApiLogicException("订单未找到", HttpStatus.NOT_FOUND);
         }
-        return null;
+
+        return response.getData();
     }
 }

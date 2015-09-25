@@ -74,6 +74,9 @@ public interface APPURIConstant {
         String REQUEST_MAPPING = "/alipay";
         //构建支付HTML
         String REQUEST_MAPPING_CREATE_PAY_HTML = "/create";
+
+        //支付宝支付回调
+        String REQUEST_MAPPING_NOTIFY = "/notify";
     }
 
     //渠道

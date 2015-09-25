@@ -67,7 +67,7 @@ public class AliPayServiceImpl implements AliPayService {
         sParaTemp.put("out_trade_no", aliPayDTO.getOrderID());
         sParaTemp.put("subject", aliPayDTO.getGoodsName());
         sParaTemp.put("total_fee", aliPayDTO.getAmount().toString());
-        return this.buildRequest(sParaTemp, "POST", "充值");
+        return this.buildRequest(sParaTemp, "POST", "支付");
     }
 
     private String buildPayForm() {
