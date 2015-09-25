@@ -35,6 +35,7 @@ public class OrderDetailDTO extends GenericDTO {
     private Date updateTime = new Date();
     /* 订单状态 */
     private OrderState state;
+    private String stateValue;
     /* 商品总金额 */
     private Float productTotalPrice = 0f;
     /* 配送费 */
@@ -70,7 +71,6 @@ public class OrderDetailDTO extends GenericDTO {
 
     private int limit;
 
-    private PageDTO pageDTO;
 	//收货人信息
 	private OrderDeliverDTO deliver;
 	//订购者信息
@@ -202,13 +202,6 @@ public class OrderDetailDTO extends GenericDTO {
 	public void setLimit(int limit) {
 		this.limit = limit;
 	}
-	public PageDTO getPageDTO() {
-		return pageDTO;
-	}
-	public void setPageDTO(PageDTO pageDTO) {
-		this.pageDTO = pageDTO;
-	}
-
 	public Set<OrderItemDetailDTO> getItems() {
 		return items;
 	}
@@ -236,6 +229,12 @@ public class OrderDetailDTO extends GenericDTO {
 
 	public void setContact(OrderContactDTO contact) {
 		this.contact = contact;
+	}
+	public String getStateValue() {
+		return stateValue;
+	}
+	public void setStateValue(String stateValue) {
+		this.stateValue = stateValue;
 	}
 
 }

@@ -9,5 +9,11 @@ import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
  * Version 1.0
  */
 public interface OrderService {
+    /**
+     * 通过订单号查找订单
+     * @param id
+     * @return
+     * @throws ApiLogicException
+     */
     OrderDetailDTO findOne(String id) throws ApiLogicException;
 }

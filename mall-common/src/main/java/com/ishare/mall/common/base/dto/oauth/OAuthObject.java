@@ -56,4 +56,15 @@ public class OAuthObject {
     public void setAccount(String account) {
         this.account = account;
     }
+
+    @Override
+    public String toString() {
+        return "OAuthObject{" +
+                "accessToken='" + accessToken + '\'' +
+                ", accessCode='" + accessCode + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientName='" + clientName + '\'' +
+                ", account='" + account + '\'' +
+                '}';
+    }
 }
