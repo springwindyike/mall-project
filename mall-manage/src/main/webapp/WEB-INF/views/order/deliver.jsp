@@ -29,7 +29,7 @@
 
 <body>
 <div class="pd-20">
-  <form action="${pageContext.request.contextPath}/deliver.dhtml" method="post" class="form form-horizontal" id="form-member-deliver">
+  <form action="${pageContext.request.contextPath}/order/deliver.dhtml" method="post" class="form form-horizontal" id="form-member-deliver">
   		<input name="orderId" type="hidden" value="${orderId }"/>
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>请选择物流公司：</label>
@@ -117,8 +117,9 @@ $(function(){
 					$.Showmsg("发货成功！");
 				},2000);
 				setTimeout(function(){
-					var index = parent.layer.getFrameIndex(window.name);
-					parent.layer.close(index); 
+/* 					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);  */
+					parent.location.reload();
 				},5000);
 			}
 			if(data.success==false){

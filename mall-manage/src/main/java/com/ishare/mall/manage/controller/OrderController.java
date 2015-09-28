@@ -71,11 +71,12 @@ public class OrderController extends BaseController {
 		return ManageViewConstant.Order.DELIVER_ORDER;
 	}
 	/**
-	 * 访问发货页面
+	 * 发货
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER_SUBMIT, method = RequestMethod.POST)
+	@ResponseBody
 	public OrderResultDTO deliverSubmit(
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("expressId") String expressId, 
@@ -86,6 +87,7 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setOrderId(orderId);
 		orderDetailDTO.setExpressId(expressId);
 		orderDetailDTO.setExpressOrder(expressOrder);
+		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
@@ -118,17 +120,40 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL, method = RequestMethod.GET)
-	public String cancel() {
+	public String cancel(@NotEmpty @PathVariable("id") String id, HttpServletRequest request) {
+		request.setAttribute("orderId", id);
 		return ManageViewConstant.Order.CANCEL_ORDER;
 	}
 	/**
-	 * 访问取消页面
+	 * 取消
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL, method = RequestMethod.POST)
-	public String cancelSubmit(@NotEmpty @PathVariable("logistics") Integer logistics) {
-		return ManageViewConstant.Order.CANCEL_ORDER;
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL_SUBMIT, method = RequestMethod.POST)
+	@ResponseBody
+	public OrderResultDTO cancelSubmit(
+			@NotEmpty @RequestParam("orderId") String orderId,
+			@NotEmpty @RequestParam("note") String note) {
+		OrderResultDTO orderResultDTO = new OrderResultDTO();
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(orderId);
+		orderDetailDTO.setLog(note);
+		ResponseEntity<Response> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CANCEL), orderDetailDTO, Response.class);
+		} catch (Exception e) {
+			log.debug("error");
+			e.printStackTrace();
+			orderResultDTO.setMessage("取消失败！");
+			orderResultDTO.setSuccess(false);
+			return orderResultDTO;
+		}
+		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		orderResultDTO.setMessage("取消成功！");
+		orderResultDTO.setSuccess(true);
+		orderResultDTO.setOrderDetailDTO(orderDetailDTO);
+		return orderResultDTO;
 	}
 	/**
 	 * 获取当前渠道下所有的order

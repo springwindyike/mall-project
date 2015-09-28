@@ -180,7 +180,7 @@ $('.table-sort').dataTable({
 					+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 					+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
+					+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
 					+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_verify(this,\'10001\')" title="通过审核">'
 					+'<i class="Hui-iconfont">&#xe6e1;</i></a></td>';
@@ -192,7 +192,7 @@ $('.table-sort').dataTable({
 				+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 				+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 				+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
-				+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
+				+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
 				+'<i class="Hui-iconfont">&#xe608;</i></a></td>';
 			}
 		} 

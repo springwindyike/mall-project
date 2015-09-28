@@ -1,33 +1,11 @@
 package com.ishare.mall.core.service.order.impl;
 
-import com.ishare.mall.common.base.dto.order.ExchangeDTO;
-import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
-import com.ishare.mall.common.base.enumeration.OrderItemState;
-import com.ishare.mall.common.base.enumeration.OrderState;
-import com.ishare.mall.core.exception.OrderServiceException;
-import com.ishare.mall.core.exception.ProductServiceException;
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.model.order.GeneratedOrderId;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.model.order.OrderDeliverInfo;
-import com.ishare.mall.core.model.order.OrderItem;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductStyle;
-import com.ishare.mall.core.repository.deliver.DeliverRepository;
-import com.ishare.mall.core.repository.information.OrderItemRepository;
-import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
-import com.ishare.mall.core.repository.order.OrderRepository;
-import com.ishare.mall.core.repository.product.ProductRepository;
-import com.ishare.mall.core.repository.product.ProductStyleRepository;
-import com.ishare.mall.core.service.information.ChannelService;
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.service.order.OrderService;
-import com.ishare.mall.core.utils.filter.DynamicSpecifications;
-import com.ishare.mall.core.utils.filter.SearchFilter;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +17,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.enumeration.OrderItemState;
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.model.order.GeneratedOrderId;
+import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.OrderDeliverInfo;
+import com.ishare.mall.core.model.order.OrderItem;
+import com.ishare.mall.core.model.order.OrderUpdateLog;
+import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductStyle;
+import com.ishare.mall.core.repository.deliver.DeliverRepository;
+import com.ishare.mall.core.repository.information.OrderItemRepository;
+import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
+import com.ishare.mall.core.repository.order.OrderRepository;
+import com.ishare.mall.core.repository.order.OrderUpdateLogRepository;
+import com.ishare.mall.core.repository.product.ProductRepository;
+import com.ishare.mall.core.repository.product.ProductStyleRepository;
+import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.service.member.MemberService;
+import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.utils.filter.DynamicSpecifications;
+import com.ishare.mall.core.utils.filter.SearchFilter;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 @Service
 @Transactional
@@ -64,6 +69,8 @@ public class OrderServiceImpl implements OrderService {
 	private MemberService memberService;
 	@Autowired
 	private ChannelService channelService;
+	@Autowired
+	private OrderUpdateLogRepository orderUpdateLogRepository;
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -305,8 +312,14 @@ public class OrderServiceImpl implements OrderService {
 		return date + String.format("%06d", generatedOrderId.getOrderId());
 	}
 	@Override
-	public Order updateOrder(Order order) throws OrderServiceException {
+	public Order updateOrder(Order order, String note) throws OrderServiceException {
+		OrderUpdateLog orderUpdateLog = new OrderUpdateLog();
+		orderUpdateLog.setNote(note);
+		orderUpdateLog.setOrder(order);
+		orderUpdateLog.setUpdateBy(order.getUpdateBy());
+		orderUpdateLog.setUpdateTime(order.getUpdateTime());
 		try {
+			orderUpdateLogRepository.save(orderUpdateLog);
 			return orderRepository.save(order);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

@@ -28,7 +28,8 @@
 
 <body>
 <div class="pd-20">
-  <form action="${pageContext.request.contextPath}/cancel.dhtml" method="post" class="form form-horizontal" id="form-member-cancel">
+  <form action="${pageContext.request.contextPath}/order/cancel.dhtml" method="post" class="form form-horizontal" id="form-member-cancel">
+  <input name="orderId" type="hidden" value="${orderId }"/>
     <div class="row cl">
       <label class="form-label col-3">取消原因：</label>
       <div class="formControls col-5">
@@ -71,8 +72,7 @@ $(function(){
 					$.Showmsg("取消成功！");
 				},2000);
 				setTimeout(function(){
-					var index = parent.layer.getFrameIndex(window.name);
-					parent.layer.close(index); 
+					parent.location.reload();
 				},5000);
 			}
 			if(data.success==false){

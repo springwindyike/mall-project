@@ -1,11 +1,34 @@
 package com.ishare.mall.biz.restful.order;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.order.Order;
@@ -14,20 +37,6 @@ import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/15.
@@ -158,10 +167,50 @@ public class OrderResource {
     			Order order = orderService.findOne(orderDetailDTO.getOrderId());
     			order.setExpressId(orderDetailDTO.getExpressId());
     			order.setExpressOrder(orderDetailDTO.getExpressOrder());
+    			order.setState(OrderState.DELIVERED);
+					order.setUpdateTime(new Date());
+					String logStr = "发货操作：" + orderDetailDTO.getLog();
     			try {
-    				Order newOrder = orderService.updateOrder(order);
+    				Order newOrder = orderService.updateOrder(order, logStr);
 						OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 						BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
+						innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
+						innerOrderDetailDTO.setCreateBy(newOrder.getCreateBy().getAccount());
+						innerOrderDetailDTO.setStateValue(newOrder.getState().getName());
+						innerOrderDetailDTO.setRecipients(newOrder.getOrderDeliverInfo().getRecipients());
+						
+						response.setCode(Response.Status.OK);
+						response.setData(orderDetailDTO);
+						return response;
+					} catch (Exception e) {
+						log.error(e.getMessage(), e);
+						response.setMessage("系统错误");
+						response.setSuccess(false);
+						return response;
+					}
+			}
+    
+    @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_CANCEL,
+            method      = RequestMethod.POST,
+            headers     = "Accept=application/xml, application/json",
+            produces    = {"application/json", "application/xml"},
+            consumes    = {"application/json", "application/xml"})
+			public Response cancel(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
+		    	Response response = new Response();
+		    	
+    			Order order = orderService.findOne(orderDetailDTO.getOrderId());
+    			order.setState(OrderState.CANCEL);
+					order.setUpdateTime(new Date());
+					String logStr = "取消操作：" + orderDetailDTO.getLog();
+    			try {
+    				Order newOrder = orderService.updateOrder(order, logStr);
+						OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+						BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
+						innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
+						innerOrderDetailDTO.setCreateBy(newOrder.getCreateBy().getAccount());
+						innerOrderDetailDTO.setStateValue(newOrder.getState().getName());
+						innerOrderDetailDTO.setRecipients(newOrder.getOrderDeliverInfo().getRecipients());
+						
 						response.setCode(Response.Status.OK);
 						response.setData(orderDetailDTO);
 						return response;

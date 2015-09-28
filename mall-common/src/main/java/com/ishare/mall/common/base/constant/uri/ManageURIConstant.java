@@ -15,7 +15,8 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING_DELIVER = "/deliver/{id}";
 		String REQUEST_MAPPING_DELIVER_SUBMIT = "/deliver";
 		String REQUEST_MAPPING_LOGISTICS = "/logistics";
-		String REQUEST_MAPPING_CANCEL = "/cancel";
+		String REQUEST_MAPPING_CANCEL = "/cancel/{id}";
+		String REQUEST_MAPPING_CANCEL_SUBMIT = "/cancel";
 	}
 
 }
