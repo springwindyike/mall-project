@@ -22,10 +22,23 @@ public class AddProductForm {
 	@NotEmpty(message = "产品描述不能为空")
     private String description;
 	
-	 //分类id
+	 //描述
+		@NotEmpty(message = "分类名称不能为空")
+	    private String typeName;
+	
+	 public String getTypeName() {
+			return typeName;
+		}
+
+		public void setTypeName(String typeName) {
+			this.typeName = typeName;
+		}
+
+		//分类id
 		@NotEmpty(message = "产品分类id")
 	    private Integer typeId;
  
+		
 /*    //购买须知
 	@NotEmpty(message = "产品购买须知不能为空")
     private String buyExplain;*/

@@ -169,8 +169,9 @@ public class OrderResource {
     			order.setExpressOrder(orderDetailDTO.getExpressOrder());
     			order.setState(OrderState.DELIVERED);
 					order.setUpdateTime(new Date());
+					String logStr = "发货操作：" + orderDetailDTO.getLog();
     			try {
-    				Order newOrder = orderService.updateOrder(order);
+    				Order newOrder = orderService.updateOrder(order, logStr);
 						OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 						BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 						innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
@@ -200,8 +201,9 @@ public class OrderResource {
     			Order order = orderService.findOne(orderDetailDTO.getOrderId());
     			order.setState(OrderState.CANCEL);
 					order.setUpdateTime(new Date());
+					String logStr = "取消操作：" + orderDetailDTO.getLog();
     			try {
-    				Order newOrder = orderService.updateOrder(order);
+    				Order newOrder = orderService.updateOrder(order, logStr);
 						OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 						BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 						innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
