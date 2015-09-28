@@ -318,4 +318,13 @@ public class OrderServiceImpl implements OrderService {
 			throw new OrderServiceException("订单修改失败");
 		}
 	}
+	@Override
+	public Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException {
+		try {
+			return orderRepository.findBycondition(orderId, channelId, pageRequest);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("搜索订单失败");
+		}
+	}
 }

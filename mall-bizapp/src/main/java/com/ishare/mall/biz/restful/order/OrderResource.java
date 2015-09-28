@@ -1,13 +1,17 @@
 package com.ishare.mall.biz.restful.order;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -211,4 +215,63 @@ public class OrderResource {
 						return response;
 					}
 			}
+    
+    @RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public Response findBySearchCondition(@RequestBody OrderDetailDTO orderDetailDTO){
+					List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
+					Response response = new Response();
+					String orderId = orderDetailDTO.getOrderId();
+					int offset = orderDetailDTO.getOffset();
+					int limit = orderDetailDTO.getLimit();
+					Integer channelId = orderDetailDTO.getChannelId();
+					try{
+						PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
+						Page<Order> result = orderService.findBycondition(orderId, channelId,pageRequest);
+						PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
+						if(result != null && result.getContent() != null && result.getContent().size()>0){
+								List<Order> list = result.getContent();
+								for (Order order:list){
+										OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+										BeanUtils.copyProperties(order, innerOrderDetailDTO);
+										innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+										innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
+										innerOrderDetailDTO.setStateValue(order.getState().getName());
+										innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+								
+										SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+										String newTime =  sdf.format(order.getCreateTime());
+										innerOrderDetailDTO.setCreateTime(newTime);
+								
+										List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+								
+										Iterator<OrderItem> it = orderItems.iterator();
+										Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+										while (it.hasNext()) {
+											OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+										  OrderItem orderItem = it.next();
+										  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+										  items.add(orderItemDetailDTO);
+										}
+										innerOrderDetailDTO.setItems(items);
+										listOrder.add(innerOrderDetailDTO);
+								}
+								pageDTO.setContent(listOrder);
+								pageDTO.setTotalPages(result.getTotalPages());
+								pageDTO.setITotalDisplayRecords(result.getTotalElements());
+								pageDTO.setITotalRecords(result.getTotalElements());
+								response.setData(pageDTO);
+							}
+							return response;
+					}catch (OrderServiceException e){
+							log.error(e.getMessage());
+							response.setSuccess(false);
+							response.setMessage(e.getMessage());
+							return response;
+					}
+			}
+    
+    
 }
