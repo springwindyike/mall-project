@@ -75,6 +75,9 @@ public class OrderDetailDTO extends GenericDTO {
 	private OrderDeliverDTO deliver;
 	//订购者信息
 	private OrderContactDTO contact;
+	
+	//日志信息
+	private String log;
     
 	public String getOrderId() {
 		return orderId;
@@ -235,6 +238,12 @@ public class OrderDetailDTO extends GenericDTO {
 	}
 	public void setStateValue(String stateValue) {
 		this.stateValue = stateValue;
+	}
+	public String getLog() {
+		return log;
+	}
+	public void setLog(String log) {
+		this.log = log;
 	}
 
 }

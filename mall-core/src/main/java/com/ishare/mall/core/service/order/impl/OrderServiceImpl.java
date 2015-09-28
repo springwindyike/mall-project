@@ -312,8 +312,12 @@ public class OrderServiceImpl implements OrderService {
 		return date + String.format("%06d", generatedOrderId.getOrderId());
 	}
 	@Override
-	public Order updateOrder(Order order) throws OrderServiceException {
+	public Order updateOrder(Order order, String note) throws OrderServiceException {
 		OrderUpdateLog orderUpdateLog = new OrderUpdateLog();
+		orderUpdateLog.setNote(note);
+		orderUpdateLog.setOrder(order);
+		orderUpdateLog.setUpdateBy(order.getUpdateBy());
+		orderUpdateLog.setUpdateTime(order.getUpdateTime());
 		try {
 			orderUpdateLogRepository.save(orderUpdateLog);
 			return orderRepository.save(order);

@@ -87,6 +87,7 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setOrderId(orderId);
 		orderDetailDTO.setExpressId(expressId);
 		orderDetailDTO.setExpressOrder(expressOrder);
+		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
@@ -136,7 +137,7 @@ public class OrderController extends BaseController {
 		OrderResultDTO orderResultDTO = new OrderResultDTO();
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(orderId);
-
+		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
