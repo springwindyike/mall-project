@@ -119,6 +119,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		otherDealField.add("contact");
 		otherDealField.add("items");
 		otherDealField.add("stateValue");
+		otherDealField.add("log");
 
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
