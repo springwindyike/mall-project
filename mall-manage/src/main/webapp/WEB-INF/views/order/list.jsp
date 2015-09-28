@@ -46,9 +46,9 @@
               <option>享买</option>
               <option>锋果</option>
             </select></td>
-    <td><input type="text" name="" id="" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
+    <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
 
-    <td><button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
+    <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
   </tr>
 </table>
 
@@ -86,93 +86,107 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">	
-
-$('.table-sort').dataTable({
-	"aaSorting": [[ 0, "desc" ]],//默认第几个排序
- 	"bStateSave": true,//状态保存
-	"bProcessing": true,
-	"bServerSide": true,
-	"bStateSave": false,
-	"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
-	"sAjaxSource": "${pageContext.request.contextPath}/order/findByChannelId.dhtml",
-	"sAjaxDataProp":"content",
-	"aoColumns": [
-	   { "mDataProp": "orderId" },//订单号
-	   { "mDataProp": null },//商品图片
-	   { "mDataProp": null },//商品名称
-	   { "mDataProp": null },//单价（元）
-	   { "mDataProp": null },//数量
-	   { "mDataProp": "createBy" },//购买账号
-	   { "mDataProp": "recipients" },//收货人
-	   { "mDataProp": "note" },//顾客留言
-	   { "mDataProp": "totalPrice" },//付款（元）	
-	   { "mDataProp": "createTime" },//生成时间	
-	   { "mDataProp": null },  //订单状态
-	   { "mDataProp": null }//操作
-	],
-	
-	"createdRow" : function(row, mDataProp, dataIndex){
-	   $(row).addClass('text-c');
-	},
-	
-	"columnDefs" : [
-		{
-			"targets" : 1 ,
-			"render" : function(mDataProp, type, full) {
-				return '<a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>';
-			}
+var targetTable;
+var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
+$(function () {
+	targetTable = $('.table-sort').dataTable({
+		"aaSorting": [[ 0, "desc" ]],//默认第几个排序
+	 	"bStateSave": true,//状态保存
+		"bProcessing": true,
+		"bServerSide": true,
+		"bStateSave": false,
+		"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+		"sAjaxSource": url,
+		"sAjaxDataProp":"content",
+		"aoColumns": [
+		   { "mDataProp": "orderId" },//订单号
+		   { "mDataProp": null },//商品图片
+		   { "mDataProp": null },//商品名称
+		   { "mDataProp": null },//单价（元）
+		   { "mDataProp": null },//数量
+		   { "mDataProp": "createBy" },//购买账号
+		   { "mDataProp": "recipients" },//收货人
+		   { "mDataProp": "note" },//顾客留言
+		   { "mDataProp": "totalPrice" },//付款（元）	
+		   { "mDataProp": "createTime" },//生成时间	
+		   { "mDataProp": null },  //订单状态
+		   { "mDataProp": null }//操作
+		],
+		
+		"createdRow" : function(row, mDataProp, dataIndex){
+		   $(row).addClass('text-c');
 		},
-		{
-			"targets" : 2 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = "";
-				for (var i = 0; i < mDataProp.items.length; i++) 
-					{
-					itemHtml = mDataProp.items[i].productName;
-					}
-				return '<a style="text-decoration:none" onClick="product_show(\''+itemHtml+'\',\'product-show.html\',\'10001\')" href="javascript:;">'+itemHtml+'</a>';
-			}
-		},
-		{
-			"targets" : 3 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = "";
-				for (var i = 0; i < mDataProp.items.length; i++) 
-					{
-					itemHtml = mDataProp.items[i].productPrice;
-					}
-				return itemHtml;
+		
+		"columnDefs" : [
+			{
+				"targets" : 1 ,
+				"render" : function(mDataProp, type, full) {
+					return '<a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>';
 				}
-		},
-		{
-			"targets" : 4 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = "";
-				for (var i = 0; i < mDataProp.items.length; i++) 
-					{
-					itemHtml = mDataProp.items[i].amount;
-					}
-				return itemHtml;
-			}
-		},
-		{
-			"targets" : 10 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = mDataProp.stateValue;
-				if(itemHtml == '已取消' || itemHtml == '待审核' ){
-					return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
+			},
+			{
+				"targets" : 2 ,
+				"render" : function(mDataProp, type, full) {
+					var itemHtml = "";
+					for (var i = 0; i < mDataProp.items.length; i++) 
+						{
+						itemHtml = mDataProp.items[i].productName;
+						}
+					return '<a style="text-decoration:none" onClick="product_show(\''+itemHtml+'\',\'product-show.html\',\'10001\')" href="javascript:;">'+itemHtml+'</a>';
 				}
-				return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>'; 
-				/* return itemHtml; */
-			 }
-		} ,
-		{
-			"targets" : 11 ,
-			"orderable":false,
-			"aTargets":[11],
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = mDataProp.state;
-				if(itemHtml == '待审核' ){
+			},
+			{
+				"targets" : 3 ,
+				"render" : function(mDataProp, type, full) {
+					var itemHtml = "";
+					for (var i = 0; i < mDataProp.items.length; i++) 
+						{
+						itemHtml = mDataProp.items[i].productPrice;
+						}
+					return itemHtml;
+					}
+			},
+			{
+				"targets" : 4 ,
+				"render" : function(mDataProp, type, full) {
+					var itemHtml = "";
+					for (var i = 0; i < mDataProp.items.length; i++) 
+						{
+						itemHtml = mDataProp.items[i].amount;
+						}
+					return itemHtml;
+				}
+			},
+			{
+				"targets" : 10 ,
+				"render" : function(mDataProp, type, full) {
+					var itemHtml = mDataProp.stateValue;
+					if(itemHtml == '已取消' || itemHtml == '待审核' ){
+						return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
+					}
+					return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>'; 
+					/* return itemHtml; */
+				 }
+			} ,
+			{
+				"targets" : 11 ,
+				"orderable":false,
+				"aTargets":[11],
+				"render" : function(mDataProp, type, full) {
+					var itemHtml = mDataProp.state;
+					if(itemHtml == '待审核' ){
+						return '<td class="td-manage">'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
+						+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
+						+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
+						+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
+						+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_verify(this,\'10001\')" title="通过审核">'
+						+'<i class="Hui-iconfont">&#xe6e1;</i></a></td>';
+					}
 					return '<td class="td-manage">'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 					+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
@@ -181,23 +195,21 @@ $('.table-sort').dataTable({
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 					+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
-					+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_verify(this,\'10001\')" title="通过审核">'
-					+'<i class="Hui-iconfont">&#xe6e1;</i></a></td>';
+					+'<i class="Hui-iconfont">&#xe608;</i></a></td>';
 				}
-				return '<td class="td-manage">'
-				+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
-				+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
-				+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
-				+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
-				+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
-				+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
-				+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
-				+'<i class="Hui-iconfont">&#xe608;</i></a></td>';
-			}
-		} 
-	]
-	});
+			} 
+		]
+		});
+	alert(targetTable);
+});
+/*根据条件查询*/
+function searchOrder(){
+	alert(targetTable);
+    var searchCondition = $("#searchCondition").val();
+    url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition/'+searchCondition+'.dhtml';
+    targetTable.ajax.url(url).load();
+
+}
 	
 	$('.table-sort tbody').on('click', 'tr', function () {
 		if ($(this).hasClass('selected')) {
@@ -274,5 +286,7 @@ function order_verify(obj,id){
 		layer.msg('等待付款!',{icon: 6,time:1000});
 	});
 }
+
+
 </script>
 </body>
