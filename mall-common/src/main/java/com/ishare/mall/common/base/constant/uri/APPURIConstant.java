@@ -71,6 +71,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_ID = "/{id}";
         //发货订单提交
         String REQUEST_MAPPING_DELIVER = "/deliver";
+        //取消订单提交
+        String REQUEST_MAPPING_CANCEL = "/cancel";
     }
     //支付
     interface AliPay {
