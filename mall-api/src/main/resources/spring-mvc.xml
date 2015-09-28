@@ -64,16 +64,11 @@
             </props>  
 		</property>  
     </bean>
-    <!-- 自定义拦截链配置
+
     <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/*/*/create"/>
-            <mvc:mapping path="/*/*/delete/*"/>
-            <mvc:mapping path="/*/*/update"/>
-            <bean class="LogInterceptor"></bean>
-        </mvc:interceptor>
+            <bean class="com.ishare.mall.api.interceptor.AccessTokenAnnotationInterceptor"/>
     </mvc:interceptors>
-	-->
+
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
 			<set>

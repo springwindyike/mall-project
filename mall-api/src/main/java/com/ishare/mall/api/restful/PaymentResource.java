@@ -9,7 +9,6 @@ import com.ishare.mall.api.service.pay.AliPayService;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
-import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +52,6 @@ public class PaymentResource extends BaseResource {
 
         if (br.hasErrors()) {
             throw new ApiLogicException(br.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
-        }
-
-        if (payForm.getToken() == null || !oAuthService.checkAccessToken(payForm.getToken())) {
-            throw new ApiLogicException(OAuthError.ResourceResponse.INVALID_TOKEN, HttpStatus.UNAUTHORIZED);
         }
 
         String id = payForm.getOrderId();
