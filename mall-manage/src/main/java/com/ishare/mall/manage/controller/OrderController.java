@@ -5,6 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +36,7 @@ import com.ishare.mall.manage.controller.base.BaseController;
 @Controller
 @RequestMapping(ManageURIConstant.Order.REQUEST_MAPPING)
 public class OrderController extends BaseController {
-
+	
 	private static final Logger log = LoggerFactory
 			.getLogger(OrderController.class);
 
@@ -183,4 +187,47 @@ public class OrderController extends BaseController {
 		return pageDTO;
 	}
 	
+	/**
+	 * 根据条件查询Order
+	 * @param searchCondition
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
+	@ResponseBody
+	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(searchCondition);
+		orderDetailDTO.setChannelId(8);
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
+
+		int currentPage = displayStart/displayLength+1;
+		orderDetailDTO.setLimit(displayLength);
+		orderDetailDTO.setOffset(currentPage);
+		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		RestTemplate restTemplate = new RestTemplate();
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app " + APPURIConstant.Member.REQUEST_MAPPING + APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION + "error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response != null) {
+			if(response.isSuccess()){
+				PageDTO pageDTO = (PageDTO)response.getData();
+				model.addAttribute("pageDTO",pageDTO);
+				return pageDTO;
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else{
+			throw new Exception("get response error");
+		}
+	}
 }
