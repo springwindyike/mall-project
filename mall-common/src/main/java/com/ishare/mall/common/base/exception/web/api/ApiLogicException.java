@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
  * Version 1.0
  */
 public class ApiLogicException extends WebException {
+
+
     public ApiLogicException(String systemName, String errorPropertyKey, String message, HttpStatus status, Throwable cause) {
         super(systemName, errorPropertyKey, message, status, cause);
     }

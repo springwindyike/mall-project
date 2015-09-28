@@ -70,7 +70,7 @@ public class MemberRealm extends AuthorizingRealm {
         log.debug(resultDTO.toString());
         MemberDTO memberDTO = resultDTO.getBody();
         if (memberDTO == null) {
-            log.debug("account : 15928972087 用户不存在！");
+            log.debug("account : 用户不存在！");
             throw new UnknownAccountException();
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
