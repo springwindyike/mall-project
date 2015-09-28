@@ -1,30 +1,18 @@
 package com.ishare.mall.core.model.order;
 
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
+import com.ishare.mall.common.base.object.BaseObject;
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.ishare.mall.common.base.object.BaseObject;
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.status.OrderState;
-import com.ishare.mall.core.status.PaymentWay;
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_NAME;
 
 /**
  * Created by YinLin on 2015/7/31.
@@ -35,16 +23,18 @@ import com.ishare.mall.core.status.PaymentWay;
 @Table(name = TABLE_ORDER_NAME)
 public class Order implements BaseObject {
     /* 订单号 年份+月+日+当天订单总数*/
-    @Id @Column(length = 14, name = "order_id")
+    @Id @Column(length = 17, name = "id")
     private String orderId;
     /* 创建订单者 */
     
-    @Column(name = "order_create_by",length = 15)
-    private String createBy;
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=true)
+    @JoinColumn(name="create_by_member_id")
+    private Member createBy;
     /**更新订单者**/
-    
-    @Column(name = "order_update_by",length = 15)
-    private String updateBy;
+
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=true)
+    @JoinColumn(name="update_by_member_id")
+    private Member updateBy;
     /* 订单创建时间 */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable=false, name = "order_create_time",length = 20)
@@ -80,16 +70,13 @@ public class Order implements BaseObject {
     @Column(nullable=false, name = "order_payment_state",length = 5)
     private Boolean paymentState = false;
     /* 订单配送信息 */
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional=true, fetch = FetchType.LAZY)
     @JoinColumn(name = "deliver_id")
     private OrderDeliverInfo orderDeliverInfo;
     /* 订单购买者联系信息 */
-    @OneToOne(cascade = CascadeType.ALL, optional=true)
+    @OneToOne(cascade = CascadeType.ALL, optional=true, fetch = FetchType.LAZY)
     @JoinColumn(name="contact_id")
     private OrderContactInfo orderContactInfo;
-    /* 订单项 */
-    @OneToMany(mappedBy="order", cascade=CascadeType.ALL)
-    private Set<OrderItem> items = new HashSet<OrderItem>();
     /* 对订单进行加锁的用户,如果值为null,代表订单未被加锁,否则,订单被加锁 */
     @Column(length = 20, name = "order_lock_member")
     private String lockMember;
@@ -97,14 +84,14 @@ public class Order implements BaseObject {
     @OneToMany(mappedBy = "order", cascade=CascadeType.REMOVE)
     private Set<OrderMessage> orderMessages = new HashSet<OrderMessage>();
     /**各个订单对应的渠道**/
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
+    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="channel_id")
     private Channel channel;
   
-    @Column(name = "express_order",nullable=false,length = 15)
+    @Column(name = "express_order", nullable = true, length = 15)
     private String expressOrder;//快递单号
     
-    @Column(name = "express_id", nullable=false,length=15)
+    @Column(name = "express_id", nullable = true, length = 15)
     private String expressId;//快递代号
     
     public Order(){}
@@ -165,16 +152,6 @@ public class Order implements BaseObject {
     public void setOrderContactInfo(OrderContactInfo orderContactInfo) {
         this.orderContactInfo = orderContactInfo;
     }
-    public Set<OrderItem> getItems() {
-        return items;
-    }
-    public void setItems(Set<OrderItem> items) {
-        this.items = items;
-    }
-    public void addOrderItem(OrderItem item){
-        this.items.add(item);
-        item.setOrder(this);
-    }
     
     public Channel getChannel() {
 		return channel;
@@ -206,22 +183,6 @@ public class Order implements BaseObject {
         } else if (!orderId.equals(other.orderId))
             return false;
         return true;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
     }
 
     public Date getCreateTime() {
@@ -286,5 +247,47 @@ public class Order implements BaseObject {
 
     public void setExpressId(String expressId) {
         this.expressId = expressId;
+    }
+
+    public Member getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Member createBy) {
+        this.createBy = createBy;
+    }
+
+    public Member getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Member updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId='" + orderId + '\'' +
+                ", createBy=" + createBy +
+                ", updateBy=" + updateBy +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", state=" + state +
+                ", productTotalPrice=" + productTotalPrice +
+                ", deliverFee=" + deliverFee +
+                ", totalPrice=" + totalPrice +
+                ", payableFee=" + payableFee +
+                ", note='" + note + '\'' +
+                ", paymentWay=" + paymentWay +
+                ", paymentState=" + paymentState +
+                ", orderDeliverInfo=" + orderDeliverInfo +
+                ", orderContactInfo=" + orderContactInfo +
+                ", lockMember='" + lockMember + '\'' +
+                ", orderMessages=" + orderMessages +
+                ", channel=" + channel +
+                ", expressOrder='" + expressOrder + '\'' +
+                ", expressId='" + expressId + '\'' +
+                '}';
     }
 }

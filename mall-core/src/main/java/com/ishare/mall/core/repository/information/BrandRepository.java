@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * Version 1.0
  */
 public interface BrandRepository extends JpaRepository<Brand, Integer>, JpaSpecificationExecutor {
+
 }

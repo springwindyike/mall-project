@@ -1,9 +1,9 @@
 package com.ishare.mall.core.service.pay.impl;
 
+import com.ishare.mall.common.base.enumeration.PayType;
 import com.ishare.mall.core.model.pay.OrderPayLog;
 import com.ishare.mall.core.repository.pay.OrderPayLogRepository;
 import com.ishare.mall.core.service.pay.OrderPayLogService;
-import com.ishare.mall.core.status.PayType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

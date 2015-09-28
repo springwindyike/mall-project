@@ -2,6 +2,8 @@ package com.ishare.mall.api.controller;
 
 //import com.ishare.mall.core.status.Gender;
 
+import com.ishare.mall.common.base.enumeration.Gender;
+
 /**
  * Created by YinLin on 2015/8/26.
  * Description :
@@ -9,7 +11,7 @@ package com.ishare.mall.api.controller;
  */
 public class TestForm {
 //    private String id;
-//    private Gender gender;
+    private Gender gender;
 //    private String name;
 //
 //    public String getId() {
@@ -20,13 +22,13 @@ public class TestForm {
 //        this.id = id;
 //    }
 //
-//    public Gender getGender() {
-//        return gender;
-//    }
-//
-//    public void setGender(Gender gender) {
-//        this.gender = gender;
-//    }
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 //
 //    public String getName() {
 //        return name;

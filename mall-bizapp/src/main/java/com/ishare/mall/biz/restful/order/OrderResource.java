@@ -2,25 +2,32 @@ package com.ishare.mall.biz.restful.order;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/15.
@@ -34,6 +41,8 @@ public class OrderResource {
     private static final Logger log = LoggerFactory.getLogger(OrderResource.class);
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderItemService orderItemService;
     @Autowired
     private ChannelService channelService;
 
@@ -50,31 +59,117 @@ public class OrderResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public OrderDetailDTO findByChannelId(@RequestBody OrderDetailDTO orderDetailDTO) {
+    public Response findByChannelId(@RequestBody OrderDetailDTO orderDetailDTO) {
         List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
         int offset = orderDetailDTO.getOffset();
         int limit = orderDetailDTO.getLimit();
-        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+        Response response = new Response();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
         Integer channelId = orderDetailDTO.getChannelId();
-        Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Order> list = result.getContent();
-            for (Order order:list){
-                BeanUtils.copyProperties(order, orderDetailDTO);
-                orderDetailDTO.setChannelId(order.getChannel().getId());
-                listOrder.add(orderDetailDTO);
-            					}
-			        pageDTO.setContent(listOrder);
-			        pageDTO.setTotalPages(result.getTotalPages());
-			        pageDTO.setiTotalDisplayRecords(result.getTotalElements());
-			        pageDTO.setiTotalRecords(result.getTotalElements());
-			        orderDetailDTO.setPageDTO(pageDTO);
-        				}
-        return orderDetailDTO;
+        try {
+							Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
+							PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
+							if(result != null && result.getContent() != null && result.getContent().size()>0){
+							    List<Order> list = result.getContent();
+							    for (Order order:list){
+												OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+												BeanUtils.copyProperties(order, innerOrderDetailDTO);
+												innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+												innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
+												innerOrderDetailDTO.setStateValue(order.getState().getName());
+												innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+												
+												SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+												String newTime =  sdf.format(order.getCreateTime());
+												innerOrderDetailDTO.setCreateTime(newTime);
+												
+												List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+												
+												Iterator<OrderItem> it = orderItems.iterator();
+												Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+												while (it.hasNext()) {
+													OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+												  OrderItem orderItem = it.next();
+												  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+												  items.add(orderItemDetailDTO);
+												}
+													innerOrderDetailDTO.setItems(items);
+													listOrder.add(innerOrderDetailDTO);
+						    					}
+							        pageDTO.setContent(listOrder);
+							        pageDTO.setTotalPages(result.getTotalPages());
+							        pageDTO.setITotalDisplayRecords(result.getTotalElements());
+							        pageDTO.setITotalRecords(result.getTotalElements());
+							        response.setData(pageDTO);
+											}
+							return response;
+						} catch (OrderServiceException e) {
+							log.error(e.getMessage(), e);
+							response.setMessage("系统错误");
+							response.setSuccess(false);
+							return response;
+						}
     		}
 
-    public OrderDetailDTO create(@RequestBody ExchangeDTO exchangeDTO) {
-        return null;
+    /**
+     * 创建订单
+     * @param exchangeDTO
+     * @return Response
+     * @throws OrderServiceException
+     */
+    @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_CREATE,
+                    method      = RequestMethod.POST,
+                    headers     = "Accept=application/xml, application/json",
+                    produces    = {"application/json", "application/xml"},
+                    consumes    = {"application/json", "application/xml"})
+    public Response create(@RequestBody ExchangeDTO exchangeDTO) throws OrderServiceException{
+        OrderDetailDTO orderDetailDTO = orderService.create(exchangeDTO);
+        Response response = new Response();
+        response.setCode(Response.Status.OK);
+        response.setData(orderDetailDTO);
+        return response;
     }
+    @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ID,
+            method      = RequestMethod.GET,
+            headers     = "Accept=application/xml, application/json",
+            produces    = {"application/json", "application/xml"})
+    public Response find(@NotEmpty @PathVariable("id") String id) throws OrderServiceException {
+        Response response = new Response();
+        Order order = orderService.findOne(id);
+        try {
+            OrderDetailDTO orderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDeliverDTO.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new OrderServiceException("类型转换错误");
+        }
+        return response;
+    }
+    
+    
+    @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_DELIVER,
+            method      = RequestMethod.POST,
+            headers     = "Accept=application/xml, application/json",
+            produces    = {"application/json", "application/xml"},
+            consumes    = {"application/json", "application/xml"})
+			public Response update(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
+		    	Response response = new Response();
+		    	
+    			Order order = orderService.findOne(orderDetailDTO.getOrderId());
+    			order.setExpressId(orderDetailDTO.getExpressId());
+    			order.setExpressOrder(orderDetailDTO.getExpressOrder());
+    			try {
+    				Order newOrder = orderService.updateOrder(order);
+						OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+						BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
+						response.setCode(Response.Status.OK);
+						response.setData(orderDetailDTO);
+						return response;
+					} catch (Exception e) {
+						log.error(e.getMessage(), e);
+						response.setMessage("系统错误");
+						response.setSuccess(false);
+						return response;
+					}
+			}
 }

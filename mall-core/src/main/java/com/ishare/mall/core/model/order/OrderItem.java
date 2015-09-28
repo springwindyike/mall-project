@@ -1,8 +1,8 @@
 package com.ishare.mall.core.model.order;
 
+import com.ishare.mall.common.base.enumeration.OrderItemSort;
+import com.ishare.mall.common.base.enumeration.OrderItemState;
 import com.ishare.mall.core.model.base.BaseEntity;
-import com.ishare.mall.core.status.OrderItemSort;
-import com.ishare.mall.core.status.OrderItemState;
 
 import javax.persistence.*;
 
@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description:
  * Version 1.0
  */
-@Entity(name = TABLE_ORDER_ITEM_NAME)
+@Entity
+@Table(name = TABLE_ORDER_ITEM_NAME)
 public class OrderItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,7 +55,7 @@ public class OrderItem extends BaseEntity {
     private OrderItemSort exchangeOrBack;
     
     /* 所属订单 */
-    @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, optional=false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
     public OrderItem(){}
@@ -169,5 +170,31 @@ public class OrderItem extends BaseEntity {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", productId=" + productId +
+                ", productPrice=" + productPrice +
+                ", amount=" + amount +
+                ", styleName='" + styleName + '\'' +
+                ", styleId=" + styleId +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", state=" + state +
+                ", createBy='" + createBy + '\'' +
+                ", exchangeOrBack=" + exchangeOrBack +
+                ", order=" + order +
+                '}';
     }
 }

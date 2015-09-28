@@ -1,12 +1,17 @@
 package com.ishare.mall.common.base.dto.order;
 
+import com.ishare.mall.common.base.enumeration.DeliverWay;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by YinLin on 2015/9/16.
  * Description :
  * Version 1.0
  */
+@XmlRootElement
 @JsonAutoDetect
 public class ExchangeDTO {
 
@@ -31,6 +36,15 @@ public class ExchangeDTO {
     private String mobile;
     /**购买数量**/
     private Integer amount;
+
+    private String requirement;
+
+    //快递方式
+    private DeliverWay deliverWay;
+
+    //支付方式
+    private PaymentWay paymentWay;
+
 
     public Integer getProductId() {
         return productId;
@@ -152,4 +166,27 @@ public class ExchangeDTO {
         this.amount = amount;
     }
 
+    public String getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(String requirement) {
+        this.requirement = requirement;
+    }
+
+    public DeliverWay getDeliverWay() {
+        return deliverWay;
+    }
+
+    public void setDeliverWay(DeliverWay deliverWay) {
+        this.deliverWay = deliverWay;
+    }
+
+    public PaymentWay getPaymentWay() {
+        return paymentWay;
+    }
+
+    public void setPaymentWay(PaymentWay paymentWay) {
+        this.paymentWay = paymentWay;
+    }
 }

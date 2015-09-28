@@ -17,15 +17,20 @@ public interface CenterURIConstant {
 		// 找回密码
 		String FIND_PASSWORD = "findPassword";
 		// 验证账户名
-		String ACCOUNTVALID = "accountValid";
+		String ACCOUNT_VALID = "accountValid";
+		//注册验证Channel
+		String CHANNEL_VALID = "channelValid";
 	}
     
     interface Product{
    	 String REQUEST_MAPPING   = "/product";
    	 String REQUEST_MAPPING_SAVE= "/add";
+   	 String REQUEST_MAPPING_UPDATE= "/update/{id}";
    	 String REQUEST_MAPPING_DEL="/del/{id}";
-   	 String REQUEST_MAPPING_LIST="/list";
+   	 String REQUEST_MAPPING_FIND_BY_ID="/findById/{id}";
+   	 String REQUEST_MAPPING_FIND_BY_CHANNEL_ID="/findByChannelId";
    	 String REQUEST_MAPPING_FORWORD="/forword";
+   	 String ALL_TYPE_PRODUCT ="/allType";
     }
 
   String INDEX = "index";
@@ -46,6 +51,14 @@ public interface CenterURIConstant {
 	interface Main {
 		// 首页
 		String INDEX = "index";
+
+	}
+	
+	interface ProductType {
+		 String REQUEST_MAPPING   = "/productType";
+		 String REQUEST_MAPPING_FITST_LEVEL = "/firstLevel";
+		 String REQUEST_MAPPING_CHILDREN_LEVEL = "/childLevel/{parentId}";
+		 String REQUEST_MAPPING_FIND_BY_ID = "/findById/{id}";
 
 	}
 }

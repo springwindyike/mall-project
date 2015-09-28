@@ -1,9 +1,9 @@
 package com.ishare.mall.core.model.member;
 
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.MemberType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class Member extends BaseEntity {
     private String salt;
 
     /**所属渠道**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     private Channel channel;
     /**成员名称**/
@@ -55,7 +55,7 @@ public class Member extends BaseEntity {
     private String updateBy;
     /**是否可用**/
     @Column(name = "member_use",length = 5)
-    private boolean use;
+    private boolean use = true;
     /**性别要求**/
     @Enumerated(EnumType.STRING)
     @Column(length = 5, nullable = false)
@@ -129,7 +129,7 @@ public class Member extends BaseEntity {
         this.updateBy = updateBy;
     }
 
-    public boolean isUse() {
+    public boolean getUse() {
         return use;
     }
 

@@ -35,6 +35,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
  * Version 1.0
  */
 @RestController
+@Deprecated
 public class AccessTokenController {
 
     private static final Logger log = LoggerFactory.getLogger(AccessTokenController.class);
@@ -45,6 +46,7 @@ public class AccessTokenController {
     @RequestMapping(value = OpenApiURIConstant.Oauth.ACCESS_TOKEN, method = RequestMethod.POST)
     public HttpEntity token(HttpServletRequest request)
             throws URISyntaxException, OAuthSystemException {
+        log.debug("哈哈哈哈哈");
         try {
             //构建OAuth请求
             OAuthTokenRequest oauthRequest = new OAuthTokenRequest(request);
@@ -56,8 +58,10 @@ public class AccessTokenController {
                         .setError(OAuthError.TokenResponse.INVALID_CLIENT)
                         .setErrorDescription(INVALID_CLIENT_DESCRIPTION)
                         .buildJSONMessage();
+                log.debug("59 : " + response.getBody());
                 return new ResponseEntity(
                         response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+              //  throw new ApiLogicException(OAuthError.TokenResponse.INVALID_CLIENT, HttpStatus.BAD_REQUEST);
             }
 
             // 检查客户端安全KEY是否正确
@@ -67,8 +71,10 @@ public class AccessTokenController {
                         .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
                         .setErrorDescription(INVALID_CLIENT_DESCRIPTION)
                         .buildJSONMessage();
+                log.debug("72 : " + response.getBody());
                 return new ResponseEntity(
                         response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+                //throw new ApiLogicException(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT, HttpStatus.UNAUTHORIZED);
             }
 
             String authCode = oauthRequest.getParam(OAuth.OAUTH_CODE);
@@ -81,8 +87,10 @@ public class AccessTokenController {
                             .setError(OAuthError.TokenResponse.INVALID_GRANT)
                             .setErrorDescription(INVALID_CODE_DESCRIPTION)
                             .buildJSONMessage();
+                    log.debug("88 : " + response.getBody());
                     return new ResponseEntity(
                             response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
+                    //throw new ApiLogicException(OAuthError.TokenResponse.INVALID_GRANT, HttpStatus.BAD_REQUEST);
                 }
             }
 
@@ -92,6 +100,15 @@ public class AccessTokenController {
             oAuthService.addAccessToken(accessToken,
                     oAuthService.getAccountByAuthCode(authCode), oauthRequest.getClientId());
 
+            OAuthASResponse.OAuthAuthorizationResponseBuilder builder =
+                    OAuthASResponse.authorizationResponse(request,
+                            HttpServletResponse.SC_FOUND);
+            //设置授权码
+            //builder.setCode(accessToken);
+            //得到到客户端重定向地址
+            //String redirectURI = oauthRequest.getParam(OAuth.OAUTH_REDIRECT_URI);
+            builder.setAccessToken(accessToken);
+            builder.setExpiresIn(oAuthService.getExpireIn());
             //生成OAuth响应
             OAuthResponse response = OAuthASResponse
                     .tokenResponse(HttpServletResponse.SC_OK)
@@ -99,15 +116,30 @@ public class AccessTokenController {
                     .setExpiresIn(String.valueOf(oAuthService.getExpireIn()))
                     .buildJSONMessage();
 
+//            final OAuthResponse response = builder.location(redirectURI).buildQueryMessage();
+//            HttpHeaders headers = new HttpHeaders();
+//            String uri = response.getLocationUri();
+//            log.debug(uri);
+//            headers.setLocation(new URI(uri));
+//            Response<OAuthDTO> response = new Response<>();
+//            response.setCode(200);
+//            OAuthDTO oAuthDTO = new OAuthDTO();
+//            oAuthDTO.setToken(accessToken);
+//            oAuthDTO.setExpiresIn(oAuthService.getExpireIn());
+//            response.setData(oAuthDTO);
+            log.debug(accessToken);
             //根据OAuthResponse生成ResponseEntity
             return new ResponseEntity(
                     response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
         } catch (OAuthProblemException e) {
+            e.printStackTrace();
             //构建错误响应
             OAuthResponse res = OAuthASResponse
                     .errorResponse(HttpServletResponse.SC_BAD_REQUEST).error(e)
                     .buildJSONMessage();
             return new ResponseEntity(res.getBody(), HttpStatus.valueOf(res.getResponseStatus()));
+
+           // throw new ApiLogicException(OAuthError.TokenResponse.INVALID_CLIENT, HttpStatus.BAD_REQUEST);
         }
     }
 

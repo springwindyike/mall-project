@@ -1,7 +1,8 @@
 package com.ishare.mall.core.model.pay;
 
-import com.ishare.mall.core.status.CostType;
-import com.ishare.mall.core.status.PayType;
+
+import com.ishare.mall.common.base.enumeration.CostType;
+import com.ishare.mall.common.base.enumeration.PayType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,7 +15,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description : 支付信息LOG 入库
  * Version 1.0
  */
-@Entity(name = TABLE_ORDER_PAY_LOG_NAME)
+@Entity
+@Table(name = TABLE_ORDER_PAY_LOG_NAME)
 public class OrderPayLog {
     @Id
     @GeneratedValue

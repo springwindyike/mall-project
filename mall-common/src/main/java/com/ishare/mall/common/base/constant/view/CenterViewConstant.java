@@ -18,11 +18,12 @@ public interface CenterViewConstant {
     interface Product {
     	 String ADD_PRODUCT ="product/add";
     	 String LIST_PRODUCT ="product/list";
+    	 String UPDATE_PRODUCT= "product/update";
     }
 
 
 	interface Order {
-		String ADD_ORDER = "order/list";
+		String LIST_ORDER = "order/list";
 	}
 
 	interface Main {
@@ -30,10 +31,13 @@ public interface CenterViewConstant {
 	}
 
 	interface Member {
-		String MEMBER_LIST = "member/member-list";
-		String MEMBER_ADD = "member/member-add";
+		String MEMBER_LIST = "member/list";
+		String MEMBER_ADD = "member/add";
 		String MEMBER_ADD_SUCCESS = "S";
-		String MEMBER_VIEW = "member/member-view";
+		String MEMBER_UPDATE_SUCCESS = "S";
+		String MEMBER_VIEW = "member/view";
+		String MEMBER_UPDATE = "member/update";
+		String MEMBER_CHANGE_PASSWORD = "/member/password/change";
 		interface Password {
 			// 找回密码
 			String FIND_PASSWORD = "member/password/find";

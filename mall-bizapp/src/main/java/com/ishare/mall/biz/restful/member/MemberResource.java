@@ -5,14 +5,17 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.*;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
+import com.ishare.mall.common.base.exception.member.MemberServiceException;
+import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.MemberType;
 import com.ishare.mall.core.utils.UuidUtils;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,33 +129,41 @@ public class MemberResource {
      */
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
-    public MemberDTO findByChannelId(@RequestBody MemberDTO memberDTO) {
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response findByChannelId(@RequestBody MemberDTO memberDTO) {
         List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
+        Response response = new Response();
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
-        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
-        Integer channelId = memberDTO.getChannelId();
-        Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Member> listMember = result.getContent();
-            for (Member member:listMember){
-                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-                BeanUtils.copyProperties(member, memberDetailDTO);
-                memberDetailDTO.setChannelId(member.getChannel().getId());
-                memberDetailDTO.setSex(member.getSex().getName());
-                memberDetailDTO.setMemberType(member.getMemberType().getName());
-                listMemberList.add(memberDetailDTO);
+        try{
+            PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+            Integer channelId = memberDTO.getChannelId();
+            Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
+            PageDTO pageDTO = new PageDTO();
+            if(result != null && result.getContent() != null && result.getContent().size()>0){
+                List<Member> listMember = result.getContent();
+                for (Member member:listMember){
+                    MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                    BeanUtils.copyProperties(member, memberDetailDTO);
+                    memberDetailDTO.setChannelId(member.getChannel().getId());
+                    memberDetailDTO.setSex(member.getSex().getName());
+                    memberDetailDTO.setMemberType(member.getMemberType().getName());
+                    listMemberList.add(memberDetailDTO);
+                }
+                pageDTO.setContent(listMemberList);
+                pageDTO.setTotalPages(result.getTotalPages());
+                pageDTO.setITotalDisplayRecords(result.getTotalElements());
+                pageDTO.setITotalRecords(result.getTotalElements());
+                memberDTO.setPageDTO(pageDTO);
             }
-            pageDTO.setContent(listMemberList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
-            pageDTO.setiTotalRecords(result.getTotalElements());
-            memberDTO.setPageDTO(pageDTO);
+            response.setData(memberDTO);
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
         }
-        return memberDTO;
+        return response;
     }
 
     /**
@@ -163,13 +174,21 @@ public class MemberResource {
      */
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_ACCOUNT, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
-    public MemberDTO findByAccount(@RequestBody MemberDTO memberDTO) {
-        Member member = memberService.findByAccount(memberDTO.getAccount());
-        MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
-        memberDTO.setMemberDetailDTO(memberDetailDTO);
-        return memberDTO;
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response findByAccount(@RequestBody MemberDTO memberDTO) {
+        Response response = new Response();
+        try{
+            Member member = memberService.findByAccount(memberDTO.getAccount());
+            MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+            memberDTO.setMemberDetailDTO(memberDetailDTO);
+            response.setData(memberDTO);
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
+        }
+        return response;
     }
     /**
      * 通过account查询出memeber是否存在
@@ -194,70 +213,67 @@ public class MemberResource {
 
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
-    public MemberDTO saveMeber(@RequestBody MemberDTO memberDTO){
-        List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
-        Member member = new Member();
-        BeanUtils.copyProperties(memberDTO, member);
-        member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
-        member.setCreateBy(memberDTO.getAccount());
-        member.setMemberType(MemberType.MEMBER);
-        Channel channel = channelService.findOne(8);
-        member.setChannel(channel);
-        memberService.saveMember(member);
-        PageRequest pageRequest = new PageRequest(1,15,Sort.Direction.DESC,"createTime");
-        Integer channelId = memberDTO.getChannelId();
-        Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
-        PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Member> listMember = result.getContent();
-            for (Member memberPage:listMember){
-                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-                BeanUtils.copyProperties(memberPage, memberDetailDTO);
-                memberDetailDTO.setChannelId(memberPage.getChannel().getId());
-                memberDetailDTO.setSex(memberPage.getSex().getName());
-                memberDetailDTO.setMemberType(memberPage.getMemberType().getName());
-                listMemberList.add(memberDetailDTO);
-            }
-            pageDTO.setContent(listMemberList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            memberDTO.setPageDTO(pageDTO);
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response saveMeber(@RequestBody MemberDTO memberDTO){
+        Response response = new Response();
+        try{
+            Member member = new Member();
+            BeanUtils.copyProperties(memberDTO, member);
+            member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
+            member.setCreateBy(memberDTO.getAccount());
+            member.setMemberType(MemberType.MEMBER);
+            Channel channel = channelService.findOne(8);
+            member.setChannel(channel);
+            memberService.saveMember(member);
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
         }
-        return memberDTO;
+        return response;
     }
 
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public MemberDTO findBySearchCondition(@RequestBody MemberDTO memberDTO){
+    public Response findBySearchCondition(@RequestBody MemberDTO memberDTO){
         List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
+        Response response = new Response();
         String account = memberDTO.getAccount();
         String name = memberDTO.getName();
         String mobile = memberDTO.getMobile();
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
-        PageRequest pageRequest = new PageRequest(0, 1, Sort.Direction.DESC, "account");
-        Page<Member> result = memberService.findByAccountLikeOrNameLikeOrMobileLike(account, name, mobile, pageRequest);
-        PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Member> listMember = result.getContent();
-            for (Member member:listMember){
-                MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-                BeanUtils.copyProperties(member, memberDetailDTO);
-                memberDetailDTO.setChannelId(member.getChannel().getId());
-                memberDetailDTO.setSex(member.getSex().getName());
-                memberDetailDTO.setMemberType(member.getMemberType().getName());
-                listMemberList.add(memberDetailDTO);
+        Integer channelId = memberDTO.getChannelId();
+        try{
+            PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
+            Page<Member> result = memberService.findBycondition(account, name, mobile, channelId,pageRequest);
+            PageDTO pageDTO = new PageDTO();
+            if(result != null && result.getContent() != null && result.getContent().size()>0){
+                List<Member> listMember = result.getContent();
+                for (Member member:listMember){
+                    MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
+                    BeanUtils.copyProperties(member, memberDetailDTO);
+                    memberDetailDTO.setChannelId(member.getChannel().getId());
+                    memberDetailDTO.setSex(member.getSex().getName());
+                    memberDetailDTO.setMemberType(member.getMemberType().getName());
+                    listMemberList.add(memberDetailDTO);
+                }
+                pageDTO.setContent(listMemberList);
+                pageDTO.setTotalPages(result.getTotalPages());
+                pageDTO.setITotalDisplayRecords(result.getTotalElements());
+                pageDTO.setITotalRecords(result.getTotalElements());
+                memberDTO.setPageDTO(pageDTO);
             }
-            pageDTO.setContent(listMemberList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setiTotalDisplayRecords(result.getTotalElements());
-            pageDTO.setiTotalRecords(result.getTotalElements());
-            memberDTO.setPageDTO(pageDTO);
+            response.setData(memberDTO);
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
         }
-        return memberDTO;
+        return response;
     }
 
     /**
@@ -303,6 +319,7 @@ public class MemberResource {
         member.setCreateBy(memberRegisterDTO.getAccount());
         member.setMemberType(MemberType.ADMIN);
         member.setCreateTime(date);
+        member.setUse(true);//这里将账户账户设置为可用
         
         channel.setUpdateBy(memberRegisterDTO.getAccount());
         channel.setName(memberRegisterDTO.getChannel());
@@ -342,4 +359,102 @@ public class MemberResource {
     	System.out.println(area[1]);
 //    	System.out.println(area[2]);
 	}
+
+
+    /**
+     * 修改member信息
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response changePassword(@RequestBody MemberDTO memberDTO){
+        Response response = new Response();
+        try {
+            Member member = memberService.findByAccount(memberDTO.getAccount());
+            if (member != null){
+                member.setPassword(memberDTO.getPassword());
+                Channel channel = channelService.findOne(8);
+                member.setChannel(channel);
+                memberService.saveMember(member);
+            }
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
+        }
+        return response;
+    }
+
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_DELETE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response delete(@RequestBody MemberDTO memberDTO){
+        Response response = new Response();
+        try {
+            Member member = memberService.findByAccount(memberDTO.getAccount());
+            if (member != null){
+                member.setUse(false);
+                Channel channel = channelService.findOne(8);
+                member.setChannel(channel);
+                memberService.saveMember(member);
+            }
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * 修改member信息
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response update(@RequestBody MemberDTO memberDTO){
+        Response response = new Response();
+        try {
+            Member member = memberService.findByAccount(memberDTO.getAccount());
+            if (member != null){
+                member.setMobile(memberDTO.getMobile());
+                member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
+                member.setName(memberDTO.getName());
+                Channel channel = channelService.findOne(8);
+                member.setChannel(channel);
+                memberService.update(member);
+            }
+        }catch (MemberServiceException e){
+            log.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
+        }
+        return response;
+    }
+
+    /**
+     * 检测是否存在 如果不存在则新建
+     * @param checkAndCreateDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_CHECK_AND_CREATE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response check(@RequestBody CheckAndCreateDTO checkAndCreateDTO) {
+        if (StringUtils.isNotBlank(checkAndCreateDTO.getAccount())) {
+                memberService.checkAndCreateByAccount(checkAndCreateDTO.getAccount(), checkAndCreateDTO.getClientId());
+        } else {
+            throw new MemberServiceException("用户创建失败");
+        }
+        Response response = new Response();
+        response.setCode(200);
+        return response;
+    }
+
 }

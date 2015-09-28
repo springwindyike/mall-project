@@ -8,8 +8,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath*:/applicationContext.xml,
-            classpath*:/applicationContext-shiro.xml
+            classpath*:/spring-config.xml
         </param-value>
     </context-param>
     <context-param>
@@ -40,20 +39,10 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Hibernate Open Session In View filter-->
-    <filter>
-        <filter-name>openSessionInViewFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>openSessionInViewFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
     <!-- ajax filter -->
     <filter>
         <filter-name>ajaxFilter</filter-name>
-        <filter-class>com.tianyu.jty.system.utils.AjaxFilter</filter-class>
+        <filter-class>com.ishare.mall.manage.system.utils.AjaxFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -62,6 +51,7 @@
     </filter-mapping>
 
     <!-- shiro filter -->
+    <!--
     <filter>
         <filter-name>shiroFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -73,7 +63,7 @@
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
     <!-- spring mvc Servlet -->
     <servlet>
@@ -87,7 +77,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>*.dhtml</url-pattern>
     </servlet-mapping>
 
     <!-- druid 监控 -->
@@ -119,7 +109,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>kaptcha</servlet-name>
-        <url-pattern>/static/images/kaptcha.jpg</url-pattern>
+        <url-pattern>/resources/images/kaptcha.jpg</url-pattern>
     </servlet-mapping>
 
     <!-- session过期时间 -->

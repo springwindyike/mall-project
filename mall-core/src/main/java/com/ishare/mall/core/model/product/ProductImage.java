@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description : 产品图片类
  * Version 1.0
  */
-@Entity(name = TABLE_PRODUCT_STYLE_IMAGE_NAME)
+@Entity
+@Table(name = TABLE_PRODUCT_STYLE_IMAGE_NAME)
 public class ProductImage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,11 +35,11 @@ public class ProductImage extends BaseEntity {
     @Column(name = "product_update_time",length = 20)
     private Date updateTime;
     //创建者
-    @ManyToOne(cascade= CascadeType.REFRESH, optional=false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_create_by")
     private Member createBy;
     //更新者
-    @ManyToOne(cascade= CascadeType.REFRESH, optional=false)
+    @ManyToOne(cascade= CascadeType.REFRESH, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_update_by")
     private Member updateBy;
 

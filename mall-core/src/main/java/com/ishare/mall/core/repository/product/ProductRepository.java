@@ -1,11 +1,13 @@
 package com.ishare.mall.core.repository.product;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.ishare.mall.core.model.member.Member;
@@ -22,4 +24,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
     
 	@Query("SELECT p FROM Product p WHERE p.channel.id = ?1")
 	Page<Product> findByChannelId(Integer channelId, Pageable pageable);
+	
 }

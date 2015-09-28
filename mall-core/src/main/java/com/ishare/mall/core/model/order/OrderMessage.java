@@ -13,7 +13,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * @author keyo
  *
  */
-@Entity(name = TABLE_ORDER_MESSAGE_NAME)
+@Entity
+@Table(name = TABLE_ORDER_MESSAGE_NAME)
 public class OrderMessage extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +30,7 @@ public class OrderMessage extends BaseEntity {
 	@JoinColumn(name="member_id")
 	private Member member;
     /**所属订单，必须要有所以定义@ManyToOne(optional=false)**/
-    @ManyToOne(optional=false)
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
 	public String getContent() {

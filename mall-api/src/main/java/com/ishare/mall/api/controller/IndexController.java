@@ -1,16 +1,22 @@
 package com.ishare.mall.api.controller;
 
 
-
-
+import com.ishare.mall.api.restful.base.BaseResource;
+import com.ishare.mall.common.base.dto.test.TestDTO;
+import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
+import com.ishare.mall.common.base.general.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
-import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALID_CLIENT_DESCRIPTION;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -19,8 +25,8 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.OAUTH.INVALI
  */
 @Controller
 @RequestMapping("/index")
-public class IndexController {
-//    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+public class IndexController extends BaseResource {
+   private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 //    @Autowired
 //    private ChannelService channelService;
 //    @Autowired
@@ -30,15 +36,54 @@ public class IndexController {
 //    public String get() {
 //        return "success";
 //    }
+    @Autowired
+    private RestTemplate restTemplate;
+    @RequestMapping(value = "show", method = RequestMethod.GET, produces = {"application/json"})
+    @ResponseBody
+    public TestDTO show(TestForm testForm) {
+        log.debug(testForm.getGender().getName());
+        ResponseEntity<Response<TestDTO>> resultEntiy;
+        TestDTO testDTO = new TestDTO();
+        testDTO.setGender(testForm.getGender());
+        resultEntiy = restTemplate.exchange(this.buildBizAppURI("/test", "/gender"),
+                HttpMethod.GET, null, new ParameterizedTypeReference<Response<TestDTO>>() {
+        });
+//        Response<TestDTO> response = restTemplate.getForObject(this.buildBizAppURI("/test", "/gender"), Response.class);
+//        System.out.println("哈哈哈哈");
+//        try {
+//            resultEntiy = restTemplate.getForEntity(this.buildBizAppURI("/test", "/gender"), Response.class);
+//        } catch (Exception e) {
+//           throw e;
+//        }
+        Response response = resultEntiy.getBody();
+        testDTO = (TestDTO) response.getData();
+        return testDTO;
+    }
 
-//    @RequestMapping(value = "show", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Product show() {
-//        Product product = new Product();
-//        product.setBasePrice(10.0f);
-//        product.setCode("1001001000");
-//        return product;
-//    }
+    @RequestMapping(value = "test", method = RequestMethod.GET, produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity test() {
+        if (true) throw new RuntimeException("系统错");
+        ResponseEntity<Response> resultEntiy = null;
+        try {
+            resultEntiy = restTemplate.getForEntity(this.buildBizAppURI("/test", "/exp"), Response.class);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            Response response = new Response();
+            response.setSuccess(Response.Status.FAILURE);
+            response.setMessage("系统错误");
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Response r = resultEntiy.getBody();
+
+        if (!r.isSuccess()){
+            System.out.println("系统错误");
+            throw new ApiLogicException("系统错");
+            //return new ResponseEntity(r, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(r, HttpStatus.OK);
+    }
 
 //    @RequestMapping(value = "list", method = RequestMethod.GET)
 //    @ResponseBody

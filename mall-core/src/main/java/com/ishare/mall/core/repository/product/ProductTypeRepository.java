@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.ishare.mall.core.model.product.ProductType;
@@ -20,5 +21,6 @@ public interface ProductTypeRepository extends JpaRepository<ProductType, Intege
 	
 	@Query("SELECT o FROM ProductType o WHERE o.parent.id=?1")
     List<ProductType> findByParendId(Integer parentId);
-	
 }
+
+

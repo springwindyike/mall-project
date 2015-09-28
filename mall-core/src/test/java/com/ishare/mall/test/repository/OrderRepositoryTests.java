@@ -1,5 +1,9 @@
 package com.ishare.mall.test.repository;
 
+import com.ishare.mall.common.base.enumeration.DeliverWay;
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.core.model.order.GeneratedOrderId;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderContactInfo;
@@ -7,14 +11,11 @@ import com.ishare.mall.core.model.order.OrderDeliverInfo;
 import com.ishare.mall.core.repository.information.ChannelRepository;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
-import com.ishare.mall.core.status.DeliverWay;
-import com.ishare.mall.core.status.Gender;
-import com.ishare.mall.core.status.OrderState;
-import com.ishare.mall.core.status.PaymentWay;
 import com.ishare.mall.test.RepositoryTestTemplate;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,7 +74,7 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 		public Order buildOrder() {
 			Order order = new Order();
 			order.setChannel(channelRepository.findOne(1));
-			order.setCreateBy("18298362843");
+			//order.setCreateBy("18298362843");
 			order.setCreateTime(new Date());
 			order.setDeliverFee((float) 15);
 			order.setExpressId("1111111111");
@@ -88,9 +89,9 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 			order.setProductTotalPrice((float) 895);
 			order.setState(OrderState.WAIT_PAYMENT);
 			order.setTotalPrice((float) 999);
-			order.setUpdateBy("12346712912");
+			//order.setUpdateBy("12346712912");
 			order.setUpdateTime(new Date());
-			order.setItems(null);
+			//order.setItems(null);
 			order.setOrderMessages(null);
 			return order;
 		}
@@ -131,7 +132,8 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
 
     @Override
     public void testRetrieve() {
-
+		 PageRequest pageRequest = new PageRequest(0, PAGE_SIZE, Sort.Direction.ASC, "id");
+		repository.findByChannelId(8, pageRequest);
     }
 
     @Override
@@ -143,4 +145,6 @@ public class OrderRepositoryTests extends RepositoryTestTemplate {
     public void testDelete() {
 
     }
+    
+    
 }

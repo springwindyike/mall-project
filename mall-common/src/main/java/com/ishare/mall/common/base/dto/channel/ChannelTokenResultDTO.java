@@ -19,7 +19,12 @@ public class ChannelTokenResultDTO extends GenericDTO {
     private String appId;
     private String appSecret;
 
-    public Integer getId() {
+    
+    public ChannelTokenResultDTO() {
+
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -49,5 +54,10 @@ public class ChannelTokenResultDTO extends GenericDTO {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    public ChannelTokenResultDTO(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 }

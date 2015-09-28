@@ -1,27 +1,6 @@
 package com.ishare.mall.center.controller;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
-
 import com.ishare.mall.center.annoation.PageRequest;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.controller.test.Person;
@@ -30,11 +9,27 @@ import com.ishare.mall.center.form.register.RegisterForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 import com.ishare.mall.common.base.dto.page.PageRequestDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 
@@ -66,7 +61,6 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.GET)
     public String login() {
-        log.debug(this.bizAppUrl);
         return CenterViewConstant.Index.LOGIN;
     }
     
@@ -135,13 +129,29 @@ public class IndexController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = CenterURIConstant.Index.ACCOUNTVALID, method = RequestMethod.POST)
+    @RequestMapping(value = CenterURIConstant.Index.ACCOUNT_VALID, method = RequestMethod.POST)
     public ValidformRespDTO accountValid(@RequestParam("name") String name, @RequestParam("param") String param) {
     	MemberRegisterDTO memberRegisterDTO = new MemberRegisterDTO();
     	memberRegisterDTO.setAccount(param);
 			ResponseEntity<ValidformRespDTO> resultDTO = null;
 			RestTemplate restTemplate = new RestTemplate();
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT), memberRegisterDTO, ValidformRespDTO.class);
+			ValidformRespDTO validformRespDTO = resultDTO.getBody();
+			return validformRespDTO;
+    }
+    
+    /**
+     * Channel验证（公司名称）
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = CenterURIConstant.Index.CHANNEL_VALID, method = RequestMethod.POST)
+    public ValidformRespDTO channelValid(@RequestParam("name") String name, @RequestParam("param") String param) {
+    	ChannelTokenResultDTO channelRegisterDTO = new ChannelTokenResultDTO();
+    	channelRegisterDTO.setName(param);
+			ResponseEntity<ValidformRespDTO> resultDTO = null;
+			RestTemplate restTemplate = new RestTemplate();
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_FIND_VALID_BY_NAME), channelRegisterDTO, ValidformRespDTO.class);
 			ValidformRespDTO validformRespDTO = resultDTO.getBody();
 			return validformRespDTO;
     }

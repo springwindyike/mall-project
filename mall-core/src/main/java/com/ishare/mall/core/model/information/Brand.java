@@ -14,7 +14,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Description:品牌实体
  * Version 1.0
  */
-@Entity(name = TABLE_BRAND_NAME)
+@Entity
+@Table(name = TABLE_BRAND_NAME)
 public class Brand extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,7 +44,7 @@ public class Brand extends BaseEntity {
     /**
      * 一对多所有的该品牌下所有的商品
      */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "brand")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "brand", fetch = FetchType.LAZY)
     private Set<Product> products = Sets.newConcurrentHashSet();
 
     public String getName() {

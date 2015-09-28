@@ -39,7 +39,7 @@ public class StorageManager {
 	}
 
 	public static State saveFileByInputStream(InputStream is, String path,
-			long maxSize) {
+											  long maxSize) {
 		State state = null;
 
 		File tmpFile = getTmpFile();
@@ -70,7 +70,7 @@ public class StorageManager {
 			}
 
 			return state;
-			
+
 		} catch (IOException e) {
 		}
 		return new BaseState(false, AppInfo.IO_ERROR);
@@ -129,7 +129,7 @@ public class StorageManager {
 		state = new BaseState(true);
 		state.putInfo( "size", targetFile.length() );
 		state.putInfo( "title", targetFile.getName() );
-		
+
 		return state;
 	}
 

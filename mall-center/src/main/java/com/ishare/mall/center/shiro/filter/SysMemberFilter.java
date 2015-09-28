@@ -23,7 +23,6 @@ public class SysMemberFilter extends PathMatchingFilter {
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         String account = (String) SecurityUtils.getSubject().getPrincipal();
-        log.debug("current account");
         request.setAttribute(CommonConstant.Common.CURRENT_MEMBER, (MemberDTO)((HttpServletRequest)request).getSession().getAttribute(CommonConstant.Common.CURRENT_MEMBER));
         return true;
     }

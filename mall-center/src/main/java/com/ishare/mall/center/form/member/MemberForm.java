@@ -14,6 +14,7 @@ public class MemberForm {
     private String repassword;
     private String sex;
     private String mobile;
+    private String name;
     public String getAccount() {
         return account;
     }
@@ -52,5 +53,13 @@ public class MemberForm {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

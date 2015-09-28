@@ -57,4 +57,11 @@ public class ChannelServiceImpl implements ChannelService {
 		 }
 		return null;
 	}
+
+	@Override
+	public Channel findByName(String name) {
+    List<Channel> channels = channelRepository.findByName(name);
+    if (channels == null || channels.size() == 0) return null;
+    return channels.get(0);
+	}
 }

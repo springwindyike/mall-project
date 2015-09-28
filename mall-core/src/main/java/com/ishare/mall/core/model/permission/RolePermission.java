@@ -17,11 +17,11 @@ public class RolePermission extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "permission_id")
     private Permission permission;
 

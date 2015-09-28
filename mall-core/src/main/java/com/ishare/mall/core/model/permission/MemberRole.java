@@ -18,10 +18,10 @@ public class MemberRole extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 

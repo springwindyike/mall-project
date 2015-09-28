@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.repository.product.ProductTypeRepository;
@@ -36,19 +37,38 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public Page<ProductType> search(Map<String, Object> searchParams, PageRequest pageRequest) {
         Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
         Specification<ProductType> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), ProductType.class);
-        Page<ProductType> page = productTypeRepository.findAll(spec, pageRequest);
+        Page<ProductType> page;
+		try {
+			page = productTypeRepository.findAll(spec, pageRequest);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("根据条件查询产品类型失败");
+		}
         log.debug("filters: {}, total: {}, content: {}", filters, page.getTotalElements(), page.getContent());
         return page;
     }
 
     @Override
     public ProductType findOne(Integer id) {
-        return productTypeRepository.findOne(id);
+        ProductType productType;
+		try {
+			productType = productTypeRepository.findOne(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("查询产品类型失败");
+		}
+        return productType;
     }
     
     @Override
     public List<ProductType> findByLevel(Integer id) {
-	    List<ProductType> productType = productTypeRepository.findByLevel(id);
+	    List<ProductType> productType;
+		try {
+			productType = productTypeRepository.findByLevel(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("通过level查询产品类型失败");
+		}
 	    if (productType == null || productType.size() == 0) return null;
 	    return productType;
     }
@@ -60,7 +80,13 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	@Override
 	public List<ProductType> findByParentId(Integer pariendId) {
 		// TODO Auto-generated method stub
-		 List<ProductType> productType = productTypeRepository.findByParendId(pariendId);
+		 List<ProductType> productType;
+		try {
+			productType = productTypeRepository.findByParendId(pariendId);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("根据parentId查询产品类型失败");
+		}
 		    if (productType == null || productType.size() == 0) return null;
 		    return productType;
 	}

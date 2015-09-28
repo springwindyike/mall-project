@@ -11,9 +11,9 @@ import com.ishare.mall.common.base.object.BaseObject;
  */
 @JsonAutoDetect
 public class OrderTotalDTO implements BaseObject {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	public float totalMoney;
@@ -25,5 +25,5 @@ public class OrderTotalDTO implements BaseObject {
 	public void setTotalMoney(float totalMoney) {
 		this.totalMoney = totalMoney;
 	}
-	
+
 }

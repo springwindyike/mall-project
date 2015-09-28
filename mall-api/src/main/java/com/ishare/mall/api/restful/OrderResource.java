@@ -1,30 +1,23 @@
 
 package com.ishare.mall.api.restful;
 
-import com.ishare.mall.api.form.OrderForm;
+import com.ishare.mall.api.annotation.AccessToken;
+import com.ishare.mall.api.form.order.OrderForm;
 import com.ishare.mall.api.restful.base.BaseResource;
 import com.ishare.mall.api.service.oauth.OAuthService;
-import com.ishare.mall.api.utils.page.PageUtils;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.order.OrderTotalDTO;
-import org.apache.oltu.oauth2.common.error.OAuthError;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.message.OAuthResponse;
-import org.apache.oltu.oauth2.rs.response.OAuthRSResponse;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.ishare.mall.common.base.general.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -35,21 +28,44 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 @RequestMapping("/orders")
 public class OrderResource extends BaseResource {
 
+    private static final Logger log = LoggerFactory.getLogger(OrderResource.class);
+
 //	@Autowired
 //	private OrderService orderService;
-//	@Autowired
-//	private OAuthService oAuthService;
-//    /**
-//     * 添加订单
-//     */
-//	@RequestMapping(value = "buy", method = RequestMethod.POST)
-//	public OrderDetailDTO buy(OrderForm orderForm) {
-//		ExchangeDTO exchangeDTO = orderForm.toExchangeDTO();
-//		exchangeDTO.setAccount(oAuthService.getAccountByAccessToken(orderForm.getToken()));
-//		exchangeDTO.setClientId(oAuthService.getAuthObjectByAccessToken(orderForm.getToken()).getClientId());
-//
-//		return null;
-//    }
+	@Autowired
+	private OAuthService oAuthService;
+    /**
+     * 添加订单
+     * 有@AccessToken的标注表示必须要token
+     */
+    @AccessToken
+	@RequestMapping(value = "create", method = RequestMethod.POST)
+    @ResponseBody
+	public ResponseEntity create(OrderForm orderForm) {
+		ExchangeDTO exchangeDTO = orderForm.toExchangeDTO();
+        //从缓存中通过accessToken获取用户信息
+		exchangeDTO.setAccount(oAuthService.getAccountByAccessToken(orderForm.getToken()));
+		exchangeDTO.setClientId(oAuthService.getAuthObjectByAccessToken(orderForm.getToken()).getClientId());
+        ResponseEntity<Response> responseEntity = null;
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            responseEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CREATE), exchangeDTO, Response.class);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            Response response = new Response();
+            response.setSuccess(Response.Status.FAILURE);
+            response.setMessage("系统错误");
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        //获取请求结果
+        Response response = responseEntity.getBody();
+        //请求是失败系统错误
+        if (!response.isSuccess()) {
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        //请求成功
+		return new ResponseEntity(response, HttpStatus.OK);
+    }
 //
 //    /**
 //     * 确认订单会跳转支付

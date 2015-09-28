@@ -1,7 +1,7 @@
 package com.ishare.mall.core.model.order;
 
+import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.core.model.base.BaseEntity;
-import com.ishare.mall.core.status.Gender;
 
 import javax.persistence.*;
 
@@ -11,7 +11,8 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * 订购者联系信息
  *
  */
-@Entity(name = TABLE_ORDER_CONTACT_INFO_NAME)
+@Entity
+@Table(name = TABLE_ORDER_CONTACT_INFO_NAME)
 public class OrderContactInfo extends BaseEntity {
 	@Id @GeneratedValue
 	private Integer id;
@@ -49,7 +50,7 @@ public class OrderContactInfo extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.MAN;
 	/**所属订单**/
-	@OneToOne(cascade = CascadeType.REFRESH, mappedBy = "orderContactInfo")
+	@OneToOne(cascade = CascadeType.REFRESH, mappedBy = "orderContactInfo", fetch = FetchType.LAZY)
 	private Order order;
 	public Order getOrder() {
 		return order;

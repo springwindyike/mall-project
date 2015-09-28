@@ -1,9 +1,9 @@
 package com.ishare.mall.manage.utils;
 
-import com.ishare.mall.core.utils.filter.Encodes;
 import com.google.common.base.Charsets;
 import com.google.common.net.HttpHeaders;
-import com.ishare.mall.core.utils.filter.Collections3;
+import com.ishare.mall.common.base.utils.Collections3;
+import com.ishare.mall.manage.common.utils.security.Encodes;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

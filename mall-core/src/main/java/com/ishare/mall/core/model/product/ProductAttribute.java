@@ -1,6 +1,7 @@
 package com.ishare.mall.core.model.product;
 
-import com.ishare.mall.core.status.ValueType;
+
+import com.ishare.mall.common.base.enumeration.ValueType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,11 +21,11 @@ public class ProductAttribute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     //所属商品
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
     private Product product;
     //所属属性
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="attr_id")
     private Attribute attribute;
     //属性名字

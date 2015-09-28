@@ -1,6 +1,6 @@
 package com.ishare.mall.core.form;
 
-import com.ishare.mall.core.status.OrderItemState;
+import com.ishare.mall.common.base.enumeration.OrderItemState;
 
 public class AddOrderItemForm {
     private Integer id;
@@ -15,7 +15,7 @@ public class AddOrderItemForm {
     /* 产品样式 */
     private String styleName;
     /* 产品样式ID */
-    private Integer styleId;
+    private Long styleId;
     /* 产品图片地址 */
     private String imageUrl;
     /* 产品状态 */
@@ -62,10 +62,10 @@ public class AddOrderItemForm {
 	public void setStyleName(String styleName) {
 		this.styleName = styleName;
 	}
-	public Integer getStyleId() {
+	public Long getStyleId() {
 		return styleId;
 	}
-	public void setStyleId(Integer styleId) {
+	public void setStyleId(Long styleId) {
 		this.styleId = styleId;
 	}
 	public String getImageUrl() {

@@ -36,12 +36,12 @@
 		<property name="defaultContentType" value="application/json"/>
 		<property name="mediaTypes">
 			<value>
-				json=application/json
 				xml=application/xml
+				json=application/json
 			</value>
 		</property>
 	</bean>
-	
+
 	<!-- 定义JSP文件的位置 --> 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/"/>
@@ -70,11 +70,15 @@
             <mvc:mapping path="/*/*/create"/>
             <mvc:mapping path="/*/*/delete/*"/>
             <mvc:mapping path="/*/*/update"/>
-            <bean class="com.tianyu.jty.system.interceptor.LogInterceptor"></bean>
+            <bean class="LogInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
 	-->
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-
+		<property name="converters">
+			<set>
+				<bean class="org.springframework.core.convert.support.StringToEnumConverterFactory"/>
+			</set>
+		</property>
 	</bean>
 </beans>

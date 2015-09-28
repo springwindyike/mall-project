@@ -1,12 +1,13 @@
 package com.ishare.mall.common.base.dto.product;
 
-import com.ishare.mall.common.base.object.BaseObject;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import java.util.Date;
-
-import javax.xml.bind.annotation.XmlRootElement;
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -15,8 +16,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @JsonAutoDetect
-public class ProductDetailDTO implements BaseObject {
-    private Integer id;
+public class ProductDetailDTO extends GenericDTO {
+    private static final long serialVersionUID = 1L;
+
+	private Integer id;
     //货号
     private String code;
     //物品名字
@@ -68,7 +71,9 @@ public class ProductDetailDTO implements BaseObject {
     //默认样式图片
     private String defaultImageUrl;
     //库存
-    private Integer inventory; 
+    private Integer inventory;
+
+    private List<ProductStyleDTO> list;
 
     public Integer getId() {
         return id;
@@ -285,5 +290,12 @@ public class ProductDetailDTO implements BaseObject {
 	public void setInventory(Integer inventory) {
 		this.inventory = inventory;
 	}
-    
+
+    public List<ProductStyleDTO> getList() {
+        return list;
+    }
+
+    public void setList(List<ProductStyleDTO> list) {
+        this.list = list;
+    }
 }
