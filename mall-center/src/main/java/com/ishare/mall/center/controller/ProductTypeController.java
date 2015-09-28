@@ -65,4 +65,23 @@ public class ProductTypeController extends BaseController {
 				.getBody().getData();
 		return productTypeDTOResult;
 	}
+    
+    @RequestMapping(value = CenterURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID, produces = {"application/json"})
+    @ResponseBody
+	public ProductTypeDTO findById(@NotEmpty @PathVariable("id") Integer id) {
+
+		ResponseEntity<Response> resultDTO = null;
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		productTypeDTO.setId(id);
+		RestTemplate restTemplate = new RestTemplate();
+		try {
+	        resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING,APPURIConstant.ProductType.REQUEST_MAPPING_FIND_BY_ID),productTypeDTO,Response.class);
+		} catch (RestClientException e) {
+			e.printStackTrace();
+		}
+		ProductTypeDTO productTypeDTOResult = (ProductTypeDTO) resultDTO
+				.getBody().getData();
+		return productTypeDTOResult;
+	
+    }
 }
