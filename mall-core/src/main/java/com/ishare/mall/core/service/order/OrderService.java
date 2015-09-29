@@ -91,4 +91,13 @@ public interface OrderService {
 	 * @throws OrderServiceException
 	 */
 	Order updateOrder(Order order, String note) throws OrderServiceException;
+	/**
+	 * 根据条件查询订单
+	 * @param orderId
+	 * @param channelId
+	 * @param pageRequest
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException;
 }

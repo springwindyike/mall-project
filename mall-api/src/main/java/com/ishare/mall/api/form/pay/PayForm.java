@@ -10,17 +10,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class PayForm {
     @NotEmpty(message = "token不能为空")
-    private String token;
+    private String access_token;
     @NotEmpty(message = "订单id不能为空")
     private String orderId;
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public String getOrderId() {
         return orderId;
@@ -28,5 +20,13 @@ public class PayForm {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 }

@@ -1,5 +1,9 @@
 package com.ishare.mall.common.base.dto.pay;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -8,7 +12,9 @@ import java.util.Date;
  * Description :
  * Version 1.0
  */
-public class AliPayDTO {
+@XmlRootElement
+@JsonAutoDetect
+public class AliPayDTO implements Serializable {
 
     private String costType;
 

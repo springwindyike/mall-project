@@ -1,22 +1,5 @@
 package com.ishare.mall.core.service.order.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
@@ -26,11 +9,7 @@ import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.model.order.GeneratedOrderId;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.model.order.OrderDeliverInfo;
-import com.ishare.mall.core.model.order.OrderItem;
-import com.ishare.mall.core.model.order.OrderUpdateLog;
+import com.ishare.mall.core.model.order.*;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.repository.deliver.DeliverRepository;
@@ -46,6 +25,18 @@ import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
@@ -227,6 +218,7 @@ public class OrderServiceImpl implements OrderService {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("订单保存失败");
 		}
+		detailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
 		//设置收货人信息
 		detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
 		//设置订单项
@@ -324,6 +316,15 @@ public class OrderServiceImpl implements OrderService {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("订单修改失败");
+		}
+	}
+	@Override
+	public Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException {
+		try {
+			return orderRepository.findBycondition(orderId, channelId, pageRequest);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("搜索订单失败");
 		}
 	}
 }
