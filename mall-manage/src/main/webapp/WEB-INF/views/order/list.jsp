@@ -89,7 +89,7 @@
 var targetTable;
 var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
 $(function () {
-	targetTable = $('.table-sort').dataTable({
+	targetTable = $('.table-sort').DataTable({
 /* 		"aaSorting": [[ 0, "desc" ]],//默认第几个排序 */
 /* 	 	"bStateSave": true,//状态保存 */
 		"bProcessing": true,
@@ -206,6 +206,7 @@ $(function () {
 });
 /*根据条件查询*/
 function searchOrder(){
+	alert(targetTable);
     var searchCondition = $("#searchCondition").val();
     url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition/'+searchCondition+'.dhtml';
     targetTable.ajax.url(url).load();
