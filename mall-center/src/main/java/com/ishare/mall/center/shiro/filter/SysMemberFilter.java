@@ -32,10 +32,6 @@ public class SysMemberFilter extends PathMatchingFilter {
 
     private Cache cache;
 
-    @Autowired
-    public SysMemberFilter (CacheManager cacheManager){
-        this.cache = cacheManager.getCache("code-cache");
-    }
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         String account = (String) SecurityUtils.getSubject().getPrincipal();
