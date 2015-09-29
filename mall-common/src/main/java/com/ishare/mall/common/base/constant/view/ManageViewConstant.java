@@ -14,4 +14,8 @@ public interface ManageViewConstant {
 		String CANCEL_ORDER = "order/cancel";
 	}
 	
+	interface Category {
+		String LIST_CATEGORY = "category/list";
+		String ADD_CATEGORY ="category/add";
+	}
 }

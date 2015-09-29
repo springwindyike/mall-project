@@ -5,6 +5,7 @@ import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.form.member.MemberUpdatePasswordForm;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
@@ -52,15 +53,9 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "/findByChannelId", method = RequestMethod.GET)
 	@ResponseBody
-	//public PageDTO findByChannelId(@CurrentMember MemberDTO memberDTO, HttpServletRequest request, Model model) {
-	public PageDTO findByChannelId(HttpServletRequest request, Model model) throws Exception{
-		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setChannelId(8);
+	public PageDTO findByChannelId(@CurrentMember MemberDTO memberDTO,HttpServletRequest request, Model model) throws Exception{
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
-		System.out.println(request.getParameter("draw"));
-		System.out.println(request.getParameter("length"));
-
 		int currentPage = displayStart/displayLength+1;
 		memberDTO.setLimit(displayLength);
 		memberDTO.setOffset(currentPage);
@@ -173,12 +168,10 @@ public class MemberController extends BaseController {
 
 	@RequestMapping(value = "/findBySearchCondition/{searchCondition}")
 	@ResponseBody
-	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
-		MemberDTO memberDTO = new MemberDTO();
+	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request,@CurrentMember MemberDTO memberDTO) throws Exception{
 		memberDTO.setMobile(searchCondition);
 		memberDTO.setAccount(searchCondition);
 		memberDTO.setName(searchCondition);
-		memberDTO.setChannelId(8);
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 		System.out.println(request.getParameter("draw"));
