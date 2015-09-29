@@ -19,5 +19,10 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING_CANCEL_SUBMIT = "/cancel";
 		String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
 	}
-
+ 
+interface Category {
+	String REQUEST_MAPPING = "/category";
+	String REQUEST_MAPPING_CATEGORY_LIST = "/list";
+	String REQUEST_MAPPING_CATEGORY_ADD = "/add";
+}
 }
