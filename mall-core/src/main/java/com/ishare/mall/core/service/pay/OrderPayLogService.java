@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.pay;
 
+import com.ishare.mall.common.base.dto.pay.AliPayDTO;
 import com.ishare.mall.core.model.pay.OrderPayLog;
 
 /**
@@ -11,4 +12,5 @@ public interface OrderPayLogService {
     OrderPayLog findByOrderId(String orderId);
     OrderPayLog save(OrderPayLog orderPayLog);
     OrderPayLog updateForProcess(OrderPayLog orderPayLog);
+    OrderPayLog create(AliPayDTO aliPayDTO);
 }

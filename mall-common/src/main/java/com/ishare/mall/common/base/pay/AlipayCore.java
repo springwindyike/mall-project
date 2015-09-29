@@ -1,4 +1,4 @@
-package com.ishare.mall.core.utils.pay;
+package com.ishare.mall.common.base.pay;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;

@@ -5,6 +5,7 @@ import com.ishare.mall.api.service.order.OrderService;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 import com.ishare.mall.common.base.general.Response;
 import org.slf4j.Logger;
@@ -73,6 +74,28 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         if (!response.isSuccess() || response.getData() == null) {
             throw new ApiLogicException("订单创建失败", HttpStatus.BAD_REQUEST);
+        }
+
+        return response.getData();
+    }
+
+    @Override
+    public OrderDetailDTO payComplete(AliPayNotifyDTO notify) throws ApiLogicException {
+        ResponseEntity<Response<OrderDetailDTO>> responseEntity;
+        try {
+            responseEntity = restTemplate.exchange(
+                    this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_PAY_BACK),
+                    HttpMethod.POST, new HttpEntity<AliPayNotifyDTO>(notify), new ParameterizedTypeReference<Response<OrderDetailDTO>>() {
+                    });
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApiLogicException("未找到订单", HttpStatus.BAD_REQUEST);
+        }
+
+        Response<OrderDetailDTO> response = responseEntity.getBody();
+
+        if (!response.isSuccess() || response.getData() == null) {
+            throw new ApiLogicException("未找到订单", HttpStatus.BAD_REQUEST);
         }
 
         return response.getData();
