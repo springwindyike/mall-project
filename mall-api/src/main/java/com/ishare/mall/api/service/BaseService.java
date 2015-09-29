@@ -12,6 +12,15 @@ public class BaseService {
     @Value("#{settings['biz.app.url']}")
     protected String bizAppUrl;
 
+    @Value("#{settings['ali.pay.return.url']}")
+    protected String returnUrl;
+
+    @Value("#{settings['ali.pay.partner']}")
+    protected String partner;
+
+    @Value("#{settings['ali.pay.key']}")
+    protected String key;
+
     /**
      * 基础的path和apiPath
      * @param moduleRequestMapping

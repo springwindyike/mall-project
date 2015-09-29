@@ -4,12 +4,16 @@ import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
+import com.ishare.mall.common.base.enumeration.CostType;
 import com.ishare.mall.common.base.enumeration.OrderItemState;
 import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PayType;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.*;
+import com.ishare.mall.core.model.pay.OrderPayLog;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.repository.deliver.DeliverRepository;
@@ -22,6 +26,7 @@ import com.ishare.mall.core.repository.product.ProductStyleRepository;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
+import com.ishare.mall.core.service.pay.OrderPayLogService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
@@ -35,6 +40,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -62,6 +68,8 @@ public class OrderServiceImpl implements OrderService {
 	private ChannelService channelService;
 	@Autowired
 	private OrderUpdateLogRepository orderUpdateLogRepository;
+	@Autowired
+	private OrderPayLogService orderPayLogService;
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -121,28 +129,57 @@ public class OrderServiceImpl implements OrderService {
 			}
 			generatedOrderId.setOrderId(generatedOrderId.getOrderId()+1);
 			generatedOrderIdRepository.save(generatedOrderId);
-			String orderIdStr = String.format("%06d",generatedOrderId.getOrderId()+1);
+			String orderIdStr = String.format("%06d", generatedOrderId.getOrderId() + 1);
 			order.setOrderId(date + orderIdStr);
 			return orderRepository.save(order);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("订单保存失败");
 		}
-		
 	}
 
 	@Override
-	public Order payComplete(String orderId) {
-		try {
-			Order order = orderRepository.findOne(orderId);
-			if (order != null) {
-				order.setState(OrderState.WAIT_DELIVER);
-				order = orderRepository.save(order);
+	public Order payComplete(AliPayNotifyDTO notify) {
+		log.debug("支付完成：" + notify.toString());
+		synchronized (this) {
+			OrderPayLog payLog = orderPayLogService.findByOrderId(notify.getOut_trade_no());
+			if (payLog != null && payLog.getPayType().equals(PayType.NEW)) {
+				payLog.setAmount(new BigDecimal(notify.getTotal_fee()));
+				payLog.setTansId(notify.getTrade_no());
+				payLog.setUpdateTime(new Date());
+				payLog.setPayType(PayType.PAY);
+				log.warn("pay from pc and pay by blank amount payment={}", "支付宝");
+				//更新支付log状态
+				orderPayLogService.updateForProcess(payLog);
+			} else if (payLog == null) {
+				payLog = new OrderPayLog();
+				payLog.setOrderId(notify.getSubject());
+				payLog.setAmount(new BigDecimal(notify.getTotal_fee()));
+				payLog.setTansId(notify.getTrade_no());
+				payLog.setUpdateTime(new Date());
+				payLog.setFinishTime(new Date());
+				payLog.setCreateTime(new Date());
+				payLog.setCostType(CostType.MEMBER);
+				payLog.setPayType(PayType.PAY);
+
 			}
-			return order;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			throw new OrderServiceException("支付出错");
+
+			try {
+				Order order = orderRepository.findOne(notify.getOut_trade_no());
+				if (order != null) {
+					order.setState(OrderState.WAIT_DELIVER);
+					order.setPaymentState(true);
+					payLog.setChannelId(order.getChannel().getId());
+					orderPayLogService.save(payLog);
+					order = orderRepository.save(order);
+				}
+
+				return order;
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				throw new OrderServiceException("支付出错");
+			}
+
 		}
 	}
 
@@ -286,22 +323,24 @@ public class OrderServiceImpl implements OrderService {
 
 	//获取下一个订单号
 	private String nextOrderId() {
-		Date current = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String date = sdf.format(current);
-		GeneratedOrderId generatedOrderId = generatedOrderIdRepository.findOne(date);
-		if(null == generatedOrderId){
-			GeneratedOrderId go = new GeneratedOrderId();
-			go.setId(date);
-			go.setOrderId(1);
-			generatedOrderIdRepository.save(go);
-			return date + String.format("%06d", go.getOrderId());
+		synchronized (this) {
+			Date current = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			String date = sdf.format(current);
+			GeneratedOrderId generatedOrderId = generatedOrderIdRepository.findOne(date);
+			if (null == generatedOrderId) {
+				GeneratedOrderId go = new GeneratedOrderId();
+				go.setId(date);
+				go.setOrderId(1);
+				generatedOrderIdRepository.save(go);
+				return date + String.format("%06d", go.getOrderId());
+			}
+			generatedOrderId.setOrderId(generatedOrderId.getOrderId() + 1);
+			generatedOrderIdRepository.save(generatedOrderId);
+			System.out.println("date : " + date);
+			System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId()));
+			return date + String.format("%06d", generatedOrderId.getOrderId());
 		}
-		generatedOrderId.setOrderId(generatedOrderId.getOrderId() + 1);
-		generatedOrderIdRepository.save(generatedOrderId);
-		System.out.println("date : " + date);
-		System.out.println("orderID : " + date + String.format("%06d", generatedOrderId.getOrderId()));
-		return date + String.format("%06d", generatedOrderId.getOrderId());
 	}
 	@Override
 	public Order updateOrder(Order order, String note) throws OrderServiceException {

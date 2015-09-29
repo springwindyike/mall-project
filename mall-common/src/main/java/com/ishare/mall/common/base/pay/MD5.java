@@ -1,4 +1,4 @@
-package com.ishare.mall.core.utils.pay;
+package com.ishare.mall.common.base.pay;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

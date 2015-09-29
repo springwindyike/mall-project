@@ -1,17 +1,14 @@
 package com.ishare.mall.biz.restful.order;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
-import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
-import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
-import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -111,7 +108,7 @@ public class OrderResource {
 							response.setSuccess(false);
 							return response;
 						}
-    		}
+	}
 
     /**
      * 创建订单
@@ -155,66 +152,80 @@ public class OrderResource {
             headers     = "Accept=application/xml, application/json",
             produces    = {"application/json", "application/xml"},
             consumes    = {"application/json", "application/xml"})
-			public Response update(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
-		    	Response response = new Response();
-		    	
-    			Order order = orderService.findOne(orderDetailDTO.getOrderId());
-    			order.setExpressId(orderDetailDTO.getExpressId());
-    			order.setExpressOrder(orderDetailDTO.getExpressOrder());
-    			order.setState(OrderState.DELIVERED);
-					order.setUpdateTime(new Date());
-					String logStr = "发货操作：" + orderDetailDTO.getLog();
-    			try {
-    				Order newOrder = orderService.updateOrder(order, logStr);
-						OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
-						BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
-						innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
-						innerOrderDetailDTO.setCreateBy(newOrder.getCreateBy().getAccount());
-						innerOrderDetailDTO.setStateValue(newOrder.getState().getName());
-						innerOrderDetailDTO.setRecipients(newOrder.getOrderDeliverInfo().getRecipients());
-						
-						response.setCode(Response.Status.OK);
-						response.setData(orderDetailDTO);
-						return response;
-					} catch (Exception e) {
-						log.error(e.getMessage(), e);
-						response.setMessage("系统错误");
-						response.setSuccess(false);
-						return response;
-					}
+	public Response update(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
+		Response response = new Response();
+
+		Order order = orderService.findOne(orderDetailDTO.getOrderId());
+		order.setExpressId(orderDetailDTO.getExpressId());
+		order.setExpressOrder(orderDetailDTO.getExpressOrder());
+		order.setState(OrderState.DELIVERED);
+			order.setUpdateTime(new Date());
+			String logStr = "发货操作：" + orderDetailDTO.getLog();
+		try {
+			Order newOrder = orderService.updateOrder(order, logStr);
+				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+				BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
+				innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
+				innerOrderDetailDTO.setCreateBy(newOrder.getCreateBy().getAccount());
+				innerOrderDetailDTO.setStateValue(newOrder.getState().getName());
+				innerOrderDetailDTO.setRecipients(newOrder.getOrderDeliverInfo().getRecipients());
+
+				response.setCode(Response.Status.OK);
+				response.setData(orderDetailDTO);
+				return response;
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				response.setMessage("系统错误");
+				response.setSuccess(false);
+				return response;
 			}
+	}
     
     @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_CANCEL,
             method      = RequestMethod.POST,
             headers     = "Accept=application/xml, application/json",
             produces    = {"application/json", "application/xml"},
             consumes    = {"application/json", "application/xml"})
-			public Response cancel(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
-		    	Response response = new Response();
-		    	
-    			Order order = orderService.findOne(orderDetailDTO.getOrderId());
-    			order.setState(OrderState.CANCEL);
-					order.setUpdateTime(new Date());
-					String logStr = "取消操作：" + orderDetailDTO.getLog();
-    			try {
-    				Order newOrder = orderService.updateOrder(order, logStr);
-						OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
-						BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
-						innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
-						innerOrderDetailDTO.setCreateBy(newOrder.getCreateBy().getAccount());
-						innerOrderDetailDTO.setStateValue(newOrder.getState().getName());
-						innerOrderDetailDTO.setRecipients(newOrder.getOrderDeliverInfo().getRecipients());
-						
-						response.setCode(Response.Status.OK);
-						response.setData(orderDetailDTO);
-						return response;
-					} catch (Exception e) {
-						log.error(e.getMessage(), e);
-						response.setMessage("系统错误");
-						response.setSuccess(false);
-						return response;
-					}
+	public Response cancel(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
+		Response response = new Response();
+
+		Order order = orderService.findOne(orderDetailDTO.getOrderId());
+		order.setState(OrderState.CANCEL);
+			order.setUpdateTime(new Date());
+			String logStr = "取消操作：" + orderDetailDTO.getLog();
+		try {
+			Order newOrder = orderService.updateOrder(order, logStr);
+				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+				BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
+				innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
+				innerOrderDetailDTO.setCreateBy(newOrder.getCreateBy().getAccount());
+				innerOrderDetailDTO.setStateValue(newOrder.getState().getName());
+				innerOrderDetailDTO.setRecipients(newOrder.getOrderDeliverInfo().getRecipients());
+
+				response.setCode(Response.Status.OK);
+				response.setData(orderDetailDTO);
+				return response;
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				response.setMessage("系统错误");
+				response.setSuccess(false);
+				return response;
 			}
+	}
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_PAY_BACK, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json"})
+	public Response payComplete(@RequestBody AliPayNotifyDTO notify) {
+		Order order = orderService.payComplete(notify);
+		Response response = new Response();
+		if (order != null) {
+			OrderDetailDTO orderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
+			response.setCode(200);
+			response.setData(orderDetailDTO);
+		}
+		return response;
+	}
     
     @RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
