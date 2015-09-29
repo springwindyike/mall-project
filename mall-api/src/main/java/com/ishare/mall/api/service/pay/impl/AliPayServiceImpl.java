@@ -34,8 +34,13 @@ public class AliPayServiceImpl extends BaseService implements AliPayService {
     public String create(String accessToken, OrderDetailDTO order) {
         AliPayDTO aliPayDTO = this.createAliPayDTO(accessToken, order);
         ResponseEntity<Response> responseHtml;
+        log.debug(order.toString());
+        log.debug(this.buildBizAppURI(APPURIConstant.AliPay.REQUEST_MAPPING, APPURIConstant.AliPay.REQUEST_MAPPING_CREATE_PAY_HTML));
         try {
-            responseHtml = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.AliPay.REQUEST_MAPPING, APPURIConstant.AliPay.REQUEST_MAPPING_CREATE_PAY_HTML), aliPayDTO, Response.class);
+            responseHtml = restTemplate.postForEntity(
+                    this.buildBizAppURI(APPURIConstant.AliPay.REQUEST_MAPPING, APPURIConstant.AliPay.REQUEST_MAPPING_CREATE_PAY_HTML),
+                    aliPayDTO,
+                    Response.class);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ApiLogicException("创建支付宝支付失败！", HttpStatus.BAD_REQUEST);
@@ -60,7 +65,7 @@ public class AliPayServiceImpl extends BaseService implements AliPayService {
         aliPayDTO.setAmount(new BigDecimal(order.getPayableFee()));
         aliPayDTO.setOrderID(order.getOrderId());
         aliPayDTO.setGoodsName(order.getOrderId());
-        aliPayDTO.setReturnUrl("127.0.0.1");
+        aliPayDTO.setReturnUrl("http://127.0.0.1:8888/alipay/notify");
         return  aliPayDTO;
     }
 

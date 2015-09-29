@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +67,7 @@ public class AliPayServiceImpl implements AliPayService {
         sParaTemp.put("seller_email", sellerEmail);
         sParaTemp.put("out_trade_no", aliPayDTO.getOrderID());
         sParaTemp.put("subject", aliPayDTO.getGoodsName());
-        sParaTemp.put("total_fee", aliPayDTO.getAmount().toString());
+        sParaTemp.put("total_fee", aliPayDTO.getAmount().setScale(2, BigDecimal.ROUND_HALF_UP).toEngineeringString());
         return this.buildRequest(sParaTemp, "POST", "支付");
     }
 

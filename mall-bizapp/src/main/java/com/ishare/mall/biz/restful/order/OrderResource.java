@@ -1,32 +1,9 @@
 package com.ishare.mall.biz.restful.order;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
-import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
@@ -41,6 +18,18 @@ import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/15.
@@ -133,8 +122,8 @@ public class OrderResource {
     @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_CREATE,
                     method      = RequestMethod.POST,
                     headers     = "Accept=application/xml, application/json",
-                    produces    = {"application/json", "application/xml"},
-                    consumes    = {"application/json", "application/xml"})
+                    produces    = {"application/json"},
+                    consumes    = {"application/json"})
     public Response create(@RequestBody ExchangeDTO exchangeDTO) throws OrderServiceException{
         OrderDetailDTO orderDetailDTO = orderService.create(exchangeDTO);
         Response response = new Response();
@@ -150,7 +139,8 @@ public class OrderResource {
         Response response = new Response();
         Order order = orderService.findOne(id);
         try {
-            OrderDetailDTO orderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDeliverDTO.class);
+            OrderDetailDTO orderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
+			response.setData(orderDetailDTO);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage(), e);

@@ -7,6 +7,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 /**
  * Created by YinLin on 2015/9/9.
  * Description :
@@ -20,6 +22,7 @@ public class BaseException extends RuntimeException {
     private String errorCode;
     private String message;
     private HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
+    private List<String> messages;
 
     public BaseException(String systemName, String errorPropertyKey, String message, HttpStatus status, Throwable cause) {
         super(message, cause);
@@ -119,5 +122,13 @@ public class BaseException extends RuntimeException {
 
     public static Log getLog() {
         return log;
+    }
+
+    public List<String> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 }
