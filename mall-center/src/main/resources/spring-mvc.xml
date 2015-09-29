@@ -70,7 +70,7 @@
 
 	<bean class="com.ishare.mall.center.handler.exception.DefaultExceptionHandler"/>
 
-	<!--<import resource="shiro/spring-mvc-shiro.xml"/>-->
+	<import resource="shiro/spring-mvc-shiro.xml"/>
     <!-- 自定义拦截链配置
     <mvc:interceptors>
         <mvc:interceptor>
