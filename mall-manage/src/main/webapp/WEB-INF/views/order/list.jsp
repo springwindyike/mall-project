@@ -206,7 +206,6 @@ $(function () {
 });
 /*根据条件查询*/
 function searchOrder(){
-	alert(targetTable);
     var searchCondition = $("#searchCondition").val();
     url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition/'+searchCondition+'.dhtml';
     targetTable.ajax.url(url).load();
