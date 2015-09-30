@@ -87,11 +87,19 @@ $(document).ready(function(){
     	t = $.fn.zTree.init(t, setting, zNodes);
     	demoIframe = $("#testIframe");
     	demoIframe.bind("load", loadReady);
-    	var zTree = $.fn.zTree.getZTreeObj("tree");
+    	var zTree = $.fn.zTree.getZTreeObj("child");
     	zTree.selectNode(zTree.getNodeByParam("id",'11'));
                        }
               });
 });
+function loadReady() {
+	var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+	htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+	maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+	h = demoIframe.height() >= maxH ? minH:maxH ;
+	if (h < 530) h = 530;
+	demoIframe.height(h);
+}
 </script>
 </body>
 </html>

@@ -46,9 +46,9 @@
               <option>享买</option>
               <option>锋果</option>
             </select></td>
-    <td><input type="text" name="" id="" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
+    <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
 
-    <td><button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
+    <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
   </tr>
 </table>
 
@@ -114,100 +114,97 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">	
-
-$('.table-sort').dataTable({
-	"aaSorting": [[ 0, "desc" ]],//默认第几个排序
- 	"bStateSave": true,//状态保存
-/* 	"aoColumnDefs": [
-	  {"orderable":false,"aTargets":[11]}// 制定列不参与排序
-	],  */
-	
-	
-	"bProcessing": true,
-	"bServerSide": true,
-	"bStateSave": false,
-	"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
-	"sAjaxSource": "${pageContext.request.contextPath}/order/findByChannelId.dhtml",
-	"sAjaxDataProp":"content",
-	"aoColumns": [
-	   { "mDataProp": "orderId" },//订单号
-	   { "mDataProp": null },//商品图片
-	   { "mDataProp": null },//商品名称
-	   { "mDataProp": null },//单价（元）
-	   { "mDataProp": null },//数量
-	   { "mDataProp": "createBy" },//购买账号
-	   { "mDataProp": "recipients" },//收货人
-	   { "mDataProp": "note" },//顾客留言
-	   { "mDataProp": "totalPrice" },//付款（元）	
-	   { "mDataProp": "createTime" },//生成时间	
-	   { "mDataProp": null }  //订单状态
-	   //{ "mDataProp": null }//操作
-	],
-	
-	"createdRow" : function(row, mDataProp, dataIndex){
-	   $(row).addClass('text-c');
-	},
-	
-	"columnDefs" : [
-		{
-			"targets" : 1 ,
-			"render" : function(mDataProp, type, full) {
-				return '<a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>';
-			}
-		},
-		{
-			"targets" : 2 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = "";
-				for (var i = 0; i < mDataProp.items.length; i++) 
-					{
-					itemHtml = mDataProp.items[i].productName;
+var targetTable;
+var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
+$(function () {
+	 targetTable = $('.table-sort').DataTable({
+			"bProcessing": true,
+			"bServerSide": true,
+			"bStateSave": false,
+			"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+			"ajax": {
+		   url:url,
+		   "dataSrc": "content"
+		    },
+			"aoColumns": [
+			   { "mDataProp": "orderId" },//订单号
+			   { "mDataProp": null },//商品图片
+			   { "mDataProp": null },//商品名称
+			   { "mDataProp": null },//单价（元）
+			   { "mDataProp": null },//数量
+			   { "mDataProp": "createBy" },//购买账号
+			   { "mDataProp": "recipients" },//收货人
+			   { "mDataProp": "note" },//顾客留言
+			   { "mDataProp": "totalPrice" },//付款（元）	
+			   { "mDataProp": "createTime" },//生成时间	
+			   { "mDataProp": null }  //订单状态
+			   //{ "mDataProp": null }//操作
+			],
+			
+			"createdRow" : function(row, mDataProp, dataIndex){
+			   $(row).addClass('text-c');
+			},
+			
+			"columnDefs" : [
+				{
+					"targets" : 1 ,
+					"render" : function(mDataProp, type, full) {
+						return '<a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>';
 					}
-				return '<a style="text-decoration:none" onClick="product_show(\''+itemHtml+'\',\'product-show.html\',\'10001\')" href="javascript:;">'+itemHtml+'</a>';
-			}
-		},
-		{
-			"targets" : 3 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = "";
-				for (var i = 0; i < mDataProp.items.length; i++) 
-					{
-					itemHtml = mDataProp.items[i].productPrice;
+				},
+				{
+					"targets" : 2 ,
+					"render" : function(mDataProp, type, full) {
+						var itemHtml = "";
+						for (var i = 0; i < mDataProp.items.length; i++) 
+							{
+							itemHtml = mDataProp.items[i].productName;
+							}
+						return '<a style="text-decoration:none" onClick="product_show(\''+itemHtml+'\',\'product-show.html\',\'10001\')" href="javascript:;">'+itemHtml+'</a>';
 					}
-				return itemHtml;
-				}
-		},
-		{
-			"targets" : 4 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = "";
-				for (var i = 0; i < mDataProp.items.length; i++) 
-					{
-					itemHtml = mDataProp.items[i].amount;
+				},
+				{
+					"targets" : 3 ,
+					"render" : function(mDataProp, type, full) {
+						var itemHtml = "";
+						for (var i = 0; i < mDataProp.items.length; i++) 
+							{
+							itemHtml = mDataProp.items[i].productPrice;
+							}
+						return itemHtml;
+						}
+				},
+				{
+					"targets" : 4 ,
+					"render" : function(mDataProp, type, full) {
+						var itemHtml = "";
+						for (var i = 0; i < mDataProp.items.length; i++) 
+							{
+							itemHtml = mDataProp.items[i].amount;
+							}
+						return itemHtml;
 					}
-				return itemHtml;
-			}
-		},
-		{
-			"targets" : 10 ,
-			"render" : function(mDataProp, type, full) {
-				var itemHtml = mDataProp.stateValue;
-				if(itemHtml == '已取消' || itemHtml == '待审核' ){
-					return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
-				}
-				return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>'; 
-			 }
-		}/* ,
-		{
-			"targets" : 11 ,
-			"orderable":false,
-			"aTargets":[11],
-			"render" : function(mDataProp, type, full) {
-				return '<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit(\'订单编辑\',\'product-add.html\',\'10001\')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a></td>';
-			}
-		} */
-	]
-	});
+				},
+				{
+					"targets" : 10 ,
+					"render" : function(mDataProp, type, full) {
+						var itemHtml = mDataProp.stateValue;
+						if(itemHtml == '已取消' || itemHtml == '待审核' ){
+							return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
+						}
+						return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>'; 
+					 }
+				}/* ,
+				{
+					"targets" : 11 ,
+					"orderable":false,
+					"aTargets":[11],
+					"render" : function(mDataProp, type, full) {
+						return '<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit(\'订单编辑\',\'product-add.html\',\'10001\')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a></td>';
+					}
+				} */
+			]
+			});
 	
 	$('.table-sort tbody').on('click', 'tr', function () {
 		if ($(this).hasClass('selected')) {
@@ -218,8 +215,14 @@ $('.table-sort').dataTable({
 			$(this).addClass('selected');
 		}
 	});
-	
-	
+});	
+/*根据条件查询*/
+function searchOrder(){
+    var searchCondition = $("#searchCondition").val();
+    url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition/'+searchCondition+'.dhtml';
+    targetTable.ajax.url(url).load();
+
+}
 
 /*图片-添加*/
 /* function product_add(title,url){
