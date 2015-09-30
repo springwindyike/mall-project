@@ -32,7 +32,7 @@ public class ExpressController  extends BaseController{
 		return log;
 	}
 	
-	@RequestMapping(value = ManageURIConstant.Express.REQUEST_MAPPING_FIND, method = RequestMethod.GET)
+	@RequestMapping(value = ManageURIConstant.Express.REQUEST_MAPPING_FIND, method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	public String getAllType(@NotEmpty @PathVariable("id") String id,@NotEmpty @PathVariable("order") String order) {
     	ResponseEntity<Response<String>> resultDTO = null;
