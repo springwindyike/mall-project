@@ -69,6 +69,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
         //创建订单
         String REQUEST_MAPPING_CREATE = "/create";
+        //支付成功回调
+        String REQUEST_MAPPING_PAY_BACK = "/pay/back";
         //通过订单ID获取订单详情
         String REQUEST_MAPPING_FIND_BY_ID = "/{id}";
         //发货订单提交

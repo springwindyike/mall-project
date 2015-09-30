@@ -55,6 +55,8 @@ public class AliPayResource {
     public Response<String> create(@RequestBody AliPayDTO aliPayDTO) {
         log.debug("alipay : " + aliPayDTO.getOrderID());
         log.debug(aliPayDTO.toString());
+        //创建支付日志
+        orderPayLogService.create(aliPayDTO);
         Response response = new Response();
         response.setCode(200);
         response.setData(aliPayService.create(aliPayDTO));
@@ -65,7 +67,9 @@ public class AliPayResource {
      * 阿里支付回调
      * @return
      */
-    @RequestMapping(value = APPURIConstant.AliPay.REQUEST_MAPPING_NOTIFY, method = RequestMethod.POST)
+    @RequestMapping(value       = APPURIConstant.AliPay.REQUEST_MAPPING_NOTIFY,
+                    method      = RequestMethod.POST,
+                    produces    = {"application/json"})
     public Object payNotify(AliPayNotifyDTO notify, HttpServletRequest request) {
         log.debug("支付宝回调");
         log.debug(notify.toString());
@@ -103,7 +107,7 @@ public class AliPayResource {
                     //更新支付log状态
                     orderPayLogService.updateForProcess(payLog);
                     //设置支付完成
-                    orderService.payComplete(notify.getOut_trade_no());
+                    orderService.payComplete(notify);
                 }
             }
         }

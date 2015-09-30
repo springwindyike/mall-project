@@ -21,7 +21,7 @@ public class OrderPayLog {
     @Id
     @GeneratedValue
     private Integer id;
-    @Column(name = "pay_order_id",length = 14)
+    @Column(name = "pay_order_id",length = 30)
     private String orderId;
     @Column(name = "pay_channel_id",length = 15)
     private Integer channelId;
@@ -36,13 +36,13 @@ public class OrderPayLog {
     @Column(length=7, nullable = false, name = "pay_log_type")
     private PayType payType;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "pay_log_create_time",length = 20)
+    @Column(name = "pay_log_create_time",length = 20)
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "pay_log_update_time",length = 20)
+    @Column(name = "pay_log_update_time",length = 20)
     private Date updateTime;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "pay_log_finish_time",length = 20)
+    @Column(name = "pay_log_finish_time",length = 20)
     private Date finishTime;
     @Column(name = "pay_log_tans_id",length = 15)
     private String tansId;

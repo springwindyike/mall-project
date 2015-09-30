@@ -207,14 +207,16 @@ public class OrderController extends BaseController {
 		int currentPage = displayStart/displayLength+1;
 		orderDetailDTO.setLimit(displayLength);
 		orderDetailDTO.setOffset(currentPage);
-		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
+		ResponseEntity<Response> resultDTO = null;
 		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
 		RestTemplate restTemplate = new RestTemplate();
 		try{
 			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>() {});
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response>() {});
+//			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION), orderDetailDTO, Response.class);
+
 		}catch (Exception e){
-			log.error("call bizp app " + APPURIConstant.Member.REQUEST_MAPPING + APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION + "error");
+			log.error("call bizp app " + APPURIConstant.Order.REQUEST_MAPPING + APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION + "error");
 			throw new Exception(e.getMessage());
 		}
 		Response response = resultDTO.getBody();

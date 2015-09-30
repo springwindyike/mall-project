@@ -2,6 +2,7 @@ package com.ishare.mall.core.service.order;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.order.Order;
 
@@ -53,7 +54,7 @@ public interface OrderService {
 	 * 支付完成设置状态为等待发货状态
 	 * @return
 	 */
-	Order payComplete(String orderId) throws OrderServiceException;
+	Order payComplete(AliPayNotifyDTO notify) throws OrderServiceException;
 
 	/**
 	 * 创建订单
