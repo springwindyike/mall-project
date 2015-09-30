@@ -25,4 +25,9 @@ interface Category {
 	String REQUEST_MAPPING_CATEGORY_LIST = "/list";
 	String REQUEST_MAPPING_CATEGORY_ADD = "/add";
 }
+
+interface Express {
+	String REQUEST_MAPPING = "/express";
+	String REQUEST_MAPPING_FIND ="/find/{order}/{id}";
+}
 }
