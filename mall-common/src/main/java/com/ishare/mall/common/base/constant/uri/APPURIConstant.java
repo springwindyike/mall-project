@@ -100,4 +100,9 @@ public interface APPURIConstant {
         //通过渠道名称查询重复
         String REQUEST_MAPPING_FIND_VALID_BY_NAME = "/findValidByName";
     }
+    
+    interface Express {
+    	String REQUEST_MAPPING ="/express";
+    	String REQUEST_MAPPING_FIND ="/find";
+    }
 }

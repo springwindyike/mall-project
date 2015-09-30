@@ -1,11 +1,13 @@
 package com.ishare.mall.common.base.general;
 
+import com.ishare.mall.common.base.dto.express.ExpressDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.test.TestDTO;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.springframework.http.HttpStatus;
 
@@ -13,6 +15,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,7 +34,9 @@ import java.util.List;
                 ProductDTO.class,
                 PageDTO.class,
                 ProductTypeDTO.class,
-                OrderDetailDTO.class
+                OrderDetailDTO.class,
+                ExpressDTO.class
+                
         }
 )
 @JsonAutoDetect
