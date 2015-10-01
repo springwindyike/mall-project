@@ -1,6 +1,8 @@
 package com.ishare.mall.api.service.order;
 
+import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 
 /**
@@ -16,4 +18,15 @@ public interface OrderService {
      * @throws ApiLogicException
      */
     OrderDetailDTO findOne(String id) throws ApiLogicException;
+
+    /**
+     * 创建订单
+     * @param exchangeDTO
+     * @return
+     * @throws ApiLogicException
+     */
+    OrderDetailDTO create(ExchangeDTO exchangeDTO) throws ApiLogicException;
+
+
+    OrderDetailDTO payComplete(AliPayNotifyDTO notify) throws ApiLogicException;
 }

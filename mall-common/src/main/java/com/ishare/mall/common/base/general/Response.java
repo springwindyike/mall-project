@@ -1,20 +1,23 @@
 package com.ishare.mall.common.base.general;
 
-import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-
+import com.ishare.mall.common.base.dto.express.ExpressDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.test.TestDTO;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.springframework.http.HttpStatus;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/22.
@@ -31,7 +34,9 @@ import com.ishare.mall.common.base.dto.test.TestDTO;
                 ProductDTO.class,
                 PageDTO.class,
                 ProductTypeDTO.class,
-                OrderDetailDTO.class
+                OrderDetailDTO.class,
+                ExpressDTO.class
+                
         }
 )
 @JsonAutoDetect
@@ -47,6 +52,10 @@ public class Response<T> implements Serializable {
     private T data;
     //错误消息
     private String message;
+
+    private HttpStatus status;
+
+    private List<String> messages;
 
     public Integer getCode() {
         return code;
@@ -78,6 +87,22 @@ public class Response<T> implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(HttpStatus status) {
+        this.status = status;
+    }
+
+    public List<String> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 
     public interface Status {

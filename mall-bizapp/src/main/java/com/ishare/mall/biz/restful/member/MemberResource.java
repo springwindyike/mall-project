@@ -375,7 +375,7 @@ public class MemberResource {
             Member member = memberService.findByAccount(memberDTO.getAccount());
             if (member != null){
                 member.setPassword(memberDTO.getPassword());
-                Channel channel = channelService.findOne(8);
+                Channel channel = channelService.findOne(memberDTO.getChannelId());
                 member.setChannel(channel);
                 memberService.saveMember(member);
             }
@@ -397,7 +397,7 @@ public class MemberResource {
             Member member = memberService.findByAccount(memberDTO.getAccount());
             if (member != null){
                 member.setUse(false);
-                Channel channel = channelService.findOne(8);
+                Channel channel = channelService.findOne(memberDTO.getChannelId());
                 member.setChannel(channel);
                 memberService.saveMember(member);
             }
@@ -425,7 +425,7 @@ public class MemberResource {
                 member.setMobile(memberDTO.getMobile());
                 member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
                 member.setName(memberDTO.getName());
-                Channel channel = channelService.findOne(8);
+                Channel channel = channelService.findOne(member.getChannel().getId());
                 member.setChannel(channel);
                 memberService.update(member);
             }

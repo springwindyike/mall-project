@@ -69,10 +69,15 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
         //创建订单
         String REQUEST_MAPPING_CREATE = "/create";
+        //支付成功回调
+        String REQUEST_MAPPING_PAY_BACK = "/pay/back";
         //通过订单ID获取订单详情
         String REQUEST_MAPPING_FIND_BY_ID = "/{id}";
         //发货订单提交
         String REQUEST_MAPPING_DELIVER = "/deliver";
+        //取消订单提交
+        String REQUEST_MAPPING_CANCEL = "/cancel";
+        String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
     }
     //支付
     interface AliPay {
@@ -80,7 +85,6 @@ public interface APPURIConstant {
         String REQUEST_MAPPING = "/alipay";
         //构建支付HTML
         String REQUEST_MAPPING_CREATE_PAY_HTML = "/create";
-
         //支付宝支付回调
         String REQUEST_MAPPING_NOTIFY = "/notify";
     }
@@ -95,5 +99,10 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BY_APP_SECRET = "/app/secret/{secret}";
         //通过渠道名称查询重复
         String REQUEST_MAPPING_FIND_VALID_BY_NAME = "/findValidByName";
+    }
+    
+    interface Express {
+    	String REQUEST_MAPPING ="/express";
+    	String REQUEST_MAPPING_FIND ="/find";
     }
 }

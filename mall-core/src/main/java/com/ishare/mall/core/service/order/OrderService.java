@@ -2,8 +2,10 @@ package com.ishare.mall.core.service.order;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.order.Order;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -52,7 +54,7 @@ public interface OrderService {
 	 * 支付完成设置状态为等待发货状态
 	 * @return
 	 */
-	Order payComplete(String orderId) throws OrderServiceException;
+	Order payComplete(AliPayNotifyDTO notify) throws OrderServiceException;
 
 	/**
 	 * 创建订单
@@ -89,5 +91,14 @@ public interface OrderService {
 	 * @return
 	 * @throws OrderServiceException
 	 */
-	Order updateOrder(Order order) throws OrderServiceException;
+	Order updateOrder(Order order, String note) throws OrderServiceException;
+	/**
+	 * 根据条件查询订单
+	 * @param orderId
+	 * @param channelId
+	 * @param pageRequest
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException;
 }

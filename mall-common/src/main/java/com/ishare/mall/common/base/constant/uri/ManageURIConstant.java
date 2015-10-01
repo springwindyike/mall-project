@@ -15,7 +15,19 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING_DELIVER = "/deliver/{id}";
 		String REQUEST_MAPPING_DELIVER_SUBMIT = "/deliver";
 		String REQUEST_MAPPING_LOGISTICS = "/logistics";
-		String REQUEST_MAPPING_CANCEL = "/cancel";
+		String REQUEST_MAPPING_CANCEL = "/cancel/{id}";
+		String REQUEST_MAPPING_CANCEL_SUBMIT = "/cancel";
+		String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
 	}
+ 
+interface Category {
+	String REQUEST_MAPPING = "/category";
+	String REQUEST_MAPPING_CATEGORY_LIST = "/list";
+	String REQUEST_MAPPING_CATEGORY_ADD = "/add";
+}
 
+interface Express {
+	String REQUEST_MAPPING = "/express";
+	String REQUEST_MAPPING_FIND ="/find/{order}/{id}";
+}
 }

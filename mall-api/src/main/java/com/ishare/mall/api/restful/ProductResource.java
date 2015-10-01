@@ -1,23 +1,18 @@
 package com.ishare.mall.api.restful;
 
-import com.google.common.collect.Maps;
-import com.ishare.mall.api.restful.base.BaseResource;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductListDTO;
-import com.ishare.mall.api.utils.Servlets;
-import com.ishare.mall.api.utils.page.PageUtils;
-import com.ishare.mall.common.base.general.Response;
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -28,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
-import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
+import com.google.common.collect.Maps;
+import com.ishare.mall.api.restful.base.BaseResource;
+import com.ishare.mall.api.utils.Servlets;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductListDTO;
+import com.ishare.mall.common.base.general.Response;
 
 /**
  * Created by YinLin on 2015/7/30.

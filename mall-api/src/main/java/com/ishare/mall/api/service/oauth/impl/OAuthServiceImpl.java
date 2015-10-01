@@ -87,7 +87,7 @@ public class OAuthServiceImpl implements OAuthService {
     @Override
     public String getAccountByAccessToken(String accessToken) {
         OAuthObject authObject = getAuthObjectByAccessToken(accessToken);
-        return authObject == null? null : authObject.getAccount();
+        return authObject == null ? null : authObject.getAccount();
     }
 
     @Override

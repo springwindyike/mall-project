@@ -31,7 +31,8 @@ import java.util.Map;
  * Description : 支付宝相关接口
  * Version 1.0
  */
-@Controller(APPURIConstant.AliPay.REQUEST_MAPPING)
+@Controller
+@RequestMapping(APPURIConstant.AliPay.REQUEST_MAPPING)
 public class AliPayResource {
 
     @Autowired
@@ -48,10 +49,14 @@ public class AliPayResource {
     @RequestMapping(value       = APPURIConstant.AliPay.REQUEST_MAPPING_CREATE_PAY_HTML,
                     method      = RequestMethod.POST,
                     headers     = "Accept=application/xml, application/json",
-                    produces    = {"application/json", "application/xml"},
-                    consumes    = {"application/json", "application/xml"})
+                    produces    = {"application/json"},
+                    consumes    = {"application/json"})
     @ResponseBody
-    public Response create(@RequestBody AliPayDTO aliPayDTO) {
+    public Response<String> create(@RequestBody AliPayDTO aliPayDTO) {
+        log.debug("alipay : " + aliPayDTO.getOrderID());
+        log.debug(aliPayDTO.toString());
+        //创建支付日志
+        orderPayLogService.create(aliPayDTO);
         Response response = new Response();
         response.setCode(200);
         response.setData(aliPayService.create(aliPayDTO));
@@ -62,16 +67,20 @@ public class AliPayResource {
      * 阿里支付回调
      * @return
      */
-    @RequestMapping(value = APPURIConstant.AliPay.REQUEST_MAPPING_NOTIFY, method = RequestMethod.POST)
+    @RequestMapping(value       = APPURIConstant.AliPay.REQUEST_MAPPING_NOTIFY,
+                    method      = RequestMethod.POST,
+                    produces    = {"application/json"})
     public Object payNotify(AliPayNotifyDTO notify, HttpServletRequest request) {
+        log.debug("支付宝回调");
+        log.debug(notify.toString());
         if(!aliPayService.verifyNotifyUrl(notify, null)) {
             return null;
         }
         // 获取支付宝POST过来反馈信息
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         Map requestParams = request.getParameterMap();
-        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
-            String name = (String) iter.next();
+        for (Iterator<String> iterator = requestParams.keySet().iterator(); iterator.hasNext(); ) {
+            String name = iterator.next();
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
@@ -98,7 +107,7 @@ public class AliPayResource {
                     //更新支付log状态
                     orderPayLogService.updateForProcess(payLog);
                     //设置支付完成
-                    orderService.payComplete(notify.getOut_trade_no());
+                    orderService.payComplete(notify);
                 }
             }
         }

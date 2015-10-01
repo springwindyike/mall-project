@@ -5,6 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +36,7 @@ import com.ishare.mall.manage.controller.base.BaseController;
 @Controller
 @RequestMapping(ManageURIConstant.Order.REQUEST_MAPPING)
 public class OrderController extends BaseController {
-
+	
 	private static final Logger log = LoggerFactory
 			.getLogger(OrderController.class);
 
@@ -71,11 +75,12 @@ public class OrderController extends BaseController {
 		return ManageViewConstant.Order.DELIVER_ORDER;
 	}
 	/**
-	 * 访问发货页面
+	 * 发货
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER_SUBMIT, method = RequestMethod.POST)
+	@ResponseBody
 	public OrderResultDTO deliverSubmit(
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("expressId") String expressId, 
@@ -86,6 +91,7 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setOrderId(orderId);
 		orderDetailDTO.setExpressId(expressId);
 		orderDetailDTO.setExpressOrder(expressOrder);
+		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
@@ -118,17 +124,40 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL, method = RequestMethod.GET)
-	public String cancel() {
+	public String cancel(@NotEmpty @PathVariable("id") String id, HttpServletRequest request) {
+		request.setAttribute("orderId", id);
 		return ManageViewConstant.Order.CANCEL_ORDER;
 	}
 	/**
-	 * 访问取消页面
+	 * 取消
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL, method = RequestMethod.POST)
-	public String cancelSubmit(@NotEmpty @PathVariable("logistics") Integer logistics) {
-		return ManageViewConstant.Order.CANCEL_ORDER;
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL_SUBMIT, method = RequestMethod.POST)
+	@ResponseBody
+	public OrderResultDTO cancelSubmit(
+			@NotEmpty @RequestParam("orderId") String orderId,
+			@NotEmpty @RequestParam("note") String note) {
+		OrderResultDTO orderResultDTO = new OrderResultDTO();
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(orderId);
+		orderDetailDTO.setLog(note);
+		ResponseEntity<Response> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CANCEL), orderDetailDTO, Response.class);
+		} catch (Exception e) {
+			log.debug("error");
+			e.printStackTrace();
+			orderResultDTO.setMessage("取消失败！");
+			orderResultDTO.setSuccess(false);
+			return orderResultDTO;
+		}
+		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		orderResultDTO.setMessage("取消成功！");
+		orderResultDTO.setSuccess(true);
+		orderResultDTO.setOrderDetailDTO(orderDetailDTO);
+		return orderResultDTO;
 	}
 	/**
 	 * 获取当前渠道下所有的order
@@ -140,8 +169,8 @@ public class OrderController extends BaseController {
 	public PageDTO<?> findByChannelId(HttpServletRequest request, Model model) {
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setChannelId(8);
-		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
-		int displayStart = Integer.parseInt(request.getParameter("iDisplayStart"));
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displayStart/displayLength+1;
 		orderDetailDTO.setLimit(displayLength);
 		orderDetailDTO.setOffset(currentPage);
@@ -158,4 +187,49 @@ public class OrderController extends BaseController {
 		return pageDTO;
 	}
 	
+	/**
+	 * 根据条件查询Order
+	 * @param searchCondition
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
+	@ResponseBody
+	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(searchCondition);
+		orderDetailDTO.setChannelId(8);
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
+
+		int currentPage = displayStart/displayLength+1;
+		orderDetailDTO.setLimit(displayLength);
+		orderDetailDTO.setOffset(currentPage);
+		ResponseEntity<Response> resultDTO = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		RestTemplate restTemplate = new RestTemplate();
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response>() {});
+//			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION), orderDetailDTO, Response.class);
+
+		}catch (Exception e){
+			log.error("call bizp app " + APPURIConstant.Order.REQUEST_MAPPING + APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION + "error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response != null) {
+			if(response.isSuccess()){
+				PageDTO pageDTO = (PageDTO)response.getData();
+				model.addAttribute("pageDTO",pageDTO);
+				return pageDTO;
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else{
+			throw new Exception("get response error");
+		}
+	}
 }

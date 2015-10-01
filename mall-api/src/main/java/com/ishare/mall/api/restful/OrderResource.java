@@ -5,8 +5,10 @@ import com.ishare.mall.api.annotation.AccessToken;
 import com.ishare.mall.api.form.order.OrderForm;
 import com.ishare.mall.api.restful.base.BaseResource;
 import com.ishare.mall.api.service.oauth.OAuthService;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.api.service.order.OrderService;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 import com.ishare.mall.common.base.general.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
+
+import javax.validation.Valid;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -30,8 +34,8 @@ public class OrderResource extends BaseResource {
 
     private static final Logger log = LoggerFactory.getLogger(OrderResource.class);
 
-//	@Autowired
-//	private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private OAuthService oAuthService;
     /**
@@ -39,30 +43,23 @@ public class OrderResource extends BaseResource {
      * 有@AccessToken的标注表示必须要token
      */
     @AccessToken
-	@RequestMapping(value = "create", method = RequestMethod.POST)
+	@RequestMapping(value = "create", method = {RequestMethod.POST, RequestMethod.GET}, produces = {"application/json"})
     @ResponseBody
-	public ResponseEntity create(OrderForm orderForm) {
+	public ResponseEntity create(@Valid OrderForm orderForm, BindingResult br) {
+
+        if (br.hasErrors()) {
+            throw new ApiLogicException(br.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+        }
+
 		ExchangeDTO exchangeDTO = orderForm.toExchangeDTO();
         //从缓存中通过accessToken获取用户信息
-		exchangeDTO.setAccount(oAuthService.getAccountByAccessToken(orderForm.getToken()));
-		exchangeDTO.setClientId(oAuthService.getAuthObjectByAccessToken(orderForm.getToken()).getClientId());
-        ResponseEntity<Response> responseEntity = null;
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            responseEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CREATE), exchangeDTO, Response.class);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            Response response = new Response();
-            response.setSuccess(Response.Status.FAILURE);
-            response.setMessage("系统错误");
-            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        //获取请求结果
-        Response response = responseEntity.getBody();
-        //请求是失败系统错误
-        if (!response.isSuccess()) {
-            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+		exchangeDTO.setAccount(oAuthService.getAccountByAccessToken(orderForm.getAccess_token()));
+		exchangeDTO.setClientId(oAuthService.getAuthObjectByAccessToken(orderForm.getAccess_token()).getClientId());
+        Response<OrderDetailDTO> response = new Response<>();
+        //创建订单
+        OrderDetailDTO orderDetailDTO = orderService.create(exchangeDTO);
+        response.setData(orderDetailDTO);
+        response.setCode(200);
         //请求成功
 		return new ResponseEntity(response, HttpStatus.OK);
     }

@@ -6,6 +6,8 @@ import com.ishare.mall.common.base.enumeration.PaymentWay;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.BeanUtils;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by YinLin on 2015/9/16.
  * Description : 订单form
@@ -13,62 +15,62 @@ import org.springframework.beans.BeanUtils;
  */
 public class OrderForm {
 
-    @NotEmpty
-    private String token;
+    @NotEmpty(message = "token不能为空")
+    private String access_token;
 
-    @NotEmpty
+    @NotNull(message = "商品ID不能为空")
     private Integer productId;
 
     private Long [] attributeIds;
-    @NotEmpty
+    @NotNull(message = "商品样式ID不能为空")
     private Long styleId;
 
     /* 收货人姓名 */
-    @NotEmpty
+    @NotEmpty(message = "收货人姓名不能为空")
     private String recipients;
 
     //国家
-    @NotEmpty
+    @NotEmpty(message = "收货地址国家不能为空")
     private String country;
 
     //省
-    @NotEmpty
+    @NotEmpty(message = "收货地址省份不能为空")
     private String province;
 
     //市
-    @NotEmpty
+    @NotEmpty(message = "收货地址城市不能为空")
     private String city;
 
     //县 区
-    @NotEmpty
+    @NotEmpty(message = "收货地址县区不能为空")
     private String district;
 
     //详细街道
-    @NotEmpty
+    @NotEmpty(message = "收货详细地址不能为空")
     private String detail;
 
     /* 电子邮箱 */
-    @NotEmpty
+    @NotEmpty(message = "收货人电子邮件不能为空")
     private String email;
 
     /* 电话 */
-    @NotEmpty
+    @NotEmpty(message = "收货人电话不能为空")
     private String tel;
 
     /* 手机 */
-    @NotEmpty
+    @NotEmpty(message = "收货人手机不能为空")
     private String mobile;
 
     /**购买数量**/
-    @NotEmpty
+    @NotNull(message = "购买数量不能为空")
     private Integer amount;
 
     //快递方式
-    @NotEmpty
+    @NotNull(message = "快递方式不能为空")
     private DeliverWay deliverWay;
 
     //支付方式
-    @NotEmpty
+    @NotNull(message = "支付方式不能为空")
     private PaymentWay paymentWay;
 
     public Integer getProductId() {
@@ -167,12 +169,12 @@ public class OrderForm {
         this.mobile = mobile;
     }
 
-    public String getToken() {
-        return token;
+    public String getAccess_token() {
+        return access_token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 
     public ExchangeDTO toExchangeDTO() {
@@ -195,5 +197,13 @@ public class OrderForm {
 
     public void setDeliverWay(DeliverWay deliverWay) {
         this.deliverWay = deliverWay;
+    }
+
+    public PaymentWay getPaymentWay() {
+        return paymentWay;
+    }
+
+    public void setPaymentWay(PaymentWay paymentWay) {
+        this.paymentWay = paymentWay;
     }
 }

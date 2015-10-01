@@ -46,16 +46,15 @@
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				 <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="order_edit()"/>
+				<!-- <input id ='selectType'class="select" value ='请点击选择商品分类'  readonly="readonly" onClick="order_edit()"/>  -->
+			 	 	<form:input  id ='selectType'  readonly="readonly" class="select" value="请点击选择商品分类"  placeholder="" path="typeName" onClick="order_edit()"/> 
+			 	 	<form:input  id ='typeCode'  readonly="readonly" class="select" value=""  placeholder="" path="typeCode" type='hidden'/>
+			 	 		<form:input  id ='typeId'  readonly="readonly" class="select" value=""  placeholder="" path="typeId" type='hidden'/>
 				</span> </div>
-				<div id="menu" <!-- style="visibility:hidden" -->  class="form-label">
-			<%-- 	<form:select path="typeCode" class="select">
-					 <form:option value="1000100101">衬衫</form:option>  
-		 			 <form:option value="1000100101">衬衫</form:option>  
-		  		 <form:option value="1000100101">衬衫</form:option>  
-		   	 <form:option value="1000100101">衬衫</form:option>  
-					</form:select> --%>
-				</div>
+				<label class="form-label col-2"><span class="c-red">*</span>品牌栏目：</label>
+			<div class="formControls col-2"> <span class="select-box">
+				 <input id ='selectType'class="select" value ='请点击选择品牌分类'  readonly="readonly" />
+				</span> </div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
 				<form:input type="text" class="input-text" value="" placeholder="" id="" name=""  path="inventory"/>
@@ -834,7 +833,11 @@ function dispaly_child_sort(parentId){
 		        dataType: "json",
 		        url: "${pageContext.request.contextPath}/productType/findById/"+parentId+".dhtml",
 		        success: function (msg) {
-		        	alert(msg.typeName+msg.code);
+		        	layer.closeAll('page');
+		        	i=0;
+		        	$("#selectType").val(msg.typeName);
+		        	$("#typeCode").val(msg.code);
+		         	$("#typeId").val(msg.id);
 		                       }
 		              })
 	 } else {

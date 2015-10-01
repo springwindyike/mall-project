@@ -5,14 +5,15 @@ import com.ishare.mall.common.base.dto.pay.AliPayDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.dto.pay.AliRefundNotifyDTO;
 import com.ishare.mall.core.service.pay.AliPayService;
-import com.ishare.mall.core.utils.pay.AlipayCore;
-import com.ishare.mall.core.utils.pay.MD5;
+import com.ishare.mall.common.base.pay.AlipayCore;
+import com.ishare.mall.common.base.pay.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +67,7 @@ public class AliPayServiceImpl implements AliPayService {
         sParaTemp.put("seller_email", sellerEmail);
         sParaTemp.put("out_trade_no", aliPayDTO.getOrderID());
         sParaTemp.put("subject", aliPayDTO.getGoodsName());
-        sParaTemp.put("total_fee", aliPayDTO.getAmount().toString());
+        sParaTemp.put("total_fee", aliPayDTO.getAmount().setScale(2, BigDecimal.ROUND_HALF_UP).toEngineeringString());
         return this.buildRequest(sParaTemp, "POST", "支付");
     }
 
