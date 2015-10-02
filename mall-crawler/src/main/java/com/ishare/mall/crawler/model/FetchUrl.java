@@ -1,5 +1,6 @@
 package com.ishare.mall.crawler.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class FetchUrl {
     @Enumerated(EnumType.STRING)
     private FetchUrlType type;
 
+    @JsonFormat(timezone = "Asia/Shanghai", pattern = "yyyy/MM/dd HH:mm")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
 

@@ -1,3 +1,6 @@
+<script>
+    var ctx = '${springMacroRequestContext.contextPath}';
+</script>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +21,3 @@
 <script src="${springMacroRequestContext.contextPath}/js/spin.min.js"></script>
 <script src="${springMacroRequestContext.contextPath}/js/ladda.min.js"></script>
 <script src="${springMacroRequestContext.contextPath}/js/bootstrap-waitingfor.js"></script>
-
-<script>
-    var ctx = '${springMacroRequestContext.contextPath}';
-</script>

@@ -33,9 +33,22 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index(Model model) {
-        log.debug("首页");
-
         return "dashboard";
+    }
+
+    @RequestMapping("/search")
+    public String search(Model model) {
+        return "search";
+    }
+
+    @RequestMapping("/category")
+    public String category(Model model) {
+        return "category";
+    }
+
+    @RequestMapping("/page")
+    public String page(Model model) {
+        return "page";
     }
 
     @RequestMapping(value = "init")
