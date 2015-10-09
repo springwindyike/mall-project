@@ -39,4 +39,13 @@
            statistics="true">
     </cache>
 
+    <cache name="currentMemberCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
 </ehcache>

@@ -4,7 +4,7 @@ import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class MainController extends BaseController {
 	 * @return
 	 */
     @RequestMapping(value = CenterURIConstant.Main.INDEX, method = RequestMethod.GET)
-    public String main(@CurrentMember MemberDTO memberDTO) {
+    public String main(@CurrentMember CurrentMemberDTO memberDTO) {
         return CenterViewConstant.Main.MAIN;
     }
 

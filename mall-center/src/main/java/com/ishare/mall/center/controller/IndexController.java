@@ -15,8 +15,10 @@ import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 import com.ishare.mall.common.base.dto.page.PageRequestDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -61,6 +63,11 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.GET)
     public String login() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.getPrincipal() != null && subject.isAuthenticated()) {
+            return "redirect:/index.dhtml";
+        }
+        SecurityUtils.getSubject().logout();
         return CenterViewConstant.Index.LOGIN;
     }
     

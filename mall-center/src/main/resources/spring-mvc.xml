@@ -17,7 +17,6 @@
 	<bean class="com.ishare.mall.center.utils.WebUtils"/>
 	<mvc:annotation-driven>
 		<!-- 自定义转换 -->
-
 		<mvc:argument-resolvers>
 			<bean class="com.ishare.mall.center.method.CurrentMemberMethodArgumentResolver"/>
 			<bean class="com.ishare.mall.center.method.PageRequestMethodArgumentResolver"/>
