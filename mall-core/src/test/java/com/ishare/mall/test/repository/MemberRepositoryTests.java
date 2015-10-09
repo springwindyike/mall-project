@@ -1,8 +1,5 @@
 package com.ishare.mall.test.repository;
 
-import com.ishare.mall.common.base.enumeration.Gender;
-import com.ishare.mall.common.base.enumeration.MemberType;
-import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.repository.member.MemberRepository;
 import com.ishare.mall.core.repository.product.ProductStyleRepository;
@@ -10,11 +7,6 @@ import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.test.RepositoryTestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2015/9/7.
@@ -45,18 +37,18 @@ public class MemberRepositoryTests extends RepositoryTestTemplate {
 
 	@Override
 	public void testRetrieve() {
-		Member member = new Member();
-		member.setSex(Gender.MAN);
-		member.setAccount("123456");
-		member.setCreateBy("123456");
-
-		Channel channel = channelService.findOne(8);
-		member.setChannel(channel);
-		member.setMobile("18011111111");
-		member.setMemberType(MemberType.MEMBER);
-		PageRequest pageRequest = new PageRequest(1,15, Sort.Direction.DESC, "account");
-		Page<Member> memberPage = null; //memberRepository.findByAccountLikeOrNameLikeOrMobileLike("123456", "123456", "123456", pageRequest);
-		List<Member> list = memberPage.getContent();
+//		Member member = new Member();
+//		member.setSex(Gender.MAN);
+//		member.setAccount("123456");
+//		member.setCreateBy("123456");
+//
+//		Channel channel = channelService.findOne(8);
+//		member.setChannel(channel);
+//		member.setMobile("18011111111");
+//		member.setMemberType(MemberType.MEMBER);
+//		PageRequest pageRequest = new PageRequest(1,15, Sort.Direction.DESC, "account");
+//		Page<Member> memberPage = null; //memberRepository.findByAccountLikeOrNameLikeOrMobileLike("123456", "123456", "123456", pageRequest);
+//		List<Member> list = memberPage.getContent();
 //
 //		System.out.println("totalElements = "+memberPage.getTotalElements()+"totalPage"+memberPage.getTotalPages() +
 //				"content" + memberPage.getContent().size()+"size"+memberPage.getSize());
@@ -73,7 +65,10 @@ public class MemberRepositoryTests extends RepositoryTestTemplate {
 //		member.setMemberType(MemberType.MEMBER);
 //		memberService.saveMember(member);
 		//Assert.assertTrue(!page.hasContent());
-		productStyleRepository.findByProductStyle(1);
+		//productStyleRepository.findByProductStyle(1);
+		Member member = memberService.findByAccount("15928972087");
+		member.setPassword("123456");
+		memberService.saveMember(member);
 	}
 
 	@Override

@@ -120,6 +120,7 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/login.dhtml = authc
+				/register.dhtml = anon
 				/authenticated.dhtml = authc
 				/resources/** = anon
 				/verifycode.dhtml = anon

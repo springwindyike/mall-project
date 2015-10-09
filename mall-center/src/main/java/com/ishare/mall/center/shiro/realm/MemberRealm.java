@@ -69,6 +69,11 @@ public class MemberRealm extends AuthorizingRealm {
         resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,"/" + account), MemberDTO.class);
         log.debug(resultDTO.toString());
         MemberDTO memberDTO = resultDTO.getBody();
+        log.debug(memberDTO.getCredentialsSalt());
+        int len = (ByteSource.Util.bytes(memberDTO.getCredentialsSalt())).getBytes().length;
+        log.debug("len : " + len);
+        log.debug("0x01 : " + 0x01);
+        log.debug("(len & 0x01)" + (len & 0x01));
         if (memberDTO == null) {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();

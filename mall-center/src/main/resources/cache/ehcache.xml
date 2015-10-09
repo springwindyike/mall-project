@@ -3,7 +3,6 @@
 
     <diskStore path="java.io.tmpdir"/>
 
-    <!-- 鐧诲綍璁板綍缂撳瓨 閿佸畾10鍒嗛挓 -->
     <cache name="passwordRetryCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
@@ -40,13 +39,4 @@
            statistics="true">
     </cache>
 
-    <!--log user cache-->
-    <cache name="code-cache"
-           maxEntriesLocalHeap="2000"
-           eternal="false"
-           timeToIdleSeconds="3600"
-           timeToLiveSeconds="3600"
-           overflowToDisk="false"
-           statistics="true">
-    </cache>
 </ehcache>
