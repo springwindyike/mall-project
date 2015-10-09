@@ -1,15 +1,18 @@
 package com.ishare.mall.center.controller;
 
 
+import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.annoation.PageRequest;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.controller.test.Person;
 import com.ishare.mall.center.controller.test.PersonJsonObject;
 import com.ishare.mall.center.form.register.RegisterForm;
+import com.ishare.mall.center.shiro.exception.IncorrectCaptchaException;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
+import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
@@ -65,28 +68,39 @@ public class IndexController extends BaseController {
     public String login() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipal() != null && subject.isAuthenticated()) {
-            return "redirect:/index.dhtml";
+            return "redirect:/main.dhtml";
         }
         SecurityUtils.getSubject().logout();
         return CenterViewConstant.Index.LOGIN;
     }
+
+    /**
+     * 访问主页
+     * @return
+     */
+    @RequestMapping(value = CenterURIConstant.Main.INDEX, method = RequestMethod.GET)
+    public String main(@CurrentMember CurrentMemberDTO memberDTO) {
+        return CenterViewConstant.Main.MAIN;
+    }
     
     @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.POST)
     public String login(HttpServletRequest request, Model model) {
-        String exceptionClassName = (String)request.getAttribute("shiroLoginFailure");
+        Object exceptionClass = request.getAttribute("shiroLoginFailure");
         String error = null;
-        if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
-        } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
-        } else if(exceptionClassName != null) {
-            error = "其他错误：" + exceptionClassName;
+        if(exceptionClass instanceof UnknownAccountException) {
+            error = "用户名不存在";
+        } else if(exceptionClass instanceof IncorrectCredentialsException) {
+            error = "密码错误";
+        } else if(exceptionClass instanceof IncorrectCaptchaException) {
+            error = "验证码错误";
+        } else {
+            error = "其他错误 ： ";
         }
         log.debug("error" + error);
         model.addAttribute("error", error);
         return CenterViewConstant.Index.LOGIN;
     }
-    @RequestMapping(value = CenterURIConstant.Index.LOGOUT, method = RequestMethod.POST)
+    @RequestMapping(value = CenterURIConstant.Index.LOGOUT, method = RequestMethod.GET)
     public String logout(Model model) {
         SecurityUtils.getSubject().logout();
         return CenterViewConstant.Index.LOGIN;

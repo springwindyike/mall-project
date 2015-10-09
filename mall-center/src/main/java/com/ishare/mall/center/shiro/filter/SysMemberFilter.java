@@ -30,6 +30,7 @@ public class SysMemberFilter extends PathMatchingFilter {
         log.debug("account : " + account);
         if (account == null) return true;
         CurrentMemberDTO currentMemberDTO = memberService.getCurrentMember(account);
+        log.debug("account : " + account);
         request.setAttribute(CommonConstant.Common.CURRENT_MEMBER, currentMemberDTO);
         return true;
     }

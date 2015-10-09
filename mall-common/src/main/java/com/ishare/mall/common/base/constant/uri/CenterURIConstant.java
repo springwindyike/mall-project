@@ -9,7 +9,7 @@ public interface CenterURIConstant {
 
 	interface Index {
 		// 首页
-		// String INDEX = "index";
+		String INDEX = "index";
 		// 登录
 		String LOGIN = "login";
 		// 注册member
@@ -53,7 +53,7 @@ public interface CenterURIConstant {
 
 	interface Main {
 		// 首页
-		String INDEX = "index";
+		String INDEX = "main";
 
 	}
 	
@@ -62,6 +62,5 @@ public interface CenterURIConstant {
 		 String REQUEST_MAPPING_FITST_LEVEL = "/firstLevel";
 		 String REQUEST_MAPPING_CHILDREN_LEVEL = "/childLevel/{parentId}";
 		 String REQUEST_MAPPING_FIND_BY_ID = "/findById/{id}";
-
 	}
 }
