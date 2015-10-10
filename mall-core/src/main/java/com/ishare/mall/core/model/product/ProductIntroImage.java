@@ -5,7 +5,7 @@ import com.ishare.mall.core.model.base.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_STYLE_IMAGE_NAME;
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_INTRO_IMAGE_NAME;
 
 /**
  * Created by YinLin on 2015/10/10.
@@ -13,6 +13,6 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  * Version 1.0
  */
 @Entity
-@Table(name = TABLE_PRODUCT_STYLE_IMAGE_NAME)
+@Table(name = TABLE_PRODUCT_INTRO_IMAGE_NAME)
 public class ProductIntroImage extends BaseEntity {
 }
