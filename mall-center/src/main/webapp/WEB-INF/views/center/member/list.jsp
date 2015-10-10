@@ -41,7 +41,7 @@
         &#xe6e2;</i> 批量删除</a> <a href="javascript:"
                                  onclick="member_add('添加用户','${pageContext.request.contextPath}/member/addMemberPage.dhtml','','510')"
                                  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span>
-        <span class="r">共有：</span></div>
+        <span class="r"></span></div>
     <div class="mt-20">
         <table class="table table-border table-bordered table-hover table-bg table-sort">
             <thead>
@@ -99,7 +99,7 @@
                 { "mDataProp": "name" },
                 { "mDataProp": "sex" },
                 { "mDataProp": "mobile" },
-                { "mDataProp": "createTime" },
+                { "mDataProp": "createTimeStr" },
                 { "mDataProp": null },
                 { "mDataProp": null },
             ],

@@ -81,6 +81,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		Field[] fields = MemberDetailDTO.class.getDeclaredFields();
 		Set<String> otherDealField = new HashSet<String>();
 		otherDealField.add("channelId");
+		otherDealField.add("createTimeStr");
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
 				classMapBuilder.field(field.getName(), field.getName());

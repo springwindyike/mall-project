@@ -38,7 +38,9 @@ public class MemberDetailDTO extends GenericDTO {
 	private String password;
 
 	private String mobile;
-	 
+
+	private String createTimeStr;
+
 	public String getAccount() {
 		return account;
 	}
@@ -133,5 +135,13 @@ public class MemberDetailDTO extends GenericDTO {
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
 	}
 }
