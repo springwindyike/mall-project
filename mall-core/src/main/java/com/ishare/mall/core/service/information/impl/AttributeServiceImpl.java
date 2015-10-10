@@ -3,6 +3,7 @@ package com.ishare.mall.core.service.information.impl;
 import com.ishare.mall.core.model.product.Attribute;
 import com.ishare.mall.core.repository.information.AttributeRepository;
 import com.ishare.mall.core.service.information.AttributeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 @Transactional
 public class AttributeServiceImpl implements AttributeService {
-
+    @Autowired
     private AttributeRepository attributeRepository;
 
     @Override
