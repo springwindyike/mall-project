@@ -2,7 +2,6 @@ package com.ishare.mall.crawler.service;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.crawler.model.BasePageData;
@@ -33,7 +32,7 @@ public class IShareService {
 
     @Transactional
     public boolean toSave(BasePageData data) throws ApiLogicException {
-        ResponseEntity<Response<ProductDTO>> responseEntity;
+        ResponseEntity<Response<FetchProductDTO>> responseEntity;
         FetchProductDTO fetchProductDTO = new FetchProductDTO();
 
         BeanUtils.copyProperties(data, fetchProductDTO, "attributes", "introImages", "photos");
@@ -46,7 +45,7 @@ public class IShareService {
             String url = buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_SAVE);
             log.debug("{}", url);
             responseEntity = restTemplate.exchange(buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_SAVE),
-                    HttpMethod.POST, new HttpEntity<FetchProductDTO>(fetchProductDTO), new ParameterizedTypeReference<Response<ProductDTO>>() {
+                    HttpMethod.POST, new HttpEntity<FetchProductDTO>(fetchProductDTO), new ParameterizedTypeReference<Response<FetchProductDTO>>() {
                     });
 
             //responseEntity = restTemplate.postForEntity(url, data, null, Maps.newHashMap());
@@ -58,7 +57,7 @@ public class IShareService {
             throw new ApiLogicException("创建失败", HttpStatus.BAD_REQUEST);
         }
 
-        Response<ProductDTO> response = responseEntity.getBody();
+        Response<FetchProductDTO> response = responseEntity.getBody();
         log.debug("{}", response);
         if (!response.isSuccess() || response.getData() == null) {
             isSuccess = false;
