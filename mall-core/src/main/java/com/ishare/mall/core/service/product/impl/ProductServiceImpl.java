@@ -1,17 +1,6 @@
 package com.ishare.mall.core.service.product.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.ishare.mall.common.base.dto.product.FetchProductDTO;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.information.BrandRepository;
@@ -22,6 +11,17 @@ import com.ishare.mall.core.repository.product.ProductTypeRepository;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liaochenglei on 2015/9/22.
@@ -93,6 +93,13 @@ public class ProductServiceImpl implements ProductService {
 			log.error(e.getMessage(), e);
 			throw new ProductServiceException("产品更新失败");}
 	}
+
+	@Override
+	public Product process(FetchProductDTO fetchProductDTO) throws ProductServiceException {
+		Product product = new Product();
+		return null;
+	}
+
 	//删除商品
 	@Override
 	public void delProduct(Integer id) {

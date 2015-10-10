@@ -24,6 +24,8 @@ public interface DataBaseConstant {
         String TABLE_PRODUCT_STYLE_NAME                 = TABLE_PRODUCT_NAME + "_style";
         //商品样式图片表
         String TABLE_PRODUCT_STYLE_IMAGE_NAME           = TABLE_PRODUCT_STYLE_NAME + "_image";
+        //商品图文描述
+        String TABLE_PRODUCT_INTRO_IMAGE_NAME           = TABLE_PRODUCT_NAME + "_intro_image";
         //商品类型表
         String TABLE_PRODUCT_TYPE_NAME                  = TABLE_PRODUCT_NAME + "_type";
         //品牌表
