@@ -18,6 +18,9 @@ public class BasePageData {
     @GeneratedValue
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private FetchSite fetchSite;
+
     @OneToOne
     private FetchUrl fetchUrl;
 
@@ -177,6 +180,14 @@ public class BasePageData {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public FetchSite getFetchSite() {
+        return fetchSite;
+    }
+
+    public void setFetchSite(FetchSite fetchSite) {
+        this.fetchSite = fetchSite;
     }
 
     @Override

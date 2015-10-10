@@ -1,31 +1,20 @@
 package com.ishare.mall.crawler.site.jd.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 
-import javax.persistence.*;
 import java.util.Set;
 
 /**
  * Created by dongqi on 15/9/7.
  */
-@Entity
-@Table(name = "spider_jd_category")
 public class JDCategory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String link;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
     private JDCategory parent;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<JDCategory> children = Sets.newHashSet();
 
     public Long getId() {

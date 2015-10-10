@@ -2,6 +2,9 @@ package com.ishare.mall.crawler.site.jd;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 这个玩意儿非常重要
+ */
 public class JDPageConfig {
 
     private final String PRICE_URL = "http://p.3.cn/prices/get?type=1&skuid=J_";

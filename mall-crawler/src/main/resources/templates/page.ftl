@@ -71,6 +71,19 @@
                 });
             }
         });
+
+        $('#jqGrid').navSeparatorAdd('#jqGridPager').navButtonAdd('#jqGridPager', {
+            caption: "fetch"
+            , onClickButton: function () {
+                var rowid = $('#jqGrid').jqGrid('getGridParam', "selrow");
+                waitingDialog.show('抓取中...');
+                $.post(ctx + '/fetch/url', {id: rowid}, function (response) {
+                    waitingDialog.hide();
+                    $('#jqGrid').trigger('reloadGrid');
+                }, 'json');
+            }
+            , position: "last"
+        });
     });
 </script>
 </body>
