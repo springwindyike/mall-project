@@ -3,6 +3,7 @@ package com.ishare.mall.common.base.dto.product;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.common.base.enumeration.FetchSite;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,6 +41,9 @@ public class FetchProductDTO extends GenericDTO {
     private String thirdPartyShopName;//第三方店铺名称
 
     private Date updateTime;
+
+    //第三方状态
+    private FetchSite fetchSite;
 
     private Map<String, String> attributes = Maps.newHashMap();
 
@@ -157,5 +161,13 @@ public class FetchProductDTO extends GenericDTO {
 
     public void setPhotos(List<String> photos) {
         this.photos = photos;
+    }
+
+    public FetchSite getFetchSite() {
+        return fetchSite;
+    }
+
+    public void setFetchSite(FetchSite fetchSite) {
+        this.fetchSite = fetchSite;
     }
 }

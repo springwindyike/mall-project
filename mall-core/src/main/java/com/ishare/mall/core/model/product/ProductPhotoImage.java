@@ -20,7 +20,7 @@ public class ProductPhotoImage {
     private String url;
 
     /**所属产品**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
     private Product product;
 

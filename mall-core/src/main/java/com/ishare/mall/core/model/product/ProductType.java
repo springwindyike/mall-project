@@ -33,7 +33,7 @@ public class ProductType extends BaseEntity {
     @Column(length = 1, nullable = false, name = "type_level")
     private Integer level;
     /**父节点**/
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name ="type_parent_id")
     private ProductType parent;
     /**所有子节点**/

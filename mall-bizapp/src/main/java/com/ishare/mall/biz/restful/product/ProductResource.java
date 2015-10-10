@@ -17,7 +17,6 @@ import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.service.product.ProductStyleService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -25,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,11 +46,10 @@ public class ProductResource {
     private ProductService productService;
 	@Autowired
 	private ProductStyleService productStyleService;
+
     public static Logger getLog() {
         return log;
     }
-
-
 
     @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_SAVE, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
@@ -326,5 +322,20 @@ public class ProductResource {
         }
         return response;
     }
+
+	/**
+	 * 获取当前渠道下所有的product
+	 *
+	 * @return Page<ProductDTO>
+	 */
+	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_CRAWLER_ADD, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json"})
+	public Response<ProductDetailDTO> add(@RequestBody FetchProductDTO fetchProductDTO) {
+		Response response = new Response();
+		response.setData((ProductDetailDTO) MapperUtils.map(productService.processor(fetchProductDTO), ProductDetailDTO.class));
+		return response;
+	}
     
 }
