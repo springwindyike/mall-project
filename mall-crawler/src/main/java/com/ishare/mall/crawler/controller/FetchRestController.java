@@ -1,6 +1,7 @@
 package com.ishare.mall.crawler.controller;
 
 import com.google.common.collect.Maps;
+import com.ishare.mall.crawler.model.FetchSite;
 import com.ishare.mall.crawler.model.FetchUrl;
 import com.ishare.mall.crawler.model.FetchUrlType;
 import com.ishare.mall.crawler.model.jqgrid.JQGridPageRequest;
@@ -44,19 +45,25 @@ public class FetchRestController {
     }
 
     @RequestMapping(value = "/urls.json", method = RequestMethod.GET)
-    public JQGridPageResponse<FetchUrl> fetchUrls(JQGridPageRequest pageRequest) {
-        return fetch(pageRequest, FetchUrlType.LIST);
+    public JQGridPageResponse<FetchUrl> fetchUrls(JQGridPageRequest pageRequest, FetchSite fetchSite) {
+        return fetch(pageRequest, FetchUrlType.LIST, fetchSite);
     }
 
     @RequestMapping(value = "/pages.json", method = RequestMethod.GET)
-    public JQGridPageResponse<FetchUrl> fetchPageUrls(JQGridPageRequest pageRequest) {
-        return fetch(pageRequest, FetchUrlType.PAGE);
+    public JQGridPageResponse<FetchUrl> fetchPageUrls(JQGridPageRequest pageRequest, FetchSite fetchSite) {
+        return fetch(pageRequest, FetchUrlType.PAGE, fetchSite);
     }
 
-    JQGridPageResponse<FetchUrl> fetch(JQGridPageRequest pageRequest, FetchUrlType type) {
+    JQGridPageResponse<FetchUrl> fetch(JQGridPageRequest pageRequest, FetchUrlType type, FetchSite fetchSite) {
         Sort sort = new Sort(Sort.Direction.fromString(pageRequest.getSord()), pageRequest.getSidx());
         PageRequest page = new PageRequest(pageRequest.getPage() - 1, pageRequest.getRows(), sort);
-        Page<FetchUrl> fetchUrlPage = fetchUrlRepository.findByType(type, page);
+        Page<FetchUrl> fetchUrlPage = null;
+        if (fetchSite == null) {
+            fetchUrlPage = fetchUrlRepository.findByTypeAndValidIsTrue(type, page);
+        } else {
+            fetchUrlPage = fetchUrlRepository.findByTypeAndValidIsTrue(type, page);
+        }
+
         JQGridPageResponse<FetchUrl> response = new JQGridPageResponse(fetchUrlPage);
         log.debug("{}, {}", type, response);
         return response;

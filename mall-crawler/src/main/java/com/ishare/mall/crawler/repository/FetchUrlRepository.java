@@ -17,5 +17,5 @@ public interface FetchUrlRepository extends JpaRepository<FetchUrl, Long> {
 
     Page<FetchUrl> findByFetchSiteAndType(FetchSite fetchSite, FetchUrlType type, Pageable pageable);
 
-    Page<FetchUrl> findByType(FetchUrlType type, Pageable pageable);
+    Page<FetchUrl> findByTypeAndValidIsTrue(FetchUrlType type, Pageable pageable);
 }

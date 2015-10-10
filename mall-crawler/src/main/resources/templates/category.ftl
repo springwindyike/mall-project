@@ -30,7 +30,11 @@
     var colNames = ['ID', '站点', '类目', 'LINK', '抓取时间'];
     var colModel = [
         {name: 'id', key: true, hidden: true}
-        , {name: 'fetchSite', editable: true}
+        , {
+            name: 'fetchSite', editable: true, search: true, stype: 'select', searchoptions: {
+                value: ':全部;JD:京东;DANG_DANG:当当;AMAZON:亚马逊'
+            }
+        }
         , {
             name: 'name', editable: true, formatter: function (cellvalue, options, rowObject) {
                 return '<a href="' + rowObject.link + '", target="_blank">' + rowObject.name + '</a>';
@@ -66,16 +70,22 @@
             cloneToTop: true,
             edit: false, add: false, del: true, search: true, refresh: true
         });
+
         $('#jqGrid').navSeparatorAdd('#jqGridPager').navButtonAdd('#jqGridPager', {
             caption: "fetch"
             , onClickButton: function () {
                 var rowid = $('#jqGrid').jqGrid('getGridParam', "selrow");
-                console.log('fetch id ', rowid);
+                waitingDialog.show('抓取中...');
                 $.post(ctx + '/fetch/url', {id: rowid}, function (response) {
-
+                    waitingDialog.hide();
+                    $('#jqGrid').trigger('reloadGrid');
                 }, 'json');
             }
             , position: "last"
+        });
+
+        $('#jqGrid').jqGrid('filterToolbar', {
+            autosearch: true
         });
     });
 </script>
