@@ -95,9 +95,20 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product process(FetchProductDTO fetchProductDTO) throws ProductServiceException {
-		Product product = new Product();
+	public Product processor(FetchProductDTO fetchProductDTO) throws ProductServiceException {
+		Product product = initProduct(fetchProductDTO);
+		product.setName(fetchProductDTO.getName());
+		product.setCode(fetchProductDTO.getCode());
+		product.setBasePrice(Float.valueOf(fetchProductDTO.getPriceText()));
+		product.setSellPrice(Float.valueOf(fetchProductDTO.getPriceText()));
+		product.setMarketPrice(Float.valueOf(fetchProductDTO.getPriceOriginText()));
+
 		return null;
+	}
+
+	private Product initProduct(FetchProductDTO fetchProductDTO) {
+		Product product = new Product();
+		return product;
 	}
 
 	//删除商品

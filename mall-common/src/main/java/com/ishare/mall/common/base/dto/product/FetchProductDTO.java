@@ -3,7 +3,9 @@ package com.ishare.mall.common.base.dto.product;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,27 +15,29 @@ import java.util.Map;
  * Description :
  * Version 1.0
  */
+@XmlRootElement
+@JsonAutoDetect
 public class FetchProductDTO extends GenericDTO {
-    //ÉÌÆ·CODE
+    //å•†å“CODE
     private String code;
-    //ÉÌÆ·Ãû×Ö
+    //å•†å“åå­—
     private String name;
-    //µÚÈı·½Á´½Ó
+    //ç¬¬ä¸‰æ–¹é“¾æ¥
     private String link;
-    //ÉÌÆ·ÏúÊÛ¼Û¸ñ
+    //å•†å“é”€å”®ä»·æ ¼
     private String priceText;
-    //ÉÌÆ·Ô­¼Û
+    //å•†å“åŸä»·
     private String priceOriginText;
-    //¿â´æ Y N
+    //åº“å­˜ Y N
     private String stock;
-    //ÉÌÆ·±êÇ©
+    //å•†å“æ ‡ç­¾
     private String tag;
-    //ÉÌÆ·ÉÏ¼ÜÊ±¼ä
-    private String datetimeText;//ÉÏ¼ÜÊ±¼ä
+    //å•†å“ä¸Šæ¶æ—¶é—´
+    private String datetimeText;//ä¸Šæ¶æ—¶é—´
 
-    private boolean self;//ÊÇ·ñ×ÔÓª
+    private boolean self;//æ˜¯å¦è‡ªè¥
 
-    private String thirdPartyShopName;//µÚÈı·½µêÆÌÃû³Æ
+    private String thirdPartyShopName;//ç¬¬ä¸‰æ–¹åº—é“ºåç§°
 
     private Date updateTime;
 
