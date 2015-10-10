@@ -1,6 +1,6 @@
-package com.ishare.mall.crawler.jd.repository;
+package com.ishare.mall.crawler.site.jd.repository;
 
-import com.ishare.mall.crawler.jd.model.JDCategory;
+import com.ishare.mall.crawler.site.jd.model.JDCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,16 +2,11 @@ package com.ishare.mall.crawler.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.ishare.mall.crawler.jd.JDCrawler;
-import com.ishare.mall.crawler.jd.model.JDCategory;
-import com.ishare.mall.crawler.jd.model.JDProduct;
-import com.ishare.mall.crawler.jd.processor.JDListPageProcessor;
-import com.ishare.mall.crawler.jd.processor.JDPageProcessor;
-import com.ishare.mall.crawler.jd.repository.JDCategoryRepository;
-import com.ishare.mall.crawler.jd.repository.JDProductRepository;
+import com.ishare.mall.crawler.site.jd.model.JDCategory;
+import com.ishare.mall.crawler.site.jd.model.JDProduct;
+import com.ishare.mall.crawler.site.jd.processor.JDPageProcessor;
+import com.ishare.mall.crawler.site.jd.repository.JDCategoryRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,15 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,15 +33,6 @@ public class JDController {
 
     @Autowired
     JDCategoryRepository categoryDao;
-
-    @Autowired
-    JDProductRepository productDao;
-
-    @Autowired
-    JDCrawler crawler;
-
-    @Autowired
-    JDListPageProcessor listPageProcessor;
 
     @Autowired
     JDPageProcessor pageProcessor;
@@ -92,7 +75,6 @@ public class JDController {
         boolean success = false;
         try {
             JDCategory category = categoryDao.findOne(id);
-            crawler.start(listPageProcessor, category.getLink());
             success = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +108,7 @@ public class JDController {
         Page<JDProduct> pageResult = null;
         PageRequest pageRequest = new PageRequest(page - 1, rows);
 
-        pageResult = productDao.findAll(pageRequest);
+        pageResult = null;
         result.put("total", pageResult.getTotalPages());
         result.put("page", page);
         result.put("records", pageResult.getTotalElements());
@@ -153,6 +135,7 @@ public class JDController {
         log.debug("查询 {}, {}, {}, {}, {}, {}, {}, {}, {}", rows, page, name, min, max, start, end, stock, self);
         Map<String, Object> result = Maps.newHashMap();
 
+        /*
         Page<JDProduct> pageResult = productDao.findAll(new Specification<JDProduct>() {
             @Override
             public Predicate toPredicate(Root<JDProduct> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
@@ -193,7 +176,7 @@ public class JDController {
         result.put("total", pageResult.getTotalPages());
         result.put("page", page);
         result.put("records", pageResult.getTotalElements());
-        result.put("rows", pageResult.getContent());
+        result.put("rows", pageResult.getContent());*/
         return result;
     }
 
@@ -204,8 +187,7 @@ public class JDController {
         Map<String, Object> result = Maps.newHashMap();
         boolean success = false;
         try {
-            JDProduct product = productDao.findOne(id);
-            crawler.start(pageProcessor, product.getLink());
+//            crawler.start(pageProcessor, product.getLink());
             success = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,7 +203,6 @@ public class JDController {
         Map<String, Object> result = Maps.newHashMap();
         boolean success = false;
         try {
-            crawler.start(pageProcessor, url);
             success = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -239,7 +220,7 @@ public class JDController {
     public
     @ResponseBody
     JDProduct getProduct(@PathVariable(value = "id") long id) {
-        JDProduct product = productDao.findOne(id);
+        JDProduct product = null;//productDao.findOne(id);
         return product;
     }
 
@@ -276,7 +257,7 @@ public class JDController {
                 }
                 result.put("searchResult", mapList);
             } else if (action.equals("fetch")) {
-                List<JDProduct> products = crawler.fetchPage(searchParam);
+                List<JDProduct> products = Lists.newArrayList();
                 result.put("searchResult", products);
             }
 
