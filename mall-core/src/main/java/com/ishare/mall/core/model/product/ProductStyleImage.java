@@ -10,12 +10,12 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 
 /**
  * Created by YinLin on 2015/7/31.
- * Description : 产品图片类
+ * Description : 产品样式图片类
  * Version 1.0
  */
 @Entity
 @Table(name = TABLE_PRODUCT_STYLE_IMAGE_NAME)
-public class ProductImage extends BaseEntity {
+public class ProductStyleImage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

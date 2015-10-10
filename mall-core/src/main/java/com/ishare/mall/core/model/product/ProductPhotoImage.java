@@ -1,27 +1,29 @@
 package com.ishare.mall.core.model.product;
 
-import com.ishare.mall.core.model.base.BaseEntity;
-
 import javax.persistence.*;
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_INTRO_IMAGE_NAME;
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_PHOTO_IMAGE_NAME;
 
 /**
  * Created by YinLin on 2015/10/10.
- * Description :
+ * Description : 商品相册图片
  * Version 1.0
  */
 @Entity
-@Table(name = TABLE_PRODUCT_INTRO_IMAGE_NAME)
-public class ProductIntroImage extends BaseEntity {
+@Table(name = TABLE_PRODUCT_PHOTO_IMAGE_NAME)
+public class ProductPhotoImage {
+
     @Id @GeneratedValue
     private Integer id;
-    @Column(name = "product_intro_img_url", length = 512)
+
+    @Column(name = "product_photo_img_url", length = 512)
     private String url;
-    private Product product;
+
     /**所属产品**/
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
+    private Product product;
+
     public Integer getId() {
         return id;
     }
