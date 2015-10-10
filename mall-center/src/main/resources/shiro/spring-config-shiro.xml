@@ -82,7 +82,6 @@
 		<property name="loginUrl" value="/login.dhtml"/>
 	</bean>
 
-
 	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
@@ -110,7 +109,7 @@
 		<property name="securityManager" ref="securityManager"/>
 		<property name="loginUrl" value="/login.dhtml"/>
 		<property name="unauthorizedUrl" value="/unauthorized.dhtml"/>
-		<property name="successUrl" value="/login/success.dhtml"/>
+		<property name="successUrl" value="/main.dhtml"/>
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter"/>
@@ -120,6 +119,7 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/login.dhtml = authc
+				/register.dhtml = anon
 				/authenticated.dhtml = authc
 				/resources/** = anon
 				/verifycode.dhtml = anon

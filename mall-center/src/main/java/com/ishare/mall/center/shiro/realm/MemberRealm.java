@@ -1,5 +1,6 @@
 package com.ishare.mall.center.shiro.realm;
 
+import com.ishare.mall.center.service.member.MemberService;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
@@ -14,6 +15,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,6 +33,9 @@ public class MemberRealm extends AuthorizingRealm {
     private static final Logger log = LoggerFactory.getLogger(MemberRealm.class);
 
     private String bizAppUrl;
+
+    @Autowired
+    private MemberService memberService;
 
     public MemberRealm() {
 
@@ -62,13 +67,7 @@ public class MemberRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String account = (String) token.getPrincipal();
-        log.debug("account : " + account);
-        ResponseEntity<MemberDTO> resultDTO = null;
-        RestTemplate restTemplate = new RestTemplate();
-        log.debug(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,"/" + account));
-        resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,"/" + account), MemberDTO.class);
-        log.debug(resultDTO.toString());
-        MemberDTO memberDTO = resultDTO.getBody();
+        MemberDTO memberDTO = memberService.findByAccount(account);
         if (memberDTO == null) {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();

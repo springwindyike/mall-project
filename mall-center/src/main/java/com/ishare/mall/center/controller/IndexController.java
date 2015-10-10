@@ -1,22 +1,27 @@
 package com.ishare.mall.center.controller;
 
 
+import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.annoation.PageRequest;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.controller.test.Person;
 import com.ishare.mall.center.controller.test.PersonJsonObject;
 import com.ishare.mall.center.form.register.RegisterForm;
+import com.ishare.mall.center.shiro.exception.IncorrectCaptchaException;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
+import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
 import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 import com.ishare.mall.common.base.dto.page.PageRequestDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -61,42 +66,44 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.GET)
     public String login() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.getPrincipal() != null && subject.isAuthenticated()) {
+            return "redirect:/main.dhtml";
+        }
+        SecurityUtils.getSubject().logout();
         return CenterViewConstant.Index.LOGIN;
+    }
+
+    /**
+     * 访问主页
+     * @return
+     */
+    @RequestMapping(value = CenterURIConstant.Main.INDEX, method = RequestMethod.GET)
+    public String main(@CurrentMember CurrentMemberDTO memberDTO) {
+        return CenterViewConstant.Main.MAIN;
     }
     
     @RequestMapping(value = CenterURIConstant.Index.LOGIN, method = RequestMethod.POST)
     public String login(HttpServletRequest request, Model model) {
-        String exceptionClassName = (String)request.getAttribute("shiroLoginFailure");
+        Object exceptionClass = request.getAttribute("shiroLoginFailure");
         String error = null;
-        if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
-        } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
-        } else if(exceptionClassName != null) {
-            error = "其他错误：" + exceptionClassName;
+        if(exceptionClass instanceof UnknownAccountException) {
+            error = "用户名不存在";
+        } else if(exceptionClass instanceof IncorrectCredentialsException) {
+            error = "密码错误";
+        } else if(exceptionClass instanceof IncorrectCaptchaException) {
+            error = "验证码错误";
+        } else {
+            error = "其他错误 ： ";
         }
         log.debug("error" + error);
         model.addAttribute("error", error);
-//    	if(null != loginForm.getVerifyCode()){
-//
-//    		if (!(loginForm.getVerifyCode().equalsIgnoreCase(session.getAttribute("code").toString()))) {  //忽略验证码大小写
-//    			System.out.println("验证码不正确");
-//    			return CenterViewConstant.Index.LOGIN;
-//    		}else {
-//    			System.out.println("验证码正确");
-//    			MemberLoginDTO memberLoginDTO = new MemberLoginDTO();
-//    			memberLoginDTO.setAccount(loginForm.getAccount());
-//    			memberLoginDTO.setPassword(loginForm.getPassword());
-//    			log.debug(memberLoginDTO.toString());
-//    			ResponseEntity<MemberLoginResultDTO> resultDTO = null;
-//    			RestTemplate restTemplate = new RestTemplate();
-//    			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_LOGIN), memberLoginDTO, MemberLoginResultDTO.class);
-//    			MemberLoginResultDTO memberLoginResultDTO = resultDTO.getBody();
-//    			log.debug(memberLoginResultDTO.toString());
-//    			return "redirect:/index.dhtml";
-//    		}
-//    	}
-   return CenterViewConstant.Index.LOGIN;
+        return CenterViewConstant.Index.LOGIN;
+    }
+    @RequestMapping(value = CenterURIConstant.Index.LOGOUT, method = RequestMethod.GET)
+    public String logout(Model model) {
+        SecurityUtils.getSubject().logout();
+        return CenterViewConstant.Index.LOGIN;
     }
     
     /**

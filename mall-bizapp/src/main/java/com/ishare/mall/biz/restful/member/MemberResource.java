@@ -281,14 +281,19 @@ public class MemberResource {
      * @param account
      * @return
      */
-    @RequestMapping(value       = "/{account}",
+    @RequestMapping(value       = APPURIConstant.Member.REQUEST_MAPPING_GET_BY_ACCOUNT,
                     method      = RequestMethod.GET,
                     headers     = "Accept=application/xml, application/json",
                     produces    = {"application/json", "application/xml"})
-    public MemberDTO queryByAccount(@NotEmpty @PathVariable("account") String account) {
+    public Response<MemberDTO> queryByAccount(@NotEmpty @PathVariable("account") String account) {
         Member member = memberService.findByAccount(account);
-        if (member == null) return null;
-        return (MemberDTO) MapperUtils.map(member, MemberDTO.class);
+        Response response = new Response();
+        if (member == null){
+            response.setSuccess(Response.Status.FAILURE);
+            return response;
+        }
+        response.setData((MemberDTO) MapperUtils.map(member, MemberDTO.class));
+        return response;
     }
     
     /**
