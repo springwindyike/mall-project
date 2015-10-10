@@ -44,13 +44,13 @@ public class BasePageData {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "spider_base_page_data_attr", joinColumns = @JoinColumn(name = "id"))
     private Map<String, String> attributes = Maps.newHashMap();
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "spider_base_page_data_intro_image", joinColumns = @JoinColumn(name = "id"))
     private List<String> introImages = Lists.newArrayList();
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "spider_base_page_data_photo", joinColumns = @JoinColumn(name = "id"))
     private List<String> photos = Lists.newArrayList();
 

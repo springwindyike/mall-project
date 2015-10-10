@@ -22,10 +22,10 @@ public class IShareServiceTests {
 
     @Test
     public void testSave() {
-        boolean bln = basePageDataRepository.exists(11L);
+        boolean bln = basePageDataRepository.exists(1L);
         Assert.assertTrue(bln);
 
-        BasePageData data = basePageDataRepository.findOne(11L);
+        BasePageData data = basePageDataRepository.findOne(1L);
         service.toSave(data);
 
         Assert.assertNotNull(data);
