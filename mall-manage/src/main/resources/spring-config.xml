@@ -21,8 +21,21 @@
         </property>
     </bean>
     <util:properties id="settings" location="classpath:config/config.properties" />
-    <!--<import resource="classpath:spring-config-cache.xml"/>-->
-    <!--<import resource="classpath:shiro/spring-config-shiro.xml"/>-->
+    <import resource="classpath:spring-config-cache.xml"/>
+    <import resource="classpath:shiro/spring-config-shiro.xml"/>
 
-
+	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+	<context:component-scan base-package="com.ishare.mall">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+			</list>
+		</property>
+	</bean>
 </beans>

@@ -18,4 +18,8 @@ public interface ManageViewConstant {
 		String LIST_CATEGORY = "category/list";
 		String ADD_CATEGORY ="category/add";
 	}
+	
+	interface Index {
+		String LOGIN = "index/login";
+    }
 }
