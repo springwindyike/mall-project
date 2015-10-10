@@ -20,7 +20,7 @@ public class ProductIntroImage extends BaseEntity {
     private String url;
     private Product product;
     /**所属产品**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
     public Integer getId() {
         return id;

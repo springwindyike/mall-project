@@ -121,6 +121,13 @@ public class Product extends BaseEntity {
     @Column(name = "origin_code")
     private String originCode;
 
+    //是否有货
+    @Column(name = "stock")
+    private Boolean stock;
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name="fetch")
+    private Fetch fetch;
+
     public Integer getId() {
         return id;
     }
@@ -351,6 +358,22 @@ public class Product extends BaseEntity {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public Boolean getStock() {
+        return stock;
+    }
+
+    public void setStock(Boolean stock) {
+        this.stock = stock;
+    }
+
+    public Fetch getFetch() {
+        return fetch;
+    }
+
+    public void setFetch(Fetch fetch) {
+        this.fetch = fetch;
     }
 
     @Override
