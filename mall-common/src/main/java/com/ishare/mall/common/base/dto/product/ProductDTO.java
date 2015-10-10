@@ -1,7 +1,6 @@
 package com.ishare.mall.common.base.dto.product;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,7 +19,6 @@ public class ProductDTO extends GenericDTO {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 
 	private Integer id;
 	//货号
@@ -82,6 +80,9 @@ public class ProductDTO extends GenericDTO {
 
     //默认样式图片
     private String defaultImageUrl;
+
+	//是否有货
+	private Boolean stock;
 
 	public Integer getId() {
 		return id;
@@ -317,5 +318,13 @@ public class ProductDTO extends GenericDTO {
 
 	public void setInventory(Integer inventory) {
 		this.inventory = inventory;
+	}
+
+	public Boolean getStock() {
+		return stock;
+	}
+
+	public void setStock(Boolean stock) {
+		this.stock = stock;
 	}
 }

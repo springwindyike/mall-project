@@ -1,12 +1,12 @@
 package com.ishare.mall.core.service.product;
 
-import java.util.Map;
-
+import com.ishare.mall.common.base.dto.product.FetchProductDTO;
+import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.model.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.ishare.mall.core.exception.ProductServiceException;
-import com.ishare.mall.core.model.product.Product;
+import java.util.Map;
 
 /**
  * Created by liaochenglei on 2015/9/22.
@@ -57,4 +57,12 @@ public abstract interface ProductService {
      * @param product
      */
     void updateProduct(Product product) throws ProductServiceException;
+
+    /**
+     * 处理爬虫商品
+     * @param fetchProductDTO
+     * @return
+     * @throws ProductServiceException
+     */
+    Product processor(FetchProductDTO fetchProductDTO) throws ProductServiceException;
 }

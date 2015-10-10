@@ -8,6 +8,7 @@ import us.codecraft.webmagic.SpiderListener;
 
 /**
  * Created by dongqi on 15/9/7.
+ * 暂时没用
  */
 @Component
 public class JDSpiderListener implements SpiderListener {
