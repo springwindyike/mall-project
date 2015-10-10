@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.ishare.mall.crawler.site.jd.model.JDCategory;
 import com.ishare.mall.crawler.site.jd.model.JDProduct;
 import com.ishare.mall.crawler.site.jd.processor.JDPageProcessor;
-import com.ishare.mall.crawler.site.jd.repository.JDCategoryRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,14 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 @Controller
 @RequestMapping("/jd")
 public class JDController {
 
     private static final Logger log = LoggerFactory.getLogger(JDController.class);
-
-    @Autowired
-    JDCategoryRepository categoryDao;
 
     @Autowired
     JDPageProcessor pageProcessor;
@@ -56,9 +53,9 @@ public class JDController {
         Page<JDCategory> pageResult = null;
         PageRequest pageRequest = new PageRequest(page - 1, rows);
         if (search) {
-            pageResult = categoryDao.findByNameLike(name, pageRequest);
+            //pageResult = categoryDao.findByNameLike(name, pageRequest);
         } else {
-            pageResult = categoryDao.findAll(pageRequest);
+            //pageResult = categoryDao.findAll(pageRequest);
         }
         result.put("total", pageResult.getTotalPages());
         result.put("page", page);
@@ -74,7 +71,7 @@ public class JDController {
         Map<String, Object> result = Maps.newHashMap();
         boolean success = false;
         try {
-            JDCategory category = categoryDao.findOne(id);
+            JDCategory category = null;//categoryDao.findOne(id);
             success = true;
         } catch (Exception e) {
             e.printStackTrace();

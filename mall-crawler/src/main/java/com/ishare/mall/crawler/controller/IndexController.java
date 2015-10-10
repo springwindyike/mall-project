@@ -5,12 +5,10 @@ import com.ishare.mall.crawler.site.jd.model.JDCategory;
 import com.ishare.mall.crawler.site.jd.model.JDProduct;
 import com.ishare.mall.crawler.site.jd.processor.JDCategoryPageProcessor;
 import com.ishare.mall.crawler.site.jd.processor.JDPageProcessor;
-import com.ishare.mall.crawler.site.jd.repository.JDCategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +19,6 @@ import java.util.Map;
 public class IndexController {
 
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
-
-    @Autowired
-    JDCategoryRepository jdCategoryRepository;
 
     @Autowired
     JDCategoryPageProcessor categoryPageProcessor;
@@ -135,7 +130,7 @@ public class IndexController {
         log.debug("search: {}", search);
 
         Map<String, Object> data = Maps.newHashMap();
-        Page<JDCategory> page = jdCategoryRepository.findAll(new PageRequest(start / length, length));
+        Page<JDCategory> page = null;//jdCategoryRepository.findAll(new PageRequest(start / length, length));
         data.put("recordsTotal", page.getTotalElements());
         data.put("recordsFiltered", page.getTotalElements());
         data.put("data", page.getContent());
