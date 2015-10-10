@@ -35,5 +35,5 @@
     <logger name="org.springframework" level="INFO"/>
     <logger name="com.opensymphony" level="WARN"/>
     <logger name="org.apache" level="WARN"/>
-    <logger name="freemarker" level="DEBUG"/>
+    <logger name="freemarker" level="WARN"/>
 </configuration>

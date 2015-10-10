@@ -1,11 +1,13 @@
-package com.ishare.mall.crawler.jd.processor;
+package com.ishare.mall.crawler.site.jd.processor;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.ishare.mall.crawler.jd.JDPageConfig;
-import com.ishare.mall.crawler.jd.model.JDProduct;
+import com.ishare.mall.crawler.model.BasePageData;
+import com.ishare.mall.crawler.site.FetchConstant;
+import com.ishare.mall.crawler.site.jd.JDPageConfig;
+import com.ishare.mall.crawler.site.jd.model.JDProduct;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -43,6 +45,33 @@ public class JDPageProcessor implements PageProcessor {
 
     @Override
     public void process(Page page) {
+        BasePageData basePageData = new BasePageData();
+
+        JDProduct jdProduct = getProductInfo(page);
+        basePageData.setName(jdProduct.getName());
+        basePageData.setLink(jdProduct.getLink());
+        basePageData.setCode(jdProduct.getCode());
+        basePageData.setSelf(jdProduct.getSelf());
+        basePageData.setStock(jdProduct.getStock());
+        basePageData.setPriceText(String.valueOf(jdProduct.getPrice()));
+        basePageData.setPriceOriginText(String.valueOf(jdProduct.getPriceOrigin()));
+        basePageData.setAttributes(jdProduct.getAttributes());
+        basePageData.setDatetimeText(new DateTime(jdProduct.getJdDatetime()).toString("yyyy-MM-dd"));
+        basePageData.setIntroImages(jdProduct.getIntroImgs());
+        basePageData.setPhotos(jdProduct.getPhoto());
+        basePageData.setTag(jdProduct.getTag());
+        basePageData.setUpdateTime(DateTime.now().toDate());
+
+        page.getResultItems().put(FetchConstant.KEY_CLASS, BasePageData.class);
+        page.getResultItems().put(FetchConstant.KEY_ITEM, basePageData);
+    }
+
+    @Override
+    public Site getSite() {
+        return site;
+    }
+
+    JDProduct getProductInfo(Page page) {
         JDProduct product = new JDProduct();
         product.setLink(page.getUrl().get());
         product.setUpdateTime(new Date());
@@ -99,12 +128,8 @@ public class JDPageProcessor implements PageProcessor {
             product.setJdDatetime(DateTime.parse(jdDatetime, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         }
 
-        page.putField("product.update", product);
-    }
-
-    @Override
-    public Site getSite() {
-        return site;
+        //page.putField("product.update", product);
+        return product;
     }
 
     String search(final String regex, final String text) {
@@ -147,6 +172,9 @@ public class JDPageProcessor implements PageProcessor {
 
                 String desc = search("desc:.+\\d+',", html).replace("desc:", StringUtils.EMPTY).replaceAll("'|,", StringUtils.EMPTY);
                 desc = StringUtils.strip(desc);
+                if (!desc.contains("http:")) {
+                    desc = "http:" + desc;
+                }
                 pageConfig.setDescUrl(desc);
 
                 //log.debug("\nskuid-|{}|\nskuidkey-|{}|\ncat-|{}|\nbrand-|{}|\nvenderId-|{}|\nshopId-|{}|\ndesc-|{}|", skuid, skuidkey, cat, brand, venderId, shopId, desc);
@@ -177,6 +205,7 @@ public class JDPageProcessor implements PageProcessor {
         String stock = "";
 
         try {
+            log.debug("pageConfig.getStockUrl {}", pageConfig.getStockUrl());
             String body = Jsoup.connect(pageConfig.getStockUrl()).userAgent(USER_AGENT).ignoreContentType(true).execute().body();
 
             JSONObject jsonObject = (JSONObject) JSONObject.parse(body);
@@ -196,6 +225,7 @@ public class JDPageProcessor implements PageProcessor {
     List<String> fetchIntroImgs(JDPageConfig pageConfig) {
         List<String> list = Lists.newArrayList();
         try {
+            log.debug("pageConfig.getDescUrl() {}", pageConfig.getDescUrl());
             Element body = Jsoup.connect(pageConfig.getDescUrl()).userAgent(USER_AGENT).ignoreContentType(true).get().body();
 
             for (Element img : body.select("img")) {

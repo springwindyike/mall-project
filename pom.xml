@@ -712,6 +712,17 @@
                 </repository>
             </repositories>
         </profile>
+        <profile>
+            <id>dev40</id>
+            <properties>
+                <db.host>10.10.10.40</db.host>
+                <db.username>mall</db.username>
+                <db.password>mall</db.password>
+                <schema.name>mall</schema.name>
+                <schema.user>mall</schema.user>
+                <schema.password>mall</schema.password>
+            </properties>
+        </profile>
     </profiles>
 
 </project>
