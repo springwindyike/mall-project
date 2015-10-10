@@ -1,14 +1,12 @@
 package com.ishare.mall.common.base.dto.product;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.object.BaseObject;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import com.ishare.mall.common.base.object.BaseObject;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liaochenglei on 2015/9/9.

@@ -64,5 +64,5 @@ public abstract interface ProductService {
      * @return
      * @throws ProductServiceException
      */
-    Product process(FetchProductDTO fetchProductDTO) throws ProductServiceException;
+    Product processor(FetchProductDTO fetchProductDTO) throws ProductServiceException;
 }
