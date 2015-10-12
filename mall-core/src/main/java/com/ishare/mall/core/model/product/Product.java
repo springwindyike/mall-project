@@ -125,7 +125,7 @@ public class Product extends BaseEntity {
     @Column(name = "stock")
     private Boolean stock;
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name="fetch")
+    @JoinColumn(name="fetch_id")
     private Fetch fetch;
 
     public Integer getId() {
