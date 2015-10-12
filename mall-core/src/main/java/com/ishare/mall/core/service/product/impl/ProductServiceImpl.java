@@ -13,6 +13,7 @@ import com.ishare.mall.core.service.information.AttributeService;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,9 +189,24 @@ public class ProductServiceImpl implements ProductService {
 		Product product = new Product();
 		product.setName(fetchProductDTO.getName());
 		product.setCode(fetchProductDTO.getCode());
-		product.setBasePrice(Float.valueOf(fetchProductDTO.getPriceText()));
-		product.setSellPrice(Float.valueOf(fetchProductDTO.getPriceText()));
-		product.setMarketPrice(Float.valueOf(fetchProductDTO.getPriceOriginText()));
+		float basePrice = 0;
+		float sellPrice = 0;
+		float marketPrice = 0;
+		try {
+			if (StringUtils.isNotEmpty(fetchProductDTO.getPriceText()))
+				basePrice = Float.parseFloat(fetchProductDTO.getPriceText());
+		} catch (NumberFormatException e) {}
+		try {
+			if (StringUtils.isNotEmpty(fetchProductDTO.getPriceText()))
+				sellPrice = Float.parseFloat(fetchProductDTO.getPriceText());
+		} catch (NumberFormatException e) {}
+		try {
+			if (StringUtils.isNotEmpty(fetchProductDTO.getPriceOriginText()))
+				marketPrice = Float.parseFloat(fetchProductDTO.getPriceOriginText());
+		} catch (NumberFormatException e) {}
+		product.setBasePrice(basePrice);
+		product.setSellPrice(sellPrice);
+		product.setMarketPrice(marketPrice);
 		product.setStock("Y".equals(fetchProductDTO.getStock()));
 		product.setSelf(false);
 		product.setLink(fetchProductDTO.getLink());

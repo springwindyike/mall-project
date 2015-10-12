@@ -337,5 +337,19 @@ public class ProductResource {
 		response.setData((ProductDetailDTO) MapperUtils.map(productService.processor(fetchProductDTO), ProductDetailDTO.class));
 		return response;
 	}
+
+	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_CRAWLER_LIST_ADD, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json"})
+	public Response add(@RequestBody List<FetchProductDTO> fetchProductDTOs) {
+		Response response = new Response();
+		if (fetchProductDTOs != null && fetchProductDTOs.size() > 0)
+			for (FetchProductDTO fetchProductDTO : fetchProductDTOs)
+				productService.processor(fetchProductDTO);
+		response.setData("true");
+		return response;
+	}
+
     
 }
