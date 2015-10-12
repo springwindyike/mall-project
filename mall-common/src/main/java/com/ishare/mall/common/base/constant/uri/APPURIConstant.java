@@ -57,6 +57,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_CODE="/findByCode";
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
         String REQUEST_MAPPING_CRAWLER_ADD = "/crawler/add";
+        String REQUEST_MAPPING_CRAWLER_LIST_ADD = "/crawler/list/add";
     }
 
     interface Brand {

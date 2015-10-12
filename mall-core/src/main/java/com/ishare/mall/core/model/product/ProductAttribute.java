@@ -90,4 +90,12 @@ public class ProductAttribute {
     public void setAddition(BigDecimal addition) {
         this.addition = addition;
     }
+
+    public ValueType getType() {
+        return type;
+    }
+
+    public void setType(ValueType type) {
+        this.type = type;
+    }
 }

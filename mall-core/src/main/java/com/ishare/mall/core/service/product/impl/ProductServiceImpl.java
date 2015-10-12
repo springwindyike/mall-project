@@ -2,6 +2,7 @@ package com.ishare.mall.core.service.product.impl;
 
 import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
+import com.ishare.mall.common.base.enumeration.ValueType;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.product.*;
 import com.ishare.mall.core.repository.information.*;
@@ -12,6 +13,7 @@ import com.ishare.mall.core.service.information.AttributeService;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,13 +131,16 @@ public class ProductServiceImpl implements ProductService {
 				productAttribute.setProduct(product);
 				productAttribute.setName(name);
 				productAttribute.setAttribute(attribute);
+				productAttribute.setType(ValueType.STRING);
 				productAttribute.setValue(fetchProductDTO.getAttributes().get(name));
 				productAttributes.add(productAttribute);
 			}
 		}
 
+
 		//图片描述逻辑处理
 		if (fetchProductDTO.getIntroImages() != null && fetchProductDTO.getIntroImages().size() > 0) {
+			log.debug("IntroImages.size() : " + fetchProductDTO.getIntroImages().size());
 			for (String url : fetchProductDTO.getIntroImages()) {
 				ProductIntroImage productIntroImage = new ProductIntroImage();
 				productIntroImage.setUrl(url);
@@ -146,6 +151,7 @@ public class ProductServiceImpl implements ProductService {
 
 		//商品图片处理
 		if (fetchProductDTO.getPhotos() != null && fetchProductDTO.getPhotos().size() > 0) {
+			log.debug("photoImages.size() : " + fetchProductDTO.getPhotos().size());
 			for (String url : fetchProductDTO.getPhotos()) {
 				ProductPhotoImage productPhotoImage = new ProductPhotoImage();
 				productPhotoImage.setUrl(url);
@@ -183,9 +189,24 @@ public class ProductServiceImpl implements ProductService {
 		Product product = new Product();
 		product.setName(fetchProductDTO.getName());
 		product.setCode(fetchProductDTO.getCode());
-		product.setBasePrice(Float.valueOf(fetchProductDTO.getPriceText()));
-		product.setSellPrice(Float.valueOf(fetchProductDTO.getPriceText()));
-		product.setMarketPrice(Float.valueOf(fetchProductDTO.getPriceOriginText()));
+		float basePrice = 0;
+		float sellPrice = 0;
+		float marketPrice = 0;
+		try {
+			if (StringUtils.isNotEmpty(fetchProductDTO.getPriceText()))
+				basePrice = Float.parseFloat(fetchProductDTO.getPriceText());
+		} catch (NumberFormatException e) {}
+		try {
+			if (StringUtils.isNotEmpty(fetchProductDTO.getPriceText()))
+				sellPrice = Float.parseFloat(fetchProductDTO.getPriceText());
+		} catch (NumberFormatException e) {}
+		try {
+			if (StringUtils.isNotEmpty(fetchProductDTO.getPriceOriginText()))
+				marketPrice = Float.parseFloat(fetchProductDTO.getPriceOriginText());
+		} catch (NumberFormatException e) {}
+		product.setBasePrice(basePrice);
+		product.setSellPrice(sellPrice);
+		product.setMarketPrice(marketPrice);
 		product.setStock("Y".equals(fetchProductDTO.getStock()));
 		product.setSelf(false);
 		product.setLink(fetchProductDTO.getLink());

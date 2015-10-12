@@ -27,7 +27,7 @@ public class Product extends BaseEntity {
     @Column(name = "product_code",length = 15)
     private String code;
     //物品名字
-    @Column(name = "product_name",length = 27)
+    @Column(name = "product_name",length = 512)
     private String name;
     //物品类型 便于search 10010010001
     @Column(name = "product_type_code",length = 15)
@@ -112,7 +112,7 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "origin_id")
     private Origin origin;
     //第三方link
-    @Column(name = "origin_link")
+    @Column(name = "origin_link", length = 1024)
     private String link;
     //第三方Tag
     @Column(name = "origin_tag")
@@ -125,7 +125,7 @@ public class Product extends BaseEntity {
     @Column(name = "stock")
     private Boolean stock;
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name="fetch")
+    @JoinColumn(name="fetch_id")
     private Fetch fetch;
 
     public Integer getId() {

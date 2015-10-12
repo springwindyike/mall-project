@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.center.annoation.CurrentMember;
@@ -24,7 +25,7 @@ import com.ishare.mall.center.form.product.AddProductForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
@@ -53,7 +54,7 @@ public class ProductController extends BaseController {
     }
     
     @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_SAVE, method = RequestMethod.POST)
-    public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
+    public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember CurrentMemberDTO member) {JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
 	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
 /*	productDetailDTO.setName(apf.getProductName());
 	productDetailDTO.setDescription(apf.getDescription());
@@ -90,7 +91,12 @@ e.printStackTrace();
         productDetailDTO.setId(id);
         ResponseEntity<Response> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,Response.class);
+        try {
+			resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,Response.class);
+		} catch (RestClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         ProductDetailDTO returnTO =  (ProductDetailDTO) resultEntity.getBody().getData();
         model.addAttribute("productDetailDTO", returnTO);
         return CenterViewConstant.Product.UPDATE_PRODUCT;
@@ -98,10 +104,10 @@ e.printStackTrace();
     }
     
     @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST)
-    public String updateProductPost(@NotEmpty @PathVariable("id") Integer id,@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
+    public String updateProductPost(@NotEmpty @PathVariable("id") Integer id,@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember CurrentMemberDTO member) {
     	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
     	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-    /*	productDetailDTO.setName(apf.getProductName());
+    /*productDetailDTO.setName(apf.getProductName());
     	productDetailDTO.setDescription(apf.getDescription());
     	productDetailDTO.setTypeCode(apf.getTypeCode());
     	productDetailDTO.setBasePrice(apf.getBasePrice());
