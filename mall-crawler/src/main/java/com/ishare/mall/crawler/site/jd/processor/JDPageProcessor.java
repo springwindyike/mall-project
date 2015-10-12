@@ -22,6 +22,7 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,7 @@ public class JDPageProcessor implements PageProcessor {
         basePageData.setPhotos(jdProduct.getPhoto());
         basePageData.setTag(jdProduct.getTag());
         basePageData.setUpdateTime(DateTime.now().toDate());
+        basePageData.setThirdPartyShopName(jdProduct.getThirdPartyShopName());
 
         page.getResultItems().put(FetchConstant.KEY_CLASS, BasePageData.class);
         page.getResultItems().put(FetchConstant.KEY_ITEM, basePageData);
@@ -90,9 +92,17 @@ public class JDPageProcessor implements PageProcessor {
         Map<String, String> attributes = Maps.newHashMap();
         Elements lis = document.select("ul#parameter2.p-parameter-list > li");
         for (Element li : lis) {
-            String val = li.attr("title").trim();
-            String key = li.text().trim();
-            key = key.replaceAll(val, StringUtils.EMPTY).trim();
+            String string = StringUtils.strip(li.text());
+            String[] values = null;
+
+            if (string.contains("：")) {
+                values = string.split("：");
+            } else if (string.contains(":")) {
+                values = string.split(":");
+            }
+            if (values == null || values.length != 2) continue;
+            String key = StringUtils.strip(values[0]);
+            String val = StringUtils.strip(values[1]);
 
             attributes.put(key, val);
             //log.debug("商品介绍：{} = {}", key, val);
@@ -212,7 +222,15 @@ public class JDPageProcessor implements PageProcessor {
             JSONObject stockJson = (JSONObject) jsonObject.get("stock");
 
             int stockState = stockJson.getIntValue("StockState");
-            //log.debug("库存 \n|{}|, \n{}", stockState, body);
+            log.debug("库存 \n|{}|, \n{}", stockState, body);
+
+            if (stockJson.containsKey("D")) {
+                JSONObject D = (JSONObject) stockJson.get("D");
+                Object vender = D.get("vender");
+                String gbk = new String(vender.toString().getBytes());
+                log.debug("gbk {}", Arrays.toString(gbk.getBytes()));
+                //TODO GBK 转 UTF8 没成功，先跳过
+            }
 
             stock = stockState == 33 ? "有货" : "无货";
         } catch (Exception ex) {

@@ -1,5 +1,6 @@
 package com.ishare.mall.crawler.service;
 
+import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 public class IShareService {
@@ -47,19 +50,52 @@ public class IShareService {
             responseEntity = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<FetchProductDTO>(fetchProductDTO), new ParameterizedTypeReference<Response<FetchProductDTO>>() {
             });
 
-            //responseEntity = restTemplate.postForEntity(url, data, null, Maps.newHashMap());
             log.debug("{}", responseEntity);
             isSuccess = true;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            isSuccess = false;
             throw new ApiLogicException("创建失败", HttpStatus.BAD_REQUEST);
         }
 
         Response<FetchProductDTO> response = responseEntity.getBody();
         log.debug("{}", response);
         if (!response.isSuccess() || response.getData() == null) {
-            isSuccess = false;
+            throw new ApiLogicException("创建失败", HttpStatus.BAD_REQUEST);
+        }
+
+        return isSuccess;
+    }
+
+    @Transactional
+    public boolean toSave(List<BasePageData> data) {
+        boolean isSuccess = false;
+        ResponseEntity<Response> responseEntity;
+        List<FetchProductDTO> fetchProductDTOs = Lists.newArrayList();
+        for (BasePageData basePageData : data) {
+            FetchProductDTO fetchProductDTO = new FetchProductDTO();
+
+            BeanUtils.copyProperties(basePageData, fetchProductDTO, "attributes", "introImages", "photos");
+            fetchProductDTO.setAttributes(basePageData.getAttributes());
+            fetchProductDTO.setIntroImages(basePageData.getIntroImages());
+            fetchProductDTO.setPhotos(basePageData.getPhotos());
+            fetchProductDTOs.add(fetchProductDTO);
+        }
+        try {
+            HttpEntity<List<FetchProductDTO>> requestEntity = new HttpEntity<List<FetchProductDTO>>(fetchProductDTOs);
+            String url = buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, "/crawler/list/add");
+            log.debug("{}", url);
+            responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Response.class);
+
+            log.debug("{}", responseEntity);
+            isSuccess = true;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ApiLogicException("创建失败", HttpStatus.BAD_REQUEST);
+        }
+
+        Response<Object> response = responseEntity.getBody();
+        log.debug("{}", response);
+        if (!response.isSuccess() || response.getData() == null) {
             throw new ApiLogicException("创建失败", HttpStatus.BAD_REQUEST);
         }
 

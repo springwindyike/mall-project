@@ -22,9 +22,9 @@ public class FetchServiceTests {
 
     @Test
     public void testFetchCategory() {
-        fetchService.fetchCategoryUrl("http://category.dangdang.com", true);
         fetchService.fetchCategoryUrl("http://www.jd.com/allSort.aspx", true);
-        fetchService.fetchCategoryUrl("http://www.amazon.cn/gp/site-directory", true);
+        //fetchService.fetchCategoryUrl("http://category.dangdang.com", true);
+        //fetchService.fetchCategoryUrl("http://www.amazon.cn/gp/site-directory", true);
         /**/
         Assert.assertTrue(true);
     }

@@ -27,6 +27,8 @@ public class JDProduct {
     private Date updateTime;
     private Date jdDatetime;
 
+    private String thirdPartyShopName;//第三方店铺名称
+
     public Long getId() {
         return id;
     }
@@ -145,6 +147,14 @@ public class JDProduct {
 
     public void setJdDatetime(Date jdDatetime) {
         this.jdDatetime = jdDatetime;
+    }
+
+    public String getThirdPartyShopName() {
+        return thirdPartyShopName;
+    }
+
+    public void setThirdPartyShopName(String thirdPartyShopName) {
+        this.thirdPartyShopName = thirdPartyShopName;
     }
 
     @Override

@@ -21,7 +21,7 @@ public class BasePageData {
     @Enumerated(EnumType.STRING)
     private FetchSite fetchSite;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     private FetchUrl fetchUrl;
 
     private String code;
@@ -47,11 +47,13 @@ public class BasePageData {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "spider_base_page_data_attr", joinColumns = @JoinColumn(name = "id"))
     private Map<String, String> attributes = Maps.newHashMap();
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "spider_base_page_data_intro_image", joinColumns = @JoinColumn(name = "id"))
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+    @CollectionTable(name = "spider_base_page_data_intro_image", joinColumns = @JoinColumn(name = "data_id"))
+    @Column(name = "intro_image_url")
     private List<String> introImages = Lists.newArrayList();
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "spider_base_page_data_photo", joinColumns = @JoinColumn(name = "id"))
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+    @CollectionTable(name = "spider_base_page_data_photo", joinColumns = @JoinColumn(name = "data_id"))
+    @Column(name = "photo_url")
     private List<String> photos = Lists.newArrayList();
 
     public Long getId() {
@@ -194,6 +196,7 @@ public class BasePageData {
     public String toString() {
         return "BasePageData{" +
                 "id=" + id +
+                ", fetchSite=" + fetchSite +
                 ", fetchUrl=" + fetchUrl +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
@@ -206,9 +209,28 @@ public class BasePageData {
                 ", self=" + self +
                 ", thirdPartyShopName='" + thirdPartyShopName + '\'' +
                 ", updateTime=" + updateTime +
-                ", attributes=" + attributes +
-                ", introImages=" + introImages +
-                ", photos=" + photos +
+                ", attributes=" + attributes.size() +
+                ", introImages=" + introImages.size() +
+                ", photos=" + photos.size() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BasePageData that = (BasePageData) o;
+
+        if (!code.equals(that.code)) return false;
+        return link.equals(that.link);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = code.hashCode();
+        result = 31 * result + link.hashCode();
+        return result;
     }
 }

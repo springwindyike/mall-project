@@ -27,6 +27,18 @@
             </div>
 
             <div>
+            <#--<form>-->
+                <div class="input-group form-group">
+                    <button class="btn btn-primary" id="testA">测试BizApp 1 条数据入口接口</button>
+                    <span>   </span>
+                    <button class="btn btn-primary" id="testB">测试BizApp 20 条数据入口接口</button>
+                    <span>   </span>
+                    <button class="btn btn-primary" id="testC">测试BizApp N 条数据入口接口</button>
+                </div>
+            <#--</form>-->
+            </div>
+
+            <div>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         Basic panel example
@@ -42,6 +54,29 @@
     $(document).ready(function () {
         console.log('OpenAPI Crawler Dashboard');
 
+        $('#testA').click(function () {
+            waitingDialog.show('单条数据发送中...');
+            $.getJSON(ctx + '/fetch/test', {isSingle: true}, function (response) {
+                waitingDialog.hide();
+                alert('success: ' + response.success);
+            });
+        });
+
+        $('#testB').click(function () {
+            waitingDialog.show('20条数据发送中...');
+            $.getJSON(ctx + '/fetch/test', {isSingle: false}, function (response) {
+                waitingDialog.hide();
+                alert('success: ' + response.success);
+            });
+        });
+
+        $('#testC').click(function () {
+            waitingDialog.show('N条数据发送中...');
+            $.getJSON(ctx + '/fetch/test', {isSingle: false, isAll: true}, function (response) {
+                waitingDialog.hide();
+                alert('success: ' + response.success);
+            });
+        });
     });
 </script>
 </body>

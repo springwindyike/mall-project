@@ -5,6 +5,7 @@ import com.ishare.mall.crawler.model.BasePageData;
 import com.ishare.mall.crawler.model.FetchUrl;
 import com.ishare.mall.crawler.repository.BasePageDataRepository;
 import com.ishare.mall.crawler.repository.FetchUrlRepository;
+import com.ishare.mall.crawler.service.IShareService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -27,15 +28,19 @@ public class DatabasePipeline implements Pipeline {
     @Autowired
     BasePageDataRepository basePageDataRepository;
 
+    @Autowired
+    IShareService iShareService;
+
     @Override
     public void process(ResultItems resultItems, Task task) {
         log.debug("UUID={}, Site={}", task.getUUID(), task.getSite());
 
         Object items = resultItems.get(FetchConstant.KEY_ITEM);
+        log.debug("items = {}", items);
         if (items == null) return;
 
         Class clazz = resultItems.get(FetchConstant.KEY_CLASS);
-
+        log.debug("clazz = {}", clazz);
         if (clazz.equals(FetchUrl.class)) {
             List<FetchUrl> fetchUrls = (List<FetchUrl>) items;
             List<FetchUrl> needSaveList = Lists.newArrayList();
@@ -53,20 +58,27 @@ public class DatabasePipeline implements Pipeline {
             if (!needSaveList.isEmpty()) {
                 fetchUrlRepository.save(needSaveList);
             }
+
         }
 
         if (clazz.equals(BasePageData.class)) {
             BasePageData basePageData = (BasePageData) items;
 
-            BasePageData basePageDataInDB = basePageDataRepository.findByLinkIs(basePageData.getLink());
-            if (basePageDataInDB == null) {
+            Long fetchUrlId = basePageDataRepository.findByLinkAndCode(basePageData.getLink(), basePageData.getCode());
+            log.debug("fetchUrlId={}, link={}, code={}", fetchUrlId, basePageData.getLink(), basePageData.getCode());
+            if (fetchUrlId == null) {
                 FetchUrl fetchUrl = fetchUrlRepository.findByLinkIs(basePageData.getLink());
                 basePageData.setFetchUrl(fetchUrl);
                 basePageData.setFetchSite(fetchUrl.getFetchSite());
                 basePageDataRepository.save(basePageData);
+                fetchUrlRepository.save(fetchUrl);
             } else {
+                BasePageData basePageDataInDB = basePageDataRepository.findByLinkIs(basePageData.getLink());
+                log.debug("id is not null basePageDataInDB={}, {}", basePageDataInDB.getFetchSite(), basePageData.getFetchUrl());
                 BeanUtils.copyProperties(basePageData, basePageDataInDB, "id", "fetchUrl", "fetchSite");
+                basePageDataRepository.save(basePageDataInDB);
             }
+
         }
     }
 }
