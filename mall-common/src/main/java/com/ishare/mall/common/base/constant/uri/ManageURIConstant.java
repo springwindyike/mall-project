@@ -20,14 +20,19 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
 	}
  
-interface Category {
-	String REQUEST_MAPPING = "/category";
-	String REQUEST_MAPPING_CATEGORY_LIST = "/list";
-	String REQUEST_MAPPING_CATEGORY_ADD = "/add";
-}
+	interface Category {
+		String REQUEST_MAPPING = "/category";
+		String REQUEST_MAPPING_CATEGORY_LIST = "/list";
+		String REQUEST_MAPPING_CATEGORY_ADD = "/add";
+	}
 
-interface Express {
-	String REQUEST_MAPPING = "/express";
-	String REQUEST_MAPPING_FIND ="/find/{order}/{id}";
-}
+	interface Express {
+		String REQUEST_MAPPING = "/express";
+		String REQUEST_MAPPING_FIND ="/find/{order}/{id}";
+	}
+	
+	String VERIFYCODE = "verifycode";
+	interface Index{
+		String LOGIN = "login";
+	}
 }
