@@ -42,11 +42,10 @@ public class IShareService {
 
         boolean isSuccess = false;
         try {
-            String url = buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_SAVE);
+            String url = buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_CRAWLER_ADD);
             log.debug("{}", url);
-            responseEntity = restTemplate.exchange(buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_SAVE),
-                    HttpMethod.POST, new HttpEntity<FetchProductDTO>(fetchProductDTO), new ParameterizedTypeReference<Response<FetchProductDTO>>() {
-                    });
+            responseEntity = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<FetchProductDTO>(fetchProductDTO), new ParameterizedTypeReference<Response<FetchProductDTO>>() {
+            });
 
             //responseEntity = restTemplate.postForEntity(url, data, null, Maps.newHashMap());
             log.debug("{}", responseEntity);
