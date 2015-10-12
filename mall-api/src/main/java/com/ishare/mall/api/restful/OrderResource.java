@@ -10,17 +10,19 @@ import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 import com.ishare.mall.common.base.general.Response;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -28,7 +30,7 @@ import javax.validation.Valid;
  * Description:订单接口相关
  * Version 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/orders")
 public class OrderResource extends BaseResource {
 
@@ -44,7 +46,6 @@ public class OrderResource extends BaseResource {
      */
     @AccessToken
 	@RequestMapping(value = "create", method = {RequestMethod.POST, RequestMethod.GET}, produces = {"application/json"})
-    @ResponseBody
 	public ResponseEntity create(@Valid OrderForm orderForm, BindingResult br) {
 
         if (br.hasErrors()) {
@@ -62,6 +63,21 @@ public class OrderResource extends BaseResource {
         response.setCode(200);
         //请求成功
 		return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+    @AccessToken
+    @RequestMapping(value = "{id}", method = {RequestMethod.POST, RequestMethod.GET}, produces = {"application/json"})
+    public ResponseEntity get(@NotEmpty @PathVariable("id")String  id, HttpServletRequest request) {
+        String token = request.getParameter("access_token");
+        OrderDetailDTO orderDetailDTO = orderService.findOne(id);
+        String account = oAuthService.getAccountByAccessToken(token);
+        if (!account.equals(orderDetailDTO.getCreateBy())) {
+            throw new ApiLogicException("订单不存在", HttpStatus.NOT_FOUND);
+        }
+        Response<OrderDetailDTO> response = new Response<>();
+        response.setCode(200);
+        response.setData(orderDetailDTO);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 //
 //    /**

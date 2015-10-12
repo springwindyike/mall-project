@@ -21,11 +21,11 @@ public class ProductAttribute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     //所属商品
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
     private Product product;
     //所属属性
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name="attr_id")
     private Attribute attribute;
     //属性名字
@@ -89,5 +89,13 @@ public class ProductAttribute {
 
     public void setAddition(BigDecimal addition) {
         this.addition = addition;
+    }
+
+    public ValueType getType() {
+        return type;
+    }
+
+    public void setType(ValueType type) {
+        this.type = type;
     }
 }

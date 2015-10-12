@@ -79,70 +79,17 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">
-var setting = {
-	view: {
-		dblClickExpand: false,
-		showLine: false,
-		selectedMulti: false
-	},
-	data: {
-		simpleData: {
-			enable:true,
-			idKey: "id",
-			pIdKey: "pId",
-			rootPId: ""
-		}
-	},
-	callback: {
-		beforeClick: function(treeId, treeNode) {
-			var zTree = $.fn.zTree.getZTreeObj("tree");
-			if (treeNode.isParent) {
-				zTree.expandNode(treeNode);
-				return false;
-			} else {
-				demoIframe.attr("src",treeNode.file + ".html");
-				return true;
-			}
-		}
-	}
-};
-
-var zNodes =[
-	{ id:1, pId:0, name:"一级分类", open:true},
-	{ id:11, pId:1, name:"二级分类"},
-	{ id:111, pId:11, name:"三级分类"},
-	{ id:112, pId:11, name:"三级分类"},
-	{ id:113, pId:11, name:"三级分类"},
-	{ id:114, pId:11, name:"三级分类"},
-	{ id:115, pId:11, name:"三级分类"},
-	{ id:12, pId:1, name:"二级分类 1-2"},
-	{ id:121, pId:12, name:"三级分类 1-2-1"},
-	{ id:122, pId:12, name:"三级分类 1-2-2"},
-];
-		
 var code;
-		
 function showCode(str) {
 	if (!code) code = $("#code");
 	code.empty();
 	code.append("<li>"+str+"</li>");
 }
-		
-/* $(document).ready(function(){
-	var t = $("#treeDemo");
-	t = $.fn.zTree.init(t, setting, zNodes);
-	demoIframe = $("#testIframe");
-	demoIframe.bind("load", loadReady);
-	var zTree = $.fn.zTree.getZTreeObj("tree");
-	zTree.selectNode(zTree.getNodeByParam("id",'11'));
-});
- */
+
 $('.table-sort').dataTable({
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
-	/* "aoColumnDefs": [
-	  {"orderable":false,"aTargets":[0,7]}// 制定列不参与排序
-	] */
+
 	   "bProcessing": true,
        "bServerSide": true,
        "bStateSave": false,
@@ -162,7 +109,6 @@ $('.table-sort').dataTable({
        ],
 
        "createdRow" : function(row, mDataProp, dataIndex){
-           //alert('row = '+row+'mDataProp = ' +mDataProp +'dataIndex = '+dataIndex);
            $(row).addClass('text-c');
        },
 
@@ -245,8 +191,6 @@ function product_shenhe(obj,id){
 function product_stop(obj,id){
 	layer.confirm('确认要下架吗？',function(index){
 		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-		alert($(obj).parents("tr").find(".td-manage").html());
-		
 		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
 		$(obj).remove();
 		layer.msg('已下架!',{icon: 5,time:1000});
@@ -257,7 +201,6 @@ function product_stop(obj,id){
 function product_start(obj,id){
 	layer.confirm('确认要发布吗？',function(index){
 		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-	alert($(obj).parents("tr").find(".td-status").html());
 		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
 		$(obj).remove();
 		layer.msg('已发布!',{icon: 6,time:1000});

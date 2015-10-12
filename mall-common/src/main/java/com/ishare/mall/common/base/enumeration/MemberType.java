@@ -6,6 +6,12 @@ package com.ishare.mall.common.base.enumeration;
  * Version 1.0
  */
 public enum MemberType {
+    SELF {
+        @Override
+        public String getName() {
+            return "系统管理员";
+        }
+    },
     ADMIN {
         @Override
         public String getName() {

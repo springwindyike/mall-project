@@ -1,73 +1,62 @@
-package com.ishare.mall.crawler.model;
+package com.ishare.mall.common.base.dto.product;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.hibernate.annotations.Type;
+import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.common.base.enumeration.FetchSite;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Entity
-@Table(name = "spider_base_page_data")
-public class BasePageData {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Enumerated(EnumType.STRING)
-    private FetchSite fetchSite;
-
-    @OneToOne
-    private FetchUrl fetchUrl;
-
+/**
+ * Created by YinLin on 2015/10/10.
+ * Description :
+ * Version 1.0
+ */
+@XmlRootElement
+@JsonAutoDetect
+public class FetchProductDTO extends GenericDTO {
+    //商品CODE
     private String code;
+    //商品名字
     private String name;
-    @Column(length = 1024)
+    //第三方链接
     private String link;
+    //商品销售价格
     private String priceText;
+    //商品原价
     private String priceOriginText;
+    //库存 Y N
     private String stock;
+    //商品标签
     private String tag;
+    //商品上架时间
     private String datetimeText;//上架时间
 
-    @Type(type = "yes_no")
-    @Column(name = "is_self")
     private boolean self;//是否自营
 
     private String thirdPartyShopName;//第三方店铺名称
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "spider_base_page_data_attr", joinColumns = @JoinColumn(name = "id"))
+    //第三方状态
+    private FetchSite fetchSite;
+
     private Map<String, String> attributes = Maps.newHashMap();
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "spider_base_page_data_intro_image", joinColumns = @JoinColumn(name = "id"))
+
     private List<String> introImages = Lists.newArrayList();
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "spider_base_page_data_photo", joinColumns = @JoinColumn(name = "id"))
+
     private List<String> photos = Lists.newArrayList();
 
-    public Long getId() {
-        return id;
+    public String getCode() {
+        return code;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public FetchUrl getFetchUrl() {
-        return fetchUrl;
-    }
-
-    public void setFetchUrl(FetchUrl fetchUrl) {
-        this.fetchUrl = fetchUrl;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -126,7 +115,7 @@ public class BasePageData {
         this.datetimeText = datetimeText;
     }
 
-    public boolean getSelf() {
+    public boolean isSelf() {
         return self;
     }
 
@@ -174,41 +163,11 @@ public class BasePageData {
         this.photos = photos;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public FetchSite getFetchSite() {
         return fetchSite;
     }
 
     public void setFetchSite(FetchSite fetchSite) {
         this.fetchSite = fetchSite;
-    }
-
-    @Override
-    public String toString() {
-        return "BasePageData{" +
-                "id=" + id +
-                ", fetchUrl=" + fetchUrl +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", link='" + link + '\'' +
-                ", priceText='" + priceText + '\'' +
-                ", priceOriginText='" + priceOriginText + '\'' +
-                ", stock='" + stock + '\'' +
-                ", tag='" + tag + '\'' +
-                ", datetimeText='" + datetimeText + '\'' +
-                ", self=" + self +
-                ", thirdPartyShopName='" + thirdPartyShopName + '\'' +
-                ", updateTime=" + updateTime +
-                ", attributes=" + attributes +
-                ", introImages=" + introImages +
-                ", photos=" + photos +
-                '}';
     }
 }

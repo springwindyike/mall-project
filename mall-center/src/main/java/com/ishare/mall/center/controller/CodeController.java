@@ -65,8 +65,8 @@ public class CodeController extends BaseController {
 
 		// 随机产生40条干扰线，使图象中的认证码不易被其它程序探测到。
 //		gd.setColor(Color.BLACK);
-		float lineWidth = 3.0f;
-		for (int i = 0; i < 40; i++) {
+		float lineWidth = 2.5f;
+		for (int i = 0; i < 30; i++) {
 			int x = random.nextInt(width);
 			int y = random.nextInt(height);
 			int xl = random.nextInt(12);
