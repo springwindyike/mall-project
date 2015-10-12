@@ -16,12 +16,13 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 public class ProductIntroImage extends BaseEntity {
     @Id @GeneratedValue
     private Integer id;
-    @Column(name = "product_intro_img_url", length = 512)
+    @Column(name = "product_intro_img_url", length = 1024)
     private String url;
-    private Product product;
-    /**所属产品**/
+
     @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name="product_id")
+    private Product product;
+    /**所属产品**/
     public Integer getId() {
         return id;
     }
