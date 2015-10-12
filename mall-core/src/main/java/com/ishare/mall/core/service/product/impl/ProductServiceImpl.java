@@ -2,6 +2,7 @@ package com.ishare.mall.core.service.product.impl;
 
 import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
+import com.ishare.mall.common.base.enumeration.ValueType;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.product.*;
 import com.ishare.mall.core.repository.information.*;
@@ -129,13 +130,16 @@ public class ProductServiceImpl implements ProductService {
 				productAttribute.setProduct(product);
 				productAttribute.setName(name);
 				productAttribute.setAttribute(attribute);
+				productAttribute.setType(ValueType.STRING);
 				productAttribute.setValue(fetchProductDTO.getAttributes().get(name));
 				productAttributes.add(productAttribute);
 			}
 		}
 
+
 		//图片描述逻辑处理
 		if (fetchProductDTO.getIntroImages() != null && fetchProductDTO.getIntroImages().size() > 0) {
+			log.debug("IntroImages.size() : " + fetchProductDTO.getIntroImages().size());
 			for (String url : fetchProductDTO.getIntroImages()) {
 				ProductIntroImage productIntroImage = new ProductIntroImage();
 				productIntroImage.setUrl(url);
@@ -146,6 +150,7 @@ public class ProductServiceImpl implements ProductService {
 
 		//商品图片处理
 		if (fetchProductDTO.getPhotos() != null && fetchProductDTO.getPhotos().size() > 0) {
+			log.debug("photoImages.size() : " + fetchProductDTO.getPhotos().size());
 			for (String url : fetchProductDTO.getPhotos()) {
 				ProductPhotoImage productPhotoImage = new ProductPhotoImage();
 				productPhotoImage.setUrl(url);
