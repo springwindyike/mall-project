@@ -101,7 +101,7 @@ e.printStackTrace();
     public String updateProductPost(@NotEmpty @PathVariable("id") Integer id,@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember MemberDTO member) {
     	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
     	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-    /*	productDetailDTO.setName(apf.getProductName());
+    /*productDetailDTO.setName(apf.getProductName());
     	productDetailDTO.setDescription(apf.getDescription());
     	productDetailDTO.setTypeCode(apf.getTypeCode());
     	productDetailDTO.setBasePrice(apf.getBasePrice());
