@@ -138,9 +138,9 @@ public class ProductResource {
 	 * @return
 	 */
 	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_ID, method = RequestMethod.POST,
-			headers = "Accept=application/xml, application/json",
-			produces = {"application/json"},
-			consumes = {"application/json"})
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json",},
+            consumes = {"application/json",})
 	public Response findByID(@RequestBody ProductDetailDTO productDetailDTO){
 		Product product;
 		List<ProductStyle> list;

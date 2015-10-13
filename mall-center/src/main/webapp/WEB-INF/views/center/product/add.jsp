@@ -35,8 +35,7 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
 <div class="pd-20">
-	 <c:url var="saveUrl" value="/product/add.dhtml" />
-    <form:form modelAttribute="productAttribute" action="${saveUrl}"  method="post" class="form form-horizontal" id="form-article-add">
+    <form:form modelAttribute="productAttribute" action="${pageContext.request.contextPath}/product/add.dhtml"  method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<label class="form-label col-2"><span class="c-red">*</span>产品标题：</label>
 			<div class="formControls col-10">
@@ -53,7 +52,7 @@
 				</span> </div>
 				<label class="form-label col-2"><span class="c-red">*</span>品牌栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				 <input id ='selectType'class="select" value ='请点击选择品牌分类'  readonly="readonly" />
+				 <input id ='selectType'class="select" value ='请点击选择品牌分类'  readonly="readonly"/>
 				</span> </div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">

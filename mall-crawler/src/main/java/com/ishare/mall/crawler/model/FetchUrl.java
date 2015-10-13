@@ -87,4 +87,6 @@ public class FetchUrl {
     public void setType(FetchUrlType type) {
         this.type = type;
     }
+
+
 }
