@@ -29,24 +29,26 @@
 
 <body>
 <div class="pd-20">
-  <form action="${pageContext.request.contextPath}/register.dhtml" method="post" class="form form-horizontal" id="form-member-add">
     <div class="row cl">
-      <label class="form-label col-3">以下是物流信息：</label>
-				
-    </div>
+		<label class="form-label col-3">以下是物流信息：</label>
+    </div><br />
+	<div class="row cl">
+		<div>您的物流单号：${order}</div>
+		<div id="deliverMsg">
 
-  </form>
+		</div>
+	</div>
 </div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/icheck/jquery.icheck.min.js"></script> 
 <script type="text/javascript">
-function getLogistics(){
+$(document).ready(function(){
 	$.ajax({
 		//提交数据的类型 POST GET
-		type:"POST",
+		type:"GET",
 		//提交的网址
-		url:"${pageContext.request.contextPath}/find/${order}/${id}.dhtml",
+		url:"${pageContext.request.contextPath}/express/find/${order}/${id}.dhtml",
 		 //提交的数据
 		data:{},
 		 //返回数据的格式
@@ -55,12 +57,14 @@ function getLogistics(){
 		//beforeSend:function(){$("#msg").html("logining");},
 		 //成功返回之后调用的函数            
 		success:function(data){
-			//$("#msg").html(decodeURI(data));           
+			$("#deliverMsg").html('<div>物流公司：' + data.name + '</div>');
+			$.each(data.data,function(name,value) {
+				$("#deliverMsg").append("<div>" + value.time + "--------" + value.content + "</div>");
+			});
 		 }   ,
 		 //调用执行后调用的函数
 		complete: function(XMLHttpRequest, textStatus){
-			alert(XMLHttpRequest.responseText);
-			alert(textStatus);
+			//alert(XMLHttpRequest.responseText);
 			//HideLoading();
 		 },
 		 //调用出错执行的函数
@@ -68,7 +72,7 @@ function getLogistics(){
 			//请求出错处理
 		 }        
 	});
-}
+});
 </script>
 </body>
 </html>
