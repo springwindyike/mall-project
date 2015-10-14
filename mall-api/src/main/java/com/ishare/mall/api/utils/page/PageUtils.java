@@ -67,10 +67,10 @@ public class PageUtils {
     /**
      * 获取传输DTO
      * @param request
-     * @param propertie
+     * @param properties
      * @return
      */
-    public static PageRequestDTO getPageRequestDTO(HttpServletRequest request, String propertie) {
+    public static PageRequestDTO getPageRequestDTO(HttpServletRequest request, String properties) {
         PageRequestDTO pageRequestDTO = new PageRequestDTO();
         int offset = 1;
         int limit = 15;
@@ -88,7 +88,25 @@ public class PageUtils {
         }
         pageRequestDTO.setPageSize(limit);
         pageRequestDTO.setCurrentPage(offset - 1);
-        pageRequestDTO.setOrder(propertie);
+        pageRequestDTO.setOrder(properties);
+        return pageRequestDTO;
+    }
+
+    public static PageRequestDTO getPageRequestDTO(int offset, int limit, String properties) {
+        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+
+        if (offset <= 0) {
+            offset = 1;
+        }
+
+
+        if (limit <= 0 || limit > 100) {
+            limit = 15;
+        }
+
+        pageRequestDTO.setPageSize(limit);
+        pageRequestDTO.setCurrentPage(offset - 1);
+        pageRequestDTO.setOrder(properties);
         return pageRequestDTO;
     }
 
