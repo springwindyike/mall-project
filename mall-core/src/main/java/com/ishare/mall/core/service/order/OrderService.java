@@ -2,6 +2,7 @@ package com.ishare.mall.core.service.order;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderRequestDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.order.Order;
@@ -87,7 +88,7 @@ public interface OrderService {
 	
 	/**
 	 * 更新订单
-	 * @param logistics
+	 * @param
 	 * @return
 	 * @throws OrderServiceException
 	 */
@@ -101,4 +102,11 @@ public interface OrderService {
 	 * @throws OrderServiceException
 	 */
 	Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException;
+
+	/**
+	 * 搜索个人订单
+	 * @param requestDTO
+	 * @return
+	 */
+	Page<Order> listByAccount(OrderRequestDTO requestDTO);
 }

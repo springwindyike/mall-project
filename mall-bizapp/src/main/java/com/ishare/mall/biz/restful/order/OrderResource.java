@@ -4,6 +4,7 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderRequestDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
@@ -15,6 +16,7 @@ import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import com.ishare.mall.core.utils.page.PageUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -283,6 +285,16 @@ public class OrderResource {
 							return response;
 					}
 			}
-    
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json", "application/xml"})
+    public Response list(@RequestBody OrderRequestDTO requestDTO) {
+		Page<Order> orders = orderService.listByAccount(requestDTO);
+		PageDTO pageDTO = PageUtils.mapper(orders, OrderDetailDTO.class);
+		Response<PageDTO<OrderDetailDTO>> response = new Response<>();
+		response.setData(pageDTO);
+		return response;
+	}
     
 }

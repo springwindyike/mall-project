@@ -1,6 +1,7 @@
 package com.ishare.mall.api.utils.page;
 
 import com.google.common.collect.Lists;
+import com.ishare.mall.common.base.dto.page.PageRequestDTO;
 import com.ishare.mall.common.base.object.BaseObject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -61,6 +62,34 @@ public class PageUtils {
             }
         }
         return new PageRequest(offset - 1, limit, direction, properties);
+    }
+
+    /**
+     * 获取传输DTO
+     * @param request
+     * @param propertie
+     * @return
+     */
+    public static PageRequestDTO getPageRequestDTO(HttpServletRequest request, String propertie) {
+        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+        int offset = 1;
+        int limit = 15;
+        if (StringUtils.isNotEmpty(request.getParameter(OFFSET))) {
+            offset = Integer.valueOf(request.getParameter(OFFSET));
+            if (offset <= 0) {
+                offset = 1;
+            }
+        }
+        if (StringUtils.isNotEmpty(request.getParameter(LIMIT))) {
+            limit = Integer.valueOf(request.getParameter(LIMIT));
+            if (limit <= 0) {
+                limit = 15;
+            }
+        }
+        pageRequestDTO.setPageSize(limit);
+        pageRequestDTO.setCurrentPage(offset - 1);
+        pageRequestDTO.setOrder(propertie);
+        return pageRequestDTO;
     }
 
 }
