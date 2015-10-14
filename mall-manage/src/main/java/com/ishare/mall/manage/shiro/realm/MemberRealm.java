@@ -1,14 +1,14 @@
 package com.ishare.mall.manage.shiro.realm;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
-import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
-import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
-import com.ishare.mall.common.base.dto.permission.PermissionDTO;
-import com.ishare.mall.common.base.dto.permission.RoleDTO;
-import com.ishare.mall.manage.service.member.MemberService;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -20,9 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
+import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
+import com.ishare.mall.common.base.dto.permission.PermissionDTO;
+import com.ishare.mall.common.base.dto.permission.RoleDTO;
+import com.ishare.mall.manage.service.member.MemberService;
+import com.ishare.mall.manage.shiro.exception.NoPermissionLoginException;
 
 /**
  * Created by YinLin on 2015/9/6.
@@ -73,6 +78,12 @@ public class MemberRealm extends AuthorizingRealm {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();
         }
+        String memberType = memberDTO.getMemberType();
+        log.debug("用户类型 : " + memberType);
+        if(!memberType.equals("SELF")){
+            log.debug("warnning : 没有权限登录！");
+            throw new NoPermissionLoginException("没有权限登录");
+        			}
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 memberDTO.getAccount(),
                 memberDTO.getPassword(),

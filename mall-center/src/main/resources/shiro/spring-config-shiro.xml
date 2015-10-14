@@ -120,6 +120,9 @@
 			<value>
 				/login.dhtml = authc
 				/register.dhtml = anon
+				/accountValid.dhtml = anon
+				/channelValid.dhtml = anon
+				/member/password/find.dhtml = anon
 				/authenticated.dhtml = authc
 				/resources/** = anon
 				/verifycode.dhtml = anon

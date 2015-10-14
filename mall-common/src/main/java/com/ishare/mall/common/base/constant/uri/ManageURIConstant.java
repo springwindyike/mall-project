@@ -35,4 +35,10 @@ public interface ManageURIConstant {
 	interface Index{
 		String LOGIN = "login";
 	}
+	
+	interface Main {
+		// 首页
+		String INDEX = "main";
+	}
+	
 }
