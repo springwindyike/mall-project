@@ -79,7 +79,7 @@ public class MemberRealm extends AuthorizingRealm {
         if (memberDTO == null) {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();
-        			}
+        }
         MemberType memberType = memberDTO.getMemberType();
         log.debug("用户类型 : " + memberType.getName());
         if(!MemberType.ADMIN.equals(memberType)){

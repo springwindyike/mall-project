@@ -151,6 +151,9 @@ public class MemberResource {
                     memberDetailDTO.setSex(member.getSex().getName());
                     memberDetailDTO.setMemberType(member.getMemberType().getName());
                     memberDetailDTO.setCreateTimeStr(dateFormat(member.getCreateTime(), null));
+                    if(memberDetailDTO.getName() ==null){
+                        memberDetailDTO.setName("");
+                    }
                     listMemberList.add(memberDetailDTO);
                 }
                 pageDTO.setContent(listMemberList);
@@ -239,8 +242,8 @@ public class MemberResource {
 
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
+            produces = {"application/json"},
+            consumes = {"application/json"})
     public Response findBySearchCondition(@RequestBody MemberDTO memberDTO){
         List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         Response response = new Response();
@@ -259,7 +262,7 @@ public class MemberResource {
                 for (Member member:listMember){
                     MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
                     BeanUtils.copyProperties(member, memberDetailDTO);
-                    memberDetailDTO.setChannelId(member.getChannel().getId());
+                    memberDetailDTO.setChannelId(memberDTO.getChannelId());
                     memberDetailDTO.setSex(member.getSex().getName());
                     memberDetailDTO.setMemberType(member.getMemberType().getName());
                     memberDetailDTO.setCreateTimeStr(dateFormat(member.getCreateTime(),null));
@@ -386,9 +389,8 @@ public class MemberResource {
         Response response = new Response();
         try {
             Member member = memberService.findByAccount(memberDTO.getAccount());
-            if (member != null){
+            if (member != null) {
                 member.setPassword(memberDTO.getPassword());
-                member.setUpdateTime(new Date());
                 Channel channel = channelService.findOne(memberDTO.getChannelId());
                 member.setChannel(channel);
                 memberService.saveMember(member);
@@ -411,7 +413,6 @@ public class MemberResource {
             Member member = memberService.findByAccount(memberDTO.getAccount());
             if (member != null){
                 member.setUse(false);
-                member.setUpdateTime(new Date());
                 Channel channel = channelService.findOne(memberDTO.getChannelId());
                 member.setChannel(channel);
                 memberService.saveMember(member);
@@ -440,7 +441,6 @@ public class MemberResource {
                 member.setMobile(memberDTO.getMobile());
                 member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
                 member.setName(memberDTO.getName());
-                member.setUpdateTime(new Date());
                 Channel channel = channelService.findOne(member.getChannel().getId());
                 member.setChannel(channel);
                 memberService.update(member);
