@@ -101,4 +101,10 @@ public interface OrderService {
 	 * @throws OrderServiceException
 	 */
 	Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException;
+	/**
+	 * 查询所有的Order
+	 * @param pageRequest
+	 * @return
+	 */
+	Page<Order> findAll(PageRequest pageRequest) throws OrderServiceException;
 }

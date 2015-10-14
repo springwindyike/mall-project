@@ -30,6 +30,7 @@ import com.ishare.mall.core.service.pay.OrderPayLogService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -364,6 +365,17 @@ public class OrderServiceImpl implements OrderService {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("搜索订单失败");
+		}
+	}
+	@Override
+	public Page<Order> findAll(PageRequest pageRequest)
+			throws OrderServiceException {
+		try {
+			Page<Order> page = orderRepository.findAll(pageRequest);
+			return page;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("查询订单失败");
 		}
 	}
 }

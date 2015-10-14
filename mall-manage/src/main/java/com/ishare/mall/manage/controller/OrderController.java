@@ -115,7 +115,9 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_LOGISTICS, method = RequestMethod.GET)
-	public String logistics() {
+	public String logistics(@NotEmpty @PathVariable("id") String id, @NotEmpty @PathVariable("order") String order, HttpServletRequest request) {
+		request.setAttribute("id", id);
+		request.setAttribute("order", order);
 		return ManageViewConstant.Order.LOGISTICS_ORDER;
 	}
 	/**
@@ -160,15 +162,14 @@ public class OrderController extends BaseController {
 		return orderResultDTO;
 	}
 	/**
-	 * 获取当前渠道下所有的order
+	 * 获取平台所有的order
 	 *
 	 * @return Page<OrderDetailDTO>
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
 	@ResponseBody
-	public PageDTO<?> findByChannelId(HttpServletRequest request, Model model) {
+	public PageDTO<?> findAll(HttpServletRequest request, Model model) {
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-		orderDetailDTO.setChannelId(8);
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displayStart/displayLength+1;
@@ -177,7 +178,7 @@ public class OrderController extends BaseController {
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
 		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID), orderDetailDTO, Response.class);
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL), orderDetailDTO, Response.class);
 		} catch (Exception e) {
 			log.debug("error");
 			e.printStackTrace();
