@@ -44,7 +44,7 @@ public class BrandResource  extends BaseResource {
     @Autowired
     private RestTemplate restTemplate;
     /**
-     * 通过类型ID获取单个类型信息  格式 /brands/{id} GET
+     * 通过类型ID获取单个类型信息  格式/{id} GET
      * @param id 商品ID
      * @return ProductDetailDTO 返回的数据对象
      */
