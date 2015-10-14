@@ -151,6 +151,9 @@ public class MemberResource {
                     memberDetailDTO.setSex(member.getSex().getName());
                     memberDetailDTO.setMemberType(member.getMemberType().getName());
                     memberDetailDTO.setCreateTimeStr(dateFormat(member.getCreateTime(), null));
+                    if(memberDetailDTO.getName() ==null){
+                        memberDetailDTO.setName("");
+                    }
                     listMemberList.add(memberDetailDTO);
                 }
                 pageDTO.setContent(listMemberList);
@@ -239,14 +242,14 @@ public class MemberResource {
 
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
+            produces = {"application/json"},
+            consumes = {"application/json"})
     public Response findBySearchCondition(@RequestBody MemberDTO memberDTO){
         List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         Response response = new Response();
-        String account = memberDTO.getAccount();
-        String name = memberDTO.getName();
-        String mobile = memberDTO.getMobile();
+        String account = "%"+memberDTO.getAccount()+"%";
+        String name = "%"+memberDTO.getName()+"%";
+        String mobile = "%"+memberDTO.getMobile()+"%";
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
         Integer channelId = memberDTO.getChannelId();
@@ -259,7 +262,7 @@ public class MemberResource {
                 for (Member member:listMember){
                     MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
                     BeanUtils.copyProperties(member, memberDetailDTO);
-                    memberDetailDTO.setChannelId(member.getChannel().getId());
+                    memberDetailDTO.setChannelId(memberDTO.getChannelId());
                     memberDetailDTO.setSex(member.getSex().getName());
                     memberDetailDTO.setMemberType(member.getMemberType().getName());
                     memberDetailDTO.setCreateTimeStr(dateFormat(member.getCreateTime(),null));
