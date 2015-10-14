@@ -30,6 +30,7 @@ public class MemberDTO extends GenericDTO {
     private String sex;
     private String mobile;
     private String name;
+    private String memberType;
     private PageDTO pageDTO;
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -134,4 +135,13 @@ public class MemberDTO extends GenericDTO {
     public String getCredentialsSalt() {
         return account + salt;
     }
+
+	public String getMemberType() {
+		return memberType;
+	}
+
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
+	}
+    
 }

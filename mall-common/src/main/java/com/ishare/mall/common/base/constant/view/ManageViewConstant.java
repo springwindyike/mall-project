@@ -22,4 +22,8 @@ public interface ManageViewConstant {
 	interface Index {
 		String LOGIN = "index/login";
     }
+	
+	interface Main {
+		String MAIN = "main/index";
+	}
 }

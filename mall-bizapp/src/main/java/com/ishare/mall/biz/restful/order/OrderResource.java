@@ -4,6 +4,7 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderRequestDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
@@ -15,6 +16,7 @@ import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import com.ishare.mall.core.utils.page.PageUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,6 +113,66 @@ public class OrderResource {
 	}
 
     /**
+     * 获取所有的order
+     *
+     * @return Page<MemberDetailDTO>
+     */
+    @RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public Response findAll(@RequestBody OrderDetailDTO orderDetailDTO) {
+				List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
+				int offset = orderDetailDTO.getOffset();
+				int limit = orderDetailDTO.getLimit();
+				Response response = new Response();
+				PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
+				try {
+					Page<Order> result = orderService.findAll(pageRequest);
+					PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
+					if(result != null && result.getContent() != null && result.getContent().size()>0){
+						List<Order> list = result.getContent();
+						for (Order order:list){
+							OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+							BeanUtils.copyProperties(order, innerOrderDetailDTO);
+							innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+							innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
+							innerOrderDetailDTO.setStateValue(order.getState().getName());
+							innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+												
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							String newTime =  sdf.format(order.getCreateTime());
+							innerOrderDetailDTO.setCreateTime(newTime);
+												
+							List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+												
+							Iterator<OrderItem> it = orderItems.iterator();
+							Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+							while (it.hasNext()) {
+								OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+								OrderItem orderItem = it.next();
+								BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+								items.add(orderItemDetailDTO);
+							}
+							innerOrderDetailDTO.setItems(items);
+							listOrder.add(innerOrderDetailDTO);
+						}
+						pageDTO.setContent(listOrder);
+						pageDTO.setTotalPages(result.getTotalPages());
+						pageDTO.setITotalDisplayRecords(result.getTotalElements());
+						pageDTO.setITotalRecords(result.getTotalElements());
+						response.setData(pageDTO);
+					}
+					return response;
+				} catch (OrderServiceException e) {
+					log.error(e.getMessage(), e);
+					response.setMessage("系统错误");
+					response.setSuccess(false);
+					return response;
+				}
+		}
+    
+    /**
      * 创建订单
      * @param exchangeDTO
      * @return Response
@@ -128,6 +190,13 @@ public class OrderResource {
         response.setData(orderDetailDTO);
         return response;
     }
+    
+    /**
+     * 查找一个订单
+     * @param id
+     * @return
+     * @throws OrderServiceException
+     */
     @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ID,
             method      = RequestMethod.GET,
             headers     = "Accept=application/xml, application/json",
@@ -146,7 +215,12 @@ public class OrderResource {
         return response;
     }
     
-    
+    /**
+     * 发货
+     * @param orderDetailDTO
+     * @return
+     * @throws OrderServiceException
+     */
     @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_DELIVER,
             method      = RequestMethod.POST,
             headers     = "Accept=application/xml, application/json",
@@ -181,6 +255,12 @@ public class OrderResource {
 			}
 	}
     
+    /**
+     * 取消订单
+     * @param orderDetailDTO
+     * @return
+     * @throws OrderServiceException
+     */
     @RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_CANCEL,
             method      = RequestMethod.POST,
             headers     = "Accept=application/xml, application/json",
@@ -212,6 +292,8 @@ public class OrderResource {
 				return response;
 			}
 	}
+    
+    
 	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_PAY_BACK, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json"},
@@ -227,6 +309,11 @@ public class OrderResource {
 		return response;
 	}
     
+	/**
+	 * 根据条件查询
+	 * @param orderDetailDTO
+	 * @return
+	 */
     @RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
@@ -283,6 +370,16 @@ public class OrderResource {
 							return response;
 					}
 			}
-    
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json", "application/xml"})
+    public Response list(@RequestBody OrderRequestDTO requestDTO) {
+		Page<Order> orders = orderService.listByAccount(requestDTO);
+		PageDTO pageDTO = PageUtils.mapper(orders, OrderDetailDTO.class);
+		Response<PageDTO<OrderDetailDTO>> response = new Response<>();
+		response.setData(pageDTO);
+		return response;
+	}
     
 }

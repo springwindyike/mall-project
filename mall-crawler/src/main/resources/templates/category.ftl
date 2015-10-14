@@ -65,6 +65,7 @@
             , rowNum: 30
             , rowList: [10, 20, 30, 40, 50]
             , rownumbers: true
+            , multiselect: true
             , viewrecords: true
         }).navGrid('#jqGridPager', {
             cloneToTop: true,
@@ -80,6 +81,22 @@
                     waitingDialog.hide();
                     $('#jqGrid').trigger('reloadGrid');
                 }, 'json');
+            }
+            , position: "last"
+        });
+
+        $('#jqGrid').navSeparatorAdd('#jqGridPager').navButtonAdd('#jqGridPager', {
+            caption: "抓取当前页"
+            , onClickButton: function () {
+                var rowids = $("#jqGrid").jqGrid("getGridParam", "selarrrow");
+                console.log(rowids);
+                /**/
+                waitingDialog.show('抓取中...');
+                $.post(ctx + '/fetch/urls', {ids: rowids}, function (response) {
+                    waitingDialog.hide();
+                    $('#jqGrid').trigger('reloadGrid');
+                }, 'json');
+
             }
             , position: "last"
         });

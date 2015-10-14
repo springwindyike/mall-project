@@ -1,6 +1,10 @@
 package com.ishare.mall.crawler.controller;
 
 import com.google.common.collect.Maps;
+import com.ishare.mall.crawler.model.FetchSite;
+import com.ishare.mall.crawler.model.FetchUrlType;
+import com.ishare.mall.crawler.repository.FetchUrlRepository;
+import com.ishare.mall.crawler.service.FetchService;
 import com.ishare.mall.crawler.site.jd.model.JDCategory;
 import com.ishare.mall.crawler.site.jd.model.JDProduct;
 import com.ishare.mall.crawler.site.jd.processor.JDCategoryPageProcessor;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,6 +30,12 @@ public class IndexController {
 
     @Autowired
     JDPageProcessor pageProcessor;
+
+    @Autowired
+    FetchService fetchService;
+
+    @Autowired
+    FetchUrlRepository fetchUrlRepository;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -49,25 +60,41 @@ public class IndexController {
     @RequestMapping(value = "init")
     public String init() {
         log.debug("初始化");
-
-        return "index";
-    }
-
-    @RequestMapping(value = "fetchAll", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Object fetchAll() {
-        Map<String, Object> result = Maps.newHashMap();
-        boolean bln = false;
         try {
 
-
-            bln = true;
+            fetchService.fetchCategoryUrl("http://www.jd.com/allSort.aspx", true);
+            fetchService.fetchCategoryUrl("http://category.dangdang.com", true);
+            fetchService.fetchCategoryUrl("http://www.amazon.cn/gp/site-directory", true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        result.put("success", bln);
-        return result;
+
+        return "dashboard";
+    }
+
+    @RequestMapping(value = "all")
+    public String fetchAll() {
+        log.debug("JD 抓全部");
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<String> urls = fetchUrlRepository.findByFetchSiteAndType(FetchSite.JD.name(), FetchUrlType.PAGE.name());
+                    log.debug("fetch url size = {}", urls.size());
+
+                    String[] links = new String[urls.size()];
+                    for (int index = 0; index < links.length; index++) {
+                        links[index] = urls.get(index);
+                    }
+
+                    fetchService.fetchPageUrl(FetchSite.JD, true, links);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        return "dashboard";
     }
 
     @RequestMapping(value = "fetchList", method = RequestMethod.POST)

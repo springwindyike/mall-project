@@ -1,10 +1,7 @@
 package com.ishare.mall.manage.controller;
 
-import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
-import com.ishare.mall.common.base.constant.view.ManageViewConstant;
-import com.ishare.mall.manage.controller.base.BaseController;
-import com.ishare.mall.manage.exception.IncorrectCaptchaException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -16,7 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.constant.view.ManageViewConstant;
+import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.manage.annoation.CurrentMember;
+import com.ishare.mall.manage.controller.base.BaseController;
+import com.ishare.mall.manage.exception.IncorrectCaptchaException;
 
 /**
  * Created by YinLin on 2015/9/22.
@@ -38,6 +42,10 @@ public class IndexController extends BaseController {
 	   return "success";
     }
     
+	/**
+	 * 访问登录页面
+	 * @return
+	 */
 	@RequestMapping(value = ManageURIConstant.Index.LOGIN, method = RequestMethod.GET)
 	public String login() {
 		Subject subject = SecurityUtils.getSubject();
@@ -48,6 +56,12 @@ public class IndexController extends BaseController {
 		return ManageViewConstant.Index.LOGIN;
 	}
 	
+	/**
+	 * 登录流程
+	 * @param request
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = ManageURIConstant.Index.LOGIN, method = RequestMethod.POST)
 	public String login(HttpServletRequest request, Model model) {
 		Object exceptionClass = request.getAttribute("shiroLoginFailure");
@@ -63,7 +77,16 @@ public class IndexController extends BaseController {
 	    }
 		log.debug("error" + error);
 		model.addAttribute("error", error);
-		return CenterViewConstant.Index.LOGIN;
+		return ManageViewConstant.Index.LOGIN;
 	}
+	
+    /**
+     * 访问主页
+     * @return
+     */
+    @RequestMapping(value = ManageURIConstant.Main.INDEX, method = RequestMethod.GET)
+    public String main(@CurrentMember CurrentMemberDTO memberDTO) {
+        return ManageViewConstant.Main.MAIN;
+    }
 	
 }

@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="${springMacroRequestContext.contextPath}">Dashboard</a></li>
                 <li><a href="${springMacroRequestContext.contextPath}/init">初始化</a></li>
-                <li><a href="${springMacroRequestContext.contextPath}/fetchAll">全部抓</a></li>
+                <li><a href="${springMacroRequestContext.contextPath}/all">全部抓</a></li>
             </ul>
             <!--
             <form class="navbar-form navbar-right">

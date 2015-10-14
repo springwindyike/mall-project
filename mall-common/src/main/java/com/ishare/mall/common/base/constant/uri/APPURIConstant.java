@@ -73,6 +73,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING   = "/order";
         //根据渠道ID获取订单
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        //获取所有订单
+        String REQUEST_MAPPING_FIND_ALL = "/findAll";
         //创建订单
         String REQUEST_MAPPING_CREATE = "/create";
         //支付成功回调
@@ -83,7 +85,10 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_DELIVER = "/deliver";
         //取消订单提交
         String REQUEST_MAPPING_CANCEL = "/cancel";
+
         String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
+
+        String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";
     }
     //支付
     interface AliPay {

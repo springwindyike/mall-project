@@ -30,6 +30,20 @@ public class AppTest
      */
     public void testApp() {
 
+        String s = "瑞峰电器专营店";
+        byte[] bytes = {-17, -65, -67, -17, -65, -67, -17, -65, -67, -17, -65, -67, -17, -65, -67, -17, -65, -67, -41, -88, -45, -86, -17, -65, -67, -17, -65, -67};
+        try {
+
+            System.out.println("1 " + s);
+            System.out.println("2 " + new String(bytes));
+            System.out.println("3 " + new String(bytes, "UTF-8"));
+            System.out.println("4 " + new String(bytes, "GBK"));
+            System.out.println("5 " + new String(bytes, "ISO-8859-1"));
+
+            System.out.println("1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         assertTrue(true);
     }
