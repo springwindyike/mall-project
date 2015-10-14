@@ -155,4 +155,10 @@ public class OAuthServiceImpl implements OAuthService {
             throw new ApiLogicException("token:获取失败", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public String getClientId(String token) {
+        OAuthObject authObject = getAuthObjectByAccessToken(token);
+        return authObject == null? null : authObject.getClientId();
+    }
 }

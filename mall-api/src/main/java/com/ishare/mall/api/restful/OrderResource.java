@@ -6,8 +6,10 @@ import com.ishare.mall.api.form.order.OrderForm;
 import com.ishare.mall.api.restful.base.BaseResource;
 import com.ishare.mall.api.service.oauth.OAuthService;
 import com.ishare.mall.api.service.order.OrderService;
+import com.ishare.mall.api.utils.page.PageUtils;
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 import com.ishare.mall.common.base.general.Response;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -79,15 +81,18 @@ public class OrderResource extends BaseResource {
         response.setData(orderDetailDTO);
         return new ResponseEntity(response, HttpStatus.OK);
     }
-//
-//    /**
-//     * 确认订单会跳转支付
-//     */
-//	@RequestMapping(value = "confirm", method = RequestMethod.POST)
-//	public void confirm() {
-//
-//    }
-//
+
+    @AccessToken
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json"})
+    public ResponseEntity list(HttpServletRequest request) {
+        String token = request.getParameter("access_token");
+        String account = oAuthService.getAccountByAccessToken(token);
+        String clientId = oAuthService.getClientId(token);
+        Response<PageDTO<OrderDetailDTO>> response = orderService.listByAccount(account, clientId, PageUtils.getPageRequestDTO(request, "id"));
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+
 //    /**
 //     * 通过当前页和每页数量获取订单列表
 //	 * @param offset 分页下标
