@@ -45,6 +45,7 @@ public interface APPURIConstant {
     	String REQUEST_MAPPING_CHILDREN_LEVEL = "/childLevel";
         String REQUEST_MAPPING_FIND_BY_ID = "/findByID";
         String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
+        String REQUEST_MAPPING_QUERY_BY_ID = "/findByID";
     }
     //产品
     interface Product{
@@ -63,6 +64,8 @@ public interface APPURIConstant {
     interface Brand {
         String REQUEST_MAPPING = "/brand";
         String REQUEST_MAPPING_GET_BY_ID = "/{id}";
+        String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
+        String REQUEST_MAPPING_GET_BRAND_DETAIL = "/getBrandDetail";
     }
     //订单
     interface Order {

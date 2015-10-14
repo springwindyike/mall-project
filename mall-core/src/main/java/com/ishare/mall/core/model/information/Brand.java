@@ -41,11 +41,6 @@ public class Brand extends BaseEntity {
     //详细街道
     @Column(name = "brand_address_detail",length = 50)
     private String detail;
-    /**
-     * 一对多所有的该品牌下所有的商品
-     */
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "brand", fetch = FetchType.LAZY)
-    private Set<Product> products = Sets.newConcurrentHashSet();
 
     public String getName() {
         return name;
@@ -103,14 +98,6 @@ public class Brand extends BaseEntity {
         this.detail = detail;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -118,4 +105,6 @@ public class Brand extends BaseEntity {
     public void setId(Integer id) {
         this.id = id;
     }
+
+
 }
