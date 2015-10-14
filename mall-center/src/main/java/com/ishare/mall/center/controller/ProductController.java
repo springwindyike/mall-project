@@ -8,6 +8,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +30,7 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
@@ -41,7 +46,8 @@ import com.ishare.mall.common.base.general.Response;
 @Controller
 @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING)
 public class ProductController extends BaseController {
-
+	@Autowired
+	private RestTemplate restTemplate;
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
     public static Logger getLog() {
@@ -85,20 +91,29 @@ e.printStackTrace();
 		return CenterViewConstant.Product.LIST_PRODUCT;}
     
     @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_UPDATE, method = RequestMethod.GET)
-    public String updateProductGet(@NotEmpty @PathVariable("id") Integer id,Model model,@ModelAttribute("productAttribute") AddProductForm apf	) {
+    public String updateProductGet(@NotEmpty @PathVariable("id") Integer id,Model model,@ModelAttribute("productAttribute") AddProductForm apf	) throws Exception {
 
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
         productDetailDTO.setId(id);
-        ResponseEntity<Response> resultEntity = null;
-        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Response<ProductDetailDTO>> resultEntity = null;
+        HttpEntity<ProductDetailDTO> requestDTO = new HttpEntity<ProductDetailDTO>(productDetailDTO);
         try {
-			resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,Response.class);
-		} catch (RestClientException e) {
-			// TODO Auto-generated catch block
+        	resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<ProductDetailDTO>>(){});
+		
+        } catch (RestClientException e) {
 			e.printStackTrace();
 		}
-        ProductDetailDTO returnTO =  (ProductDetailDTO) resultEntity.getBody().getData();
+    	Response response = resultEntity.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if(response.isSuccess()){
+			ProductDetailDTO returnTO =  (ProductDetailDTO) resultEntity.getBody().getData();
         model.addAttribute("productDetailDTO", returnTO);
+        }else {
+			throw new Exception(response.getMessage());
+		}
         return CenterViewConstant.Product.UPDATE_PRODUCT;
     
     }
