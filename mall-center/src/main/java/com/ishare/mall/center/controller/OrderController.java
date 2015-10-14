@@ -2,6 +2,9 @@ package com.ishare.mall.center.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.center.annoation.CurrentMember;
+import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -58,9 +61,9 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
 	@ResponseBody
-	public PageDTO<?> findByChannelId(HttpServletRequest request, Model model) {
+	public PageDTO<?> findByChannelId(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model) {
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-		orderDetailDTO.setChannelId(8);
+		orderDetailDTO.setChannelId(currentMemberDTO.getChannelId());
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displayStart/displayLength+1;
@@ -89,10 +92,10 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
 	@ResponseBody
-	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
+	public PageDTO findBySearchCondition(@CurrentMember CurrentMemberDTO currentMemberDTO, @PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(searchCondition);
-		orderDetailDTO.setChannelId(8);
+		orderDetailDTO.setChannelId(currentMemberDTO.getChannelId());
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 

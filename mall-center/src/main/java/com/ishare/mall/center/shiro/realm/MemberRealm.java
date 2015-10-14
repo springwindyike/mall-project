@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ishare.mall.common.base.enumeration.MemberType;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -79,12 +80,12 @@ public class MemberRealm extends AuthorizingRealm {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();
         			}
-        String memberType = memberDTO.getMemberType();
-        log.debug("用户类型 : " + memberType);
-        if(!memberType.equals("ADMIN")){
+        MemberType memberType = memberDTO.getMemberType();
+        log.debug("用户类型 : " + memberType.getName());
+        if(!MemberType.ADMIN.equals(memberType)){
             log.debug("warnning : 没有权限登录！");
             throw new NoPermissionLoginException("没有权限登录");
-        			}
+        }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 memberDTO.getAccount(),
                 memberDTO.getPassword(),

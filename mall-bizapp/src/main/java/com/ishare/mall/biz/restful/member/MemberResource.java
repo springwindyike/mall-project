@@ -299,7 +299,7 @@ public class MemberResource {
         }
         BeanUtils.copyProperties(member,memberDTO);
         memberDTO.setChannelId(member.getChannel().getId());
-        memberDTO.setMemberType(member.getMemberType().getName());
+        memberDTO.setMemberType(member.getMemberType());
         response.setData(memberDTO);
         return response;
     }
