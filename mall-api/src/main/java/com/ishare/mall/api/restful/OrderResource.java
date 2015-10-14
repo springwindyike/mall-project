@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
+import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
+
 /**
  * Created by YinLin on 2015/7/30.
  * Description:订单接口相关
@@ -83,12 +86,12 @@ public class OrderResource extends BaseResource {
     }
 
     @AccessToken
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = {"application/json"})
-    public ResponseEntity list(HttpServletRequest request) {
+    @RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET, produces = {"application/json"})
+    public ResponseEntity list(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, HttpServletRequest request) {
         String token = request.getParameter("access_token");
         String account = oAuthService.getAccountByAccessToken(token);
         String clientId = oAuthService.getClientId(token);
-        Response<PageDTO<OrderDetailDTO>> response = orderService.listByAccount(account, clientId, PageUtils.getPageRequestDTO(request, "id"));
+        Response<PageDTO<OrderDetailDTO>> response = orderService.listByAccount(account, clientId, PageUtils.getPageRequestDTO(offset, limit, "id"));
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
