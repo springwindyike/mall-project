@@ -292,6 +292,8 @@ public class MemberResource {
             response.setSuccess(Response.Status.FAILURE);
             return response;
         }
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMemberType(member.getMemberType().getName());
         response.setData((MemberDTO) MapperUtils.map(member, MemberDTO.class));
         return response;
     }
