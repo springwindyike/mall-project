@@ -81,7 +81,7 @@ public class MemberRealm extends AuthorizingRealm {
         			}
         String memberType = memberDTO.getMemberType();
         log.debug("用户类型 : " + memberType);
-        if(!memberType.equals("ADMIN")){
+        if(!memberType.equals("管理员")){
             log.debug("warnning : 没有权限登录！");
             throw new NoPermissionLoginException("没有权限登录");
         			}

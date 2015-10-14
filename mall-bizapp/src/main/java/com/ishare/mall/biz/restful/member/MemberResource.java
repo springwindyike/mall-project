@@ -244,9 +244,9 @@ public class MemberResource {
     public Response findBySearchCondition(@RequestBody MemberDTO memberDTO){
         List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         Response response = new Response();
-        String account = "%"+memberDTO.getAccount()+"%";
-        String name = "%"+memberDTO.getName()+"%";
-        String mobile = "%"+memberDTO.getMobile()+"%";
+        String account = memberDTO.getAccount();
+        String name = memberDTO.getName();
+        String mobile = memberDTO.getMobile();
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
         Integer channelId = memberDTO.getChannelId();
@@ -386,9 +386,8 @@ public class MemberResource {
         Response response = new Response();
         try {
             Member member = memberService.findByAccount(memberDTO.getAccount());
-            if (member != null){
+            if (member != null) {
                 member.setPassword(memberDTO.getPassword());
-                member.setUpdateTime(new Date());
                 Channel channel = channelService.findOne(memberDTO.getChannelId());
                 member.setChannel(channel);
                 memberService.saveMember(member);
@@ -411,7 +410,6 @@ public class MemberResource {
             Member member = memberService.findByAccount(memberDTO.getAccount());
             if (member != null){
                 member.setUse(false);
-                member.setUpdateTime(new Date());
                 Channel channel = channelService.findOne(memberDTO.getChannelId());
                 member.setChannel(channel);
                 memberService.saveMember(member);
@@ -440,7 +438,6 @@ public class MemberResource {
                 member.setMobile(memberDTO.getMobile());
                 member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
                 member.setName(memberDTO.getName());
-                member.setUpdateTime(new Date());
                 Channel channel = channelService.findOne(member.getChannel().getId());
                 member.setChannel(channel);
                 memberService.update(member);
