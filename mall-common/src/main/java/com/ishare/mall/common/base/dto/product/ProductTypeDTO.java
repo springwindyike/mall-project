@@ -34,7 +34,11 @@ public class ProductTypeDTO implements BaseObject {
 	private PageDTO pageDTO;
 
 	private Map<String,Object> map;
-	
+
+	private Integer level;
+
+	private String note;
+
 	public Integer getId() {
 		return id;
 	}
@@ -105,5 +109,21 @@ public class ProductTypeDTO implements BaseObject {
 
 	public void setMap(Map<String, Object> map) {
 		this.map = map;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }

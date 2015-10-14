@@ -101,6 +101,8 @@ public class OrikaMapper extends ConfigurableMapper {
 		classMapBuilder.field("id", "id");
 		classMapBuilder.field("code", "code");
 		classMapBuilder.field("name", "typeName");
+		classMapBuilder.field("level", "level");
+		classMapBuilder.field("note", "note");
 		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	
