@@ -26,5 +26,7 @@ public interface OrderRepository extends JpaRepository<Order, String>, JpaSpecif
 
 	@Query("SELECT o FROM Order o WHERE o.orderId=?1 and o.channel.id = ?2")
 	Page<Order> findBycondition(String orderId, Integer channelId, Pageable pageable);
+	@Query("SELECT o FROM Order o WHERE o.createBy.account=?1 and o.channel.appId = ?2")
+	Page<Order> findByCreateByAndChannelId(String account, String appId, Pageable pageable);
 	
 }

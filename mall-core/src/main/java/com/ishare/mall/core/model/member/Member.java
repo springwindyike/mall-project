@@ -18,7 +18,6 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
 @Entity
 @Table(name = TABLE_MEMBER_NAME)
 public class Member extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

@@ -1,9 +1,6 @@
 package com.ishare.mall.core.service.order.impl;
 
-import com.ishare.mall.common.base.dto.order.ExchangeDTO;
-import com.ishare.mall.common.base.dto.order.OrderDeliverDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.order.*;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.enumeration.CostType;
 import com.ishare.mall.common.base.enumeration.OrderItemState;
@@ -36,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -367,6 +365,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new OrderServiceException("搜索订单失败");
 		}
 	}
+	
 	@Override
 	public Page<Order> findAll(PageRequest pageRequest)
 			throws OrderServiceException {
@@ -376,6 +375,18 @@ public class OrderServiceImpl implements OrderService {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("查询订单失败");
+		}
+	}
+
+	@Override
+	public Page<Order> listByAccount(OrderRequestDTO requestDTO) {
+		try {
+			return orderRepository.findByCreateByAndChannelId(requestDTO.getAccount(), requestDTO.getClientId(),
+															new PageRequest(requestDTO.getPageRequest().getCurrentPage(),
+															requestDTO.getPageRequest().getPageSize(), Sort.Direction.DESC, requestDTO.getPageRequest().getOrder()));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("用户订单收索失败");
 		}
 	}
 }
