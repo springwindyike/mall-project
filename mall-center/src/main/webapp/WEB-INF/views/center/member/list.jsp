@@ -83,6 +83,8 @@
 //                //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
 //                {"orderable": false, "aTargets": [0, 8, 9]}// 制定列不参与排序
 //            ]
+             "searching": false,
+             "ordering":  false,
             "bProcessing": true,
             "bServerSide": true,
             "bStateSave": false,
