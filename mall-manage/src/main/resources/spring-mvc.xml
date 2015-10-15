@@ -16,6 +16,11 @@
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	<mvc:annotation-driven>
 		<!-- 自定义转换 -->
+		<mvc:argument-resolvers>
+			<bean class="com.ishare.mall.manage.method.CurrentMemberMethodArgumentResolver"/>
+			<bean class="com.ishare.mall.manage.method.PageRequestMethodArgumentResolver"/>
+		</mvc:argument-resolvers>
+		<!-- 自定义转换 -->
 		<mvc:message-converters register-defaults="true">
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name = "supportedMediaTypes">

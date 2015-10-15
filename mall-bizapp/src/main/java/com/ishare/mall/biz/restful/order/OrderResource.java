@@ -10,10 +10,13 @@ import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.OrderDeliverInfo;
 import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
+import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
@@ -46,6 +49,8 @@ public class OrderResource {
     private OrderItemService orderItemService;
     @Autowired
     private ChannelService channelService;
+	@Autowired
+	private MemberService memberService;
 
     public static Logger getLog() {
         return log;
@@ -233,8 +238,11 @@ public class OrderResource {
 		order.setExpressId(orderDetailDTO.getExpressId());
 		order.setExpressOrder(orderDetailDTO.getExpressOrder());
 		order.setState(OrderState.DELIVERED);
-			order.setUpdateTime(new Date());
-			String logStr = "发货操作：" + orderDetailDTO.getLog();
+
+		Member updateMember = memberService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
+		order.setUpdateBy(updateMember);
+		order.setUpdateTime(new Date());
+		String logStr = "发货操作：" + orderDetailDTO.getLog();
 		try {
 			Order newOrder = orderService.updateOrder(order, logStr);
 				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
@@ -271,8 +279,11 @@ public class OrderResource {
 
 		Order order = orderService.findOne(orderDetailDTO.getOrderId());
 		order.setState(OrderState.CANCEL);
-			order.setUpdateTime(new Date());
-			String logStr = "取消操作：" + orderDetailDTO.getLog();
+
+		Member updateMember = memberService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
+		order.setUpdateBy(updateMember);
+		order.setUpdateTime(new Date());
+		String logStr = "取消操作：" + orderDetailDTO.getLog();
 		try {
 			Order newOrder = orderService.updateOrder(order, logStr);
 				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
@@ -292,7 +303,60 @@ public class OrderResource {
 				return response;
 			}
 	}
-    
+
+	/**
+	 * 编辑订单
+	 * @param orderDetailDTO
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	@RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_EDIT,
+			method      = RequestMethod.POST,
+			headers     = "Accept=application/xml, application/json",
+			produces    = {"application/json", "application/xml"},
+			consumes    = {"application/json", "application/xml"})
+	public Response edit(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
+		Response response = new Response();
+
+		Order order = orderService.findOne(orderDetailDTO.getOrderId());
+
+		OrderDeliverInfo orderDeliverInfo = order.getOrderDeliverInfo();
+		orderDeliverInfo.setRecipients(orderDetailDTO.getRecipients());
+
+		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+		OrderItem orderItem  = orderItems.get(0);//目前一个订单下只有一个订单项
+
+		Iterator<OrderItemDetailDTO> it = orderDetailDTO.getItems().iterator();
+		while (it.hasNext()) {
+			//目前一个订单下只有一个订单项
+			OrderItemDetailDTO newItem = it.next();
+			orderItem.setAmount(newItem.getAmount());
+			orderItem.setProductPrice(newItem.getProductPrice());
+		}
+
+		Member updateMember = memberService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
+		order.setUpdateBy(updateMember);
+		order.setUpdateTime(new Date());
+		String logStr = "编辑操作：" + orderDetailDTO.getLog();
+		try {
+			Order newOrder = orderService.editOrder(order, logStr, orderDeliverInfo, orderItem);
+			OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+			BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
+			innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
+			innerOrderDetailDTO.setCreateBy(newOrder.getCreateBy().getAccount());
+			innerOrderDetailDTO.setStateValue(newOrder.getState().getName());
+			innerOrderDetailDTO.setRecipients(newOrder.getOrderDeliverInfo().getRecipients());
+
+			response.setCode(Response.Status.OK);
+			response.setData(orderDetailDTO);
+			return response;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
+	}
     
 	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_PAY_BACK, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",

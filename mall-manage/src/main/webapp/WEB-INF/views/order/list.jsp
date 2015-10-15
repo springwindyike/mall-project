@@ -182,7 +182,7 @@ $(function () {
 						+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 						+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
-						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 						+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
 						+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'
@@ -190,7 +190,7 @@ $(function () {
 						+'<i class="Hui-iconfont">&#xe6e1;</i></a></td>';
 					}
 					return '<td class="td-manage">'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
+					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 					+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 					+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'

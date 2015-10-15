@@ -86,6 +86,8 @@ public interface APPURIConstant {
         //取消订单提交
         String REQUEST_MAPPING_CANCEL = "/cancel";
 
+        String REQUEST_MAPPING_EDIT = "/edit";
+
         String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
 
         String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";
