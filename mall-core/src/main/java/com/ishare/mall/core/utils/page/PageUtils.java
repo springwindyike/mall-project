@@ -86,6 +86,8 @@ public class PageUtils {
 		pageDTO.setPageSize(page.getSize());
 		pageDTO.setTotalElements(page.getTotalElements());
 		pageDTO.setTotalPages(page.getTotalPages());
+		pageDTO.setITotalDisplayRecords(page.getTotalElements());
+        pageDTO.setITotalRecords(page.getTotalElements());
 		return pageDTO;
 	}
 

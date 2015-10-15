@@ -39,19 +39,19 @@ public class Member extends BaseEntity {
     private Channel channel;
     /**成员名称**/
     @Column(name = "member_name",length = 27)
-    private String name;
+    private String name = "";
     /**创建时间**/
     @Column(name = "member_create_time",length = 20)
-    private Date createTime;
+    private Date createTime = new Date();
     /**更新时间**/
     @Column(name = "member_update_time",length = 20)
-    private Date updateTime;
+    private Date updateTime = new Date();
     /**创建者**/
     @Column(name = "member_create_by",length = 50)
-    private String createBy;
+    private String createBy = "";
     /**更新者**/
     @Column(name = "member_update_by",length = 50)
-    private String updateBy;
+    private String updateBy = "";
     /**是否可用**/
     @Column(name = "member_use",length = 5)
     private boolean use = true;
