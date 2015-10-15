@@ -31,6 +31,7 @@ import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
@@ -195,11 +196,11 @@ e.printStackTrace();
   
   @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
 	@ResponseBody
-	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
+	public PageDTO findByChannelId(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model) {
 		ProductDTO productDTO = new ProductDTO();
-		productDTO.setChannelId(8);
-		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
-		int displayStart = Integer.parseInt(request.getParameter("iDisplayStart"));
+		productDTO.setChannelId(currentMemberDTO.getChannelId());
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displayStart/displayLength+1;
 		productDTO.setLimit(displayLength);
 		productDTO.setOffset(currentPage);
@@ -215,20 +216,41 @@ e.printStackTrace();
 		model.addAttribute("pageDTO",pageDTO);
 		return pageDTO;
 	}
-  
-	@RequestMapping(value = "/findBySearchCondition/{searchCondition}")
-	public String findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model){/*
-		ProductDetailDTO memberDTO = new ProductDetailDTO();
-		memberDTO.setMobile(searchCondition);
-		memberDTO.setAccount(searchCondition);
-		memberDTO.setName(searchCondition);
-		ResponseEntity<MemberDTO> resultDTO = null;
+	
+	@RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
+	@ResponseBody
+	public PageDTO findBySearchCondition(@CurrentMember CurrentMemberDTO currentMemberDTO, @PathVariable("searchCondition") Integer searchCondition,Model model,HttpServletRequest request) throws Exception{
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setId(searchCondition);
+		productDTO.setChannelId(currentMemberDTO.getChannelId());
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
+
+		int currentPage = displayStart/displayLength+1;
+		productDTO.setLimit(displayLength);
+		productDTO.setOffset(currentPage);
+		ResponseEntity<Response> resultDTO = null;
+		HttpEntity<ProductDTO> requestDTO = new HttpEntity<ProductDTO>(productDTO);
 		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION),memberDTO,MemberDTO.class);
-		MemberDTO memberDTOResult = resultDTO.getBody();
-		model.addAttribute("pageDTO",memberDTOResult.getPageDTO());
-		return CenterViewConstant.Member.MEMBER_LIST;
-	*/
-	return null;	
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response>() {});
+
+		}catch (Exception e){
+			log.error("call bizp app " + APPURIConstant.Product.REQUEST_MAPPING + APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION + "error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response != null) {
+			if(response.isSuccess()){
+				PageDTO pageDTO = (PageDTO)response.getData();
+				model.addAttribute("pageDTO",pageDTO);
+				return pageDTO;
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else{
+			throw new Exception("get response error");
+		}
 	}
 }

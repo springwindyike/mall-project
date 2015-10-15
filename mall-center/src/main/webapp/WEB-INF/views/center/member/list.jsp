@@ -77,12 +77,11 @@
     var url = "${pageContext.request.contextPath}/member/findByChannelId.dhtml";
     $(function () {
          targetTable = $('.table-sort').DataTable({
-//            "aaSorting": [[1, "desc"]],//默认第几个排序
-//            "bStateSave": true,//状态保存
-//            "aoColumnDefs": [
-//                //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-//                {"orderable": false, "aTargets": [0, 8, 9]}// 制定列不参与排序
-//            ]
+             "oLanguage": {
+                 "sInfoEmpty": "没有数据",
+                 "sZeroRecords": "没有数据",
+                 "sEmptyTable":"没有数据"
+             },
              "searching": false,
              "ordering":  false,
             "bProcessing": true,
@@ -93,14 +92,14 @@
                 url:url,
                 "dataSrc": "content"
             },
-           //"sAjaxDataProp":"content",
+             //"sAjaxDataProp":"content",
             "aoColumns": [
                 { "mDataProp": null },
                 { "mDataProp": null },
                 { "mDataProp": "name" },
                 { "mDataProp": "sex" },
                 { "mDataProp": "mobile" },
-                { "mDataProp": "createTimeStr" },
+                { "mDataProp": "createTime" },
                 { "mDataProp": null },
                 { "mDataProp": null },
             ],

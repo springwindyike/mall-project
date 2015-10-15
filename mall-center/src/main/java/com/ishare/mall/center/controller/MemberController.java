@@ -63,11 +63,11 @@ public class MemberController extends BaseController {
 		memberDTO.setChannelId(currentMemberDTO.getChannelId());
 		memberDTO.setLimit(displayLength);
 		memberDTO.setOffset(currentPage);
-		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		ResponseEntity<Response<PageDTO<MemberDetailDTO>>> resultDTO = null;
 		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
 		try{
 			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>(){});
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<MemberDetailDTO>>>(){});
 		}catch (Exception e){
 			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID+"error");
 			throw new Exception(e.getMessage());
@@ -77,9 +77,10 @@ public class MemberController extends BaseController {
 			throw new Exception("get response error");
 		}
 		if(response.isSuccess()){
-			MemberDTO memberDTOResult = (MemberDTO)response.getData();
-			model.addAttribute("pageDTO", memberDTOResult.getPageDTO());
-			return memberDTOResult.getPageDTO();
+//			MemberDTO memberDTOResult = (MemberDTO)response.getData();
+//			model.addAttribute("pageDTO", memberDTOResult.getPageDTO());
+//			return memberDTOResult.getPageDTO();
+			return (PageDTO<MemberDetailDTO>)response.getData();
 		}else {
 			throw new Exception(response.getMessage());
 		}
@@ -173,7 +174,7 @@ public class MemberController extends BaseController {
 
 	@RequestMapping(value = "/findBySearchCondition/{searchCondition}")
 	@ResponseBody
-	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request,@CurrentMember CurrentMemberDTO currentMemberDTO) throws Exception{
+	public PageDTO<MemberDetailDTO> findBySearchCondition(@PathVariable("searchCondition") String searchCondition, Model model, HttpServletRequest request, @CurrentMember CurrentMemberDTO currentMemberDTO) throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setMobile(searchCondition);
 		memberDTO.setAccount(searchCondition);
@@ -187,21 +188,31 @@ public class MemberController extends BaseController {
 		int currentPage = displayStart/displayLength+1;
 		memberDTO.setLimit(displayLength);
 		memberDTO.setOffset(currentPage);
-		ResponseEntity<Response<MemberDTO>> resultDTO = null;
+		ResponseEntity<Response<PageDTO<MemberDetailDTO>>> resultDTO = null;
 		HttpEntity<MemberDTO> requestDTO = new HttpEntity<MemberDTO>(memberDTO);
-		try{
-			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<MemberDTO>>() {});
-		}catch (Exception e){
-			log.error("call bizp app " + APPURIConstant.Member.REQUEST_MAPPING + APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION + "error");
-			throw new Exception(e.getMessage());
+		if(searchCondition != null && !"".equals(searchCondition)){
+			try{
+				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING,APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION),
+						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<MemberDetailDTO>>>() {});
+			}catch (Exception e){
+				log.error("call bizp app " + APPURIConstant.Member.REQUEST_MAPPING + APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CONDITION + "error");
+				throw new Exception(e.getMessage());
+			}
+		}else {
+			try{
+				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Member.REQUEST_MAPPING, APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),
+						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<MemberDetailDTO>>>(){});
+			}catch (Exception e){
+				log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_FIND_BY_CHANNEL_ID+"error");
+				throw new Exception(e.getMessage());
+			}
 		}
 		Response response = resultDTO.getBody();
 		if(response != null) {
 			if(response.isSuccess()){
-				memberDTO = (MemberDTO)response.getData();
-				model.addAttribute("pageDTO",memberDTO.getPageDTO());
-				return memberDTO.getPageDTO();
+				//memberDTO = (MemberDTO)response.getData();
+				//model.addAttribute("pageDTO",response.getData());
+				return (PageDTO<MemberDetailDTO>)response.getData();
 			}else {
 				throw new Exception(response.getMessage());
 			}
