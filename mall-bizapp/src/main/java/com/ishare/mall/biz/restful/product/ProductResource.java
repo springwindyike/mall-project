@@ -328,7 +328,7 @@ public class ProductResource {
      *
      * @return Page<ProductDTO>
      */
-    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.POST,
+    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})

@@ -196,11 +196,11 @@ e.printStackTrace();
   
   @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
 	@ResponseBody
-	public PageDTO findByChannelId(HttpServletRequest request, Model model) {
+	public PageDTO findByChannelId(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model) {
 		ProductDTO productDTO = new ProductDTO();
-		productDTO.setChannelId(8);
-		int displayLength = Integer.parseInt(request.getParameter("iDisplayLength"))==0?1:Integer.parseInt(request.getParameter("iDisplayLength"));
-		int displayStart = Integer.parseInt(request.getParameter("iDisplayStart"));
+		productDTO.setChannelId(currentMemberDTO.getChannelId());
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displayStart/displayLength+1;
 		productDTO.setLimit(displayLength);
 		productDTO.setOffset(currentPage);
