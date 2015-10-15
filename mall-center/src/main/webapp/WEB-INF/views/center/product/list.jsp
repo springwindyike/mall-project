@@ -38,9 +38,9 @@
               <option>享买</option>
               <option>锋果</option>
             </select></td>
-    <td><input type="text" name="" id="" placeholder=" 请输入关键字、商品货号" style="width:250px" class="input-text"></td>
+    <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、商品货号" style="width:250px" class="input-text"></td>
 
-    <td><button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜产品</button></td>
+    <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchProduct();"><i class="Hui-iconfont">&#xe665;</i> 搜产品</button></td>
   </tr>
 </table>
 
@@ -150,6 +150,14 @@ $('.table-sort').dataTable({
            $(this).addClass('selected');
        }
 });
+   
+   /*根据条件查询*/
+   function searchProduct(){
+       var searchCondition = $("#searchCondition").val();
+       url = '${pageContext.request.contextPath}'+'/product/findBySearchCondition/'+searchCondition+'.dhtml';
+       targetTable.ajax.url(url).load();
+
+   }
 /*图片-添加*/
 function product_add(title,url){
 	var index = layer.open({

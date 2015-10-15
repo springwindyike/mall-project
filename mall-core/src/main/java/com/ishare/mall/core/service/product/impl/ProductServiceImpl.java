@@ -3,6 +3,7 @@ package com.ishare.mall.core.service.product.impl;
 import com.google.common.collect.Lists;
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
 import com.ishare.mall.common.base.enumeration.ValueType;
+import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.product.*;
 import com.ishare.mall.core.repository.information.*;
@@ -13,6 +14,7 @@ import com.ishare.mall.core.service.information.AttributeService;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -235,6 +237,17 @@ public class ProductServiceImpl implements ProductService {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new ProductServiceException("查询产品失败");
+		}
+	}
+
+	@Override
+	public Page<Product> findBycondition(Integer productId, Integer channelId,
+			PageRequest pageRequest) throws ProductServiceException {
+		try {
+			return productRepository.findBycondition(productId, channelId, pageRequest);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("搜索产品失败");
 		}
 	}
 }
