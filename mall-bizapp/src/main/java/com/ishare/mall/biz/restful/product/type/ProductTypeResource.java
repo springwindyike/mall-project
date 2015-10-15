@@ -245,7 +245,8 @@ public class ProductTypeResource {
 				}
 				pageDTO.setContent(list);
 				pageDTO.setTotalPages(result.getTotalPages());
-				pageDTO.setTotalElements(result.getTotalElements());
+				pageDTO.setITotalDisplayRecords(result.getTotalElements());
+				pageDTO.setITotalRecords(result.getTotalElements());
 				log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
 			}
 			response.setData(pageDTO);

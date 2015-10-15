@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
@@ -123,11 +124,11 @@ public class ProductResource extends BaseResource{
         ProductListDTO productListDTO = new ProductListDTO();
         productListDTO.setLimit(limit);
         productListDTO.setOffset(offset);
-        ResponseEntity<Response<ProductListDTO>> resultEntity = null;
+        ResponseEntity<Response<PageDTO<ProductListDTO>>> resultEntity = null;
         HttpEntity <ProductListDTO> requestDTO = new HttpEntity<ProductListDTO>(productListDTO);
         try{
             resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),
-                    HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response<ProductListDTO>>() {});
+                    HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductListDTO>>>() {});
         }catch (Exception e){
             log.error(e.getMessage());
             response = new Response();
@@ -160,11 +161,11 @@ public class ProductResource extends BaseResource{
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_brand.name", name);
         productListDTO.setMap(searchParams);
-        ResponseEntity<Response<ProductListDTO>> resultEntity = null;
+        ResponseEntity<Response<PageDTO<ProductListDTO>>> resultEntity = null;
         HttpEntity<ProductListDTO> resquestDTO = new HttpEntity<ProductListDTO>(productListDTO);
         try {
             resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),
-                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<ProductListDTO>>() {});
+                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductListDTO>>>() {});
         }catch (Exception e){
             log.error(e.getMessage());
             response = new Response();
@@ -198,11 +199,11 @@ public class ProductResource extends BaseResource{
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("EQ_brand.id", brandId);
         productListDTO.setMap(searchParams);
-        ResponseEntity<Response<ProductListDTO>> resultEntity = null;
+        ResponseEntity<Response<PageDTO<ProductListDTO>>> resultEntity = null;
         HttpEntity<ProductListDTO> resquestDTO = new HttpEntity<ProductListDTO>(productListDTO);
         try {
             resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),
-                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<ProductListDTO>>() {});
+                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductListDTO>>>() {});
         }catch (Exception e){
             log.error(e.getMessage());
             response = new Response();
@@ -236,11 +237,11 @@ public class ProductResource extends BaseResource{
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_type.name", name);
         productListDTO.setMap(searchParams);
-        ResponseEntity<Response<ProductListDTO>> resultEntity = null;
+        ResponseEntity<Response<PageDTO<ProductListDTO>>> resultEntity = null;
         HttpEntity<ProductListDTO> resquestDTO = new HttpEntity<ProductListDTO>(productListDTO);
         try {
             resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),
-                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<ProductListDTO>>() {});
+                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductListDTO>>>() {});
         }catch (Exception e){
             log.error(e.getMessage());
             response = new Response();
@@ -274,11 +275,11 @@ public class ProductResource extends BaseResource{
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("EQ_type.id", typeId);
         productListDTO.setMap(searchParams);
-        ResponseEntity<Response<ProductListDTO>> resultEntity = null;
+        ResponseEntity<Response<PageDTO<ProductListDTO>>> resultEntity = null;
         HttpEntity<ProductListDTO> resquestDTO = new HttpEntity<ProductListDTO>(productListDTO);
         try {
             resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),
-                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<ProductListDTO>>() {});
+                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductListDTO>>>() {});
         }catch (Exception e){
             log.error(e.getMessage());
             response = new Response();
@@ -312,11 +313,11 @@ public class ProductResource extends BaseResource{
        Map<String, Object> searchParams = Maps.newConcurrentMap();
        searchParams.put("LIKE_name", name);
        productListDTO.setMap(searchParams);
-       ResponseEntity<Response<ProductListDTO>> resultEntity = null;
+       ResponseEntity<Response<PageDTO<ProductListDTO>>> resultEntity = null;
        HttpEntity<ProductListDTO> resquestDTO = new HttpEntity<ProductListDTO>(productListDTO);
        try {
            resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),
-                   HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<ProductListDTO>>() {});
+                   HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductListDTO>>>() {});
        }catch (Exception e){
            log.error(e.getMessage());
            response = new Response();
@@ -361,11 +362,11 @@ public class ProductResource extends BaseResource{
         productListDTO.setOffset(offset);
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
         productListDTO.setMap(searchParams);
-        ResponseEntity<Response<ProductListDTO>> resultEntity = null;
+        ResponseEntity<Response<PageDTO<ProductListDTO>>> resultEntity = null;
         HttpEntity<ProductListDTO> resquestDTO = new HttpEntity<ProductListDTO>(productListDTO);
         try {
             resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_BY_PARAM),
-                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<ProductListDTO>>() {});
+                    HttpMethod.POST,resquestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductListDTO>>>() {});
         }catch (Exception e){
             log.error(e.getMessage());
             response = new Response();
