@@ -59,6 +59,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
         String REQUEST_MAPPING_CRAWLER_ADD = "/crawler/add";
         String REQUEST_MAPPING_CRAWLER_LIST_ADD = "/crawler/list/add";
+        String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
     }
 
     interface Brand {
@@ -85,6 +86,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_DELIVER = "/deliver";
         //取消订单提交
         String REQUEST_MAPPING_CANCEL = "/cancel";
+
+        String REQUEST_MAPPING_EDIT = "/edit";
 
         String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
 

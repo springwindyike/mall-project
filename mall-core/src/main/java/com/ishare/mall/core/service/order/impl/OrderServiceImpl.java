@@ -389,4 +389,22 @@ public class OrderServiceImpl implements OrderService {
 			throw new OrderServiceException("用户订单收索失败");
 		}
 	}
+
+	@Override
+	public Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem) throws OrderServiceException {
+		OrderUpdateLog orderUpdateLog = new OrderUpdateLog();
+		orderUpdateLog.setNote(note);
+		orderUpdateLog.setOrder(order);
+		orderUpdateLog.setUpdateBy(order.getUpdateBy());
+		orderUpdateLog.setUpdateTime(order.getUpdateTime());
+		try {
+			deliverRepository.save(orderDeliverInfo);
+			itemRepository.save(orderItem);
+			orderUpdateLogRepository.save(orderUpdateLog);
+			return orderRepository.save(order);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("订单编辑失败");
+		}
+	}
 }

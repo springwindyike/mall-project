@@ -2,6 +2,9 @@ package com.ishare.mall.manage.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.manage.annoation.CurrentMember;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,9 @@ import com.ishare.mall.common.base.dto.order.OrderResultDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.controller.base.BaseController;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/22. 
@@ -60,8 +66,55 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_EDIT, method = RequestMethod.GET)
-	public String edit() {
+	public String edit(@NotEmpty @PathVariable("id") String id, HttpServletRequest request) {
+		request.setAttribute("orderId", id);
 		return ManageViewConstant.Order.EDIT_ORDER;
+	}
+
+	/**
+	 * 取消
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_EDIT_SUBMIT, method = RequestMethod.POST)
+	@ResponseBody
+	public OrderResultDTO editSubmit(
+			@CurrentMember CurrentMemberDTO currentMemberDTO,
+			@NotEmpty @RequestParam("orderId") String orderId,
+			@NotEmpty @RequestParam("updatePrice") String updatePrice,
+			@NotEmpty @RequestParam("updateNum") String updateNum,
+			@NotEmpty @RequestParam("updateConsignee") String updateConsignee,
+			@NotEmpty @RequestParam("note") String note) {
+		OrderResultDTO orderResultDTO = new OrderResultDTO();
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(orderId);
+		orderDetailDTO.setRecipients(updateConsignee);
+
+		Set<OrderItemDetailDTO> item = new HashSet<OrderItemDetailDTO>();
+		OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+		orderItemDetailDTO.setProductPrice(Float.parseFloat(updatePrice));
+		orderItemDetailDTO.setAmount(Integer.parseInt(updateNum));
+		item.add(orderItemDetailDTO);
+
+		orderDetailDTO.setItems(item);
+		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
+		orderDetailDTO.setLog(note);
+		ResponseEntity<Response> resultDTO = null;
+		RestTemplate restTemplate = new RestTemplate();
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_EDIT), orderDetailDTO, Response.class);
+		} catch (Exception e) {
+			log.debug("error");
+			e.printStackTrace();
+			orderResultDTO.setMessage("编辑失败！");
+			orderResultDTO.setSuccess(false);
+			return orderResultDTO;
+		}
+		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		orderResultDTO.setMessage("编辑成功！");
+		orderResultDTO.setSuccess(true);
+		orderResultDTO.setOrderDetailDTO(orderDetailDTO);
+		return orderResultDTO;
 	}
 	
 	/**
@@ -82,6 +135,7 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER_SUBMIT, method = RequestMethod.POST)
 	@ResponseBody
 	public OrderResultDTO deliverSubmit(
+			@CurrentMember CurrentMemberDTO currentMemberDTO,
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("expressId") String expressId, 
 			@NotEmpty @RequestParam("expressOrder") String expressOrder, 
@@ -91,6 +145,7 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setOrderId(orderId);
 		orderDetailDTO.setExpressId(expressId);
 		orderDetailDTO.setExpressOrder(expressOrder);
+		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();
@@ -138,11 +193,13 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL_SUBMIT, method = RequestMethod.POST)
 	@ResponseBody
 	public OrderResultDTO cancelSubmit(
+			@CurrentMember CurrentMemberDTO currentMemberDTO,
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("note") String note) {
 		OrderResultDTO orderResultDTO = new OrderResultDTO();
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(orderId);
+		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		RestTemplate restTemplate = new RestTemplate();

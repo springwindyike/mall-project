@@ -7,6 +7,8 @@ import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.order.Order;
 
+import com.ishare.mall.core.model.order.OrderDeliverInfo;
+import com.ishare.mall.core.model.order.OrderItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -87,12 +89,19 @@ public interface OrderService {
 	Page<Order> findByChannelId(Integer channelId, PageRequest pageRequest) throws OrderServiceException;
 	
 	/**
-	 * 更新订单
+	 * 更新订单状态
 	 * @param
 	 * @return
 	 * @throws OrderServiceException
 	 */
 	Order updateOrder(Order order, String note) throws OrderServiceException;
+	/**
+	 * 编辑订单
+	 * @param
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem) throws OrderServiceException;
 	/**
 	 * 根据条件查询订单
 	 * @param orderId

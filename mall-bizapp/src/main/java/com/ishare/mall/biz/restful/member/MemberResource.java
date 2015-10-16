@@ -305,8 +305,10 @@ public class MemberResource {
             response.setSuccess(Response.Status.FAILURE);
             return response;
         }
-        BeanUtils.copyProperties(member,memberDTO);
+        BeanUtils.copyProperties(member, memberDTO);
         memberDTO.setChannelId(member.getChannel().getId());
+        memberDTO.setChannelName(member.getChannel().getName());
+        memberDTO.setGender(member.getSex());
         memberDTO.setMemberType(member.getMemberType());
         response.setData(memberDTO);
         return response;
