@@ -91,6 +91,8 @@ public interface APPURIConstant {
 
         String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
 
+        String REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION = "/findAllBySearchCondition";
+
         String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";
     }
     //支付
