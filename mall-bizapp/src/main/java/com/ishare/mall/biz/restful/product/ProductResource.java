@@ -223,7 +223,7 @@ public class ProductResource {
 		List<ProductListDTO> list = new ArrayList<ProductListDTO>();
 		Integer offset = productListDTO.getOffset();
 		Integer limit = productListDTO.getLimit();
-		PageDTO pageDTO = new PageDTO();
+		PageDTO<ProductListDTO> pageDTO = new PageDTO();
 		Response response = new Response();
 		Page<Product> result = null;
 		try{
@@ -242,12 +242,13 @@ public class ProductResource {
 					list.add(productDTO);
 				}
 				pageDTO.setContent(list);
-				pageDTO.setTotalPages(result.getTotalPages());
-				pageDTO.setTotalElements(result.getTotalElements());
 				log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
-				productListDTO.setPageDTO(pageDTO);
+				//productListDTO.setPageDTO(pageDTO);
 			}
-			response.setData(productListDTO);
+			pageDTO.setTotalPages(result.getTotalPages());
+			pageDTO.setITotalDisplayRecords(result.getTotalElements());
+			pageDTO.setITotalRecords(result.getTotalElements());
+			response.setData(pageDTO);
 		}catch (ProductServiceException e){
 			log.error(e.getMessage());
 			response.setMessage(e.getMessage());
