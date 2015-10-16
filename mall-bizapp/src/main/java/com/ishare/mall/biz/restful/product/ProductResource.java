@@ -242,12 +242,12 @@ public class ProductResource {
 					list.add(productDTO);
 				}
 				pageDTO.setContent(list);
-				pageDTO.setTotalPages(result.getTotalPages());
-                pageDTO.setITotalDisplayRecords(result.getTotalElements());
-                pageDTO.setITotalRecords(result.getTotalElements());
 				log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
 				//productListDTO.setPageDTO(pageDTO);
 			}
+			pageDTO.setTotalPages(result.getTotalPages());
+			pageDTO.setITotalDisplayRecords(result.getTotalElements());
+			pageDTO.setITotalRecords(result.getTotalElements());
 			response.setData(pageDTO);
 		}catch (ProductServiceException e){
 			log.error(e.getMessage());
