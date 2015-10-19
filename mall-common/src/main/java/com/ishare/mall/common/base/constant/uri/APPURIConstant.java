@@ -86,11 +86,13 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_DELIVER = "/deliver";
         //取消订单提交
         String REQUEST_MAPPING_CANCEL = "/cancel";
-
+        //编辑
         String REQUEST_MAPPING_EDIT = "/edit";
-
+        //获取编辑数据
+        String REQUEST_MAPPING_GOTO_EDIT = "/gotoedit";
+        //根据条件搜索center
         String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
-
+        //根据条件搜索manage
         String REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION = "/findAllBySearchCondition";
 
         String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";

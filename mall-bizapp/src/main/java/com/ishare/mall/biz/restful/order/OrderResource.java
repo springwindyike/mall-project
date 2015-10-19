@@ -231,7 +231,53 @@ public class OrderResource {
         }
         return response;
     }
-    
+
+	/**
+	 * 获取编辑数据
+	 * @param orderDetailDTO
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	@RequestMapping(value       = APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT,
+			method      = RequestMethod.POST,
+			headers     = "Accept=application/xml, application/json",
+			produces    = {"application/json", "application/xml"},
+			consumes    = {"application/json", "application/xml"})
+	public Response gotoEdit(@RequestBody OrderDetailDTO orderDetailDTO) throws OrderServiceException{
+		Response response = new Response();
+
+		Order order = orderService.findOne(orderDetailDTO.getOrderId());
+		try {
+			OrderDetailDTO newOrderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
+			newOrderDetailDTO.setStateValue(order.getState().getName());
+			newOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String newTime =  sdf.format(order.getCreateTime());
+			newOrderDetailDTO.setCreateTime(newTime);
+
+			List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+
+			Iterator<OrderItem> it = orderItems.iterator();
+			Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+			while (it.hasNext()) {
+				OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+				OrderItem orderItem = it.next();
+				BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+				items.add(orderItemDetailDTO);
+			}
+			newOrderDetailDTO.setItems(items);
+
+			response.setData(newOrderDetailDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage(), e);
+			response.setData(orderDetailDTO);
+			throw new OrderServiceException("类型转换错误");
+		}
+		return response;
+	}
+
     /**
      * 发货
      * @param orderDetailDTO
