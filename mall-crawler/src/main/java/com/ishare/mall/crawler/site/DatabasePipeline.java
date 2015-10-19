@@ -68,13 +68,14 @@ public class DatabasePipeline implements Pipeline {
             log.debug("fetchUrlId={}, link={}, code={}", fetchUrlId, basePageData.getLink(), basePageData.getCode());
             if (fetchUrlId == null) {
                 FetchUrl fetchUrl = fetchUrlRepository.findByLinkIs(basePageData.getLink());
-                basePageData.setFetchUrl(fetchUrl);
+                //basePageData.setFetchUrl(fetchUrl);
                 basePageData.setFetchSite(fetchUrl.getFetchSite());
+                fetchUrl.setPageData(basePageData);
                 basePageDataRepository.save(basePageData);
                 fetchUrlRepository.save(fetchUrl);
             } else {
                 BasePageData basePageDataInDB = basePageDataRepository.findByLinkIs(basePageData.getLink());
-                log.debug("id is not null basePageDataInDB={}, {}", basePageDataInDB.getFetchSite(), basePageData.getFetchUrl());
+                log.debug("id is not null basePageDataInDB={}", basePageDataInDB.getFetchSite());
                 BeanUtils.copyProperties(basePageData, basePageDataInDB, "id", "fetchUrl", "fetchSite");
                 basePageDataRepository.save(basePageDataInDB);
             }
