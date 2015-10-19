@@ -15,14 +15,14 @@ import java.util.Map;
 public class BasePageData {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Enumerated(EnumType.STRING)
     private FetchSite fetchSite;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    private FetchUrl fetchUrl;
+    //@OneToOne(cascade = CascadeType.ALL)
+    //private FetchUrl fetchUrl;
 
     private String code;
     private String name;
@@ -64,6 +64,7 @@ public class BasePageData {
         this.id = id;
     }
 
+    /*
     public FetchUrl getFetchUrl() {
         return fetchUrl;
     }
@@ -71,7 +72,7 @@ public class BasePageData {
     public void setFetchUrl(FetchUrl fetchUrl) {
         this.fetchUrl = fetchUrl;
     }
-
+    */
     public String getName() {
         return name;
     }
@@ -197,7 +198,7 @@ public class BasePageData {
         return "BasePageData{" +
                 "id=" + id +
                 ", fetchSite=" + fetchSite +
-                ", fetchUrl=" + fetchUrl +
+                //", fetchUrl=" + fetchUrl +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", link='" + link + '\'' +
