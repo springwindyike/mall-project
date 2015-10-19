@@ -247,6 +247,8 @@ public class ProductTypeResource {
 				pageDTO.setTotalPages(result.getTotalPages());
 				pageDTO.setITotalDisplayRecords(result.getTotalElements());
 				pageDTO.setITotalRecords(result.getTotalElements());
+				pageDTO.setLimit(limit);
+				pageDTO.setOffset(offset);
 				log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
 			}
 			response.setData(pageDTO);

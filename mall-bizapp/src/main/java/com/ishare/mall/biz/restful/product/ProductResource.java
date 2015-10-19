@@ -248,6 +248,8 @@ public class ProductResource {
 			pageDTO.setTotalPages(result.getTotalPages());
 			pageDTO.setITotalDisplayRecords(result.getTotalElements());
 			pageDTO.setITotalRecords(result.getTotalElements());
+			pageDTO.setLimit(limit);
+			pageDTO.setOffset(offset);
 			response.setData(pageDTO);
 		}catch (ProductServiceException e){
 			log.error(e.getMessage());
