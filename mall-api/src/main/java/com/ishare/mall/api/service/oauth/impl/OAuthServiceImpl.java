@@ -44,7 +44,7 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Autowired
     public OAuthServiceImpl(CacheManager cacheManager) {
-        this.cache = cacheManager.getCache("token-cache");
+        this.tokenCache = cacheManager.getCache("token-cache");
         this.cache = cacheManager.getCache("code-cache");
     }
 
