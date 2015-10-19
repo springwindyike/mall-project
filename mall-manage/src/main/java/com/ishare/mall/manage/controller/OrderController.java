@@ -32,6 +32,7 @@ import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.controller.base.BaseController;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -69,13 +70,46 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_EDIT, method = RequestMethod.GET)
-	public String edit(@NotEmpty @PathVariable("id") String id, HttpServletRequest request) {
+	public String edit(@NotEmpty @PathVariable("id") String id, HttpServletRequest request)throws Exception{
 		request.setAttribute("orderId", id);
+
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(id);
+
+/*		ResponseEntity<Response> resultDTO = null;
+		try {
+			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT), orderDetailDTO, Response.class);
+		} catch (Exception e) {
+			log.debug("error");
+			e.printStackTrace();
+			return ManageViewConstant.Order.EDIT_ORDER;
+		}
+		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();*/
+
+		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT + "error");
+			throw new Exception(e.getMessage());
+		}
+		orderDetailDTO = resultDTO.getBody().getData();
+		//订单下只有一个订单项
+		Iterator<OrderItemDetailDTO> it = orderDetailDTO.getItems().iterator();
+		while (it.hasNext()) {
+			OrderItemDetailDTO orderItemDetailDTO = it.next();
+			request.setAttribute("updatePrice", orderItemDetailDTO.getProductPrice());
+			request.setAttribute("updateNum", orderItemDetailDTO.getAmount());
+		}
+		request.setAttribute("updateConsignee", orderDetailDTO.getRecipients());
+
 		return ManageViewConstant.Order.EDIT_ORDER;
 	}
 
 	/**
-	 * 取消
+	 * 编辑
 	 *
 	 * @return
 	 */

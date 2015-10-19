@@ -31,21 +31,20 @@
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
   <tr>
-    <td><select name="上架状态" class="input-text" id="上架状态"  style="width:100px; ">
-    <option selected>全部订单来源</option>
-              <option selected>享买自营</option>
-              <option>和小宝</option>
-          </select></td>
-                <td><select name="" style="width:100px; margin:0 10px; " class="input-text">
-              <option>全部分类</option>
-              <option>手机</option>
-              <option>相机</option>
-            </select></td>
-            <td><select name="" style="width:100px;margin:0 10px; " class="input-text">
-              <option>全部品牌</option>
-              <option>享买</option>
-              <option>锋果</option>
-            </select></td>
+	<td>
+	  <select name="category" style="width:100px; margin:0 10px;" class="input-text">
+		  <option value ="0" selected>全部分类</option>
+		  <option>手机</option>
+		  <option>相机</option>
+	  </select>
+	</td>
+	<td>
+	  <select name="brand" style="width:100px;margin:0 10px;" class="input-text">
+		  <option value ="0" selected>全部品牌</option>
+		  <option>享买</option>
+		  <option>锋果</option>
+	  </select>
+	</td>
     <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
 
     <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
