@@ -31,21 +31,20 @@
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
   <tr>
-    <td><select name="上架状态" class="input-text" id="上架状态"  style="width:100px; ">
-    <option selected>全部订单来源</option>
-              <option selected>享买自营</option>
-              <option>和小宝</option>
-          </select></td>
-                <td><select name="" style="width:100px; margin:0 10px; " class="input-text">
-              <option>全部分类</option>
-              <option>手机</option>
-              <option>相机</option>
-            </select></td>
-            <td><select name="" style="width:100px;margin:0 10px; " class="input-text">
-              <option>全部品牌</option>
-              <option>享买</option>
-              <option>锋果</option>
-            </select></td>
+	<td>
+	  <select name="category" style="width:100px; margin:0 10px;" class="input-text">
+		  <option value ="0" selected>全部分类</option>
+		  <option>手机</option>
+		  <option>相机</option>
+	  </select>
+	</td>
+	<td>
+	  <select name="brand" style="width:100px;margin:0 10px;" class="input-text">
+		  <option value ="0" selected>全部品牌</option>
+		  <option>享买</option>
+		  <option>锋果</option>
+	  </select>
+	</td>
     <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
 
     <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
@@ -118,28 +117,35 @@ var targetTable;
 var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
 $(function () {
 	 targetTable = $('.table-sort').DataTable({
-			"bProcessing": true,
-			"bServerSide": true,
-			"bStateSave": false,
-			"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
-			"ajax": {
-		   url:url,
-		   "dataSrc": "content"
-		    },
-			"aoColumns": [
-			   { "mDataProp": "orderId" },//订单号
-			   { "mDataProp": null },//商品图片
-			   { "mDataProp": null },//商品名称
-			   { "mDataProp": null },//单价（元）
-			   { "mDataProp": null },//数量
-			   { "mDataProp": "createBy" },//购买账号
-			   { "mDataProp": "recipients" },//收货人
-			   { "mDataProp": "note" },//顾客留言
-			   { "mDataProp": "totalPrice" },//付款（元）	
-			   { "mDataProp": "createTime" },//生成时间	
-			   { "mDataProp": null }  //订单状态
-			   //{ "mDataProp": null }//操作
-			],
+		"oLanguage": {
+			"sInfoEmpty": "没有数据",
+			"sZeroRecords": "没有数据",
+			"sEmptyTable":"没有数据"
+		},
+		"searching": false,
+		"ordering":  false,
+		"bProcessing": true,
+		"bServerSide": true,
+		"bStateSave": false,
+		"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+		"ajax": {
+			url:url,
+			"dataSrc": "content"
+		},
+		"aoColumns": [
+			{ "mDataProp": "orderId" },//订单号
+			{ "mDataProp": null },//商品图片
+			{ "mDataProp": null },//商品名称
+			{ "mDataProp": null },//单价（元）
+			{ "mDataProp": null },//数量
+			{ "mDataProp": "createBy" },//购买账号
+			{ "mDataProp": "recipients" },//收货人
+			{ "mDataProp": "note" },//顾客留言
+			{ "mDataProp": "totalPrice" },//付款（元）
+			{ "mDataProp": "createTime" },//生成时间
+			{ "mDataProp": null }  //订单状态
+			//{ "mDataProp": null }//操作
+		],
 			
 			"createdRow" : function(row, mDataProp, dataIndex){
 			   $(row).addClass('text-c');

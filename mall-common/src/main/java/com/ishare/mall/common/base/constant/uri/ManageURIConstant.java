@@ -11,10 +11,11 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING = "/order";
 		String REQUEST_MAPPING_SHOW = "/list";
 		String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
-		String REQUEST_MAPPING_EDIT = "/edit";
+		String REQUEST_MAPPING_EDIT = "/edit/{id}";
+		String REQUEST_MAPPING_EDIT_SUBMIT = "/edit";
 		String REQUEST_MAPPING_DELIVER = "/deliver/{id}";
 		String REQUEST_MAPPING_DELIVER_SUBMIT = "/deliver";
-		String REQUEST_MAPPING_LOGISTICS = "/logistics";
+		String REQUEST_MAPPING_LOGISTICS = "/logistics/{order}/{id}";
 		String REQUEST_MAPPING_CANCEL = "/cancel/{id}";
 		String REQUEST_MAPPING_CANCEL_SUBMIT = "/cancel";
 		String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
@@ -35,4 +36,10 @@ public interface ManageURIConstant {
 	interface Index{
 		String LOGIN = "login";
 	}
+	
+	interface Main {
+		// 首页
+		String INDEX = "main";
+	}
+	
 }

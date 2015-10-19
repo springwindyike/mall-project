@@ -66,9 +66,11 @@ public class MemberRepositoryTests extends RepositoryTestTemplate {
 //		memberService.saveMember(member);
 		//Assert.assertTrue(!page.hasContent());
 		//productStyleRepository.findByProductStyle(1);
-		Member member = memberService.findByAccount("15928972087");
+		Member member = memberService.findByAccount("qazwc1");
 		member.setPassword("123456");
 		memberService.saveMember(member);
+		Member member1 = memberService.findByAccount("qazwc1");
+		System.out.println(member1.getPassword());
 	}
 
 	@Override

@@ -29,19 +29,20 @@ public class AccessTokenAnnotationInterceptor extends HandlerInterceptorAdapter 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HandlerMethod method = (HandlerMethod)handler;
-        AccessToken accessToken = method.getMethodAnnotation(AccessToken.class);
-        if (accessToken == null) return true;
-        //如果有accessToken 1 检测 accessToken 是否存在，2检测 accessToken是否存在 ，过期或者不存在都返回未认证JSON 401
-        String token = request.getParameter(OAuth.OAUTH_ACCESS_TOKEN);
-        if (StringUtils.isBlank(token)) {
-            throw new ApiLogicException("token不正确", HttpStatus.UNAUTHORIZED);
-        }
+        if (handler instanceof  HandlerMethod) {
+            HandlerMethod method = (HandlerMethod) handler;
+            AccessToken accessToken = method.getMethodAnnotation(AccessToken.class);
+            if (accessToken == null) return true;
+            //如果有accessToken 1 检测 accessToken 是否存在，2检测 accessToken是否存在 ，过期或者不存在都返回未认证JSON 401
+            String token = request.getParameter(OAuth.OAUTH_ACCESS_TOKEN);
+            if (StringUtils.isBlank(token)) {
+                throw new ApiLogicException("token不正确", HttpStatus.UNAUTHORIZED);
+            }
 
-        if (!oAuthService.checkAccessToken(token)) {
-            throw new ApiLogicException("token不存在", HttpStatus.UNAUTHORIZED);
+            if (!oAuthService.checkAccessToken(token)) {
+                throw new ApiLogicException("token不存在", HttpStatus.UNAUTHORIZED);
+            }
         }
-
         return super.preHandle(request, response, handler);
     }
 

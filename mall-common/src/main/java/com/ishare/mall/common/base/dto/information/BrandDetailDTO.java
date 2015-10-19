@@ -1,10 +1,17 @@
 package com.ishare.mall.common.base.dto.information;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Map;
+
 /**
  * Created by YinLin on 2015/8/7.
  * Description : 详细信息DTO
  * Version 1.0
  */
+@XmlRootElement
+@JsonAutoDetect
 public class BrandDetailDTO {
 
     private Integer id;
@@ -22,6 +29,12 @@ public class BrandDetailDTO {
     private String district;
     //详细街道
     private String detail;
+
+    private int offset;
+
+    private int limit;
+
+    private Map<String,Object> map;
 
     public Integer getId() {
         return id;
@@ -85,5 +98,29 @@ public class BrandDetailDTO {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Object> map) {
+        this.map = map;
     }
 }

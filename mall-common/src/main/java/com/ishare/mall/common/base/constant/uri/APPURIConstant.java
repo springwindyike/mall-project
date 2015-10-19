@@ -45,6 +45,7 @@ public interface APPURIConstant {
     	String REQUEST_MAPPING_CHILDREN_LEVEL = "/childLevel";
         String REQUEST_MAPPING_FIND_BY_ID = "/findByID";
         String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
+        String REQUEST_MAPPING_QUERY_BY_ID = "/findByID";
     }
     //产品
     interface Product{
@@ -58,11 +59,14 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
         String REQUEST_MAPPING_CRAWLER_ADD = "/crawler/add";
         String REQUEST_MAPPING_CRAWLER_LIST_ADD = "/crawler/list/add";
+        String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
     }
 
     interface Brand {
         String REQUEST_MAPPING = "/brand";
         String REQUEST_MAPPING_GET_BY_ID = "/{id}";
+        String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
+        String REQUEST_MAPPING_GET_BRAND_DETAIL = "/getBrandDetail";
     }
     //订单
     interface Order {
@@ -70,6 +74,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING   = "/order";
         //根据渠道ID获取订单
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        //获取所有订单
+        String REQUEST_MAPPING_FIND_ALL = "/findAll";
         //创建订单
         String REQUEST_MAPPING_CREATE = "/create";
         //支付成功回调
@@ -80,7 +86,16 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_DELIVER = "/deliver";
         //取消订单提交
         String REQUEST_MAPPING_CANCEL = "/cancel";
+        //编辑
+        String REQUEST_MAPPING_EDIT = "/edit";
+        //获取编辑数据
+        String REQUEST_MAPPING_GOTO_EDIT = "/gotoedit";
+        //根据条件搜索center
         String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
+        //根据条件搜索manage
+        String REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION = "/findAllBySearchCondition";
+
+        String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";
     }
     //支付
     interface AliPay {

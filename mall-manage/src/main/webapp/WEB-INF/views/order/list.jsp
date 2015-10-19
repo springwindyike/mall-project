@@ -31,21 +31,27 @@
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
   <tr>
-    <td><select name="上架状态" class="input-text" id="上架状态"  style="width:100px; ">
-    <option selected>全部订单来源</option>
-              <option selected>享买自营</option>
-              <option>和小宝</option>
-          </select></td>
-                <td><select name="" style="width:100px; margin:0 10px; " class="input-text">
-              <option>全部分类</option>
-              <option>手机</option>
-              <option>相机</option>
-            </select></td>
-            <td><select name="" style="width:100px;margin:0 10px; " class="input-text">
-              <option>全部品牌</option>
-              <option>享买</option>
-              <option>锋果</option>
-            </select></td>
+	<td>
+		<select name="source" class="input-text" style="width:100px;">
+			<option value ="0" selected>全部订单来源</option>
+			<option>享买自营</option>
+			<option>和小宝</option>
+		</select>
+	</td>
+	<td>
+		<select name="category" style="width:100px; margin:0 10px;" class="input-text">
+			<option value ="0" selected>全部分类</option>
+			<option>手机</option>
+			<option>相机</option>
+		</select>
+	</td>
+	<td>
+		<select name="brand" style="width:100px;margin:0 10px;" class="input-text">
+			<option value ="0" selected>全部品牌</option>
+			<option>享买</option>
+			<option>锋果</option>
+		</select>
+	</td>
     <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
 
     <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
@@ -90,8 +96,13 @@ var targetTable;
 var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
 $(function () {
 	targetTable = $('.table-sort').DataTable({
-/* 		"aaSorting": [[ 0, "desc" ]],//默认第几个排序 */
-/* 	 	"bStateSave": true,//状态保存 */
+		"oLanguage": {
+			"sInfoEmpty": "没有数据",
+			"sZeroRecords": "没有数据",
+			"sEmptyTable":"没有数据"
+		},
+		"searching": false,
+		"ordering":  false,
 		"bProcessing": true,
 		"bServerSide": true,
 		"bStateSave": false,
@@ -178,11 +189,11 @@ $(function () {
 					var itemHtml = mDataProp.state;
 					if(itemHtml == '待审核' ){
 						return '<td class="td-manage">'
-						+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 						+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 						+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
-						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
+						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 						+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
 						+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'
@@ -190,16 +201,16 @@ $(function () {
 						+'<i class="Hui-iconfont">&#xe6e1;</i></a></td>';
 					}
 					return '<td class="td-manage">'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
+					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 					+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 					+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
+					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 					+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
 					+'<i class="Hui-iconfont">&#xe608;</i></a></td>';
 				}
-			} 
+			}
 		]
 		});
 	

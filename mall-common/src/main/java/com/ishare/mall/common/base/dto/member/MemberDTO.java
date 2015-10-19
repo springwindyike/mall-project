@@ -2,6 +2,8 @@ package com.ishare.mall.common.base.dto.member;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class MemberDTO extends GenericDTO {
 
     private static final long serialVersionUID = 1L;
-
+    private Integer id;
     private String account;
     private String password;
 
@@ -30,7 +32,10 @@ public class MemberDTO extends GenericDTO {
     private String sex;
     private String mobile;
     private String name;
+    private MemberType memberType;
     private PageDTO pageDTO;
+    private Gender gender;
+    private String channelName;
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -133,5 +138,37 @@ public class MemberDTO extends GenericDTO {
 
     public String getCredentialsSalt() {
         return account + salt;
+    }
+
+    public MemberType getMemberType() {
+        return memberType;
+    }
+
+    public void setMemberType(MemberType memberType) {
+        this.memberType = memberType;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }

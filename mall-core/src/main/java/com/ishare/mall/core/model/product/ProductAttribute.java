@@ -29,10 +29,10 @@ public class ProductAttribute {
     @JoinColumn(name="attr_id")
     private Attribute attribute;
     //属性名字
-    @Column(name = "attr_name", length = 26)
+    @Column(name = "attr_name", length = 255)
     private String name;
     //属性值
-    @Column(name = "attr_value",length = 26)
+    @Column(name = "attr_value",length = 255)
     private String value;
     //属性值类型
     /**性别要求**/

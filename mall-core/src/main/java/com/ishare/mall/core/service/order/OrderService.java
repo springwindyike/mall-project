@@ -2,10 +2,13 @@ package com.ishare.mall.core.service.order;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderRequestDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.order.Order;
 
+import com.ishare.mall.core.model.order.OrderDeliverInfo;
+import com.ishare.mall.core.model.order.OrderItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -86,14 +89,21 @@ public interface OrderService {
 	Page<Order> findByChannelId(Integer channelId, PageRequest pageRequest) throws OrderServiceException;
 	
 	/**
-	 * 更新订单
-	 * @param logistics
+	 * 更新订单状态
+	 * @param
 	 * @return
 	 * @throws OrderServiceException
 	 */
 	Order updateOrder(Order order, String note) throws OrderServiceException;
 	/**
-	 * 根据条件查询订单
+	 * 编辑订单
+	 * @param
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem) throws OrderServiceException;
+	/**
+	 * 根据条件查询订单 center
 	 * @param orderId
 	 * @param channelId
 	 * @param pageRequest
@@ -101,4 +111,26 @@ public interface OrderService {
 	 * @throws OrderServiceException
 	 */
 	Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException;
+	/**
+	 * 根据条件查询订单 manage
+	 * @param orderId
+	 * @param channelId
+	 * @param pageRequest
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	Page<Order> findAllBycondition(String orderId, PageRequest pageRequest) throws OrderServiceException;
+	/**
+	 * 查询所有的Order
+	 * @param pageRequest
+	 * @return
+	 */
+	Page<Order> findAll(PageRequest pageRequest) throws OrderServiceException;
+
+	/**
+	 * 搜索个人订单
+	 * @param requestDTO
+	 * @return
+	 */
+	Page<Order> listByAccount(OrderRequestDTO requestDTO);
 }

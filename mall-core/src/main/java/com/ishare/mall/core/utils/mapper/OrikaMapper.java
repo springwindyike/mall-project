@@ -81,6 +81,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		Field[] fields = MemberDetailDTO.class.getDeclaredFields();
 		Set<String> otherDealField = new HashSet<String>();
 		otherDealField.add("channelId");
+		otherDealField.add("createTimeStr");
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
 				classMapBuilder.field(field.getName(), field.getName());
@@ -100,6 +101,8 @@ public class OrikaMapper extends ConfigurableMapper {
 		classMapBuilder.field("id", "id");
 		classMapBuilder.field("code", "code");
 		classMapBuilder.field("name", "typeName");
+		classMapBuilder.field("level", "level");
+		classMapBuilder.field("note", "note");
 		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	
@@ -120,6 +123,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		otherDealField.add("items");
 		otherDealField.add("stateValue");
 		otherDealField.add("log");
+		otherDealField.add("createBy");
 
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
@@ -129,6 +133,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		classMapBuilder.field("channel.id", "channelId");
 		classMapBuilder.field("orderDeliverInfo.id", "orderDeliverInfoId");
 		classMapBuilder.field("orderContactInfo.id", "orderContactInfoId");
+		classMapBuilder.field("createBy.account", "createBy");
 		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	@Override

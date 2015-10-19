@@ -48,7 +48,6 @@ public class ExpressController  extends BaseController{
                     });
 		
     	} catch (RestClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String returnExchange =	(String) resultDTO.getBody().getData();

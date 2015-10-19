@@ -1,5 +1,6 @@
 package com.ishare.mall.common.base.dto.member;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
@@ -24,7 +25,7 @@ public class MemberDetailDTO extends GenericDTO {
 	 private String memberType; //用户类型
 	 
 	 private String sex;//用户性别
-	 
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm ",timezone="GMT+8")
 	 private Date createTime;//创建时间
 	 
 	 private Date updateTime;//更新时间
@@ -38,7 +39,7 @@ public class MemberDetailDTO extends GenericDTO {
 	private String password;
 
 	private String mobile;
-	 
+
 	public String getAccount() {
 		return account;
 	}
