@@ -69,7 +69,7 @@ public class BrandResource {
         try {
             Page<Brand> page = null;
             PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
-            if(brandDetailDTO.getMap() != null || !brandDetailDTO.getMap().isEmpty()){
+            if(brandDetailDTO.getMap() != null && !brandDetailDTO.getMap().isEmpty()){
                 page = brandService.search(brandDetailDTO.getMap(),pageRequest);
             }else {
                 page = brandService.search(null,pageRequest);
@@ -85,8 +85,11 @@ public class BrandResource {
                     list.add(brandDetail);
                 }
                 pageDTO.setContent(list);
-                pageDTO.setTotalElements(page.getTotalElements());
                 pageDTO.setTotalPages(page.getTotalPages());
+                pageDTO.setITotalDisplayRecords(page.getTotalElements());
+                pageDTO.setITotalRecords(page.getTotalElements());
+                pageDTO.setOffset(offset);
+                pageDTO.setLimit(limit);
             }else {
                 response.setMessage("没有数据");
             }

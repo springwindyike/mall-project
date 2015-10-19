@@ -33,6 +33,9 @@ public class PageDTO<T extends GenericDTO> {
 
     private Long iTotalDisplayRecords;
 
+    private Integer offset;
+    private Integer limit;
+
     public Integer getPageSize() {
         return pageSize;
     }
@@ -103,5 +106,21 @@ public class PageDTO<T extends GenericDTO> {
 
     public void setITotalDisplayRecords(Long iTotalDisplayRecords) {
         this.iTotalDisplayRecords = iTotalDisplayRecords;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
     }
 }

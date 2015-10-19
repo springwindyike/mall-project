@@ -223,6 +223,8 @@ public class OrderResource {
         Order order = orderService.findOne(id);
         try {
             OrderDetailDTO orderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
+			Set<OrderItemDetailDTO> orderDetailDTOs = (Set<OrderItemDetailDTO>) MapperUtils.mapAsSet(orderItemService.findByOrderId(id), OrderItemDetailDTO.class);
+			orderDetailDTO.setItems(orderDetailDTOs);
 			response.setData(orderDetailDTO);
         } catch (Exception e) {
             e.printStackTrace();
