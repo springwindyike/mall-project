@@ -6,6 +6,7 @@ import com.ishare.mall.api.service.oauth.OAuthService;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
 import com.ishare.mall.common.base.dto.oauth.OAuthObject;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
+import com.ishare.mall.common.base.utils.MD5;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
@@ -39,8 +40,11 @@ public class OAuthServiceImpl implements OAuthService {
 
     private Cache cache;
 
+    private Cache tokenCache;
+
     @Autowired
     public OAuthServiceImpl(CacheManager cacheManager) {
+        this.cache = cacheManager.getCache("token-cache");
         this.cache = cacheManager.getCache("code-cache");
     }
 
@@ -61,7 +65,12 @@ public class OAuthServiceImpl implements OAuthService {
         authObject.setAccount(account);
         authObject.setClientId(clientId);
         this.cache.put(accessToken, authObject);
+        this.tokenCache.put(MD5.md5(account + clientId), authObject);
         return authObject;
+    }
+
+    private OAuthObject getTokenCache(String account, String clientId) {
+        return this.tokenCache.get(MD5.md5(account + clientId), OAuthObject.class);
     }
 
     @Override
@@ -128,7 +137,7 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public OAuthObject createToken(String type, String appid, String secret, String account) {
+    public OAuthObject createToken(String type, String appId, String secret, String account) {
 
         if (StringUtils.isBlank(type) || !type.equals(CheckValue.GRANT_TYPE)) {
             throw new ApiLogicException("grant_type：不正确", HttpStatus.BAD_REQUEST);
@@ -138,18 +147,24 @@ public class OAuthServiceImpl implements OAuthService {
             throw new ApiLogicException("account:参数未传", HttpStatus.BAD_REQUEST);
         }
 
-        if (!checkClientSecret(appid, secret)) {
+        if (!checkClientSecret(appId, secret)) {
             throw new ApiLogicException("appid/secret:不正确", HttpStatus.BAD_REQUEST);
         }
 
         //检测和创建用户
-        memberService.checkAndCreateMember(account, appid);
+        memberService.checkAndCreateMember(account, appId);
 
+        //检测是否已经获取过
+        OAuthObject authObject = this.getTokenCache(account, appId);
+
+        if (authObject != null) {
+            return authObject;
+        }
         //生成Access Token
         OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
         try {
             final String accessToken = oauthIssuerImpl.accessToken();
-            return this.addAccessToken(accessToken, account, appid);
+            return this.addAccessToken(accessToken, account, appId);
         } catch (OAuthSystemException e) {
             log.error(e.getMessage(), e);
             throw new ApiLogicException("token:获取失败", HttpStatus.BAD_REQUEST);
