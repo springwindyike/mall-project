@@ -73,48 +73,54 @@ public class OrderResource {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
         Integer channelId = orderDetailDTO.getChannelId();
         try {
-							Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
-							PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
-							if(result != null && result.getContent() != null && result.getContent().size()>0){
-							    List<Order> list = result.getContent();
-							    for (Order order:list){
-												OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
-												BeanUtils.copyProperties(order, innerOrderDetailDTO);
-												innerOrderDetailDTO.setChannelId(order.getChannel().getId());
-												innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
-												innerOrderDetailDTO.setStateValue(order.getState().getName());
-												innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-												
-												SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-												String newTime =  sdf.format(order.getCreateTime());
-												innerOrderDetailDTO.setCreateTime(newTime);
-												
-												List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
-												
-												Iterator<OrderItem> it = orderItems.iterator();
-												Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
-												while (it.hasNext()) {
-													OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
-												  OrderItem orderItem = it.next();
-												  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-												  items.add(orderItemDetailDTO);
-												}
-													innerOrderDetailDTO.setItems(items);
-													listOrder.add(innerOrderDetailDTO);
-						    					}
-							        pageDTO.setContent(listOrder);
-							        pageDTO.setTotalPages(result.getTotalPages());
-							        pageDTO.setITotalDisplayRecords(result.getTotalElements());
-							        pageDTO.setITotalRecords(result.getTotalElements());
-							        response.setData(pageDTO);
-											}
-							return response;
-						} catch (OrderServiceException e) {
-							log.error(e.getMessage(), e);
-							response.setMessage("系统错误");
-							response.setSuccess(false);
-							return response;
-						}
+			Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
+			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
+			if(result != null && result.getContent() != null && result.getContent().size()>0){
+				List<Order> list = result.getContent();
+				for (Order order:list){
+					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+					BeanUtils.copyProperties(order, innerOrderDetailDTO);
+					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
+					innerOrderDetailDTO.setStateValue(order.getState().getName());
+					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String newTime =  sdf.format(order.getCreateTime());
+					innerOrderDetailDTO.setCreateTime(newTime);
+
+					List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+
+					Iterator<OrderItem> it = orderItems.iterator();
+					Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+					while (it.hasNext()) {
+						OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+					  OrderItem orderItem = it.next();
+					  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+					  items.add(orderItemDetailDTO);
+					}
+						innerOrderDetailDTO.setItems(items);
+						listOrder.add(innerOrderDetailDTO);
+					}
+					pageDTO.setContent(listOrder);
+					pageDTO.setTotalPages(result.getTotalPages());
+					pageDTO.setITotalDisplayRecords(result.getTotalElements());
+					pageDTO.setITotalRecords(result.getTotalElements());
+					response.setData(pageDTO);
+				}else {
+				pageDTO.setContent(listOrder);
+				pageDTO.setTotalPages(0);
+				pageDTO.setITotalDisplayRecords(0L);
+				pageDTO.setITotalRecords(0L);
+				response.setData(pageDTO);
+			}
+			return response;
+		} catch (OrderServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
 	}
 
     /**
@@ -127,54 +133,60 @@ public class OrderResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public Response findAll(@RequestBody OrderDetailDTO orderDetailDTO) {
-				List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
-				int offset = orderDetailDTO.getOffset();
-				int limit = orderDetailDTO.getLimit();
-				Response response = new Response();
-				PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
-				try {
-					Page<Order> result = orderService.findAll(pageRequest);
-					PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
-					if(result != null && result.getContent() != null && result.getContent().size()>0){
-						List<Order> list = result.getContent();
-						for (Order order:list){
-							OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
-							BeanUtils.copyProperties(order, innerOrderDetailDTO);
-							innerOrderDetailDTO.setChannelId(order.getChannel().getId());
-							innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
-							innerOrderDetailDTO.setStateValue(order.getState().getName());
-							innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-												
-							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-							String newTime =  sdf.format(order.getCreateTime());
-							innerOrderDetailDTO.setCreateTime(newTime);
-												
-							List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
-												
-							Iterator<OrderItem> it = orderItems.iterator();
-							Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
-							while (it.hasNext()) {
-								OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
-								OrderItem orderItem = it.next();
-								BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-								items.add(orderItemDetailDTO);
-							}
-							innerOrderDetailDTO.setItems(items);
-							listOrder.add(innerOrderDetailDTO);
-						}
-						pageDTO.setContent(listOrder);
-						pageDTO.setTotalPages(result.getTotalPages());
-						pageDTO.setITotalDisplayRecords(result.getTotalElements());
-						pageDTO.setITotalRecords(result.getTotalElements());
-						response.setData(pageDTO);
+		List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
+		int offset = orderDetailDTO.getOffset();
+		int limit = orderDetailDTO.getLimit();
+		Response response = new Response();
+		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
+		try {
+			Page<Order> result = orderService.findAll(pageRequest);
+			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
+			if(result != null && result.getContent() != null && result.getContent().size()>0){
+				List<Order> list = result.getContent();
+				for (Order order:list){
+					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+					BeanUtils.copyProperties(order, innerOrderDetailDTO);
+					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
+					innerOrderDetailDTO.setStateValue(order.getState().getName());
+					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String newTime =  sdf.format(order.getCreateTime());
+					innerOrderDetailDTO.setCreateTime(newTime);
+
+					List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+
+					Iterator<OrderItem> it = orderItems.iterator();
+					Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+					while (it.hasNext()) {
+						OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+						OrderItem orderItem = it.next();
+						BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+						items.add(orderItemDetailDTO);
 					}
-					return response;
-				} catch (OrderServiceException e) {
-					log.error(e.getMessage(), e);
-					response.setMessage("系统错误");
-					response.setSuccess(false);
-					return response;
+					innerOrderDetailDTO.setItems(items);
+					listOrder.add(innerOrderDetailDTO);
 				}
+				pageDTO.setContent(listOrder);
+				pageDTO.setTotalPages(result.getTotalPages());
+				pageDTO.setITotalDisplayRecords(result.getTotalElements());
+				pageDTO.setITotalRecords(result.getTotalElements());
+				response.setData(pageDTO);
+			}else {
+				pageDTO.setContent(listOrder);
+				pageDTO.setTotalPages(0);
+				pageDTO.setITotalDisplayRecords(0L);
+				pageDTO.setITotalRecords(0L);
+				response.setData(pageDTO);
+			}
+			return response;
+		} catch (OrderServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
 		}
     
     /**
@@ -374,7 +386,7 @@ public class OrderResource {
 	}
     
 	/**
-	 * 根据条件查询
+	 * 根据条件查询 center
 	 * @param orderDetailDTO
 	 * @return
 	 */
@@ -383,57 +395,131 @@ public class OrderResource {
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
     public Response findBySearchCondition(@RequestBody OrderDetailDTO orderDetailDTO){
-					List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
-					Response response = new Response();
-					String orderId = orderDetailDTO.getOrderId();
-					int offset = orderDetailDTO.getOffset();
-					int limit = orderDetailDTO.getLimit();
-					Integer channelId = orderDetailDTO.getChannelId();
-					try{
-						PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
-						Page<Order> result = orderService.findBycondition(orderId, channelId,pageRequest);
-						PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
-						if(result != null && result.getContent() != null && result.getContent().size()>0){
-								List<Order> list = result.getContent();
-								for (Order order:list){
-										OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
-										BeanUtils.copyProperties(order, innerOrderDetailDTO);
-										innerOrderDetailDTO.setChannelId(order.getChannel().getId());
-										innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
-										innerOrderDetailDTO.setStateValue(order.getState().getName());
-										innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-								
-										SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-										String newTime =  sdf.format(order.getCreateTime());
-										innerOrderDetailDTO.setCreateTime(newTime);
-								
-										List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
-								
-										Iterator<OrderItem> it = orderItems.iterator();
-										Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
-										while (it.hasNext()) {
-											OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
-										  OrderItem orderItem = it.next();
-										  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-										  items.add(orderItemDetailDTO);
-										}
-										innerOrderDetailDTO.setItems(items);
-										listOrder.add(innerOrderDetailDTO);
-								}
-								pageDTO.setContent(listOrder);
-								pageDTO.setTotalPages(result.getTotalPages());
-								pageDTO.setITotalDisplayRecords(result.getTotalElements());
-								pageDTO.setITotalRecords(result.getTotalElements());
-								response.setData(pageDTO);
-							}
-							return response;
-					}catch (OrderServiceException e){
-							log.error(e.getMessage());
-							response.setSuccess(false);
-							response.setMessage(e.getMessage());
-							return response;
+		List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
+		Response response = new Response();
+		String orderId = orderDetailDTO.getOrderId();
+		int offset = orderDetailDTO.getOffset();
+		int limit = orderDetailDTO.getLimit();
+		Integer channelId = orderDetailDTO.getChannelId();
+		try{
+			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
+			Page<Order> result = orderService.findBycondition(orderId, channelId,pageRequest);
+			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
+			if(result != null && result.getContent() != null && result.getContent().size()>0){
+				List<Order> list = result.getContent();
+				for (Order order:list){
+					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+					BeanUtils.copyProperties(order, innerOrderDetailDTO);
+					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
+					innerOrderDetailDTO.setStateValue(order.getState().getName());
+					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String newTime =  sdf.format(order.getCreateTime());
+					innerOrderDetailDTO.setCreateTime(newTime);
+
+					List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+
+					Iterator<OrderItem> it = orderItems.iterator();
+					Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+					while (it.hasNext()) {
+						OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+					  OrderItem orderItem = it.next();
+					  BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+					  items.add(orderItemDetailDTO);
 					}
+					innerOrderDetailDTO.setItems(items);
+					listOrder.add(innerOrderDetailDTO);
+				}
+				pageDTO.setContent(listOrder);
+				pageDTO.setTotalPages(result.getTotalPages());
+				pageDTO.setITotalDisplayRecords(result.getTotalElements());
+				pageDTO.setITotalRecords(result.getTotalElements());
+				response.setData(pageDTO);
+			}else {
+				pageDTO.setContent(listOrder);
+				pageDTO.setTotalPages(0);
+				pageDTO.setITotalDisplayRecords(0L);
+				pageDTO.setITotalRecords(0L);
+				response.setData(pageDTO);
 			}
+				return response;
+		}catch (OrderServiceException e){
+				log.error(e.getMessage());
+				response.setSuccess(false);
+				response.setMessage(e.getMessage());
+				return response;
+		}
+	}
+
+	/**
+	 * 根据条件查询 manage
+	 * @param orderDetailDTO
+	 * @return
+	 */
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json", "application/xml"},
+			consumes = {"application/json", "application/xml"})
+	public Response findAllBySearchCondition(@RequestBody OrderDetailDTO orderDetailDTO){
+		List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
+		Response response = new Response();
+		String orderId = orderDetailDTO.getOrderId();
+		int offset = orderDetailDTO.getOffset();
+		int limit = orderDetailDTO.getLimit();
+		try{
+			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
+			Page<Order> result = orderService.findAllBycondition(orderId, pageRequest);
+			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
+			if(result != null && result.getContent() != null && result.getContent().size()>0){
+				List<Order> list = result.getContent();
+				for (Order order:list){
+					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
+					BeanUtils.copyProperties(order, innerOrderDetailDTO);
+					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
+					innerOrderDetailDTO.setStateValue(order.getState().getName());
+					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String newTime =  sdf.format(order.getCreateTime());
+					innerOrderDetailDTO.setCreateTime(newTime);
+
+					List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+
+					Iterator<OrderItem> it = orderItems.iterator();
+					Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+					while (it.hasNext()) {
+						OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+						OrderItem orderItem = it.next();
+						BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+						items.add(orderItemDetailDTO);
+					}
+					innerOrderDetailDTO.setItems(items);
+					listOrder.add(innerOrderDetailDTO);
+				}
+				pageDTO.setContent(listOrder);
+				pageDTO.setTotalPages(result.getTotalPages());
+				pageDTO.setITotalDisplayRecords(result.getTotalElements());
+				pageDTO.setITotalRecords(result.getTotalElements());
+				response.setData(pageDTO);
+			}else {
+				pageDTO.setContent(listOrder);
+				pageDTO.setTotalPages(0);
+				pageDTO.setITotalDisplayRecords(0L);
+				pageDTO.setITotalRecords(0L);
+				response.setData(pageDTO);
+			}
+			return response;
+		}catch (OrderServiceException e){
+			log.error(e.getMessage());
+			response.setSuccess(false);
+			response.setMessage(e.getMessage());
+			return response;
+		}
+	}
+
 	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json"},

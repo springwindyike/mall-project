@@ -103,7 +103,7 @@ public interface OrderService {
 	 */
 	Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem) throws OrderServiceException;
 	/**
-	 * 根据条件查询订单
+	 * 根据条件查询订单 center
 	 * @param orderId
 	 * @param channelId
 	 * @param pageRequest
@@ -111,6 +111,15 @@ public interface OrderService {
 	 * @throws OrderServiceException
 	 */
 	Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException;
+	/**
+	 * 根据条件查询订单 manage
+	 * @param orderId
+	 * @param channelId
+	 * @param pageRequest
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	Page<Order> findAllBycondition(String orderId, PageRequest pageRequest) throws OrderServiceException;
 	/**
 	 * 查询所有的Order
 	 * @param pageRequest

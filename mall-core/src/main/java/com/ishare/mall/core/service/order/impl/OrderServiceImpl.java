@@ -365,6 +365,16 @@ public class OrderServiceImpl implements OrderService {
 			throw new OrderServiceException("搜索订单失败");
 		}
 	}
+
+	@Override
+	public Page<Order> findAllBycondition(String orderId, PageRequest pageRequest) throws OrderServiceException {
+		try {
+			return orderRepository.findAllBycondition(orderId, pageRequest);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("搜索订单失败");
+		}
+	}
 	
 	@Override
 	public Page<Order> findAll(PageRequest pageRequest)

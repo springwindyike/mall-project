@@ -50,6 +50,9 @@ public class OrderController extends BaseController {
 		return log;
 	}
 
+	@Autowired
+	private RestTemplate restTemplate;
+
 	/**
 	 * 访问列表页面
 	 * 
@@ -100,7 +103,6 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
 		try {
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_EDIT), orderDetailDTO, Response.class);
 		} catch (Exception e) {
@@ -148,7 +150,6 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
 		try {
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_DELIVER), orderDetailDTO, Response.class);
 		} catch (Exception e) {
@@ -202,7 +203,6 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
 		try {
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CANCEL), orderDetailDTO, Response.class);
 		} catch (Exception e) {
@@ -225,24 +225,35 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
 	@ResponseBody
-	public PageDTO<?> findAll(HttpServletRequest request, Model model) {
-		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+	public PageDTO findAll(HttpServletRequest request, Model model)throws Exception{
+
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displayStart/displayLength+1;
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setLimit(displayLength);
 		orderDetailDTO.setOffset(currentPage);
-		ResponseEntity<Response> resultDTO = null;
-		RestTemplate restTemplate = new RestTemplate();
-		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL), orderDetailDTO, Response.class);
-		} catch (Exception e) {
-			log.debug("error");
-			e.printStackTrace();
+		ResponseEntity<Response<PageDTO<OrderDetailDTO>>> resultDTO = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID + "error");
+			throw new Exception(e.getMessage());
 		}
-		PageDTO pageDTO = (PageDTO) resultDTO.getBody().getData();
-		model.addAttribute("pageDTO",pageDTO);
-		return pageDTO;
+		Response response = resultDTO.getBody();
+		if(response != null) {
+			if(response.isSuccess()){
+				PageDTO pageDTO = (PageDTO)response.getData();
+				model.addAttribute("pageDTO",pageDTO);
+				return pageDTO;
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else{
+			throw new Exception("get response error");
+		}
 	}
 	
 	/**
@@ -256,26 +267,35 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
 	@ResponseBody
 	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
+
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(searchCondition);
-		orderDetailDTO.setChannelId(8);
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 
 		int currentPage = displayStart/displayLength+1;
 		orderDetailDTO.setLimit(displayLength);
 		orderDetailDTO.setOffset(currentPage);
-		ResponseEntity<Response> resultDTO = null;
+		ResponseEntity<Response<PageDTO<OrderDetailDTO>>> resultDTO = null;
 		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
-		RestTemplate restTemplate = new RestTemplate();
-		try{
-			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response>() {});
-//			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION), orderDetailDTO, Response.class);
 
-		}catch (Exception e){
-			log.error("call bizp app " + APPURIConstant.Order.REQUEST_MAPPING + APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION + "error");
-			throw new Exception(e.getMessage());
+		if(searchCondition != null && !"".equals(searchCondition)){
+			try{
+				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION),
+						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>() {});
+
+			}catch (Exception e){
+				log.error("call bizp app " + APPURIConstant.Order.REQUEST_MAPPING + APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION + "error");
+				throw new Exception(e.getMessage());
+			}
+		}else {
+			try{
+				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL),
+						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>(){});
+			}catch (Exception e){
+				log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL + "error");
+				throw new Exception(e.getMessage());
+			}
 		}
 		Response response = resultDTO.getBody();
 		if(response != null) {
