@@ -118,28 +118,35 @@ var targetTable;
 var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
 $(function () {
 	 targetTable = $('.table-sort').DataTable({
-			"bProcessing": true,
-			"bServerSide": true,
-			"bStateSave": false,
-			"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
-			"ajax": {
-		   url:url,
-		   "dataSrc": "content"
-		    },
-			"aoColumns": [
-			   { "mDataProp": "orderId" },//订单号
-			   { "mDataProp": null },//商品图片
-			   { "mDataProp": null },//商品名称
-			   { "mDataProp": null },//单价（元）
-			   { "mDataProp": null },//数量
-			   { "mDataProp": "createBy" },//购买账号
-			   { "mDataProp": "recipients" },//收货人
-			   { "mDataProp": "note" },//顾客留言
-			   { "mDataProp": "totalPrice" },//付款（元）	
-			   { "mDataProp": "createTime" },//生成时间	
-			   { "mDataProp": null }  //订单状态
-			   //{ "mDataProp": null }//操作
-			],
+		"oLanguage": {
+			"sInfoEmpty": "没有数据",
+			"sZeroRecords": "没有数据",
+			"sEmptyTable":"没有数据"
+		},
+		"searching": false,
+		"ordering":  false,
+		"bProcessing": true,
+		"bServerSide": true,
+		"bStateSave": false,
+		"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+		"ajax": {
+			url:url,
+			"dataSrc": "content"
+		},
+		"aoColumns": [
+			{ "mDataProp": "orderId" },//订单号
+			{ "mDataProp": null },//商品图片
+			{ "mDataProp": null },//商品名称
+			{ "mDataProp": null },//单价（元）
+			{ "mDataProp": null },//数量
+			{ "mDataProp": "createBy" },//购买账号
+			{ "mDataProp": "recipients" },//收货人
+			{ "mDataProp": "note" },//顾客留言
+			{ "mDataProp": "totalPrice" },//付款（元）
+			{ "mDataProp": "createTime" },//生成时间
+			{ "mDataProp": null }  //订单状态
+			//{ "mDataProp": null }//操作
+		],
 			
 			"createdRow" : function(row, mDataProp, dataIndex){
 			   $(row).addClass('text-c');
