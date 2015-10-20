@@ -46,19 +46,19 @@ public class ManagerUserRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String account = (String) principals.getPrimaryPrincipal();
+        String username = (String) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
         ResponseEntity<MemberRoleDTO> roleResultDTO = null;
 
         ResponseEntity<MemberPermissionDTO> permissionResultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
-        log.debug(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING, "/" + account));
+        log.debug(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING, "/" + username));
         //获取所有权限
-        permissionResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING, "/" + account), MemberPermissionDTO.class);
+        permissionResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING, "/" + username), MemberPermissionDTO.class);
         MemberPermissionDTO memberPermissionDTO = permissionResultDTO.getBody();
         //获取所有角色
-        roleResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Role.REQUEST_MAPPING, "/" + account), MemberRoleDTO.class);
+        roleResultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Role.REQUEST_MAPPING, "/" + username), MemberRoleDTO.class);
         MemberRoleDTO memberRoleDTO = roleResultDTO.getBody();
         //设置角色
         authorizationInfo.setRoles(this.listRole2SetString(memberRoleDTO.getRoleDTOs()));
@@ -73,12 +73,12 @@ public class ManagerUserRealm extends AuthorizingRealm {
         log.debug("username:" + username);
         ManageUserDTO manageUserDTO = manageUserService.findByUsername(username);
         if (manageUserDTO == null) {
-            log.debug("account : 用户不存在！");
+            log.debug("username : 用户不存在！");
             throw new UnknownAccountException();
         }
         UserType userType = manageUserDTO.getUserType();
         log.debug("用户类型 : " + userType.getName());
-        if(!MemberType.SELF.equals(userType)){
+        if(!UserType.SELF.equals(userType)){
             log.debug("warnning : 没有权限登录！");
             throw new NoPermissionLoginException("没有权限登录");
         }
