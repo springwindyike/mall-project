@@ -1,17 +1,16 @@
 package com.ishare.mall.manage.shiro.realm;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
+import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
+import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
+import com.ishare.mall.common.base.dto.permission.PermissionDTO;
+import com.ishare.mall.common.base.dto.permission.RoleDTO;
 import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.enumeration.UserType;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UnknownAccountException;
+import com.ishare.mall.manage.service.manageuser.ManageUserService;
+import com.ishare.mall.manage.shiro.exception.NoPermissionLoginException;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -23,13 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
-import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
-import com.ishare.mall.common.base.dto.permission.PermissionDTO;
-import com.ishare.mall.common.base.dto.permission.RoleDTO;
-import com.ishare.mall.manage.service.manageuser.ManageUserService;
-import com.ishare.mall.manage.shiro.exception.NoPermissionLoginException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/9/6.
@@ -75,6 +70,7 @@ public class ManagerUserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
+        log.debug("username:" + username);
         ManageUserDTO manageUserDTO = manageUserService.findByUsername(username);
         if (manageUserDTO == null) {
             log.debug("account : 用户不存在！");
