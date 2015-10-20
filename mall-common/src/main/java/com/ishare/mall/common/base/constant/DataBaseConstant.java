@@ -38,6 +38,8 @@ public interface DataBaseConstant {
         String TABLE_CHANNEL_NAME                       = Common.TABLE_PRE + "channel";
         //成员 or 操作员
         String TABLE_MEMBER_NAME                        = Common.TABLE_PRE + "member";
+        //系统管理员
+        String TABLE_MANAGE_USER_NAME                   = Common.TABLE_PRE + "manage_user";
         //订单表
         String TABLE_ORDER_NAME                         = Common.TABLE_PRE + "order";
         //订单号表

@@ -39,7 +39,7 @@
            statistics="true">
     </cache>
 
-    <cache name="currentMemberCache"
+    <cache name="currentManageUserCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"

@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.common.base.enumeration.Gender;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -72,8 +73,18 @@ public class ProductDetailDTO extends GenericDTO {
     private String defaultImageUrl;
     //库存
     private Integer inventory;
+    
+    private  Gender gender;
 
-    private List<ProductStyleDTO> list;
+    public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	private List<ProductStyleDTO> list;
 
     public Integer getId() {
         return id;

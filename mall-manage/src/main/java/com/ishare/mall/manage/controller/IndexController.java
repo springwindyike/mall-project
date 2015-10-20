@@ -2,6 +2,7 @@ package com.ishare.mall.manage.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -13,12 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.constant.view.ManageViewConstant;
-import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
-import com.ishare.mall.manage.annoation.CurrentMember;
+import com.ishare.mall.manage.annoation.CurrentManageUser;
 import com.ishare.mall.manage.controller.base.BaseController;
 import com.ishare.mall.manage.exception.IncorrectCaptchaException;
 
@@ -85,7 +83,7 @@ public class IndexController extends BaseController {
      * @return
      */
     @RequestMapping(value = ManageURIConstant.Main.INDEX, method = RequestMethod.GET)
-    public String main(@CurrentMember CurrentMemberDTO memberDTO) {
+    public String main(@CurrentManageUser CurrentManageUserDTO currentManageUserDTO) {
         return ManageViewConstant.Main.MAIN;
     }
 	

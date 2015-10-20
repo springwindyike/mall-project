@@ -14,9 +14,12 @@ import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.model.product.ProductType;
+import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.service.product.ProductStyleService;
+import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -46,6 +49,12 @@ public class ProductResource {
     private ProductService productService;
 	@Autowired
 	private ProductStyleService productStyleService;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private ProductTypeService productTypeService;
 
     public static Logger getLog() {
         return log;
@@ -60,19 +69,10 @@ public class ProductResource {
         BeanUtils.copyProperties(productDetailDTO, product);
     			Brand brand = new Brand();
     			brand.setId(productDetailDTO.getBrandId());
-    			Member member = new Member();
-    			member.setAccount(productDetailDTO.getCreateByAccount());
-    			member.setMemberType(MemberType.MEMBER);
-    			member.setSex(Gender.MAN);
+    			Member member = memberService.findByAccount(productDetailDTO.getCreateByAccount());
     			Channel channel = new Channel();
     			channel.setId(productDetailDTO.getChannelId());
-    			member.setChannel(channel);
-    			ProductType productType = new ProductType();
-    			productType.setId(productDetailDTO.getTypeId());
-    			productType.setCode("1001001001");
-    			productType.setName("衬衫");
-    			productType.setNote("非常好");
-    			productType.setLevel(3);
+    			ProductType productType = productTypeService.findOne(productDetailDTO.getTypeId());
     			product.setBrand(brand);
     			product.setCreateBy(member);
     			product.setUpdateBy(member);

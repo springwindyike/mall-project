@@ -27,7 +27,7 @@
 
 	<!-- 安全管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="memberRealm"/>
+		<property name="realm" ref="manageUserRealm"/>
 		<property name="sessionManager" ref="sessionManager"/>
 		<property name="cacheManager" ref="cacheManager"/>
 		<property name="rememberMeManager" ref="rememberMeManager"/>
@@ -64,7 +64,7 @@
 		<property name="storedCredentialsHexEncoded" value="true"/>
 	</bean>
 	<!-- Realm实现 -->
-	<bean id="memberRealm" class="com.ishare.mall.manage.shiro.realm.MemberRealm">
+	<bean id="manageUserRealm" class="com.ishare.mall.manage.shiro.realm.ManagerUserRealm">
 		<property name="credentialsMatcher" ref="credentialsMatcher"/>
 		<property name="cachingEnabled" value="true"/>
 		<property name="authenticationCachingEnabled" value="true"/>
@@ -103,7 +103,7 @@
 		<property name="maxAge" value="2592000"/><!-- 30天 -->
 	</bean>
 
-	<bean id="sysMemberFilter" class="com.ishare.mall.manage.shiro.filter.SysMemberFilter"/>
+	<bean id="sysMemberFilter" class="com.ishare.mall.manage.shiro.filter.SysManageUserFilter"/>
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager"/>

@@ -7,7 +7,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  * Description :
  * Version 1.0
  */
-public class CaptchaMemberPasswordToken extends UsernamePasswordToken {
+public class CaptchaManageUserPasswordToken extends UsernamePasswordToken {
 
     private String captcha;
 
@@ -19,9 +19,9 @@ public class CaptchaMemberPasswordToken extends UsernamePasswordToken {
         this.captcha = captcha;
     }
 
-    public CaptchaMemberPasswordToken(String account, char[] password,
+    public CaptchaManageUserPasswordToken(String username, char[] password,
                                boolean rememberMe, String host, String captcha) {
-        super(account, password, rememberMe, host);
+        super(username, password, rememberMe, host);
         this.captcha = captcha;
     }
 }
