@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
 import com.ishare.mall.common.base.enumeration.MemberType;
+import com.ishare.mall.common.base.enumeration.UserType;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -22,12 +24,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
 import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
 import com.ishare.mall.common.base.dto.permission.PermissionDTO;
 import com.ishare.mall.common.base.dto.permission.RoleDTO;
-import com.ishare.mall.manage.service.member.MemberService;
+import com.ishare.mall.manage.service.manageuser.ManageUserService;
 import com.ishare.mall.manage.shiro.exception.NoPermissionLoginException;
 
 /**
@@ -35,16 +36,16 @@ import com.ishare.mall.manage.shiro.exception.NoPermissionLoginException;
  * Description : member认证相关
  * Version 1.0
  */
-public class MemberRealm extends AuthorizingRealm {
+public class ManagerUserRealm extends AuthorizingRealm {
 
-    private static final Logger log = LoggerFactory.getLogger(MemberRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(ManagerUserRealm.class);
 
     private String bizAppUrl;
 
     @Autowired
-    private MemberService memberService;
+    private ManageUserService manageUserService;
 
-    public MemberRealm() {
+    public ManagerUserRealm() {
 
     }
 
@@ -73,22 +74,22 @@ public class MemberRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        String account = (String) token.getPrincipal();
-        MemberDTO memberDTO = memberService.findByAccount(account);
-        if (memberDTO == null) {
+        String username = (String) token.getPrincipal();
+        ManageUserDTO manageUserDTO = manageUserService.findByUsername(username);
+        if (manageUserDTO == null) {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();
         }
-        MemberType memberType = memberDTO.getMemberType();
-        log.debug("用户类型 : " + memberType.getName());
-        if(!MemberType.SELF.equals(memberType)){
+        UserType userType = manageUserDTO.getUserType();
+        log.debug("用户类型 : " + userType.getName());
+        if(!MemberType.SELF.equals(userType)){
             log.debug("warnning : 没有权限登录！");
             throw new NoPermissionLoginException("没有权限登录");
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                memberDTO.getAccount(),
-                memberDTO.getPassword(),
-                ByteSource.Util.bytes(memberDTO.getCredentialsSalt()),
+                manageUserDTO.getUsername(),
+                manageUserDTO.getPassword(),
+                ByteSource.Util.bytes(manageUserDTO.getCredentialsSalt()),
                 getName()
         );
         return authenticationInfo;

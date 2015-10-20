@@ -1,10 +1,12 @@
 
 package com.ishare.mall.core.utils.mapper;
 
+import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
@@ -36,10 +38,12 @@ public class OrikaMapper extends ConfigurableMapper {
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Product.class, ProductDetailDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Order.class, OrderDetailDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ProductType.class, ProductTypeDTO.class));
+		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ManageUser.class, ManageUserDTO.class));
 	    this.registerProductClassMap(mapperFactory);
 	    this.registerMemberClassMap(mapperFactory);
 	    this.registerOrderClassMap(mapperFactory);
 	    this.registerProductTypeClassMap(mapperFactory);
+		this.registerManageUserClassMap(mapperFactory);
     }
 
 	/**
@@ -78,6 +82,21 @@ public class OrikaMapper extends ConfigurableMapper {
 
 	private void registerMemberClassMap(MapperFactory mapperFactory) {
 		ClassMapBuilder<Member, MemberDetailDTO>classMapBuilder = mapperFactory.classMap(Member.class, MemberDetailDTO.class);
+		Field[] fields = MemberDetailDTO.class.getDeclaredFields();
+		Set<String> otherDealField = new HashSet<String>();
+		otherDealField.add("channelId");
+		otherDealField.add("createTimeStr");
+		for (Field field : fields) {
+			if (!otherDealField.contains(field.getName())) {
+				classMapBuilder.field(field.getName(), field.getName());
+			}
+		}
+		classMapBuilder.field("channel.id", "channelId");
+		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+	}
+
+	private void registerManageUserClassMap(MapperFactory mapperFactory) {
+		ClassMapBuilder<ManageUser, ManageUserDTO>classMapBuilder = mapperFactory.classMap(ManageUser.class, ManageUserDTO.class);
 		Field[] fields = MemberDetailDTO.class.getDeclaredFields();
 		Set<String> otherDealField = new HashSet<String>();
 		otherDealField.add("channelId");

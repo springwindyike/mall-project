@@ -4,6 +4,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import com.ishare.mall.manage.shiro.token.CaptchaManageUserPasswordToken;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ishare.mall.manage.shiro.exception.IncorrectCaptchaException;
-import com.ishare.mall.manage.shiro.token.CaptchaMemberPasswordToken;
 
 /**
  * Created by YinLin on 2015/9/9.
@@ -27,7 +27,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        CaptchaMemberPasswordToken token = createToken(request, response);
+        CaptchaManageUserPasswordToken token = createToken(request, response);
         try {
             this.doCaptchaValidate((HttpServletRequest) request, token);
             Subject subject = getSubject(request, response);
@@ -42,7 +42,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
         }
     }
 
-    private void doCaptchaValidate(HttpServletRequest request, CaptchaMemberPasswordToken token) {
+    private void doCaptchaValidate(HttpServletRequest request, CaptchaManageUserPasswordToken token) {
         String captcha = (String) request.getSession().getAttribute("code");
         if (captcha != null && !captcha.equalsIgnoreCase(token.getCaptcha())) {
             throw new IncorrectCaptchaException("验证码错误！");
@@ -50,14 +50,14 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
     }
 
     @Override
-    protected CaptchaMemberPasswordToken createToken(ServletRequest request, ServletResponse response) {
+    protected CaptchaManageUserPasswordToken createToken(ServletRequest request, ServletResponse response) {
         //return super.createToken(request, response);
-        String account = getUsername(request);
+        String username = getUsername(request);
         String password = getPassword(request);
         String captcha = getCaptcha(request);
         boolean rememberMe = isRememberMe(request);
         String host = getHost(request);
-        return new CaptchaMemberPasswordToken(account, password.toCharArray(), rememberMe, host, captcha);
+        return new CaptchaManageUserPasswordToken(username, password.toCharArray(), rememberMe, host, captcha);
     }
 
     /**

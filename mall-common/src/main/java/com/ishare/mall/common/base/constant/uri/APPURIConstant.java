@@ -27,7 +27,10 @@ public interface APPURIConstant {
 
         String REQUEST_MAPPING_GET_BY_ACCOUNT = "/{account}";
     }
-
+    interface ManageUser {
+        String REQUEST_MAPPING   = "/manageuser";
+        String REQUEST_MAPPING_GET_BY_USERNAME = "/{username}";
+    }
     //权限
     interface Permission {
         String REQUEST_MAPPING = "/permission";

@@ -12,10 +12,10 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CurrentMember {
+public @interface CurrentManageUser {
     /**
      * 当前用户在Request中的key
      * @return
      */
-    String value() default CommonConstant.Common.CURRENT_MEMBER;
+    String value() default CommonConstant.Common.CURRENT_MANAGEUSER;
 }

@@ -9,6 +9,7 @@ public interface CommonConstant {
     interface Common {
         String SLASH = "/";
         String CURRENT_MEMBER = "member";
+        String CURRENT_MANAGEUSER = "manageUser";
         String PAGE_REQUEST = "pageRequest";
     }
    

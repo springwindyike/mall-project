@@ -2,9 +2,9 @@ package com.ishare.mall.manage.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
-import com.ishare.mall.manage.annoation.CurrentMember;
+import com.ishare.mall.manage.annoation.CurrentManageUser;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,7 +116,7 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_EDIT_SUBMIT, method = RequestMethod.POST)
 	@ResponseBody
 	public OrderResultDTO editSubmit(
-			@CurrentMember CurrentMemberDTO currentMemberDTO,
+			@CurrentManageUser CurrentManageUserDTO currentManageUserDTO,
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("updatePrice") String updatePrice,
 			@NotEmpty @RequestParam("updateNum") String updateNum,
@@ -134,7 +134,7 @@ public class OrderController extends BaseController {
 		item.add(orderItemDetailDTO);
 
 		orderDetailDTO.setItems(item);
-		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
+		orderDetailDTO.setUpdateBy(currentManageUserDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		try {
@@ -171,7 +171,7 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER_SUBMIT, method = RequestMethod.POST)
 	@ResponseBody
 	public OrderResultDTO deliverSubmit(
-			@CurrentMember CurrentMemberDTO currentMemberDTO,
+			@CurrentManageUser CurrentManageUserDTO currentManageUserDTO,
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("expressId") String expressId, 
 			@NotEmpty @RequestParam("expressOrder") String expressOrder, 
@@ -181,7 +181,7 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setOrderId(orderId);
 		orderDetailDTO.setExpressId(expressId);
 		orderDetailDTO.setExpressOrder(expressOrder);
-		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
+		orderDetailDTO.setUpdateBy(currentManageUserDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		try {
@@ -228,13 +228,13 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_CANCEL_SUBMIT, method = RequestMethod.POST)
 	@ResponseBody
 	public OrderResultDTO cancelSubmit(
-			@CurrentMember CurrentMemberDTO currentMemberDTO,
+			@CurrentManageUser CurrentManageUserDTO currentManageUserDTO,
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("note") String note) {
 		OrderResultDTO orderResultDTO = new OrderResultDTO();
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(orderId);
-		orderDetailDTO.setUpdateBy(currentMemberDTO.getId().toString());
+		orderDetailDTO.setUpdateBy(currentManageUserDTO.getId().toString());
 		orderDetailDTO.setLog(note);
 		ResponseEntity<Response> resultDTO = null;
 		try {
