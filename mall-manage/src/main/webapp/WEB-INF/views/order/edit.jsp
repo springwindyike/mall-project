@@ -35,21 +35,21 @@
 	  <div class="row cl">
 		  <label class="form-label col-3"><span class="c-red">*</span>修改商品单价为：</label>
 		  <div class="formControls col-5">
-			  <input type="text" class="input-text" autocomplete="off" placeholder="" name="updatePrice" id="updatePrice" datatype="price" nullmsg="单价不能为空" >
+			  <input value="${updatePrice }" type="text" class="input-text" autocomplete="off" placeholder="" name="updatePrice" id="updatePrice" datatype="price" nullmsg="单价不能为空" >
 		  </div>
 		  <div class="col-4"> </div>
 	  </div>
 	  <div class="row cl">
 		  <label class="form-label col-3"><span class="c-red">*</span>修改购买数量为：</label>
 		  <div class="formControls col-5">
-			  <input type="text" class="input-text" autocomplete="off" placeholder="" name="updateNum" id="updateNum" datatype="n1-3" nullmsg="数量不能为空" >
+			  <input value="${updateNum }" type="text" class="input-text" autocomplete="off" placeholder="" name="updateNum" id="updateNum" datatype="n1-3" nullmsg="数量不能为空" >
 		  </div>
 		  <div class="col-4"> </div>
 	  </div>
 	  <div class="row cl">
 		  <label class="form-label col-3"><span class="c-red">*</span>修改收货人为：</label>
 		  <div class="formControls col-5">
-			  <input type="text" class="input-text" autocomplete="off" placeholder="" name="updateConsignee" id="updateConsignee" datatype="*2-20" nullmsg="收货人不能为空" >
+			  <input value="${updateConsignee }" type="text" class="input-text" autocomplete="off" placeholder="" name="updateConsignee" id="updateConsignee" datatype="*2-20" nullmsg="收货人不能为空" >
 		  </div>
 		  <div class="col-4"> </div>
 	  </div>

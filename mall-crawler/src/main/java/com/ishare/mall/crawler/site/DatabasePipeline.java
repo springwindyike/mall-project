@@ -64,19 +64,18 @@ public class DatabasePipeline implements Pipeline {
         if (clazz.equals(BasePageData.class)) {
             BasePageData basePageData = (BasePageData) items;
 
-            Long fetchUrlId = basePageDataRepository.findByLinkAndCode(basePageData.getLink(), basePageData.getCode());
-            log.debug("fetchUrlId={}, link={}, code={}", fetchUrlId, basePageData.getLink(), basePageData.getCode());
-            if (fetchUrlId == null) {
-                FetchUrl fetchUrl = fetchUrlRepository.findByLinkIs(basePageData.getLink());
-                basePageData.setFetchUrl(fetchUrl);
+            //Long fetchUrlId = basePageDataRepository.findByLinkAndCode(basePageData.getLink(), basePageData.getCode());
+            FetchUrl fetchUrl = fetchUrlRepository.findByLinkIs(basePageData.getLink());
+            BasePageData pageData = fetchUrl.getPageData();
+            log.debug("fetchUrl={}, link={}, code={}", fetchUrl, basePageData.getLink(), basePageData.getCode());
+            if (pageData == null) {
                 basePageData.setFetchSite(fetchUrl.getFetchSite());
+                fetchUrl.setPageData(basePageData);
                 basePageDataRepository.save(basePageData);
                 fetchUrlRepository.save(fetchUrl);
             } else {
-                BasePageData basePageDataInDB = basePageDataRepository.findByLinkIs(basePageData.getLink());
-                log.debug("id is not null basePageDataInDB={}, {}", basePageDataInDB.getFetchSite(), basePageData.getFetchUrl());
-                BeanUtils.copyProperties(basePageData, basePageDataInDB, "id", "fetchUrl", "fetchSite");
-                basePageDataRepository.save(basePageDataInDB);
+                BeanUtils.copyProperties(basePageData, pageData, "id", "fetchUrl", "fetchSite");
+                basePageDataRepository.save(pageData);
             }
 
         }
