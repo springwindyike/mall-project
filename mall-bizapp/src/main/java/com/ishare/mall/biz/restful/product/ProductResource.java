@@ -69,20 +69,9 @@ public class ProductResource {
         BeanUtils.copyProperties(productDetailDTO, product);
     			Brand brand = new Brand();
     			brand.setId(productDetailDTO.getBrandId());
-    	/*		Member member = new Member();
-    			member.setAccount(productDetailDTO.getCreateByAccount());
-    			member.setMemberType(MemberType.MEMBER);
-    			member.setSex(productDetailDTO.getGender());*/
     			Member member = memberService.findByAccount(productDetailDTO.getCreateByAccount());
     			Channel channel = new Channel();
     			channel.setId(productDetailDTO.getChannelId());
-    			/*member.setChannel(channel);*/
-    		/*	ProductType productType = new ProductType();
-    			productType.setId(productDetailDTO.getTypeId());
-    			productType.setCode("1001001001");
-    			productType.setName("衬衫");
-    			productType.setNote("非常好");
-    			productType.setLevel(3);*/
     			ProductType productType = productTypeService.findOne(productDetailDTO.getTypeId());
     			product.setBrand(brand);
     			product.setCreateBy(member);
