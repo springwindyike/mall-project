@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 /**
  * Created by YinLin on 2015/9/23.
- * Description : Api�߼��쳣
+ * Description : Api逻辑异常
  * Version 1.0
  */
 public class ApiLogicException extends WebException {

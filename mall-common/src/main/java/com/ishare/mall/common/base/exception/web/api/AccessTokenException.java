@@ -4,7 +4,7 @@ import com.ishare.mall.common.base.exception.WebException;
 
 /**
  * Created by YinLin on 2015/9/24.
- * Description : Õë¶ÔÎ´´«tokenÒì³£
+ * Description : é’ˆå¯¹æœªä¼ tokenå¼‚å¸¸
  * Version 1.0
  */
 public class AccessTokenException extends WebException {
