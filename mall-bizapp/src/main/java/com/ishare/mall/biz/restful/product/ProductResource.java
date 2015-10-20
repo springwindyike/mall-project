@@ -235,7 +235,7 @@ public class ProductResource {
 		Integer offset = productListDTO.getOffset();
 		Integer limit = productListDTO.getLimit();
 		PageDTO<ProductListDTO> pageDTO = new PageDTO();
-		Response response = new Response();
+		Response<PageDTO<ProductListDTO>> response = new Response();
 		Page<Product> result = null;
 		try{
 			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
@@ -252,10 +252,11 @@ public class ProductResource {
 					BeanUtils.copyProperties(product,productDTO);
 					list.add(productDTO);
 				}
-				pageDTO.setContent(list);
+				//pageDTO.setContent(list);
 				log.debug("total page = " + result.getTotalPages() + "total element = " + result.getTotalElements());
 				//productListDTO.setPageDTO(pageDTO);
 			}
+			pageDTO.setContent(list);
 			pageDTO.setTotalPages(result.getTotalPages());
 			pageDTO.setITotalDisplayRecords(result.getTotalElements());
 			pageDTO.setITotalRecords(result.getTotalElements());
