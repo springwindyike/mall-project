@@ -78,8 +78,8 @@ public class ProductController extends BaseController {
 	productDetailDTO.setChannelId(member.getChannelId());
 	productDetailDTO.setCreateByAccount(member.getAccount());
 	productDetailDTO.setTypeId(addProductForm.getTypeId());
-	productDetailDTO.setTypeCode(addProductForm.getTypeCode());
-	productDetailDTO.setTypeName(addProductForm.getTypeName());
+/*	productDetailDTO.setTypeCode(addProductForm.getTypeCode());
+	productDetailDTO.setTypeName(addProductForm.getTypeName());*/
 	productDetailDTO.setGender(member.getGender());
 	ResponseEntity<Response> resultDTO = null;
 	RestTemplate restTemplate = new RestTemplate();
