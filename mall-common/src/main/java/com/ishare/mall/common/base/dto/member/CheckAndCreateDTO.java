@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by YinLin on 2015/9/25.
- * Description : ¼ì²âºÍ´´½¨DTO
+ * Description : æ£€æµ‹å’Œåˆ›å»ºDTO
  * Version 1.0
  */
 public class CheckAndCreateDTO implements Serializable {

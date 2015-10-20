@@ -89,10 +89,10 @@ public class ProductServiceImpl implements ProductService {
 	public void saveProduct(Product product) {
 		try {
 			// TODO Auto-generated method stub
-			productTypeRepository.save(product.getType());
+			/*productTypeRepository.save(product.getType());
 			memberRepository.save(product.getCreateBy());
 			brandRepository.save(product.getBrand());
-			channelRepository.save(product.getChannel());
+			channelRepository.save(product.getChannel());*/
 			productRepository.save(product);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -153,6 +153,7 @@ public class ProductServiceImpl implements ProductService {
 
 		//商品图片处理
 		if (fetchProductDTO.getPhotos() != null && fetchProductDTO.getPhotos().size() > 0) {
+			product.setDefaultImageUrl(fetchProductDTO.getPhotos().get(0));
 			log.debug("photoImages.size() : " + fetchProductDTO.getPhotos().size());
 			for (String url : fetchProductDTO.getPhotos()) {
 				ProductPhotoImage productPhotoImage = new ProductPhotoImage();

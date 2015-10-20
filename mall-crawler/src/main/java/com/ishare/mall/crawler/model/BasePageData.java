@@ -1,28 +1,28 @@
 package com.ishare.mall.crawler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "spider_base_page_data")
 public class BasePageData {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Enumerated(EnumType.STRING)
     private FetchSite fetchSite;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    private FetchUrl fetchUrl;
+    //@OneToOne(cascade = CascadeType.ALL)
+    //private FetchUrl fetchUrl;
 
     private String code;
     private String name;
@@ -44,17 +44,17 @@ public class BasePageData {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "spider_base_page_data_attr", joinColumns = @JoinColumn(name = "id"))
     private Map<String, String> attributes = Maps.newHashMap();
-    @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+    @ElementCollection(fetch = FetchType.LAZY, targetClass = String.class)
     @CollectionTable(name = "spider_base_page_data_intro_image", joinColumns = @JoinColumn(name = "data_id"))
     @Column(name = "intro_image_url")
-    private List<String> introImages = Lists.newArrayList();
-    @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+    private Set<String> introImages = Sets.newHashSet();
+    @ElementCollection(fetch = FetchType.LAZY, targetClass = String.class)
     @CollectionTable(name = "spider_base_page_data_photo", joinColumns = @JoinColumn(name = "data_id"))
     @Column(name = "photo_url")
-    private List<String> photos = Lists.newArrayList();
+    private Set<String> photos = Sets.newHashSet();
 
     public Long getId() {
         return id;
@@ -64,6 +64,7 @@ public class BasePageData {
         this.id = id;
     }
 
+    /*
     public FetchUrl getFetchUrl() {
         return fetchUrl;
     }
@@ -71,7 +72,7 @@ public class BasePageData {
     public void setFetchUrl(FetchUrl fetchUrl) {
         this.fetchUrl = fetchUrl;
     }
-
+    */
     public String getName() {
         return name;
     }
@@ -160,19 +161,19 @@ public class BasePageData {
         this.attributes = attributes;
     }
 
-    public List<String> getIntroImages() {
+    public Set<String> getIntroImages() {
         return introImages;
     }
 
-    public void setIntroImages(List<String> introImages) {
+    public void setIntroImages(Set<String> introImages) {
         this.introImages = introImages;
     }
 
-    public List<String> getPhotos() {
+    public Set<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<String> photos) {
+    public void setPhotos(Set<String> photos) {
         this.photos = photos;
     }
 
@@ -197,7 +198,7 @@ public class BasePageData {
         return "BasePageData{" +
                 "id=" + id +
                 ", fetchSite=" + fetchSite +
-                ", fetchUrl=" + fetchUrl +
+                //", fetchUrl=" + fetchUrl +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", link='" + link + '\'' +

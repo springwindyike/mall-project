@@ -11,7 +11,7 @@ import java.util.Date;
 public class FetchUrl {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(length = 512)
@@ -31,6 +31,9 @@ public class FetchUrl {
     @Type(type = "yes_no")
     @Column(name = "is_valid")
     private boolean valid;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private BasePageData pageData;
 
     public Long getId() {
         return id;
@@ -88,5 +91,11 @@ public class FetchUrl {
         this.type = type;
     }
 
+    public BasePageData getPageData() {
+        return pageData;
+    }
 
+    public void setPageData(BasePageData pageData) {
+        this.pageData = pageData;
+    }
 }
