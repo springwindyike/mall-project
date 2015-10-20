@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.ishare.mall.crawler.model.BasePageData;
 import com.ishare.mall.crawler.site.FetchConstant;
 import com.ishare.mall.crawler.site.jd.JDPageConfig;
@@ -58,8 +59,8 @@ public class JDPageProcessor implements PageProcessor {
         basePageData.setPriceOriginText(String.valueOf(jdProduct.getPriceOrigin()));
         basePageData.setAttributes(jdProduct.getAttributes());
         basePageData.setDatetimeText(new DateTime(jdProduct.getJdDatetime()).toString("yyyy-MM-dd"));
-        basePageData.setIntroImages(jdProduct.getIntroImgs());
-        basePageData.setPhotos(jdProduct.getPhoto());
+        basePageData.setIntroImages(Sets.newHashSet(jdProduct.getIntroImgs()));
+        basePageData.setPhotos(Sets.newHashSet(jdProduct.getPhoto()));
         basePageData.setTag(jdProduct.getTag());
         basePageData.setUpdateTime(DateTime.now().toDate());
         basePageData.setThirdPartyShopName(jdProduct.getThirdPartyShopName());
