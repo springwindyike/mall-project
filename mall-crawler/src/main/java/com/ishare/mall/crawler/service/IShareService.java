@@ -38,10 +38,13 @@ public class IShareService {
         ResponseEntity<Response<FetchProductDTO>> responseEntity;
         FetchProductDTO fetchProductDTO = new FetchProductDTO();
 
+        log.debug("attributes={}\nintroImages={}\nphotos={}", data.getAttributes(), data.getIntroImages(), data.getPhotos());
+
         BeanUtils.copyProperties(data, fetchProductDTO, "attributes", "introImages", "photos");
         fetchProductDTO.setAttributes(data.getAttributes());
-        fetchProductDTO.setIntroImages(data.getIntroImages());
-        fetchProductDTO.setPhotos(data.getPhotos());
+        fetchProductDTO.setIntroImages(Lists.newArrayList(data.getIntroImages()));
+        fetchProductDTO.setPhotos(Lists.newArrayList(data.getPhotos()));
+        log.debug("attributes={}\nintroImages={}\nphotos={}", fetchProductDTO.getAttributes(), fetchProductDTO.getIntroImages(), fetchProductDTO.getPhotos());
 
         boolean isSuccess = false;
         try {
@@ -76,8 +79,8 @@ public class IShareService {
 
             BeanUtils.copyProperties(basePageData, fetchProductDTO, "attributes", "introImages", "photos");
             fetchProductDTO.setAttributes(basePageData.getAttributes());
-            fetchProductDTO.setIntroImages(basePageData.getIntroImages());
-            fetchProductDTO.setPhotos(basePageData.getPhotos());
+            fetchProductDTO.setIntroImages(Lists.newArrayList(basePageData.getIntroImages()));
+            fetchProductDTO.setPhotos(Lists.newArrayList(basePageData.getPhotos()));
             fetchProductDTOs.add(fetchProductDTO);
         }
         try {
