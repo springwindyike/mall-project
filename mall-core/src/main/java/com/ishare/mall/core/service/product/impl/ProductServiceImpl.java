@@ -89,10 +89,10 @@ public class ProductServiceImpl implements ProductService {
 	public void saveProduct(Product product) {
 		try {
 			// TODO Auto-generated method stub
-			productTypeRepository.save(product.getType());
+			/*productTypeRepository.save(product.getType());
 			memberRepository.save(product.getCreateBy());
 			brandRepository.save(product.getBrand());
-			channelRepository.save(product.getChannel());
+			channelRepository.save(product.getChannel());*/
 			productRepository.save(product);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

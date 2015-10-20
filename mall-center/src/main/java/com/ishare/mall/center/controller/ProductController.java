@@ -75,9 +75,12 @@ public class ProductController extends BaseController {
 	}
 	productDetailDTO.setName(addProductForm.getProductName());
 	productDetailDTO.setBrandId(1);
-	productDetailDTO.setChannelId(1);
-	productDetailDTO.setTypeId(1);
-	productDetailDTO.setCreateByAccount("18566469285");
+	productDetailDTO.setChannelId(member.getChannelId());
+	productDetailDTO.setCreateByAccount(member.getAccount());
+	productDetailDTO.setTypeId(addProductForm.getTypeId());
+	productDetailDTO.setTypeCode(addProductForm.getTypeCode());
+	productDetailDTO.setTypeName(addProductForm.getTypeName());
+	productDetailDTO.setGender(member.getGender());
 	ResponseEntity<Response> resultDTO = null;
 	RestTemplate restTemplate = new RestTemplate();
 		try {
