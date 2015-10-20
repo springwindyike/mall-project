@@ -28,12 +28,11 @@ public class SysMemberFilter extends PathMatchingFilter {
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         String account = (String) SecurityUtils.getSubject().getPrincipal();
         if (account == null) return true;
-        CurrentMemberDTO currentMemberDTO;
+        CurrentMemberDTO currentMemberDTO = null;
         try {
             currentMemberDTO = memberService.getCurrentMember(account);
         } catch (Exception e) {
             SecurityUtils.getSubject().logout();
-            throw e;
         }
         request.setAttribute(CommonConstant.Common.CURRENT_MEMBER, currentMemberDTO);
         return true;
