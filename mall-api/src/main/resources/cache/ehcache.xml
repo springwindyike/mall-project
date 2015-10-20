@@ -11,5 +11,13 @@
            overflowToDisk="false"
            statistics="true">
     </cache>
+    <cache name="token-cache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
 
 </ehcache>

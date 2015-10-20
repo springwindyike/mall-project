@@ -94,7 +94,7 @@ public interface OAuthService {
      */
     boolean checkAccount(String account);
 
-    OAuthObject createToken(String type, String appid, String secret, String account) throws ApiLogicException;
+    OAuthObject createToken(String type, String appId, String secret, String account) throws ApiLogicException;
 
     String getClientId(String token);
 }
