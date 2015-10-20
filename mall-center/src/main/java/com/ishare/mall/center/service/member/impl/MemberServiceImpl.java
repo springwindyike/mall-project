@@ -48,6 +48,8 @@ public class MemberServiceImpl extends BaseService implements MemberService {
             currentMemberDTO.setAccount(memberDTO.getAccount());
             currentMemberDTO.setChannelId(memberDTO.getChannelId());
             currentMemberDTO.setName(memberDTO.getName());
+            currentMemberDTO.setId(memberDTO.getId());
+            currentMemberDTO.setGender(memberDTO.getGender());
             this.cache.put(account, currentMemberDTO);
         }
         return currentMemberDTO;
