@@ -20,17 +20,21 @@ import javax.servlet.ServletResponse;
 public class SysMemberFilter extends PathMatchingFilter {
 
     private static final Logger log = LoggerFactory.getLogger(SysMemberFilter.class);
+
     @Autowired
     private MemberService memberService;
 
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-        log.debug("来咯·");
         String account = (String) SecurityUtils.getSubject().getPrincipal();
-        log.debug("account : " + account);
         if (account == null) return true;
-        CurrentMemberDTO currentMemberDTO = memberService.getCurrentMember(account);
-        log.debug("account : " + account);
+        CurrentMemberDTO currentMemberDTO;
+        try {
+            currentMemberDTO = memberService.getCurrentMember(account);
+        } catch (Exception e) {
+            SecurityUtils.getSubject().logout();
+            throw e;
+        }
         request.setAttribute(CommonConstant.Common.CURRENT_MEMBER, currentMemberDTO);
         return true;
     }

@@ -153,6 +153,7 @@ public class ProductServiceImpl implements ProductService {
 
 		//商品图片处理
 		if (fetchProductDTO.getPhotos() != null && fetchProductDTO.getPhotos().size() > 0) {
+			product.setDefaultImageUrl(fetchProductDTO.getPhotos().get(0));
 			log.debug("photoImages.size() : " + fetchProductDTO.getPhotos().size());
 			for (String url : fetchProductDTO.getPhotos()) {
 				ProductPhotoImage productPhotoImage = new ProductPhotoImage();
