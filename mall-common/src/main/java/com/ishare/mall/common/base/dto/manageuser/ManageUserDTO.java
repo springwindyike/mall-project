@@ -1,10 +1,7 @@
 package com.ishare.mall.common.base.dto.manageuser;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
-import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.enumeration.Gender;
-import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.enumeration.UserType;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
@@ -24,75 +21,31 @@ public class ManageUserDTO extends GenericDTO {
     private String username;
     private String password;
     private String salt;
+
     private Date createTime;
     private Date updateTime;
     private String createBy;
     private String updateBy ;
     private boolean use = true;
     private Gender sex;
+
     private String name;
     private UserType userType;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Gender getSex() {
-        return sex;
-    }
-
-    public void setSex(Gender sex) {
-        this.sex = sex;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getCredentialsSalt() {
-        return username + salt;
-    }
-
-
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public String getSalt() {
+        return salt;
     }
 
     public Date getCreateTime() {
@@ -115,6 +68,34 @@ public class ManageUserDTO extends GenericDTO {
         return use;
     }
 
+    public Gender getSex() {
+        return sex;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
@@ -133,5 +114,21 @@ public class ManageUserDTO extends GenericDTO {
 
     public void setUse(boolean use) {
         this.use = use;
+    }
+
+    public void setSex(Gender sex) {
+        this.sex = sex;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public String getCredentialsSalt() {
+        return username + salt;
     }
 }

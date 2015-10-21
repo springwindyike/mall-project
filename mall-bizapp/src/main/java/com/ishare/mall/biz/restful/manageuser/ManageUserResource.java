@@ -1,38 +1,19 @@
 package com.ishare.mall.biz.restful.manageuser;
 
-import com.ishare.mall.common.base.constant.CommonConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
-import com.ishare.mall.common.base.dto.member.*;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
-import com.ishare.mall.common.base.enumeration.Gender;
-import com.ishare.mall.common.base.enumeration.MemberType;
-import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.common.base.general.Response;
-import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.manage.ManageUser;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.manageuser.ManageUserService;
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.utils.UuidUtils;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
-import com.ishare.mall.core.utils.page.PageUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by YinLin on 2015/9/1.
