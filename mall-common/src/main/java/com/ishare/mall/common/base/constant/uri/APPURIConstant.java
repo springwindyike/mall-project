@@ -49,6 +49,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_ID = "/findByID";
         String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
         String REQUEST_MAPPING_QUERY_BY_ID = "/findByID";
+        String REQUEST_MAPPING_SAVE = "/save";
     }
     //产品
     interface Product{
