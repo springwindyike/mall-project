@@ -2,6 +2,9 @@ package com.ishare.mall.core.repository.information;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +23,7 @@ public interface ChannelRepository extends JpaRepository<Channel, Integer>, JpaS
     List<Channel> findByAppSecret(String appSecret);
     @Query("SELECT c FROM Channel c WHERE c.name=?1")
     List<Channel> findByName(String name);
+
+//    @Query("SELECT c FROM Channel c WHERE c.id = ?1")
+//    Page<Channel> getChannelpage(Integer id, Pageable pageable);
 }

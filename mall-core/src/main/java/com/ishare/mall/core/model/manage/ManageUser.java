@@ -31,10 +31,6 @@ public class ManageUser extends BaseEntity {
     private String password;
     @Column(name = "user_salt", length = 32)
     private String salt;
-    /**所属渠道**/
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
     /**成员名称**/
     @Column(name = "user_name",length = 27)
     private String name = "";
@@ -76,10 +72,6 @@ public class ManageUser extends BaseEntity {
 
     public String getSalt() {
         return salt;
-    }
-
-    public Channel getChannel() {
-        return channel;
     }
 
     public String getName() {
@@ -128,10 +120,6 @@ public class ManageUser extends BaseEntity {
 
     public void setSalt(String salt) {
         this.salt = salt;
-    }
-
-    public void setChannel(Channel channel) {
-        this.channel = channel;
     }
 
     public void setName(String name) {

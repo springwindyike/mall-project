@@ -121,6 +121,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BY_APP_SECRET = "/app/secret/{secret}";
         //通过渠道名称查询重复
         String REQUEST_MAPPING_FIND_VALID_BY_NAME = "/findValidByName";
+        String REQUEST_MAPPING_GET_CHANNEL_PAGE = "/getChannelPage";
+        String REQUEST_MAPPING_FIND_BY_ID="/findByChnnelId";
     }
     
     interface Express {
