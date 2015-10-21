@@ -22,7 +22,7 @@ public class OrderForm {
     private Integer productId;
 
     private Long [] attributeIds;
-    @NotNull(message = "商品样式ID不能为空")
+
     private Long styleId;
 
     /* 收货人姓名 */
@@ -50,7 +50,7 @@ public class OrderForm {
     private String detail;
 
     /* 电子邮箱 */
-    @NotEmpty(message = "收货人电子邮件不能为空")
+    //@NotEmpty(message = "收货人电子邮件不能为空")
     private String email;
 
     /* 电话 */
@@ -180,7 +180,7 @@ public class OrderForm {
     public ExchangeDTO toExchangeDTO() {
         ExchangeDTO exchangeDTO = new ExchangeDTO();
         BeanUtils.copyProperties(this, exchangeDTO);
-       return exchangeDTO;
+        return exchangeDTO;
     }
 
     public Integer getAmount() {
