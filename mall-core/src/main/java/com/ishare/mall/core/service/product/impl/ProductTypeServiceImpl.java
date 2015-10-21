@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.exception.ProductTypeServiceException;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.repository.product.ProductTypeRepository;
@@ -89,5 +90,15 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		}
 		    if (productType == null || productType.size() == 0) return null;
 		    return productType;
+	}
+
+	@Override
+	public void saveProductType(ProductType productType)
+ {
+		try {
+			productTypeRepository.save(productType);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("产品分类保存失败");}
 	}
 }
