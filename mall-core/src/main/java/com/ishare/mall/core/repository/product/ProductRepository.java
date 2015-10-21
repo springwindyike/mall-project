@@ -16,9 +16,9 @@ import com.ishare.mall.core.model.product.Product;
  * Version 1.0
  */
 public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor {
-    @Query("SELECT p FROM Product p WHERE p.code=?1")
+    @Query("SELECT p FROM Product p WHERE p.code=?1 and visible = true and p.fetch.id IS NOT NULL")
     List<Product> findByCode(String code);
-    
+
 	@Query("SELECT p FROM Product p WHERE p.channel.id = ?1")
 	Page<Product> findByChannelId(Integer channelId, Pageable pageable);
 	

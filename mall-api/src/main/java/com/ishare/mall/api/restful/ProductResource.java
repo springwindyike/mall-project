@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ishare.mall.api.service.product.ProductService;
+import com.ishare.mall.common.base.constant.CommonConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -62,6 +63,7 @@ public class ProductResource extends BaseResource{
         //转换为接口输出数据对象DTO 映射规则需要自己添加
         try {
             ProductDetailDTO productDetailDTO = productService.findOne(id);
+
             Response<ProductDetailDTO> response = new Response<ProductDetailDTO>();
             response.setData(productDetailDTO);
             return new ResponseEntity(response,HttpStatus.OK);
@@ -153,7 +155,10 @@ public class ProductResource extends BaseResource{
     @RequestMapping(value = "/offset/{offset}/limit/{limit}", method = RequestMethod.GET,produces = {"application/json"})
     public ResponseEntity get(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit) {
         try {
-            PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,null);
+            Map<String, Object> searchParams = Maps.newConcurrentMap();
+            searchParams.put("EQ_visible",true);
+            searchParams.put("NN_fetch.id", CommonConstant.Emputy.EMPUTY_NULL);
+            PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,searchParams);
             Response<PageDTO<ProductListDTO>> response = new Response<PageDTO<ProductListDTO>>();
             response.setData(productListDTOPageDTO);
             return new ResponseEntity(response, HttpStatus.OK);
@@ -201,6 +206,8 @@ public class ProductResource extends BaseResource{
     public ResponseEntity listByBrandName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_brand.name", name);
+        searchParams.put("EQ_visible",true);
+        searchParams.put("NN_fetch.id", CommonConstant.Emputy.EMPUTY_NULL);
         try {
             PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,searchParams);
             Response<PageDTO<ProductListDTO>> response = new Response<PageDTO<ProductListDTO>>();
@@ -254,6 +261,8 @@ public class ProductResource extends BaseResource{
     public ResponseEntity listByBrandId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("brandId")Integer brandId) {
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("EQ_brand.id", brandId);
+        searchParams.put("EQ_visible",true);
+        searchParams.put("NN_fetch.id", CommonConstant.Emputy.EMPUTY_NULL);
         try{
             PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,searchParams);
             Response<PageDTO<ProductListDTO>> response = new Response<PageDTO<ProductListDTO>>();
@@ -307,6 +316,8 @@ public class ProductResource extends BaseResource{
     public ResponseEntity listByTypeName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("LIKE_type.name", name);
+        searchParams.put("EQ_visible",true);
+        searchParams.put("NN_fetch.id", CommonConstant.Emputy.EMPUTY_NULL);
         try{
             PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,searchParams);
             Response<PageDTO<ProductListDTO>> response = new Response<PageDTO<ProductListDTO>>();
@@ -360,6 +371,8 @@ public class ProductResource extends BaseResource{
     public ResponseEntity listByTypeId(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("typeId")String typeId) {
         Map<String, Object> searchParams = Maps.newConcurrentMap();
         searchParams.put("EQ_type.id", typeId);
+        searchParams.put("EQ_visible",true);
+        searchParams.put("NN_fetch.id", CommonConstant.Emputy.EMPUTY_NULL);
         try{
             PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,searchParams);
             Response<PageDTO<ProductListDTO>> response = new Response<PageDTO<ProductListDTO>>();
@@ -413,6 +426,8 @@ public class ProductResource extends BaseResource{
    public ResponseEntity listByName(@NotEmpty @PathVariable(OFFSET)Integer offset, @NotEmpty @PathVariable(LIMIT)Integer limit, @NotEmpty @PathVariable("name")String name) {
        Map<String, Object> searchParams = Maps.newConcurrentMap();
        searchParams.put("LIKE_name", name);
+       searchParams.put("EQ_visible",true);
+       searchParams.put("NN_fetch.id", CommonConstant.Emputy.EMPUTY_NULL);
        try{
            PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,searchParams);
            Response<PageDTO<ProductListDTO>> response = new Response<PageDTO<ProductListDTO>>();
@@ -477,6 +492,8 @@ public class ProductResource extends BaseResource{
             }
         }
         Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+        searchParams.put("EQ_visible",true);
+        searchParams.put("NN_fetch.id", CommonConstant.Emputy.EMPUTY_NULL);
         try{
             PageDTO<ProductListDTO> productListDTOPageDTO = productService.findByPage(offset,limit,searchParams);
             Response<PageDTO<ProductListDTO>> response = new Response<PageDTO<ProductListDTO>>();

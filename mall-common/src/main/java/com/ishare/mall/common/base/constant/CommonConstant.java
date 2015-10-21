@@ -28,4 +28,8 @@ public interface CommonConstant {
     interface CharSet {
         String UTF8 = "utf-8";
     }
+
+    interface Emputy{
+        String EMPUTY_NULL = "NULL";
+    }
 }
