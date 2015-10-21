@@ -26,12 +26,9 @@ public class SysManageUserFilter extends PathMatchingFilter {
 
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-        log.debug("来咯·");
         String username = (String) SecurityUtils.getSubject().getPrincipal();
-        log.debug("username : " + username);
         if (username == null) return true;
         CurrentManageUserDTO currentManageUserDTO = manageUserService.getCurrentManageUser(username);
-        log.debug("username : " + username);
         request.setAttribute(CommonConstant.Common.CURRENT_MANAGEUSER, currentManageUserDTO);
         return true;
     }

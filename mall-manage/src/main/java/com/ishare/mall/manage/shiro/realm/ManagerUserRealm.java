@@ -70,7 +70,6 @@ public class ManagerUserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
-        log.debug("username:" + username);
         ManageUserDTO manageUserDTO = manageUserService.findByUsername(username);
         if (manageUserDTO == null) {
             log.debug("username : 用户不存在！");
