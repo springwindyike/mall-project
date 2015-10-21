@@ -295,6 +295,8 @@ public class OrderServiceImpl implements OrderService {
 	private List<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
 
 		List<OrderItem> orderItems = new ArrayList<>();
+		// TODO 判断商品是否是来自第三方
+		// TODO 判断商品库存
 		// TODO 暂时单个商品
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
 		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
