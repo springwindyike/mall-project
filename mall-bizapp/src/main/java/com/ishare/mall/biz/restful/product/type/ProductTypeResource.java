@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ishare.mall.common.base.dto.page.PageDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -17,9 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.ProductTypeServiceException;
+import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
@@ -265,4 +271,28 @@ public class ProductTypeResource {
     public static Logger getLog() {
         return log;
     }
+    
+    @RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_SAVE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public Response saveProductType(@RequestBody ProductTypeDTO productTypeDTO){
+        ProductType productType = new ProductType();
+        BeanUtils.copyProperties(productTypeDTO, productType);
+        ProductType parent = new ProductType();
+        //productType.setParent(parent);
+        productType.setName(productTypeDTO.getTypeName());
+        
+    			try {
+					productTypeService.saveProductType(productType);
+				} catch (Exception e) { 
+									log.error(e.getMessage(), e);
+	            Response response = new Response();
+	            response.setMessage("系统错误");
+	            response.setSuccess(false);
+	            return response;
+	            }
+    			 Response response = new Response();
+    			return response;
+}
 }

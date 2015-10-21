@@ -25,6 +25,7 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING = "/category";
 		String REQUEST_MAPPING_CATEGORY_LIST = "/list";
 		String REQUEST_MAPPING_CATEGORY_ADD = "/add";
+		String REQUEST_MAPPING_CATEGORY_ADD_TEST = "/addTest";
 	}
 
 	interface Express {
