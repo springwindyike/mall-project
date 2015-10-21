@@ -1,9 +1,6 @@
 package com.ishare.mall.manage.shiro.filter;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
+import com.ishare.mall.manage.shiro.exception.IncorrectCaptchaException;
 import com.ishare.mall.manage.shiro.token.CaptchaManageUserPasswordToken;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -12,7 +9,9 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ishare.mall.manage.shiro.exception.IncorrectCaptchaException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by YinLin on 2015/9/9.
@@ -27,6 +26,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+        log.debug("here");
         CaptchaManageUserPasswordToken token = createToken(request, response);
         try {
             this.doCaptchaValidate((HttpServletRequest) request, token);
