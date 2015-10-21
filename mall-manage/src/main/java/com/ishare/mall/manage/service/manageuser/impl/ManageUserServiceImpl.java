@@ -47,11 +47,9 @@ public class ManageUserServiceImpl extends BaseService implements ManageUserServ
             currentManageUserDTO = new CurrentManageUserDTO();
             ManageUserDTO manageUserDTO = this.findByUsername(username);
             currentManageUserDTO.setUsername(manageUserDTO.getUsername());
-            currentManageUserDTO.setChannelId(manageUserDTO.getChannelId());
             currentManageUserDTO.setName(manageUserDTO.getName());
             currentManageUserDTO.setId(manageUserDTO.getId());
-            currentManageUserDTO.setChannelName(manageUserDTO.getChannelName());
-            currentManageUserDTO.setGender(manageUserDTO.getGender());
+            currentManageUserDTO.setGender(manageUserDTO.getSex());
             this.cache.put(username, currentManageUserDTO);
         }
         return currentManageUserDTO;

@@ -98,16 +98,14 @@ public class OrikaMapper extends ConfigurableMapper {
 
 	private void registerManageUserClassMap(MapperFactory mapperFactory) {
 		ClassMapBuilder<ManageUser, ManageUserDTO>classMapBuilder = mapperFactory.classMap(ManageUser.class, ManageUserDTO.class);
-		Field[] fields = MemberDetailDTO.class.getDeclaredFields();
+		Field[] fields = ManageUserDTO.class.getDeclaredFields();
 		Set<String> otherDealField = new HashSet<String>();
-		otherDealField.add("channelId");
 		otherDealField.add("createTimeStr");
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
 				classMapBuilder.field(field.getName(), field.getName());
 			}
 		}
-		classMapBuilder.field("channel.id", "channelId");
 		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	

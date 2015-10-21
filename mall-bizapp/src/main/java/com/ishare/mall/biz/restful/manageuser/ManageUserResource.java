@@ -69,9 +69,7 @@ public class ManageUserResource {
             return response;
         }
         BeanUtils.copyProperties(manageUser, manageUserDTO);
-        manageUserDTO.setChannelId(manageUser.getChannel().getId());
-        manageUserDTO.setChannelName(manageUser.getChannel().getName());
-        manageUserDTO.setGender(manageUser.getSex());
+        manageUserDTO.setSex(manageUser.getSex());
         manageUserDTO.setUserType(manageUser.getUserType());
         response.setData(manageUserDTO);
         return response;

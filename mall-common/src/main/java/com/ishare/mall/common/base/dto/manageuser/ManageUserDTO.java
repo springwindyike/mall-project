@@ -9,6 +9,7 @@ import com.ishare.mall.common.base.enumeration.UserType;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 /**
  * Created by YinLin on 2015/10/19.
@@ -19,25 +20,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonAutoDetect
 public class ManageUserDTO extends GenericDTO {
 
-    private static final long serialVersionUID = 1L;
     private Integer id;
     private String username;
     private String password;
-
     private String salt;
-
-    private Integer channelId;
-    private Integer roleId;
-
-    private int offset;
-    private int limit;
-    private String sex;
-    private String mobile;
+    private Date createTime;
+    private Date updateTime;
+    private String createBy;
+    private String updateBy ;
+    private boolean use = true;
+    private Gender sex;
     private String name;
     private UserType userType;
-    private PageDTO pageDTO;
-    private Gender gender;
-    private String channelName;
 
     public String getPassword() {
         return password;
@@ -47,52 +41,12 @@ public class ManageUserDTO extends GenericDTO {
         this.password = password;
     }
 
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public String getSex() {
+    public Gender getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Gender sex) {
         this.sex = sex;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public String getName() {
@@ -103,13 +57,6 @@ public class ManageUserDTO extends GenericDTO {
         this.name = name;
     }
 
-    public PageDTO getPageDTO() {
-        return pageDTO;
-    }
-
-    public void setPageDTO(PageDTO pageDTO) {
-        this.pageDTO = pageDTO;
-    }
 
     public String getSalt() {
         return salt;
@@ -128,24 +75,8 @@ public class ManageUserDTO extends GenericDTO {
         return id;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
     }
 
     public String getUsername() {
@@ -162,5 +93,45 @@ public class ManageUserDTO extends GenericDTO {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public boolean isUse() {
+        return use;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public void setUse(boolean use) {
+        this.use = use;
     }
 }
