@@ -103,6 +103,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		otherDealField.add("channelId");
 		otherDealField.add("createTimeStr");
 		otherDealField.add("serialVersionUID");
+		otherDealField.add("roleId");
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
 				classMapBuilder.field(field.getName(), field.getName());
