@@ -42,4 +42,9 @@ public class ManageUserServiceImpl implements ManageUserService {
 		return manageUsers != null && manageUsers.size() > 0 ? manageUsers.get(0) : null;
 	}
 
+	@Override
+	public ManageUser findOne(Integer id) {
+		return manageUserRepository.findOne(id);
+	}
+
 }

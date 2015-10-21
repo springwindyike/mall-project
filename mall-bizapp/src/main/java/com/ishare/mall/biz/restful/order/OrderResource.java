@@ -10,12 +10,14 @@ import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderDeliverInfo;
 import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
+import com.ishare.mall.core.service.manageuser.ManageUserService;
 import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
@@ -51,6 +53,8 @@ public class OrderResource {
     private ChannelService channelService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ManageUserService manageUserService;
 
     public static Logger getLog() {
         return log;
@@ -299,12 +303,12 @@ public class OrderResource {
 		order.setExpressOrder(orderDetailDTO.getExpressOrder());
 		order.setState(OrderState.DELIVERED);
 
-		Member updateMember = memberService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
-		order.setUpdateBy(updateMember);
+		ManageUser updateUser = manageUserService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
+
 		order.setUpdateTime(new Date());
 		String logStr = "发货操作：" + orderDetailDTO.getLog();
 		try {
-			Order newOrder = orderService.updateOrder(order, logStr);
+			Order newOrder = orderService.updateOrder(order, logStr, updateUser);
 				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 				BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 				innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
@@ -340,12 +344,12 @@ public class OrderResource {
 		Order order = orderService.findOne(orderDetailDTO.getOrderId());
 		order.setState(OrderState.CANCEL);
 
-		Member updateMember = memberService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
-		order.setUpdateBy(updateMember);
+		ManageUser updateUser = manageUserService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
+
 		order.setUpdateTime(new Date());
 		String logStr = "取消操作：" + orderDetailDTO.getLog();
 		try {
-			Order newOrder = orderService.updateOrder(order, logStr);
+			Order newOrder = orderService.updateOrder(order, logStr, updateUser);
 				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 				BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 				innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
@@ -394,12 +398,12 @@ public class OrderResource {
 			orderItem.setProductPrice(newItem.getProductPrice());
 		}
 
-		Member updateMember = memberService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
-		order.setUpdateBy(updateMember);
+		ManageUser updateUser = manageUserService.findOne(Integer.parseInt(orderDetailDTO.getUpdateBy()));
+
 		order.setUpdateTime(new Date());
 		String logStr = "编辑操作：" + orderDetailDTO.getLog();
 		try {
-			Order newOrder = orderService.editOrder(order, logStr, orderDeliverInfo, orderItem);
+			Order newOrder = orderService.editOrder(order, logStr, orderDeliverInfo, orderItem, updateUser);
 			OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 			BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 			innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
