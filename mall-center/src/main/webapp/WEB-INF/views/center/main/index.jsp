@@ -161,6 +161,14 @@
 				</ul>
 			</dd>
 		</dl>
+		<dl id="menu-channel">
+			<dt><i class="Hui-iconfont">&#xe62d;</i> 开发者中心<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="channel/view.dhtml" href="javascript:void(0)">渠道详情</a></li>
+				</ul>
+			</dd>
+		</dl>
 		<dl id="menu-tongji">
 			<dt><i class="Hui-iconfont">&#xe61a;</i> 系统统计<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>

@@ -6,6 +6,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +60,12 @@ public class ChannelServiceImpl implements ChannelService {
 		return null;
 	}
 
-	@Override
+    @Override
+    public Page<Channel> getChannelpage(Integer id, PageRequest pageRequest) {
+        return channelRepository.getChannelpage(id,pageRequest);
+    }
+
+    @Override
 	public Channel findByName(String name) {
     List<Channel> channels = channelRepository.findByName(name);
     if (channels == null || channels.size() == 0) return null;
