@@ -3,6 +3,7 @@ package com.ishare.mall.manage.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailForUpdateDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.manage.annoation.CurrentManageUser;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -121,7 +122,7 @@ public class OrderController extends BaseController {
 			@NotEmpty @RequestParam("updatePrice") String updatePrice,
 			@NotEmpty @RequestParam("updateNum") String updateNum,
 			@NotEmpty @RequestParam("updateConsignee") String updateConsignee,
-			@NotEmpty @RequestParam("note") String note) {
+			@NotEmpty @RequestParam("note") String note)throws Exception{
 		OrderResultDTO orderResultDTO = new OrderResultDTO();
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(orderId);
@@ -136,17 +137,30 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setItems(item);
 		orderDetailDTO.setUpdateBy(currentManageUserDTO.getId().toString());
 		orderDetailDTO.setLog(note);
-		ResponseEntity<Response> resultDTO = null;
-		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_EDIT), orderDetailDTO, Response.class);
-		} catch (Exception e) {
-			log.debug("error");
-			e.printStackTrace();
+//		ResponseEntity<Response> resultDTO = null;
+//		try {
+//			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_EDIT), orderDetailDTO, Response.class);
+//		} catch (Exception e) {
+//			log.debug("error");
+//			e.printStackTrace();
+//			orderResultDTO.setMessage("编辑失败！");
+//			orderResultDTO.setSuccess(false);
+//			return orderResultDTO;
+//		}
+//		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_EDIT),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT + "error");
 			orderResultDTO.setMessage("编辑失败！");
 			orderResultDTO.setSuccess(false);
 			return orderResultDTO;
 		}
-		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		orderDetailDTO = resultDTO.getBody().getData();
+
 		orderResultDTO.setMessage("编辑成功！");
 		orderResultDTO.setSuccess(true);
 		orderResultDTO.setOrderDetailDTO(orderDetailDTO);
@@ -175,7 +189,7 @@ public class OrderController extends BaseController {
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("expressId") String expressId, 
 			@NotEmpty @RequestParam("expressOrder") String expressOrder, 
-			@NotEmpty @RequestParam("note") String note) {
+			@NotEmpty @RequestParam("note") String note) throws Exception{
 		OrderResultDTO orderResultDTO = new OrderResultDTO();
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(orderId);
@@ -183,17 +197,30 @@ public class OrderController extends BaseController {
 		orderDetailDTO.setExpressOrder(expressOrder);
 		orderDetailDTO.setUpdateBy(currentManageUserDTO.getId().toString());
 		orderDetailDTO.setLog(note);
-		ResponseEntity<Response> resultDTO = null;
-		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_DELIVER), orderDetailDTO, Response.class);
-		} catch (Exception e) {
-			log.debug("error");
-			e.printStackTrace();
+//		ResponseEntity<Response> resultDTO = null;
+//		try {
+//			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_DELIVER), orderDetailDTO, Response.class);
+//		} catch (Exception e) {
+//			log.debug("error");
+//			e.printStackTrace();
+//			orderResultDTO.setMessage("发货失败！");
+//			orderResultDTO.setSuccess(false);
+//			return orderResultDTO;
+//		}
+//		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_DELIVER),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT + "error");
 			orderResultDTO.setMessage("发货失败！");
 			orderResultDTO.setSuccess(false);
 			return orderResultDTO;
 		}
-		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		orderDetailDTO = resultDTO.getBody().getData();
+
 		orderResultDTO.setMessage("发货成功！");
 		orderResultDTO.setSuccess(true);
 		orderResultDTO.setOrderDetailDTO(orderDetailDTO);
@@ -230,23 +257,36 @@ public class OrderController extends BaseController {
 	public OrderResultDTO cancelSubmit(
 			@CurrentManageUser CurrentManageUserDTO currentManageUserDTO,
 			@NotEmpty @RequestParam("orderId") String orderId,
-			@NotEmpty @RequestParam("note") String note) {
+			@NotEmpty @RequestParam("note") String note) throws Exception{
 		OrderResultDTO orderResultDTO = new OrderResultDTO();
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(orderId);
 		orderDetailDTO.setUpdateBy(currentManageUserDTO.getId().toString());
 		orderDetailDTO.setLog(note);
-		ResponseEntity<Response> resultDTO = null;
-		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CANCEL), orderDetailDTO, Response.class);
-		} catch (Exception e) {
-			log.debug("error");
-			e.printStackTrace();
+//		ResponseEntity<Response> resultDTO = null;
+//		try {
+//			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CANCEL), orderDetailDTO, Response.class);
+//		} catch (Exception e) {
+//			log.debug("error");
+//			e.printStackTrace();
+//			orderResultDTO.setMessage("取消失败！");
+//			orderResultDTO.setSuccess(false);
+//			return orderResultDTO;
+//		}
+//		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		try{
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CANCEL),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>(){});
+		}catch (Exception e){
+			log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT + "error");
 			orderResultDTO.setMessage("取消失败！");
 			orderResultDTO.setSuccess(false);
 			return orderResultDTO;
 		}
-		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();
+		orderDetailDTO = resultDTO.getBody().getData();
+
 		orderResultDTO.setMessage("取消成功！");
 		orderResultDTO.setSuccess(true);
 		orderResultDTO.setOrderDetailDTO(orderDetailDTO);

@@ -32,5 +32,10 @@ public interface ManageUserService {
 	 */
 	ManageUser findByUsername(String username)throws ManageUserServiceException;
 
-
+	/**
+	 * 通过账号ID查找
+	 * @param id
+	 * @return
+	 */
+	ManageUser findOne(Integer id);
 }

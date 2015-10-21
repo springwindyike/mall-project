@@ -8,6 +8,7 @@ import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.enumeration.PayType;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.*;
 import com.ishare.mall.core.model.pay.OrderPayLog;
@@ -342,14 +343,17 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 	@Override
-	public Order updateOrder(Order order, String note) throws OrderServiceException {
-		OrderUpdateLog orderUpdateLog = new OrderUpdateLog();
-		orderUpdateLog.setNote(note);
-		orderUpdateLog.setOrder(order);
-		orderUpdateLog.setUpdateBy(order.getUpdateBy());
-		orderUpdateLog.setUpdateTime(order.getUpdateTime());
+	public Order updateOrder(Order order, String note, ManageUser updateUser) throws OrderServiceException {
+		OrderActionLog orderActionLog = new OrderActionLog();
+		orderActionLog.setNote(note);
+		orderActionLog.setOrder(order);
+		orderActionLog.setActionById(updateUser.getId().toString());
+		orderActionLog.setActionByname(updateUser.getName());
+		orderActionLog.setActionBytype(updateUser.getUserType().getName());
+		orderActionLog.setActionByfrom("manage");
+		orderActionLog.setActionTime(order.getUpdateTime());
 		try {
-			orderUpdateLogRepository.save(orderUpdateLog);
+			orderUpdateLogRepository.save(orderActionLog);
 			return orderRepository.save(order);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -401,16 +405,19 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem) throws OrderServiceException {
-		OrderUpdateLog orderUpdateLog = new OrderUpdateLog();
-		orderUpdateLog.setNote(note);
-		orderUpdateLog.setOrder(order);
-		orderUpdateLog.setUpdateBy(order.getUpdateBy());
-		orderUpdateLog.setUpdateTime(order.getUpdateTime());
+	public Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem, ManageUser updateUser) throws OrderServiceException {
+		OrderActionLog orderActionLog = new OrderActionLog();
+		orderActionLog.setNote(note);
+		orderActionLog.setOrder(order);
+		orderActionLog.setActionById(updateUser.getId().toString());
+		orderActionLog.setActionByname(updateUser.getName());
+		orderActionLog.setActionBytype(updateUser.getUserType().getName());
+		orderActionLog.setActionByfrom("manage");
+		orderActionLog.setActionTime(order.getUpdateTime());
 		try {
 			deliverRepository.save(orderDeliverInfo);
 			itemRepository.save(orderItem);
-			orderUpdateLogRepository.save(orderUpdateLog);
+			orderUpdateLogRepository.save(orderActionLog);
 			return orderRepository.save(order);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
