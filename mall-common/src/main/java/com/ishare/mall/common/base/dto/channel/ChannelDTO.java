@@ -2,6 +2,7 @@ package com.ishare.mall.common.base.dto.channel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
@@ -41,7 +42,9 @@ public class ChannelDTO extends GenericDTO {
 	private String linkName;
 	private String linkPhone;
 	private String businessScale;
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm ",timezone="GMT+8")
 	private Date createTime;
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm ",timezone="GMT+8")
 	private Date updateTime;
 	private String createBy;
 	private String updateBy;

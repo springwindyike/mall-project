@@ -27,47 +27,47 @@
     </tr>
     <tr>
       <th class="text-r">应用ID：</th>
-      <td>${memberDetailDTO.appId}</td>
+      <td>${channelDTO.appId}</td>
     </tr>
     <tr>
       <th class="text-r">应用秘钥：</th>
-      <td>${memberDetailDTO.appSecret}</td>
+      <td>${channelDTO.appSecret}</td>
     </tr>
     <tr>
       <th class="text-r">地址：</th>
-      <td>${memberDetailDTO.country}+" "+${memberDetailDTO.province}+" "+${memberDetailDTO.city}+" "+${memberDetailDTO.district}+" "+${memberDetailDTO.detail}</td>
+      <td>${channelDTO.country}&nbsp${channelDTO.province}&nbsp${channelDTO.city}&nbsp${channelDTO.district}&nbsp${channelDTO.detail}</td>
     </tr>
     <tr>
       <th class="text-r">联系电话：</th>
-      <td>${memberDetailDTO.phone}</td>
+      <td>${channelDTO.phone}</td>
     </tr>
     <tr>
       <th class="text-r">联系人姓名：</th>
-      <td>${memberDetailDTO.linkName}</td>
+      <td>${channelDTO.linkName}</td>
     </tr>
     <tr>
       <th class="text-r">邮政编码：</th>
-      <td>${memberDetailDTO.code}</td>
+      <td>${channelDTO.code}</td>
     </tr>
     <tr>
       <th class="text-r">公司营业规模：</th>
-      <td>${memberDetailDTO.businessScale}</td>
+      <td>${channelDTO.businessScale}</td>
     </tr>
     <tr>
       <th class="text-r">经营类别：</th>
-      <td>${memberDetailDTO.industry}</td>
+      <td>${channelDTO.industry}</td>
     </tr>
     <tr>
       <th class="text-r">创建时间：</th>
-      <td>${memberDetailDTO.createTime}</td>
+      <td>${channelDTO.createTime}</td>
     </tr>
     <tr>
       <th class="text-r">更新时间：</th>
-      <td>${memberDetailDTO.updateTime}</td>
+      <td>${channelDTO.updateTime}</td>
     </tr>
     <tr>
       <th class="text-r">创建者：</th>
-      <td>${memberDetailDTO.createBy}</td>
+      <td>${channelDTO.createBy}</td>
     </tr>
     </tbody>
   </table>
