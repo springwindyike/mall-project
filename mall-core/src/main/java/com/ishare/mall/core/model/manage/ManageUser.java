@@ -153,4 +153,8 @@ public class ManageUser extends BaseEntity {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
+
+    public String getCredentialsSalt() {
+        return username + salt;
+    }
 }

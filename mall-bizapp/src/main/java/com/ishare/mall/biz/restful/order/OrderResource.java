@@ -12,7 +12,6 @@ import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.manage.ManageUser;
-import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderActionLog;
 import com.ishare.mall.core.model.order.OrderDeliverInfo;
@@ -426,7 +425,7 @@ public class OrderResource {
 		String logStr = "编辑操作：" + orderDetailDTO.getLog();
 
 		OrderActionLog orderActionLog = new OrderActionLog();
-		orderActionLog.setOrderActionLogType(OrderActionLogType.CREATE);
+		orderActionLog.setOrderActionLogType(OrderActionLogType.EDIT);
 		orderActionLog.setNote(logStr);
 		orderActionLog.setOrder(order);
 		orderActionLog.setActionById(updateUser.getId().toString());
@@ -610,7 +609,13 @@ public class OrderResource {
 			consumes = {"application/json", "application/xml"})
     public Response list(@RequestBody OrderRequestDTO requestDTO) {
 		Page<Order> orders = orderService.listByAccount(requestDTO);
-		PageDTO pageDTO = PageUtils.mapper(orders, OrderDetailDTO.class);
+		PageDTO<OrderDetailDTO> pageDTO = PageUtils.mapper(orders, OrderDetailDTO.class);
+		List<OrderDetailDTO> orderDetailDTOs = pageDTO.getContent();
+		if (orderDetailDTOs != null) {
+			for (OrderDetailDTO orderDetailDTO : orderDetailDTOs) {
+
+			}
+		}
 		Response<PageDTO<OrderDetailDTO>> response = new Response<>();
 		response.setData(pageDTO);
 		return response;
