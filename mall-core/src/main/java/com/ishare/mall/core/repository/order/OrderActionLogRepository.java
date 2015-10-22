@@ -10,6 +10,6 @@ import com.ishare.mall.core.model.order.OrderActionLog;
  * Description:
  * Version 1.0
  */
-public interface OrderUpdateLogRepository extends JpaRepository<OrderActionLog, String>, JpaSpecificationExecutor {
+public interface OrderActionLogRepository extends JpaRepository<OrderActionLog, String>, JpaSpecificationExecutor {
     
 }

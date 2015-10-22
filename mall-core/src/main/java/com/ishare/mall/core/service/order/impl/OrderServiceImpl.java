@@ -2,23 +2,18 @@ package com.ishare.mall.core.service.order.impl;
 
 import com.ishare.mall.common.base.dto.order.*;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
-import com.ishare.mall.common.base.enumeration.CostType;
-import com.ishare.mall.common.base.enumeration.OrderItemState;
-import com.ishare.mall.common.base.enumeration.OrderState;
-import com.ishare.mall.common.base.enumeration.PayType;
+import com.ishare.mall.common.base.enumeration.*;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.*;
 import com.ishare.mall.core.model.pay.OrderPayLog;
 import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.repository.deliver.DeliverRepository;
 import com.ishare.mall.core.repository.information.OrderItemRepository;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
-import com.ishare.mall.core.repository.order.OrderUpdateLogRepository;
+import com.ishare.mall.core.repository.order.OrderActionLogRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
 import com.ishare.mall.core.repository.product.ProductStyleRepository;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -28,7 +23,6 @@ import com.ishare.mall.core.service.pay.OrderPayLogService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private ChannelService channelService;
 	@Autowired
-	private OrderUpdateLogRepository orderUpdateLogRepository;
+	private OrderActionLogRepository orderActionLogRepository;
 	@Autowired
 	private OrderPayLogService orderPayLogService;
 
@@ -217,6 +211,7 @@ public class OrderServiceImpl implements OrderService {
 		OrderDetailDTO detailDTO = new OrderDetailDTO();
 		Channel channel = channelService.findByAppId(exchangeDTO.getClientId());
 		Member buyer = memberService.findByAccount(exchangeDTO.getAccount());
+
 		String orderId = this.nextOrderId();
 		log.debug("ID : " + orderId);
 		order.setOrderId(orderId);
@@ -249,8 +244,19 @@ public class OrderServiceImpl implements OrderService {
 		OrderDeliverInfo orderDeliverInfo = this.initDeliverProcessor(order, exchangeDTO);
 		try {
 			order.setOrderDeliverInfo(orderDeliverInfo);
-			orderRepository.save(order);
+			Order newOrder = orderRepository.save(order);
 			itemRepository.save(orderItems);
+
+			OrderActionLog orderActionLog = new OrderActionLog();
+			orderActionLog.setOrderActionLogType(OrderActionLogType.DELIVER);
+			orderActionLog.setNote("创建订单");
+			orderActionLog.setOrder(newOrder);
+			orderActionLog.setActionById(buyer.getId().toString());
+			orderActionLog.setActionByname(buyer.getName());
+			orderActionLog.setActionBytype(buyer.getMemberType().getName());
+			orderActionLog.setActionByfrom("center");
+			orderActionLog.setActionTime(order.getUpdateTime());
+			orderActionLogRepository.save(orderActionLog);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("订单保存失败");
@@ -296,18 +302,22 @@ public class OrderServiceImpl implements OrderService {
 	private List<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
 
 		List<OrderItem> orderItems = new ArrayList<>();
+		// TODO 判断商品是否是来自第三方
+		// TODO 判断商品库存
 		// TODO 暂时单个商品
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
-		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
+		// 去掉style
+		//ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
 
 		OrderItem orderItem = new OrderItem();
 		orderItem.setOrder(order);
 		//设置样式相关
 		orderItem.setStyleId(exchangeDTO.getStyleId());
-		if (style != null) {
-			orderItem.setStyleName(style.getName());
-			orderItem.setImageUrl(style.getImageUrl());
-		}
+		//if (style != null) {
+			//orderItem.setStyleName(style.getName());
+			//orderItem.setImageUrl(style.getImageUrl());
+		//}
+		orderItem.setImageUrl(product.getDefaultImageUrl());
 		//设置商品相关
 		orderItem.setAmount(exchangeDTO.getAmount());
 		orderItem.setProductId(product.getId());
@@ -343,17 +353,10 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 	@Override
-	public Order updateOrder(Order order, String note, ManageUser updateUser) throws OrderServiceException {
-		OrderActionLog orderActionLog = new OrderActionLog();
-		orderActionLog.setNote(note);
-		orderActionLog.setOrder(order);
-		orderActionLog.setActionById(updateUser.getId().toString());
-		orderActionLog.setActionByname(updateUser.getName());
-		orderActionLog.setActionBytype(updateUser.getUserType().getName());
-		orderActionLog.setActionByfrom("manage");
-		orderActionLog.setActionTime(order.getUpdateTime());
+	public Order updateOrder(Order order, OrderActionLog orderActionLog) throws OrderServiceException {
+
 		try {
-			orderUpdateLogRepository.save(orderActionLog);
+			orderActionLogRepository.save(orderActionLog);
 			return orderRepository.save(order);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -405,19 +408,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem, ManageUser updateUser) throws OrderServiceException {
-		OrderActionLog orderActionLog = new OrderActionLog();
-		orderActionLog.setNote(note);
-		orderActionLog.setOrder(order);
-		orderActionLog.setActionById(updateUser.getId().toString());
-		orderActionLog.setActionByname(updateUser.getName());
-		orderActionLog.setActionBytype(updateUser.getUserType().getName());
-		orderActionLog.setActionByfrom("manage");
-		orderActionLog.setActionTime(order.getUpdateTime());
+	public Order editOrder(Order order, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem, OrderActionLog orderActionLog) throws OrderServiceException {
+
 		try {
 			deliverRepository.save(orderDeliverInfo);
 			itemRepository.save(orderItem);
-			orderUpdateLogRepository.save(orderActionLog);
+			orderActionLogRepository.save(orderActionLog);
 			return orderRepository.save(order);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
