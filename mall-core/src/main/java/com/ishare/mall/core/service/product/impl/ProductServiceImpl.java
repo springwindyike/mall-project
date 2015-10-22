@@ -251,4 +251,18 @@ public class ProductServiceImpl implements ProductService {
 			throw new OrderServiceException("搜索产品失败");
 		}
 	}
+
+	@Override
+	public boolean checkStore(Integer id) {
+		Product product = this.findOne(id);
+		if (product == null) return false;
+		if (!product.getVisible()) return false;
+		//判断是第三方还是自营
+		if (product.getSelf()) {
+			return product.getStock();
+		}
+		//第三方接口认证
+
+		return false;
+	}
 }
