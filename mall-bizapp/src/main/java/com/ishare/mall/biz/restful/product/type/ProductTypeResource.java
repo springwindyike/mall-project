@@ -3,8 +3,6 @@ package com.ishare.mall.biz.restful.product.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ishare.mall.common.base.dto.page.PageDTO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -18,14 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.ProductTypeServiceException;
-import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
@@ -93,7 +88,35 @@ public class ProductTypeResource {
         }
 		return null;
     }
-    
+    /**
+     * 直接返回所有的allType
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIND_ALL_TYPE, method = RequestMethod.POST,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
+    public Response getProductTypeAllTwo() {
+        List<ProductType> productTypeList;
+        Response response = new Response();
+		try {
+			productTypeList = productTypeService.findAllType();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+	}
+		 if (productTypeList != null && productTypeList.size() > 0) {
+	            //转换DTO
+	        	List<TreeNodeDTO> productTypes = 	(List<TreeNodeDTO>) MapperUtils.mapAsList(productTypeList, TreeNodeDTO.class);
+	        	for(TreeNodeDTO tnd : productTypes){
+	        		if (tnd.getParentId()==null){
+	        			tnd.setParentId(0);
+	        		}
+	        	}
+	        	response.setData(productTypes);
+	        	return response;
+	        	}
+		 return null;
+    }
     
     @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_FIRST_LEVEL, method = RequestMethod.GET,headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
     public Response getProductFirstType() {

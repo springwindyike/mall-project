@@ -101,4 +101,18 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 			log.error(e.getMessage(), e);
 			throw new ProductServiceException("产品分类保存失败");}
 	}
+
+	@Override
+	public List<ProductType> findAllType() throws ProductTypeServiceException {
+		// TODO Auto-generated method stub
+		List<ProductType> allType;
+		try {
+			allType = productTypeRepository.findAll();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("根据parentId查询产品类型失败");
+		}
+		    if (allType == null || allType.size() == 0) return null;
+		    return allType;
+	}
 }

@@ -48,7 +48,7 @@ var setting = {
 		simpleData: {
 			enable:true,
 			idKey: "id",
-			pIdKey: "pId",
+			pIdKey: "parentId",
 			rootPId: ""
 		}
 	},
@@ -66,8 +66,8 @@ var setting = {
 	}
 };
 
- /* var zNodes ={"child":[{"child":[{"child":[{"code":"1001001001","id":14,"parentId":13,"typeName":"贸易"}],"code":"1001001","id":13,"parentId":12,"typeName":"女士衣服"}],"code":"1001","id":12,"typeName":"衣服"},{"code":"1001001002","id":15,"typeName":"夹克"}]}; */
-	 	var zNodes =[
+/*  var zNodes =[{"id":2,"parentId":0,"name":"夹克","code":"1001","level":1,"note":"夏季"},{"id":10,"parentId":13,"name":"衬衫","code":"1001001001","level":3,"note":"非常好"},{"id":13,"parentId":2,"name":"女士衣服","code":"1001001","level":2,"note":"af"},{"id":14,"parentId":13,"name":"贸易","code":"1001001001","level":3,"note":"sdff"}];
+ */   /*  	var zNodes =[
 	{ id:1, pId:0, name:"一级分类", open:true},
 	{ id:11, pId:1, name:"二级分类"},
 	{ id:111, pId:11, name:"三级分类"},
@@ -78,7 +78,7 @@ var setting = {
 	{ id:12, pId:1, name:"二级分类 1-2"},
 	{ id:121, pId:12, name:"三级分类 1-2-1"},
 	{ id:122, pId:12, name:"三级分类 1-2-2"},
-]; 
+];  */
 var code;
 		
 function showCode(str) {
@@ -93,7 +93,7 @@ $(document).ready(function(){
         dataType: "json",
         url: "${pageContext.request.contextPath}/category/allType.dhtml",
         success: function (msg) {
-    //   var zNodes = msg;
+       var zNodes = msg;
      	var t = $("#treeDemo");
     	t = $.fn.zTree.init(t, setting, zNodes);
     	demoIframe = $("#testIframe");

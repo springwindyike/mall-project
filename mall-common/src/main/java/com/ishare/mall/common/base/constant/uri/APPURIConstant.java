@@ -44,6 +44,7 @@ public interface APPURIConstant {
     interface ProductType{
     	String REQUEST_MAPPING = "/productType";
     	String REQUEST_MAPPING_FIND_FIRST_LEVEL = "/findFirstLevel";
+    	String REQUEST_MAPPING_FIND_ALL_TYPE = "/allType";
     	String REQUEST_MAPPING_FIRST_LEVEL = "/firstLevel";
     	String REQUEST_MAPPING_CHILDREN_LEVEL = "/childLevel";
         String REQUEST_MAPPING_FIND_BY_ID = "/findByID";

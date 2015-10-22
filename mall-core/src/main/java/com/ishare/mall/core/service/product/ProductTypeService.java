@@ -25,6 +25,8 @@ public abstract interface ProductTypeService {
     public abstract List<ProductType> findByLevel(Integer id)throws ProductTypeServiceException;
     
     public abstract List<ProductType>findByParentId(Integer pariendId)throws ProductTypeServiceException;
+    
+    public abstract List<ProductType>findAllType()throws ProductTypeServiceException;
     /**
      * 保存产品分类
      * @param productType
