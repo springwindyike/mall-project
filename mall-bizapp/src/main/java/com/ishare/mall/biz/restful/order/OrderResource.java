@@ -7,12 +7,14 @@ import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderRequestDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
+import com.ishare.mall.common.base.enumeration.OrderActionLogType;
 import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.OrderActionLog;
 import com.ishare.mall.core.model.order.OrderDeliverInfo;
 import com.ishare.mall.core.model.order.OrderItem;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -307,8 +309,18 @@ public class OrderResource {
 
 		order.setUpdateTime(new Date());
 		String logStr = "发货操作：" + orderDetailDTO.getLog();
+
+		OrderActionLog orderActionLog = new OrderActionLog();
+		orderActionLog.setOrderActionLogType(OrderActionLogType.DELIVER);
+		orderActionLog.setNote(logStr);
+		orderActionLog.setOrder(order);
+		orderActionLog.setActionById(updateUser.getId().toString());
+		orderActionLog.setActionByname(updateUser.getName());
+		orderActionLog.setActionBytype(updateUser.getUserType().getName());
+		orderActionLog.setActionByfrom("manage");
+		orderActionLog.setActionTime(order.getUpdateTime());
 		try {
-			Order newOrder = orderService.updateOrder(order, logStr, updateUser);
+			Order newOrder = orderService.updateOrder(order, orderActionLog);
 				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 				BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 				innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
@@ -348,8 +360,18 @@ public class OrderResource {
 
 		order.setUpdateTime(new Date());
 		String logStr = "取消操作：" + orderDetailDTO.getLog();
+
+		OrderActionLog orderActionLog = new OrderActionLog();
+		orderActionLog.setOrderActionLogType(OrderActionLogType.CANCEL);
+		orderActionLog.setNote(logStr);
+		orderActionLog.setOrder(order);
+		orderActionLog.setActionById(updateUser.getId().toString());
+		orderActionLog.setActionByname(updateUser.getName());
+		orderActionLog.setActionBytype(updateUser.getUserType().getName());
+		orderActionLog.setActionByfrom("manage");
+		orderActionLog.setActionTime(order.getUpdateTime());
 		try {
-			Order newOrder = orderService.updateOrder(order, logStr, updateUser);
+			Order newOrder = orderService.updateOrder(order, orderActionLog);
 				OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 				BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 				innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
@@ -402,8 +424,18 @@ public class OrderResource {
 
 		order.setUpdateTime(new Date());
 		String logStr = "编辑操作：" + orderDetailDTO.getLog();
+
+		OrderActionLog orderActionLog = new OrderActionLog();
+		orderActionLog.setOrderActionLogType(OrderActionLogType.CREATE);
+		orderActionLog.setNote(logStr);
+		orderActionLog.setOrder(order);
+		orderActionLog.setActionById(updateUser.getId().toString());
+		orderActionLog.setActionByname(updateUser.getName());
+		orderActionLog.setActionBytype(updateUser.getUserType().getName());
+		orderActionLog.setActionByfrom("manage");
+		orderActionLog.setActionTime(order.getUpdateTime());
 		try {
-			Order newOrder = orderService.editOrder(order, logStr, orderDeliverInfo, orderItem, updateUser);
+			Order newOrder = orderService.editOrder(order, orderDeliverInfo, orderItem, orderActionLog);
 			OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 			BeanUtils.copyProperties(newOrder, innerOrderDetailDTO);
 			innerOrderDetailDTO.setChannelId(newOrder.getChannel().getId());
