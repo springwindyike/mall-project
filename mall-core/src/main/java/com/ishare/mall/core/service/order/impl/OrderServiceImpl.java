@@ -309,6 +309,7 @@ public class OrderServiceImpl implements OrderService {
 			//orderItem.setStyleName(style.getName());
 			//orderItem.setImageUrl(style.getImageUrl());
 		//}
+		orderItem.setImageUrl(product.getDefaultImageUrl());
 		//设置商品相关
 		orderItem.setAmount(exchangeDTO.getAmount());
 		orderItem.setProductId(product.getId());
