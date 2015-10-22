@@ -35,10 +35,10 @@ public class OrderItem extends BaseEntity {
     @Column(length = 30, nullable = true, name = "item_product_style_name")
     private String styleName;
     /* 产品样式ID */
-    @Column(nullable = false, name = "item_product_style_id",length = 50)
+    @Column(nullable = true, name = "item_product_style_id",length = 50)
     private Long styleId;
     /* 产品图片地址 */
-    @Column(nullable = false, name = "item_product_image_url",length = 200)
+    @Column(nullable = true, name = "item_product_image_url",length = 200)
     private String imageUrl;
     /* 产品状态 */
     @Enumerated(EnumType.STRING)
