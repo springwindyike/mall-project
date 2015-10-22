@@ -1,20 +1,12 @@
 package com.ishare.mall.core.model.order;
 
+import com.ishare.mall.common.base.enumeration.OrderActionLogType;
+
 import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_ORDER_ACTION_LOG_NAME;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * Created by Zhang Zhaoxin on 2015/9/25. 
@@ -27,6 +19,10 @@ public class OrderActionLog {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	/**日志类型 **/
+	@Enumerated(EnumType.STRING)
+	@Column(length = 10, nullable = false)
+	private OrderActionLogType orderActionLogType;
 	/* 所属订单 */
 	@ManyToOne(cascade = CascadeType.REFRESH, optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "action_order_id")
@@ -113,5 +109,13 @@ public class OrderActionLog {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public OrderActionLogType getOrderActionLogType() {
+		return orderActionLogType;
+	}
+
+	public void setOrderActionLogType(OrderActionLogType orderActionLogType) {
+		this.orderActionLogType = orderActionLogType;
 	}
 }

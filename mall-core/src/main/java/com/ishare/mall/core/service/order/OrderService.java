@@ -8,6 +8,7 @@ import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.order.Order;
 
+import com.ishare.mall.core.model.order.OrderActionLog;
 import com.ishare.mall.core.model.order.OrderDeliverInfo;
 import com.ishare.mall.core.model.order.OrderItem;
 import org.springframework.data.domain.Page;
@@ -95,14 +96,14 @@ public interface OrderService {
 	 * @return
 	 * @throws OrderServiceException
 	 */
-	Order updateOrder(Order order, String note, ManageUser updateUser) throws OrderServiceException;
+	Order updateOrder(Order order, OrderActionLog orderActionLog) throws OrderServiceException;
 	/**
 	 * 编辑订单
 	 * @param
 	 * @return
 	 * @throws OrderServiceException
 	 */
-	Order editOrder(Order order, String note, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem, ManageUser updateUser) throws OrderServiceException;
+	Order editOrder(Order order, OrderDeliverInfo orderDeliverInfo, OrderItem orderItem, OrderActionLog orderActionLog) throws OrderServiceException;
 	/**
 	 * 根据条件查询订单 center
 	 * @param orderId
