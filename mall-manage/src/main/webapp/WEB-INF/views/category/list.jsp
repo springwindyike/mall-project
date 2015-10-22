@@ -48,7 +48,7 @@ var setting = {
 		simpleData: {
 			enable:true,
 			idKey: "id",
-			pIdKey: "parentId",
+			pIdKey: "pId",
 			rootPId: ""
 		}
 	},
@@ -66,8 +66,19 @@ var setting = {
 	}
 };
 
- var zNodes ={"child":[{"child":[{"child":[{"code":"1001001001","id":14,"parentId":13,"typeName":"贸易"}],"code":"1001001","id":13,"parentId":12,"typeName":"女士衣服"}],"code":"1001","id":12,"typeName":"衣服"},{"code":"1001001002","id":15,"typeName":"夹克"}]};
-		
+ /* var zNodes ={"child":[{"child":[{"child":[{"code":"1001001001","id":14,"parentId":13,"typeName":"贸易"}],"code":"1001001","id":13,"parentId":12,"typeName":"女士衣服"}],"code":"1001","id":12,"typeName":"衣服"},{"code":"1001001002","id":15,"typeName":"夹克"}]}; */
+	 	var zNodes =[
+	{ id:1, pId:0, name:"一级分类", open:true},
+	{ id:11, pId:1, name:"二级分类"},
+	{ id:111, pId:11, name:"三级分类"},
+	{ id:112, pId:11, name:"三级分类"},
+	{ id:113, pId:11, name:"三级分类"},
+	{ id:114, pId:11, name:"三级分类"},
+	{ id:115, pId:11, name:"三级分类"},
+	{ id:12, pId:1, name:"二级分类 1-2"},
+	{ id:121, pId:12, name:"三级分类 1-2-1"},
+	{ id:122, pId:12, name:"三级分类 1-2-2"},
+]; 
 var code;
 		
 function showCode(str) {
@@ -82,13 +93,12 @@ $(document).ready(function(){
         dataType: "json",
         url: "${pageContext.request.contextPath}/category/allType.dhtml",
         success: function (msg) {
-       //	var zNodes = msg;
+    //   var zNodes = msg;
      	var t = $("#treeDemo");
     	t = $.fn.zTree.init(t, setting, zNodes);
     	demoIframe = $("#testIframe");
     	demoIframe.bind("load", loadReady);
-    	var zTree = $.fn.zTree.getZTreeObj("child");
-    	zTree.selectNode(zTree.getNodeByParam("id",'11'));
+    	var zTree = $.fn.zTree.getZTreeObj("tree");
                        }
               });
 });

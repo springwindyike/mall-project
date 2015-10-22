@@ -41,14 +41,25 @@ public class CategoryController extends BaseController {
 
 
 	@RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_LIST, method = RequestMethod.GET)
-	public String getAllType(Model model) {
+	public String listCategory(Model model) {
+/*    	ResponseEntity<Response> resultDTO = null;
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		RestTemplate restTemplate = new RestTemplate();
+		resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL), Response.class);
+		ProductTypeDTO productTypeDTOResult =  (ProductTypeDTO) resultDTO.getBody().getData();
+		model.addAttribute("type", productTypeDTOResult);*/
+		return ManageViewConstant.Category.LIST_CATEGORY;
+    }
+	
+	@RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_ALL_TYPE, method = RequestMethod.GET)
+	@ResponseBody
+	public ProductTypeDTO allCategory(Model model) {
     	ResponseEntity<Response> resultDTO = null;
 		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
 		RestTemplate restTemplate = new RestTemplate();
 		resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_FIND_FIRST_LEVEL), Response.class);
 		ProductTypeDTO productTypeDTOResult =  (ProductTypeDTO) resultDTO.getBody().getData();
-		model.addAttribute("type", productTypeDTOResult);
-		return ManageViewConstant.Category.LIST_CATEGORY;
+		return productTypeDTOResult;
     }
 	
 	@RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_ADD, method = RequestMethod.GET)
