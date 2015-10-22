@@ -42,9 +42,9 @@ public class ChannelDTO extends GenericDTO {
 	private String linkName;
 	private String linkPhone;
 	private String businessScale;
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm ",timezone="GMT+8")
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm",timezone="GMT+8")
 	private Date createTime;
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm ",timezone="GMT+8")
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm",timezone="GMT+8")
 	private Date updateTime;
 	private String createBy;
 	private String updateBy;

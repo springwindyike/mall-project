@@ -96,32 +96,32 @@ public class ChannelResource {
          return validformRespDTO;
     	}
 
-//    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_GET_CHANNEL_PAGE,method = RequestMethod.POST,
-//                    headers = "Accept=application/xml, application/json",
-//                    produces = {"application/json"},
-//                    consumes = {"application/json"})
-//    public Response<PageDTO<ChannelDTO>> getChannelPage(ChannelDTO channelDTO){
-//        Response<PageDTO<ChannelDTO>> response = new Response<PageDTO<ChannelDTO>>();
-//        int offset = channelDTO.getOffset();
-//        int limit = channelDTO.getLimit();
-//        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
-//        try{
-//            Page<Channel> pageChannel = channelService.getChannelpage(channelDTO.getId(),pageRequest);
-//            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
-//            response.setData(pageChnnelDTO);
-//        }catch (ChannelServiceException e){
-//            logger.error(e.getMessage());
-//            response.setMessage(e.getMessage());
-//            response.setSuccess(false);
-//        }
-////        if(pageChannel != null && pageChannel.getContent() != null && pageChannel.getContent().size() > 0){
-////            List<Channel> channelList = pageChannel.getContent();
-////            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
-////        }
-//        return response;
-//    }
-
     @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_GET_CHANNEL_PAGE,method = RequestMethod.POST,
+                    headers = "Accept=application/xml, application/json",
+                    produces = {"application/json"},
+                    consumes = {"application/json"})
+    public Response<PageDTO<ChannelDTO>> getChannelPage(ChannelDTO channelDTO){
+        Response<PageDTO<ChannelDTO>> response = new Response<PageDTO<ChannelDTO>>();
+        int offset = channelDTO.getOffset();
+        int limit = channelDTO.getLimit();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        try{
+            Page<Channel> pageChannel = channelService.getChannelpage(channelDTO.getId(),pageRequest);
+            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
+            response.setData(pageChnnelDTO);
+        }catch (ChannelServiceException e){
+            logger.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
+        }
+//        if(pageChannel != null && pageChannel.getContent() != null && pageChannel.getContent().size() > 0){
+//            List<Channel> channelList = pageChannel.getContent();
+//            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
+//        }
+        return response;
+    }
+
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_FIND_BY_ID,method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
