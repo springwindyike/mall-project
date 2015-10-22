@@ -32,7 +32,7 @@ public class OrderItem extends BaseEntity {
     @Column(nullable = false, name = "item_product_amount",length = 3)
     private Integer amount = 1;
     /* 产品样式 */
-    @Column(length = 30, nullable = false, name = "item_product_style_name")
+    @Column(length = 30, nullable = true, name = "item_product_style_name")
     private String styleName;
     /* 产品样式ID */
     @Column(nullable = false, name = "item_product_style_id",length = 50)
