@@ -13,7 +13,6 @@ import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.*;
 import com.ishare.mall.core.model.pay.OrderPayLog;
 import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.repository.deliver.DeliverRepository;
 import com.ishare.mall.core.repository.information.OrderItemRepository;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
@@ -28,7 +27,6 @@ import com.ishare.mall.core.service.pay.OrderPayLogService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -300,16 +298,17 @@ public class OrderServiceImpl implements OrderService {
 		// TODO 判断商品库存
 		// TODO 暂时单个商品
 		Product product = productRepository.findOne(exchangeDTO.getProductId());
-		ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
+		// 去掉style
+		//ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
 
 		OrderItem orderItem = new OrderItem();
 		orderItem.setOrder(order);
 		//设置样式相关
 		orderItem.setStyleId(exchangeDTO.getStyleId());
-		if (style != null) {
-			orderItem.setStyleName(style.getName());
-			orderItem.setImageUrl(style.getImageUrl());
-		}
+		//if (style != null) {
+			//orderItem.setStyleName(style.getName());
+			//orderItem.setImageUrl(style.getImageUrl());
+		//}
 		//设置商品相关
 		orderItem.setAmount(exchangeDTO.getAmount());
 		orderItem.setProductId(product.getId());
