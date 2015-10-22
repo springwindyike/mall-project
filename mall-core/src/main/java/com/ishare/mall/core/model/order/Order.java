@@ -82,7 +82,7 @@ public class Order implements BaseObject {
     private String lockMember;
     /**客服留言**/
     @OneToMany(mappedBy = "order", cascade=CascadeType.REMOVE)
-    private Set<OrderMessage> orderMessages = new HashSet<OrderMessage>();
+    private Set<OrderMessage> orderMessages = new HashSet<>();
     /**各个订单对应的渠道**/
     @ManyToOne(cascade={CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="channel_id")
@@ -93,6 +93,10 @@ public class Order implements BaseObject {
     
     @Column(name = "express_id", nullable = true, length = 15)
     private String expressId;//快递代号
+
+    /**客服留言**/
+    @OneToMany(mappedBy = "order", cascade=CascadeType.REMOVE)
+    private Set<OrderItem> orderItems = new HashSet<>();
     
     public Order(){}
 
@@ -263,6 +267,14 @@ public class Order implements BaseObject {
 
     public void setUpdateBy(Member updateBy) {
         this.updateBy = updateBy;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override
