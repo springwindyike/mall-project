@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ishare.mall.core.model.order.OrderUpdateLog;
-import com.ishare.mall.core.repository.order.OrderUpdateLogRepository;
+import com.ishare.mall.core.model.order.OrderActionLog;
+import com.ishare.mall.core.repository.order.OrderActionLogRepository;
 import com.ishare.mall.core.service.order.OrderUpdateLogService;
 
 /**
@@ -17,11 +17,11 @@ import com.ishare.mall.core.service.order.OrderUpdateLogService;
 @Transactional
 public class OrderUpdateLogServiceImpl implements OrderUpdateLogService {
     @Autowired
-    private OrderUpdateLogRepository repository;
+    private OrderActionLogRepository repository;
 
     @Override
-    public OrderUpdateLog save(OrderUpdateLog orderUpdateLog) {
-        return repository.save(orderUpdateLog);
+    public OrderActionLog save(OrderActionLog orderActionLog) {
+        return repository.save(orderActionLog);
     }
 
 }

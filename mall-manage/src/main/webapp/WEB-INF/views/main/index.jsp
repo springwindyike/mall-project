@@ -96,7 +96,7 @@
 			<dd>
 				<ul>
 					<li><a _href="" href="javascript:void(0)">品牌管理</a></li>
-					<li><a _href="product-category.html" href="javascript:void(0)">分类管理</a></li>
+					<li><a _href="${pageContext.request.contextPath}/category/list.dhtml" href="javascript:void(0)">分类管理</a></li>
 					<li><a _href="${pageContext.request.contextPath}/product/forword.dhtml" href="javascript:void(0)">产品管理</a></li>
 				</ul>
 			</dd>
@@ -155,6 +155,7 @@
 			<dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
+					<li><a _href="manage/list.dhtml" href="javascript:void(0)">管理员列表</a></li>
 					<li><a _href="admin-role.html" href="javascript:void(0)">角色管理</a></li>
 					<li><a _href="admin-permission.html" href="javascript:void(0)">权限管理</a></li>
 					<li><a _href="admin-list.html" href="javascript:void(0)">管理员列表</a></li>

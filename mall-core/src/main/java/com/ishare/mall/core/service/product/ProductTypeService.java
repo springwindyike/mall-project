@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.exception.ProductTypeServiceException;
+import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 
 /**
@@ -23,4 +25,11 @@ public abstract interface ProductTypeService {
     public abstract List<ProductType> findByLevel(Integer id)throws ProductTypeServiceException;
     
     public abstract List<ProductType>findByParentId(Integer pariendId)throws ProductTypeServiceException;
+    
+    public abstract List<ProductType>findAllType()throws ProductTypeServiceException;
+    /**
+     * 保存产品分类
+     * @param productType
+     */
+       void saveProductType(ProductType productType) throws ProductTypeServiceException;
 }

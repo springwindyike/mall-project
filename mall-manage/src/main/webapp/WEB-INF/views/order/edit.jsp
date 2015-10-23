@@ -64,7 +64,7 @@
 	  </div>
 	  <div class="row cl">
 		  <div class="col-9 col-offset-3">
-			  <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;确认发货&nbsp;&nbsp;">
+			  <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;确认修改&nbsp;&nbsp;">
 		  </div>
 	  </div>
   

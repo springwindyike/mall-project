@@ -50,6 +50,7 @@ public class ManageUserResource {
             return response;
         }
         BeanUtils.copyProperties(manageUser, manageUserDTO);
+        manageUserDTO.setSex(manageUser.getSex());
         manageUserDTO.setUserType(manageUser.getUserType());
         response.setData(manageUserDTO);
         return response;

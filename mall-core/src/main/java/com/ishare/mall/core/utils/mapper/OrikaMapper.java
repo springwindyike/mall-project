@@ -1,27 +1,30 @@
 
 package com.ishare.mall.core.utils.mapper;
 
-import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
-import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.core.model.manage.ManageUser;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductType;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
+
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
+import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
+import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
+import com.ishare.mall.core.model.manage.ManageUser;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductType;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -39,10 +42,12 @@ public class OrikaMapper extends ConfigurableMapper {
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Order.class, OrderDetailDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ProductType.class, ProductTypeDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ManageUser.class, ManageUserDTO.class));
+		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ProductType.class, TreeNodeDTO.class));
 	    this.registerProductClassMap(mapperFactory);
 	    this.registerMemberClassMap(mapperFactory);
 	    this.registerOrderClassMap(mapperFactory);
 	    this.registerProductTypeClassMap(mapperFactory);
+	    this.registerTreeNodeClassMap(mapperFactory);
 		this.registerManageUserClassMap(mapperFactory);
     }
 
@@ -100,10 +105,9 @@ public class OrikaMapper extends ConfigurableMapper {
 		ClassMapBuilder<ManageUser, ManageUserDTO>classMapBuilder = mapperFactory.classMap(ManageUser.class, ManageUserDTO.class);
 		Field[] fields = ManageUserDTO.class.getDeclaredFields();
 		Set<String> otherDealField = new HashSet<String>();
-		otherDealField.add("channelId");
 		otherDealField.add("createTimeStr");
-		otherDealField.add("serialVersionUID");
-		otherDealField.add("roleId");
+//		otherDealField.add("serialVersionUID");
+//		otherDealField.add("roleId");
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
 				classMapBuilder.field(field.getName(), field.getName());
@@ -122,6 +126,20 @@ public class OrikaMapper extends ConfigurableMapper {
 		classMapBuilder.field("id", "id");
 		classMapBuilder.field("code", "code");
 		classMapBuilder.field("name", "typeName");
+		classMapBuilder.field("level", "level");
+		classMapBuilder.field("note", "note");
+		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+	}
+	
+	private void registerTreeNodeClassMap(MapperFactory mapperFactory) {
+		ClassMapBuilder<ProductType, TreeNodeDTO>classMapBuilder = mapperFactory.classMap(ProductType.class, TreeNodeDTO.class);
+		Field[] fields = TreeNodeDTO.class.getDeclaredFields();
+		Set<String> otherDealField = new HashSet<String>();
+		otherDealField.add("parentId");
+		classMapBuilder.field("parent.id", "parentId");
+		classMapBuilder.field("id", "id");
+		classMapBuilder.field("code", "code");
+		classMapBuilder.field("name", "name");
 		classMapBuilder.field("level", "level");
 		classMapBuilder.field("note", "note");
 		mapperFactory.registerClassMap(classMapBuilder.toClassMap());

@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.member;
 
+import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.member.Member;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -57,6 +58,20 @@ public class PasswordHelper {
                 ByteSource.Util.bytes(member.getCredentialsSalt()),
                 hashIterations).toHex();
         member.setPassword(newPassword);
+    }
+
+    /**
+     * 修改密码或者新建之前必须调用此方法
+     * @param manageUser
+     */
+    public void encryptPassword(ManageUser manageUser) {
+        manageUser.setSalt(randomNumberGenerator.nextBytes().toHex());
+        String newPassword = new SimpleHash(
+                algorithmName,
+                manageUser.getPassword(),
+                ByteSource.Util.bytes(manageUser.getCredentialsSalt()),
+                hashIterations).toHex();
+        manageUser.setPassword(newPassword);
     }
 
 }

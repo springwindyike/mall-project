@@ -32,5 +32,21 @@ public interface ManageUserService {
 	 */
 	ManageUser findByUsername(String username)throws ManageUserServiceException;
 
+	/**
+	 * 通过账号ID查找
+	 * @param id
+	 * @return
+	 */
+	ManageUser findOne(Integer id);
+	/**
+	 * 保存新的manageuser
+	 * @param manageUser
+	 */
+	void saveManageUser(ManageUser manageUser)throws ManageUserServiceException;
 
+	/**
+	 * 更新用户信息
+	 * @param manageUser
+	 */
+	void update(ManageUser manageUser)throws ManageUserServiceException;
 }

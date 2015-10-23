@@ -1,13 +1,12 @@
 package com.ishare.mall.core.service.product;
 
-import java.util.Map;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.product.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.Map;
 
 /**
  * Created by liaochenglei on 2015/9/22.
@@ -76,4 +75,11 @@ public abstract interface ProductService {
      * @throws ProductServiceException
      */
     Page<Product> findBycondition(Integer productId, Integer channelId, PageRequest pageRequest) throws ProductServiceException;
+
+    /**
+     * 根据商品ID判断商品库存
+     * @param id
+     * @return
+     */
+    boolean checkStore(Integer id);
 }

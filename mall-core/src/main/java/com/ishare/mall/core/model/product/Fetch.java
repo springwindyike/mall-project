@@ -2,6 +2,7 @@ package com.ishare.mall.core.model.product;
 
 import com.google.common.collect.Sets;
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
+import com.ishare.mall.core.model.base.BaseEntity;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "t_fetch")
-public class Fetch extends GenericDTO {
+public class Fetch extends BaseEntity {
     //主键ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
