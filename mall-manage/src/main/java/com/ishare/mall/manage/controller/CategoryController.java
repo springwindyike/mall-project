@@ -24,6 +24,7 @@ import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.controller.base.BaseController;
+import com.ishare.mall.manage.form.CategoryForm;
 
 /**
  * Created by liaochenglei on 2015/9/28. 
@@ -82,8 +83,8 @@ public class CategoryController extends BaseController {
 	}
 	
 	
-    @RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_ADD_TEST, method = RequestMethod.GET)
-    public String saveCategory() {/*
+    @RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_ADD,method = RequestMethod.POST)
+    public String saveCategory(CategoryForm categoryForm) {/*
     	ResponseEntity<Response> resultDTO = null;
 		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
 		RestTemplate restTemplate = new RestTemplate();
