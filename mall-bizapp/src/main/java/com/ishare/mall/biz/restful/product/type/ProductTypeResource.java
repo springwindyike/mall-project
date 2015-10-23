@@ -301,8 +301,20 @@ public class ProductTypeResource {
             consumes = {"application/json", "application/xml"})
     public Response saveProductType(@RequestBody ProductTypeDTO productTypeDTO){
         ProductType productType = new ProductType();
+        int temp =0;
+        List<	ProductType> allChild = productTypeService.findByParentId(productTypeDTO.getParentId());
+        for(ProductType pt:allChild){
+        	int begin = Integer.parseInt(pt.getCode());
+         if(temp<begin) {
+        	 temp = begin;
+         }
+        }productTypeDTO.setCode(String.valueOf(temp+1));
         BeanUtils.copyProperties(productTypeDTO, productType);
         ProductType parent = productTypeService.findOne(productTypeDTO.getParentId());
+       
+ 
+      
+        
         productType.setParent(parent);
         productType.setName(productTypeDTO.getTypeName());
     			try {
