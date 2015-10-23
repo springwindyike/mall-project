@@ -99,6 +99,9 @@
         <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
       </div>
     </div>
+    <input class="btn btn-primary radius" type="hidden" name="provinceCode" id="provinceCode" value="a">
+    <input class="btn btn-primary radius" type="hidden" name="cityCode" id="cityCode" value="b">
+    <input class="btn btn-primary radius" type="hidden" name="districtCode" id="districtCode" value="c">
   </form>
 </div>
 </div>
@@ -113,12 +116,17 @@
 
   /* 省市县选择 */
   $(function(){
-
     add_select(0);
-
     $('body').on('change', '#area select', function() {
       var $me = $(this);
       var $next = $me.next();
+      if( $("#provinceCode").val() == 'a'){
+        $("#provinceCode").val($me.find("option:selected").attr("id"));
+      }else if($("#cityCode").val() == 'b'){
+        $("#cityCode").val($me.find("option:selected").attr("id"));
+      }else{
+        $("#districtCode").val($me.find("option:selected").attr("id"));
+      }
       /**
        * 如果下一级已经是当前所选地区的子地区，则不进行处理
        */
@@ -132,6 +140,7 @@
 
     function add_select(pid) {
       var area_names = area['name'+pid];
+      alert(area_names);
       if (!area_names) {
         return false;
       }
@@ -180,8 +189,9 @@
           },2000);
           setTimeout(function(){
             var index = parent.layer.getFrameIndex(window.name);
+            parent.window.location.reload();
             parent.layer.close(index);
-          },5000);
+          },3000);
         }else{
           setTimeout(function(){
             $.Showmsg("添加失败！");
