@@ -302,10 +302,9 @@ public class ProductTypeResource {
     public Response saveProductType(@RequestBody ProductTypeDTO productTypeDTO){
         ProductType productType = new ProductType();
         BeanUtils.copyProperties(productTypeDTO, productType);
-        ProductType parent = new ProductType();
-        //productType.setParent(parent);
+        ProductType parent = productTypeService.findOne(productTypeDTO.getParentId());
+        productType.setParent(parent);
         productType.setName(productTypeDTO.getTypeName());
-        
     			try {
 					productTypeService.saveProductType(productType);
 				} catch (Exception e) { 

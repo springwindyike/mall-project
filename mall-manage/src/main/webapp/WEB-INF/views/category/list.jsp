@@ -54,11 +54,7 @@ var setting = {
 	},
 	callback: {
 		beforeClick: function(treeId, treeNode) {
-			alert(treeNode.level);
-			$("#parentId").attr(treeNode.id);
-			$("#code").val("jkk");
-			$("#level").val(treeNode.level);
-		//	alert(treeNode.code);
+			window.location='add.dhtml?level='+treeNode.level+'&id='+treeNode.id+'&code='+treeNode.code;
 			//var zTree = $.fn.zTree.getZTreeObj("tree");
 			if (treeNode.isParent) {
 			//	zTree.expandNode(treeNode);

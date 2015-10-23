@@ -20,10 +20,9 @@
   <form action="${pageContext.request.contextPath}/category/add.dhtml" method="post" class="form form-horizontal" id="form-user-add">
     <div class="row cl">
       <label class="form-label col-2"><span class="c-red">*</span>分类名称：</label>
-     <input type="text" class="input-text" value="" placeholder="" id="parentId" name="parentId"/>
-     
-      <input type="text" class="input-text" value="" placeholder="" id="code" name="code"/>
-       <input type="text" class="input-text" value="" placeholder="" id="level" name="level"/>
+     <input type="hidden" class="input-text" value="<%=request.getParameter("id")%>" placeholder="" id="parentId" name="parentId"/>
+      <input type="hidden" class="input-text" value="<%=request.getParameter("code")%>" placeholder="" id="code" name="code"/>
+       <input type="hidden" class="input-text" value="<%=request.getParameter("level")%>" placeholder="" id="level" name="level"/>
       <div class="formControls col-5">
         <input type="text" class="input-text" value="" placeholder="" id="name" name="name"/>
       </div>
