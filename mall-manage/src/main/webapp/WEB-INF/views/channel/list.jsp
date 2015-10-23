@@ -33,8 +33,8 @@
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
                                                                class="btn btn-danger radius"><i class="Hui-iconfont">
         &#xe6e2;</i> 批量删除</a> <a href="javascript:"
-                                 onclick="member_add('添加渠道','${pageContext.request.contextPath}/member/addMemberPage.dhtml','','510')"
-                                 class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span>
+                                 onclick="channel_add('添加渠道','${pageContext.request.contextPath}/channel/forward2AddPage.dhtml','800','600')"
+                                 class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>添加渠道</a></span>
         <span class="r"></span></div>
     <div class="mt-20">
         <table class="table table-border table-bordered table-hover table-bg table-sort">
@@ -43,14 +43,15 @@
                 <th width="80">供货商</th>
                 <th width="80">联系人姓名</th>
                 <th width="100">联系电话</th>
-                <th width="40">公司营业规模</th>
-                <th width="90">经营类别</th>
+                <th width="90">公司营业规模</th>
+                <th width="40">经营类别</th>
                 <th width="40">国家</th>
                 <th width="40">省</th>
                 <th width="40">市</th>
                 <th width="40">县区</th>
                 <th width="40">详细街道</th>
                 <th width="130">加入时间</th>
+                <th width="130">状态</th>
                 <th width="100">操作</th>
             </tr>
             </thead>
@@ -72,7 +73,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
     var targetTable;
-    var url = "${pageContext.request.contextPath}/member/findByChannelId.dhtml";
+    var url = "${pageContext.request.contextPath}/channel/getChannelPage.dhtml";
     $(function () {
          targetTable = $('.table-sort').DataTable({
              "oLanguage": {
@@ -104,6 +105,7 @@
                 { "mDataProp": "detail" },
                 { "mDataProp": "createTime" },
                 { "mDataProp": null },
+                { "mDataProp": null },
             ],
 
             "createdRow" : function(row, mDataProp, dataIndex){
@@ -116,25 +118,61 @@
                     {
                         "targets" : 0 ,
                         "render" : function(mDataProp, type, full) {
-                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show(\'\',\'${pageContext.request.contextPath}/member/memberView/account/'+mDataProp.account+'.dhtml\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="channel_show(\'渠道详细信息\',\'${pageContext.request.contextPath}/channel/view/'+mDataProp.id+'.dhtml\',\'500\',\'600\')">'+mDataProp.name+'</u></td>';
                     }
                 },
-
                 {
                     "targets" : 11 ,
                     "render" : function(mDataProp, type, full) {
-                        return '<td class="td-manage"> <a title="编辑" href="javascript:;" onclick="member_edit(\'信息修改\',\'${pageContext.request.contextPath}/member/forward2UpdatePage/account/'+mDataProp.id+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改密码\',\'${pageContext.request.contextPath}/member/forward2ChangePassword/account/'+mDataProp.id+'.dhtml\',\'10001\',\'600\',\'270\')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> <a title="删除" href="javascript:;" onclick="member_del(\'${pageContext.request.contextPath}/member/delete/account/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
-    }
+                        if(mDataProp.visible){
+                            return '<td class="td-status"><span class="label label-success radius">已启用</span></td>'
+                        }else{
+                            return '<td class="td-status"><span class="label radius">已停用</span></td>';
+                        }
+
+                    }
+                },
+                {
+                    "targets" : 12 ,
+                    "render" : function(mDataProp, type, full) {
+                        return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/channel/update/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
+                                '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/member/forward2ChangePassword/account/'+mDataProp.account+'.dhtml\',\'10001\',\'500\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
+                                '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/channel/update/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a></td>';
+                    }
                 },
             ],
         });
     });
+    /*channel-停用*/
+    function channel_del(url) {
+        if(confirm("确认要停用吗？")){
+            $.post(
+                    url,
+                    function(data) {
+                        alert("停用成功");
+                        window.location.reload();
+                    }
+            )
+        }
+    }
+    /*channel-启用*/
+    function channel_stat(url) {
+        if(confirm("确认要启用吗？")){
+            $.post(
+                    url,
+                    function(data) {
+                        alert("启用成功");
+                        window.location.reload();
+                    }
+            )
+        }
+    }
     /*用户-添加*/
-    function member_add(title, url, w, h) {
+    function channel_add(title, url, w, h) {
         layer_show(title, url, w, h);
     }
     /*用户-查看*/
-    function member_show(title, url, id, w, h) {
+    function channel_show(title, url,w, h) {
         layer_show(title, url, w, h);
     }
     /*用户-停用*/

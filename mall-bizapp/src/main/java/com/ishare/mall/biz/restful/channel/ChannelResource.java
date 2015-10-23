@@ -10,6 +10,7 @@ import com.ishare.mall.common.base.exception.service.channel.ChannelServiceExcep
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.service.information.ChannelService;
+import com.ishare.mall.core.utils.UuidUtils;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,14 +102,19 @@ public class ChannelResource {
                     headers = "Accept=application/xml, application/json",
                     produces = {"application/json"},
                     consumes = {"application/json"})
-    public Response<PageDTO<ChannelDTO>> getChannelPage(ChannelDTO channelDTO){
+    public Response<PageDTO<ChannelDTO>> getChannelPage(@RequestBody ChannelDTO channelDTO){
         Response<PageDTO<ChannelDTO>> response = new Response<PageDTO<ChannelDTO>>();
         int offset = channelDTO.getOffset();
         int limit = channelDTO.getLimit();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         try{
-            Page<Channel> pageChannel = channelService.getChannelpage(channelDTO.getId(),pageRequest);
+            Page<Channel> pageChannel = channelService.getChannelpage(pageRequest);
             PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
+//            if(pageChnnelDTO != null && pageChnnelDTO.getContent() != null && pageChnnelDTO.getContent().size() >0){
+//                List<ChannelDTO> list = pageChnnelDTO.getContent();
+//                for(ChannelDTO cdto:list){
+//                }
+//            }
             response.setData(pageChnnelDTO);
         }catch (ChannelServiceException e){
             logger.error(e.getMessage());
@@ -130,6 +137,49 @@ public class ChannelResource {
         BeanUtils.copyProperties(channel,channelDTO);
         Response<ChannelDTO> response = new Response<ChannelDTO>();
         response.setData(channelDTO);
+        return response;
+    }
+
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_UPDATE_CHANNEL_STATUS,method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response<ChannelDTO> updateChannelStatus(@RequestBody ChannelDTO channelDTO){
+        Channel channel = channelService.findOne(channelDTO.getId());
+        channel.setVisible(channelDTO.getVisible());
+        channelService.save(channel);
+        return null;
+    }
+
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_SAVE_CHANNEL,method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response saveChannel(@RequestBody ChannelDTO channe1DTO) throws Exception{
+        try{
+            Channel channel = new Channel();
+            BeanUtils.copyProperties(channe1DTO,channel);
+            channel.setCountry("中国");
+            String area[] = channe1DTO.getCity().split(",");
+            channel.setProvince(area[0]);
+            if(area.length > 1){
+                channel.setCity(area[1]);
+            }
+            if(area.length > 2){
+                channel.setDistrict(area[2]);
+            }
+            UuidUtils uu = new UuidUtils();
+            String appId = uu.App_Id();
+            channel.setAppId(appId);
+            channel.setAppSecret(uu.App_screct(String.valueOf(new Date().getTime()), appId));
+            channel.setVisible(true);
+            channelService.save(channel);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+        Response response = new Response();
+        response.setSuccess(true);
         return response;
     }
 }

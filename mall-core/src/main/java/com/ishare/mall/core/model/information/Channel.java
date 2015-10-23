@@ -86,6 +86,9 @@ public class Channel extends BaseEntity {
     /**经营类别**/
     @Column(name = "channel_industry",length = 51)
     private String industry;
+    /**是否启用**/
+    @Column(name = "channel_visible",length = 5)
+    private Boolean visible = true;
     /**
      * 一对多该供应商下所有的成员
      */
@@ -285,6 +288,12 @@ public class Channel extends BaseEntity {
 	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
 	}
-    
-    
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
 }

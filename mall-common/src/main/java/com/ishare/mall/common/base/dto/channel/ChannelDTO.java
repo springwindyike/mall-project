@@ -54,7 +54,7 @@ public class ChannelDTO extends GenericDTO {
 	private List<OrderDetailDTO> orderDetailDTOList;
 	private int offset;
 	private int limit;
-
+	private Boolean visible;
 	public Integer getChannelId() {
 		return channelId;
 	}
@@ -269,5 +269,13 @@ public class ChannelDTO extends GenericDTO {
 
 	public void setLimit(int limit) {
 		this.limit = limit;
+	}
+
+	public Boolean getVisible() {
+		return visible;
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
 	}
 }

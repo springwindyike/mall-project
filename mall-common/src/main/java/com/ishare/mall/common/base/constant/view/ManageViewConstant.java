@@ -26,4 +26,11 @@ public interface ManageViewConstant {
 	interface Main {
 		String MAIN = "main/index";
 	}
+
+	interface Channel{
+		String CHANNEL_PAGE = "channel/list";
+		String CHANNEL_VIEW = "channel/view";
+		String SUCCESS = "S";
+		String FORWARD_TO_ADD_PAGE = "channel/add";
+	}
 }

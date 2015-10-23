@@ -21,10 +21,12 @@ public interface ChannelService {
     Set<Order> findAllOrderByChannelId(Integer id);
 
     /**
-     * 根据id分页查询
-     * @param id
+     * 分页查询
+     * @param
      * @param pageRequest
      * @return
      */
-    Page<Channel> getChannelpage(Integer id,PageRequest pageRequest);
+    Page<Channel> getChannelpage(PageRequest pageRequest);
+
+    void save(Channel channel);
 }

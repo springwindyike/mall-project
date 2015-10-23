@@ -120,7 +120,7 @@
                     {
                         "targets" : 1 ,
                         "render" : function(mDataProp, type, full) {
-                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show(\'\',\'${pageContext.request.contextPath}/member/memberView/account/'+mDataProp.account+'.dhtml\',\'10001\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
+                        return ' <td><u style="cursor:pointer" class="text-primary" onclick="member_show(\'成员详细信息\',\'${pageContext.request.contextPath}/member/memberView/account/'+mDataProp.account+'.dhtml\',\'360\',\'400\')">'+mDataProp.account+'</u></td>';
                     }
                 },
                 {
@@ -144,7 +144,7 @@
         layer_show(title, url, w, h);
     }
     /*用户-查看*/
-    function member_show(title, url, id, w, h) {
+    function member_show(title, url, w, h) {
         layer_show(title, url, w, h);
     }
     /*用户-停用*/

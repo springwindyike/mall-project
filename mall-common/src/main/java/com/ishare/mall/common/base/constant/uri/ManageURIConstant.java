@@ -43,7 +43,7 @@ public interface ManageURIConstant {
 	}
 
 	interface Channel{
-		String REQUEST_MAPPING = "/controller";
+		String REQUEST_MAPPING = "/channel";
 	}
 	
 }
