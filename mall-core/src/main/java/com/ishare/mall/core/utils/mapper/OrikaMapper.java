@@ -1,22 +1,10 @@
 
 package com.ishare.mall.core.utils.mapper;
 
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
-
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.converter.builtin.PassThroughConverter;
-import ma.glasnost.orika.impl.ConfigurableMapper;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.metadata.ClassMapBuilder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
@@ -25,6 +13,19 @@ import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
+import ma.glasnost.orika.CustomMapper;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.converter.builtin.PassThroughConverter;
+import ma.glasnost.orika.impl.ConfigurableMapper;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.metadata.ClassMapBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -146,7 +147,7 @@ public class OrikaMapper extends ConfigurableMapper {
 	}
 	
 	private void registerOrderClassMap(MapperFactory mapperFactory) {
-		ClassMapBuilder<Order, OrderDetailDTO>classMapBuilder = mapperFactory.classMap(Order.class, OrderDetailDTO.class);
+		ClassMapBuilder<Order, OrderDetailDTO> classMapBuilder = mapperFactory.classMap(Order.class, OrderDetailDTO.class);
 		Field[] fields = OrderDetailDTO.class.getDeclaredFields();
 		Set<String> otherDealField = new HashSet<String>();
 		otherDealField.add("channelId");
@@ -169,6 +170,12 @@ public class OrikaMapper extends ConfigurableMapper {
 				classMapBuilder.field(field.getName(), field.getName());
 			}
 		}
+		classMapBuilder.customize(new CustomMapper<Order, OrderDetailDTO>() {
+			@Override
+			public void mapAtoB(Order order, OrderDetailDTO orderDetailDTO, MappingContext context) {
+				orderDetailDTO.setItems((Set<OrderItemDetailDTO>) MapperUtils.mapAsSet(order.getOrderItems(), OrderItemDetailDTO.class));
+			}
+		});
 		classMapBuilder.field("channel.id", "channelId");
 		classMapBuilder.field("orderDeliverInfo.id", "orderDeliverInfoId");
 		classMapBuilder.field("orderContactInfo.id", "orderContactInfoId");
