@@ -60,10 +60,15 @@ public class ChannelServiceImpl implements ChannelService {
 		return null;
 	}
 
-//    @Override
-//    public Page<Channel> getChannelpage(Integer id, PageRequest pageRequest) {
-//        return channelRepository.getChannelpage(id,pageRequest);
-//    }
+    @Override
+    public Page<Channel> getChannelpage(PageRequest pageRequest) {
+        return channelRepository.getChannelpage(pageRequest);
+    }
+
+    @Override
+    public void save(Channel channel) {
+        channelRepository.save(channel);
+    }
 
     @Override
 	public Channel findByName(String name) {

@@ -20,11 +20,13 @@ public interface ChannelService {
     Channel findByName(String name);
     Set<Order> findAllOrderByChannelId(Integer id);
 
-//    /**
-//     * 根据id分页查询
-//     * @param id
-//     * @param pageRequest
-//     * @return
-//     */
-//    Page<Channel> getChannelpage(Integer id,PageRequest pageRequest);
+    /**
+     * 分页查询
+     * @param
+     * @param pageRequest
+     * @return
+     */
+    Page<Channel> getChannelpage(PageRequest pageRequest);
+
+    void save(Channel channel);
 }

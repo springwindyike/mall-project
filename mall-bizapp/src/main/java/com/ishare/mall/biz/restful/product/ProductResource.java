@@ -143,7 +143,7 @@ public class ProductResource {
             consumes = {"application/json",})
 	public Response findByID(@RequestBody ProductDetailDTO productDetailDTO){
 		Product product;
-		List<ProductStyle> list;
+		List<ProductStyle> list = null;
 		Response response = new Response();
 		try {
 			product = productService.findOne(productDetailDTO.getId());
@@ -155,6 +155,10 @@ public class ProductResource {
 				return response;
 		}
 		if(product == null || !product.getVisible()){
+			response.setData(null);
+			return response;
+		}
+		if(!product.getVisible() || product.getFetch() == null){
 			response.setData(null);
 			return response;
 		}
@@ -236,8 +240,8 @@ public class ProductResource {
 			if(result != null && result.getSize() > 0 && result.getContent() != null && result.getContent().size() >0){
 				List<Product> productList = result.getContent();
 				for (Product product:productList){
-					if(!product.getVisible()) continue;
-					if(product.getFetch() != null) continue;
+//					if(!product.getVisible()) continue;
+//					if(product.getFetch() != null) continue;
 					ProductListDTO productDTO = new ProductListDTO();
 					BeanUtils.copyProperties(product,productDTO);
 					list.add(productDTO);

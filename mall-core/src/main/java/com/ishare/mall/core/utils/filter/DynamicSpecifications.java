@@ -66,6 +66,9 @@ public class DynamicSpecifications {
                             case NEQ:
                             			predicates.add(builder.notEqual(expression, (Comparable) filter.value));
                             			break;
+                            case NN:
+                                predicates.add(builder.isNotNull(expression));
+                                break;
                         }
                     }
 

@@ -47,5 +47,6 @@ public interface CenterViewConstant {
 
 	interface Channel{
 		String CHANNEL_VIEW = "channel/view";
+		String SUCCESS = "S";
 	}
 }

@@ -43,5 +43,9 @@ public interface ManageURIConstant {
 		// 首页
 		String INDEX = "main";
 	}
+
+	interface Channel{
+		String REQUEST_MAPPING = "/channel";
+	}
 	
 }

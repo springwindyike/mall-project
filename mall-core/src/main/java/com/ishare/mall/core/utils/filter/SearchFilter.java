@@ -1,6 +1,7 @@
 package com.ishare.mall.core.utils.filter;
 
 import com.google.common.collect.Maps;
+import com.ishare.mall.common.base.constant.CommonConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -39,6 +40,9 @@ public class SearchFilter {
             if (StringUtils.isBlank(String.valueOf(value))) {
                 continue;
             }
+            if(CommonConstant.Emputy.EMPUTY_NULL.equals(value)){
+                value = null;
+            }
             log.debug("key={}, value=[{}]", key, value);
 
             // 拆分operator与filedAttribute
@@ -62,6 +66,6 @@ public class SearchFilter {
     }
 
     public enum Operator {
-        EQ, LIKE, START, END, GT, LT, GTE, LTE ,NEQ//等于,like,%前， %后，大于,小于，大于等于，小于等于
+        EQ, LIKE, START, END, GT, LT, GTE, LTE ,NEQ,NN//等于,like,%前， %后，大于,小于，大于等于，小于等于,not null
     }
 }
