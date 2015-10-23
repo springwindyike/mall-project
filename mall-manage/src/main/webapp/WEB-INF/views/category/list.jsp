@@ -54,9 +54,10 @@ var setting = {
 	},
 	callback: {
 		beforeClick: function(treeId, treeNode) {
-			var zTree = $.fn.zTree.getZTreeObj("tree");
+			window.location='add.dhtml?level='+treeNode.level+'&id='+treeNode.id+'&code='+treeNode.code;
+			//var zTree = $.fn.zTree.getZTreeObj("tree");
 			if (treeNode.isParent) {
-				zTree.expandNode(treeNode);
+			//	zTree.expandNode(treeNode);
 				return false;
 			} else {
 				demoIframe.attr("src",treeNode.file + ".html");
@@ -65,20 +66,6 @@ var setting = {
 		}
 	}
 };
-
-/*  var zNodes =[{"id":2,"parentId":0,"name":"夹克","code":"1001","level":1,"note":"夏季"},{"id":10,"parentId":13,"name":"衬衫","code":"1001001001","level":3,"note":"非常好"},{"id":13,"parentId":2,"name":"女士衣服","code":"1001001","level":2,"note":"af"},{"id":14,"parentId":13,"name":"贸易","code":"1001001001","level":3,"note":"sdff"}];
- */   /*  	var zNodes =[
-	{ id:1, pId:0, name:"一级分类", open:true},
-	{ id:11, pId:1, name:"二级分类"},
-	{ id:111, pId:11, name:"三级分类"},
-	{ id:112, pId:11, name:"三级分类"},
-	{ id:113, pId:11, name:"三级分类"},
-	{ id:114, pId:11, name:"三级分类"},
-	{ id:115, pId:11, name:"三级分类"},
-	{ id:12, pId:1, name:"二级分类 1-2"},
-	{ id:121, pId:12, name:"三级分类 1-2-1"},
-	{ id:122, pId:12, name:"三级分类 1-2-2"},
-];  */
 var code;
 		
 function showCode(str) {
