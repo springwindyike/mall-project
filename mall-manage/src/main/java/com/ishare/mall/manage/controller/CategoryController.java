@@ -24,6 +24,7 @@ import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.controller.base.BaseController;
+import com.ishare.mall.manage.form.CategoryForm;
 
 /**
  * Created by liaochenglei on 2015/9/28. 
@@ -81,26 +82,16 @@ public class CategoryController extends BaseController {
 		return ManageViewConstant.Category.ADD_CATEGORY;
 	}
 	
-	
-    @RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_ADD_TEST, method = RequestMethod.GET)
-    public String saveCategory() {/*
-    	ResponseEntity<Response> resultDTO = null;
-		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
-		RestTemplate restTemplate = new RestTemplate();
-		resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_SAVE), Response.class);
-		ProductTypeDTO productTypeDTOResult =  (ProductTypeDTO) resultDTO.getBody().getData();
-		return productTypeDTOResult;
-    */
-
+    @RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_ADD,method = RequestMethod.POST)
+    public String saveCategory(CategoryForm categoryForm) {
     	ResponseEntity<Response> resultDTO = null;
     	ProductTypeDTO productTypeDTO = new ProductTypeDTO();
-    	productTypeDTO.setCode("2001");
-    	productTypeDTO.setLevel(1);
-    	productTypeDTO.setNote("卧槽");
-    	productTypeDTO.setParentId(null);
-    	productTypeDTO.setTypeName("皮靴");
+    	//productTypeDTO.setCode(categoryForm.getCode());
+    	productTypeDTO.setLevel(categoryForm.getLevel()+2);
+    	productTypeDTO.setNote(categoryForm.getNote());
+    	productTypeDTO.setParentId(categoryForm.getParentId());
+    	productTypeDTO.setTypeName(categoryForm.getName());
     	HttpEntity<ProductTypeDTO> requestDTO = new HttpEntity<ProductTypeDTO>(productTypeDTO);
-    //	RestTemplate restTemplate = new RestTemplate();
     	try {
     		resultDTO = restTemplate.exchange(
                     this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_SAVE),
