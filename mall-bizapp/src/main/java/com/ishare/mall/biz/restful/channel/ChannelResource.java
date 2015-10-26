@@ -110,21 +110,12 @@ public class ChannelResource {
         try{
             Page<Channel> pageChannel = channelService.getChannelpage(pageRequest);
             PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
-//            if(pageChnnelDTO != null && pageChnnelDTO.getContent() != null && pageChnnelDTO.getContent().size() >0){
-//                List<ChannelDTO> list = pageChnnelDTO.getContent();
-//                for(ChannelDTO cdto:list){
-//                }
-//            }
             response.setData(pageChnnelDTO);
         }catch (ChannelServiceException e){
             logger.error(e.getMessage());
             response.setMessage(e.getMessage());
             response.setSuccess(false);
         }
-//        if(pageChannel != null && pageChannel.getContent() != null && pageChannel.getContent().size() > 0){
-//            List<Channel> channelList = pageChannel.getContent();
-//            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
-//        }
         return response;
     }
 
@@ -156,6 +147,7 @@ public class ChannelResource {
             produces = {"application/json"},
             consumes = {"application/json"})
     public Response saveChannel(@RequestBody ChannelDTO channelDTO) throws Exception{
+        Response response = new Response();
         try{
             Channel channel = new Channel();
             BeanUtils.copyProperties(channelDTO,channel);
@@ -175,10 +167,10 @@ public class ChannelResource {
             channel.setVisible(true);
             channelService.save(channel);
         }catch (Exception e){
+            response.setSuccess(false);
             logger.error(e.getMessage());
             throw new Exception(e.getMessage());
         }
-        Response response = new Response();
         response.setSuccess(true);
         return response;
     }
@@ -214,6 +206,29 @@ public class ChannelResource {
         }
         Response response = new Response();
         response.setSuccess(true);
+        return response;
+    }
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_FIND_BY_PARAM,method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response<PageDTO<ChannelDTO>> findBySearchCondition(@RequestBody ChannelDTO channelDTO){
+        Response<PageDTO<ChannelDTO>> response = new Response<PageDTO<ChannelDTO>>();
+        String name = "%" + channelDTO.getName() + "%";
+        String phone = "%" + channelDTO.getPhone() + "%";
+        String industry = "%" + channelDTO.getIndustry() + "%";
+        int offset = channelDTO.getOffset();
+        int limit = channelDTO.getLimit();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        try{
+            Page<Channel> page = channelService.getChannelpage(pageRequest,name,phone,industry);
+            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(page, ChannelDTO.class);
+            response.setData(pageChnnelDTO);
+        }catch (ChannelServiceException e){
+            logger.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
+        }
         return response;
     }
 }

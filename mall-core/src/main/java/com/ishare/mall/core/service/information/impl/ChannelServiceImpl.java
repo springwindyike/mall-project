@@ -71,6 +71,11 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
+    public Page<Channel> getChannelpage(PageRequest pageRequest, String name, String phone, String industry) {
+        return channelRepository.getChannelpage(pageRequest,name,phone,industry);
+    }
+
+    @Override
 	public Channel findByName(String name) {
     List<Channel> channels = channelRepository.findByName(name);
     if (channels == null || channels.size() == 0) return null;

@@ -25,4 +25,7 @@ public interface ChannelRepository extends JpaRepository<Channel, Integer>, JpaS
 
     @Query("SELECT c FROM Channel c WHERE 1 = 1")
     Page<Channel> getChannelpage(Pageable pageable);
+
+    @Query("SELECT c FROM Channel c WHERE c.name like ?1 or c.phone like ?2 or c.industry like ?3")
+    Page<Channel> getChannelpage(Pageable pageable,String name, String phone, String industry);
 }

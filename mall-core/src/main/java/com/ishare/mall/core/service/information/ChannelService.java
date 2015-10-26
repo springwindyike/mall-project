@@ -29,4 +29,14 @@ public interface ChannelService {
     Page<Channel> getChannelpage(PageRequest pageRequest);
 
     void save(Channel channel);
+
+    /**
+     *
+     * @param pageRequest
+     * @param name
+     * @param phone
+     * @param industry
+     * @return
+     */
+    Page<Channel> getChannelpage(PageRequest pageRequest,String name,String phone,String industry);
 }
