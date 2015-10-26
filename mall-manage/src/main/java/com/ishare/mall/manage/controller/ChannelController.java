@@ -11,6 +11,7 @@ import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
+import com.ishare.mall.common.base.exception.service.channel.ChannelServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.annoation.CurrentManageUser;
 import com.ishare.mall.manage.controller.base.BaseController;
@@ -155,6 +156,34 @@ public class ChannelController extends BaseController {
     }
 
     /**
+     * 跳转到修改页面
+     * @param id
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "forward2UpdatePage/{id}")
+    public String forward2UpdatePage(@NotEmpty @PathVariable("id") Integer id,Model model) throws Exception{
+        ChannelDTO channelDTO = new ChannelDTO();
+        channelDTO.setId(id);
+        ResponseEntity<Response<ChannelDTO>> responseEntity = null;
+        HttpEntity<ChannelDTO> requestDTO = new HttpEntity<ChannelDTO>(channelDTO);
+        try {
+            responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_FIND_BY_ID),
+                    HttpMethod.POST,requestDTO, new ParameterizedTypeReference<Response<ChannelDTO>>() {
+                    });
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+        Response<ChannelDTO> response = responseEntity.getBody();
+        if (response == null || !response.isSuccess()){
+            throw new Exception("get response error");
+        }
+        model.addAttribute("channelDTO",response.getData());
+        return ManageViewConstant.Channel.FORWARD_TO_UPDATE_PAGE;
+    }
+    /**
      * 保存Channel
      * @param channelForm
      * @return
@@ -164,7 +193,7 @@ public class ChannelController extends BaseController {
     @RequestMapping(value = "/saveChannel")
     public boolean saveChannel(ChannelForm channelForm,@CurrentManageUser CurrentManageUserDTO currentManageUserDTO) throws Exception{
         ChannelDTO channelDTO = new ChannelDTO();
-        BeanUtils.copyProperties(channelForm,channelDTO);
+        BeanUtils.copyProperties(channelForm, channelDTO);
         channelDTO.setCreateBy(currentManageUserDTO.getUsername());
         channelDTO.setCreateTime(new Date());
         ResponseEntity<Response> responseEntity = null;
@@ -179,6 +208,30 @@ public class ChannelController extends BaseController {
     }
 
     /**
+     * 修改channel
+     * @param channelForm
+     * @param currentManageUserDTO
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateChannel")
+    public boolean updateChannel(ChannelForm channelForm,@CurrentManageUser CurrentManageUserDTO currentManageUserDTO) throws Exception{
+        ChannelDTO channelDTO = new ChannelDTO();
+        BeanUtils.copyProperties(channelForm, channelDTO);
+        channelDTO.setCreateBy(currentManageUserDTO.getUsername());
+        channelDTO.setCreateTime(new Date());
+        ResponseEntity<Response> responseEntity = null;
+        HttpEntity<ChannelDTO> requestDTO = new HttpEntity<ChannelDTO>(channelDTO);
+        responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_UPDATE_CHANNEL),
+                HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response>(){});
+        Response response = responseEntity.getBody();
+        if(response == null && !response.isSuccess()){
+            throw new Exception("get response error");
+        }
+        return true;
+    }
+    /**
      * Channel验证（公司名称）
      * @return
      */
@@ -192,5 +245,37 @@ public class ChannelController extends BaseController {
         resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_FIND_VALID_BY_NAME), channelRegisterDTO, ValidformRespDTO.class);
         ValidformRespDTO validformRespDTO = resultDTO.getBody();
         return validformRespDTO;
+    }
+
+    /**
+     * 根据条件分页查询
+     * @param searchCondition
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/findBySearchCondition/{searchCondition}")
+    @ResponseBody
+    public  PageDTO<ChannelDTO> findBySearchCondition(@PathVariable("searchCondition") String searchCondition, Model model, HttpServletRequest request) throws Exception{
+        int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+        int displayStart = Integer.parseInt(request.getParameter("start"));
+        int currentPage = displayStart/displayLength+1;
+        byte[] b = searchCondition.getBytes("ISO-8859-1");
+        String s = new String(b,"UTF-8");
+        ChannelDTO channelDTO = new ChannelDTO();
+        channelDTO.setLimit(displayLength);
+        channelDTO.setOffset(currentPage);
+        channelDTO.setName(s);
+        channelDTO.setPhone(s);
+        channelDTO.setIndustry(s);
+        ResponseEntity<Response<PageDTO<ChannelDTO>>> responseEntity = null;
+        HttpEntity<ChannelDTO> requestDTO = new HttpEntity<ChannelDTO>(channelDTO);
+        responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_FIND_BY_PARAM),
+                HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response<PageDTO<ChannelDTO>>>(){});
+        Response<PageDTO<ChannelDTO>> response = responseEntity.getBody();
+        if(response == null && !response.isSuccess()){
+            throw new Exception("get response error");
+        }
+        return response.getData();
     }
 }

@@ -127,6 +127,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_ID="/findByChnnelId";
         String REQUEST_MAPPING_UPDATE_CHANNEL_STATUS="/updateChannelStatus";
         String REQUEST_MAPPING_SAVE_CHANNEL="/saveChannel";
+        String REQUEST_MAPPING_UPDATE_CHANNEL="/updateChannel";
+        String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
     }
     
     interface Express {

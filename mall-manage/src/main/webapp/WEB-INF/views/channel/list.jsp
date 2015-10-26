@@ -26,8 +26,8 @@
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
         <div class="text-c">
-            <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、账号" id="searchCondition" name="">
-            <button type="submit" onclick="searchMember()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
+            <input type="text" class="input-text" style="width:250px" placeholder="供货商、联系电话、经营类别" id="searchCondition" name="">
+            <button type="submit" onclick="searchChannel()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
             </button>
         </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
@@ -136,7 +136,7 @@
                     "targets" : 12 ,
                     "render" : function(mDataProp, type, full) {
                         return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/channel/update/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
-                                '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/member/forward2ChangePassword/account/'+mDataProp.account+'.dhtml\',\'10001\',\'500\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
+                                '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/channel/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'800\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
                                 '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/channel/update/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a></td>';
                     }
                 },
@@ -199,7 +199,7 @@
         layer_show(title, url, w, h);
     }
     /*密码-修改*/
-    function change_password(title, url, id, w, h) {
+    function change_password(title, url, w, h) {
         layer_show(title, url, w, h);
     }
     /*用户-删除*/
@@ -215,9 +215,9 @@
         }
     }
     /*根据条件查询*/
-    function searchMember(){
+    function searchChannel(){
         var searchCondition = $("#searchCondition").val();
-        url = '${pageContext.request.contextPath}'+'/member/findBySearchCondition/'+searchCondition+'.dhtml';
+        url = '${pageContext.request.contextPath}'+'/channel/findBySearchCondition/'+searchCondition+'.dhtml';
         targetTable.ajax.url(url).load();
 //        targetTable.ajax.load(url);
 //        var oSettings = targetTable.fnSettings();

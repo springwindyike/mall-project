@@ -32,5 +32,6 @@ public interface ManageViewConstant {
 		String CHANNEL_VIEW = "channel/view";
 		String SUCCESS = "S";
 		String FORWARD_TO_ADD_PAGE = "channel/add";
+		String FORWARD_TO_UPDATE_PAGE = "channel/update";
 	}
 }

@@ -110,21 +110,12 @@ public class ChannelResource {
         try{
             Page<Channel> pageChannel = channelService.getChannelpage(pageRequest);
             PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
-//            if(pageChnnelDTO != null && pageChnnelDTO.getContent() != null && pageChnnelDTO.getContent().size() >0){
-//                List<ChannelDTO> list = pageChnnelDTO.getContent();
-//                for(ChannelDTO cdto:list){
-//                }
-//            }
             response.setData(pageChnnelDTO);
         }catch (ChannelServiceException e){
             logger.error(e.getMessage());
             response.setMessage(e.getMessage());
             response.setSuccess(false);
         }
-//        if(pageChannel != null && pageChannel.getContent() != null && pageChannel.getContent().size() > 0){
-//            List<Channel> channelList = pageChannel.getContent();
-//            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(pageChannel, ChannelDTO.class);
-//        }
         return response;
     }
 
@@ -155,12 +146,13 @@ public class ChannelResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public Response saveChannel(@RequestBody ChannelDTO channe1DTO) throws Exception{
+    public Response saveChannel(@RequestBody ChannelDTO channelDTO) throws Exception{
+        Response response = new Response();
         try{
             Channel channel = new Channel();
-            BeanUtils.copyProperties(channe1DTO,channel);
+            BeanUtils.copyProperties(channelDTO,channel);
             channel.setCountry("中国");
-            String area[] = channe1DTO.getCity().split(",");
+            String area[] = channelDTO.getCity().split(",");
             channel.setProvince(area[0]);
             if(area.length > 1){
                 channel.setCity(area[1]);
@@ -175,11 +167,68 @@ public class ChannelResource {
             channel.setVisible(true);
             channelService.save(channel);
         }catch (Exception e){
+            response.setSuccess(false);
+            logger.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+        response.setSuccess(true);
+        return response;
+    }
+
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_UPDATE_CHANNEL,method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response updateChannel(@RequestBody ChannelDTO channelDTO) throws Exception{
+        try{
+            Channel channel = channelService.findOne(channelDTO.getChannelId());
+            channel.setName(channelDTO.getName());
+            channel.setPhone(channelDTO.getPhone());
+            channel.setLinkName(channelDTO.getLinkName());
+            channel.setLinkPhone(channelDTO.getLinkPhone());
+            channel.setBusinessScale(channelDTO.getBusinessScale());
+            channel.setCode(channelDTO.getCode());
+            channel.setIndustry(channelDTO.getIndustry());
+            channel.setCountry("中国");
+            channel.setDetail(channelDTO.getDetail());
+            String area[] = channelDTO.getCity().split(",");
+            channel.setProvince(area[0]);
+            if(area.length > 1){
+                channel.setCity(area[1]);
+            }
+            if(area.length > 2){
+                channel.setDistrict(area[2]);
+            }
+            channelService.save(channel);
+        }catch (Exception e){
             logger.error(e.getMessage());
             throw new Exception(e.getMessage());
         }
         Response response = new Response();
         response.setSuccess(true);
+        return response;
+    }
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_FIND_BY_PARAM,method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response<PageDTO<ChannelDTO>> findBySearchCondition(@RequestBody ChannelDTO channelDTO){
+        Response<PageDTO<ChannelDTO>> response = new Response<PageDTO<ChannelDTO>>();
+        String name = "%" + channelDTO.getName() + "%";
+        String phone = "%" + channelDTO.getPhone() + "%";
+        String industry = "%" + channelDTO.getIndustry() + "%";
+        int offset = channelDTO.getOffset();
+        int limit = channelDTO.getLimit();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+        try{
+            Page<Channel> page = channelService.getChannelpage(pageRequest,name,phone,industry);
+            PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(page, ChannelDTO.class);
+            response.setData(pageChnnelDTO);
+        }catch (ChannelServiceException e){
+            logger.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
+        }
         return response;
     }
 }

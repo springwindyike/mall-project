@@ -99,6 +99,9 @@
         <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
       </div>
     </div>
+    <input class="btn btn-primary radius" type="hidden" name="provinceCode" id="provinceCode" value="">
+    <input class="btn btn-primary radius" type="hidden" name="cityCode" id="cityCode" value="">
+    <input class="btn btn-primary radius" type="hidden" name="districtCode" id="districtCode" value="">
   </form>
 </div>
 </div>
@@ -113,12 +116,13 @@
 
   /* 省市县选择 */
   $(function(){
-
     add_select(0);
-
     $('body').on('change', '#area select', function() {
       var $me = $(this);
       var $next = $me.next();
+      $("#provinceCode").val($(":selected","#selectedProvince").attr("id"));
+      $("#cityCode").val($(":selected","#selectedCity").attr("id"));
+      $("#districtCode").val($(":selected","#selectedDistrict").attr("id"));
       /**
        * 如果下一级已经是当前所选地区的子地区，则不进行处理
        */
@@ -131,34 +135,41 @@
     });
 
     function add_select(pid) {
-      var area_names = area['name'+pid];
-      if (!area_names) {
-        return false;
+    var area_names = area['name'+pid];
+    if (!area_names) {
+      return false;
+    }
+    var area_codes = area['code'+pid];
+    var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
+    $select.attr('name', 'city');
+    $select.data('pid', pid);
+    if($("#selectedProvince").val() == undefined){
+      $select.attr('id','selectedProvince');
+    }else if($("#selectedCity").val() == undefined){
+      $select.attr('id','selectedCity');
+    }else{
+      $select.attr('id','selectedDistrict');
+    }
+    if (area_codes[0] != -1) {
+      area_names.unshift('请选择');
+      area_codes.unshift(-1);
+    }
+    for (var idx in area_codes) {
+      var $option = $('<option>');
+      if(area_codes[idx] == -1){
+        $option.attr('value', "");
+      }else{
+        $option.attr('value', area_names[idx]);
       }
-      var area_codes = area['code'+pid];
-      var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
-      $select.attr('name', 'city');
-      $select.data('pid', pid);
-      if (area_codes[0] != -1) {
-        area_names.unshift('请选择');
-        area_codes.unshift(-1);
-      }
-      for (var idx in area_codes) {
-        var $option = $('<option>');
-        if(area_codes[idx] == -1){
-          $option.attr('value', "");
-        }else{
-          $option.attr('value', area_names[idx]);
-        }
-        $option.attr('id', area_codes[idx]);
-        $option.text(area_names[idx]);
-        $select.append($option);
-      }
-      var length = $("#area select").length;
-      if(length < 3){
-        $('#area').append($select);
-      }
-    };
+      $option.attr('id', area_codes[idx]);
+      $option.text(area_names[idx]);
+      $select.append($option);
+    }
+    var length = $("#area select").length;
+    if(length < 3){
+      $('#area').append($select);
+    }
+  };
   });
 
   //验证
@@ -180,8 +191,9 @@
           },2000);
           setTimeout(function(){
             var index = parent.layer.getFrameIndex(window.name);
+            parent.window.location.reload();
             parent.layer.close(index);
-          },5000);
+          },3000);
         }else{
           setTimeout(function(){
             $.Showmsg("添加失败！");
