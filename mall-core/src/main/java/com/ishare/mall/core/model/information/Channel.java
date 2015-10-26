@@ -89,6 +89,16 @@ public class Channel extends BaseEntity {
     /**是否启用**/
     @Column(name = "channel_visible",length = 5)
     private Boolean visible = true;
+    /**省份代码**/
+    @Column(name = "channel_province_code",length = 6)
+    private String provinceCode;
+    /**市代码**/
+    @Column(name = "channel_city_code",length = 6)
+    private String cityCode;
+    /**区县代码**/
+    @Column(name = "channel_district_code",length = 6)
+    private String districtCode;
+
     /**
      * 一对多该供应商下所有的成员
      */
@@ -295,5 +305,29 @@ public class Channel extends BaseEntity {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
     }
 }

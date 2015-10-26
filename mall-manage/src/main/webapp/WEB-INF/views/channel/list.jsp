@@ -136,7 +136,7 @@
                     "targets" : 12 ,
                     "render" : function(mDataProp, type, full) {
                         return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/channel/update/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
-                                '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/member/forward2ChangePassword/account/'+mDataProp.account+'.dhtml\',\'10001\',\'500\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
+                                '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/channel/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'800\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
                                 '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/channel/update/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a></td>';
                     }
                 },
@@ -199,7 +199,7 @@
         layer_show(title, url, w, h);
     }
     /*密码-修改*/
-    function change_password(title, url, id, w, h) {
+    function change_password(title, url, w, h) {
         layer_show(title, url, w, h);
     }
     /*用户-删除*/

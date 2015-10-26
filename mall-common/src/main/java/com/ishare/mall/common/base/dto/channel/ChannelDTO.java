@@ -55,6 +55,12 @@ public class ChannelDTO extends GenericDTO {
 	private int offset;
 	private int limit;
 	private Boolean visible;
+	/**省份代码**/
+	private String provinceCode;
+	/**市代码**/
+	private String cityCode;
+	/**区县代码**/
+	private String districtCode;
 	public Integer getChannelId() {
 		return channelId;
 	}
@@ -277,5 +283,29 @@ public class ChannelDTO extends GenericDTO {
 
 	public void setVisible(Boolean visible) {
 		this.visible = visible;
+	}
+
+	public String getProvinceCode() {
+		return provinceCode;
+	}
+
+	public void setProvinceCode(String provinceCode) {
+		this.provinceCode = provinceCode;
+	}
+
+	public String getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(String cityCode) {
+		this.cityCode = cityCode;
+	}
+
+	public String getDistrictCode() {
+		return districtCode;
+	}
+
+	public void setDistrictCode(String districtCode) {
+		this.districtCode = districtCode;
 	}
 }

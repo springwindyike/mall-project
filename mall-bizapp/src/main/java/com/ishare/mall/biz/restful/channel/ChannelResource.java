@@ -155,12 +155,12 @@ public class ChannelResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public Response saveChannel(@RequestBody ChannelDTO channe1DTO) throws Exception{
+    public Response saveChannel(@RequestBody ChannelDTO channelDTO) throws Exception{
         try{
             Channel channel = new Channel();
-            BeanUtils.copyProperties(channe1DTO,channel);
+            BeanUtils.copyProperties(channelDTO,channel);
             channel.setCountry("中国");
-            String area[] = channe1DTO.getCity().split(",");
+            String area[] = channelDTO.getCity().split(",");
             channel.setProvince(area[0]);
             if(area.length > 1){
                 channel.setCity(area[1]);
@@ -173,6 +173,40 @@ public class ChannelResource {
             channel.setAppId(appId);
             channel.setAppSecret(uu.App_screct(String.valueOf(new Date().getTime()), appId));
             channel.setVisible(true);
+            channelService.save(channel);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+        Response response = new Response();
+        response.setSuccess(true);
+        return response;
+    }
+
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_UPDATE_CHANNEL,method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response updateChannel(@RequestBody ChannelDTO channelDTO) throws Exception{
+        try{
+            Channel channel = channelService.findOne(channelDTO.getChannelId());
+            channel.setName(channelDTO.getName());
+            channel.setPhone(channelDTO.getPhone());
+            channel.setLinkName(channelDTO.getLinkName());
+            channel.setLinkPhone(channelDTO.getLinkPhone());
+            channel.setBusinessScale(channelDTO.getBusinessScale());
+            channel.setCode(channelDTO.getCode());
+            channel.setIndustry(channelDTO.getIndustry());
+            channel.setCountry("中国");
+            channel.setDetail(channelDTO.getDetail());
+            String area[] = channelDTO.getCity().split(",");
+            channel.setProvince(area[0]);
+            if(area.length > 1){
+                channel.setCity(area[1]);
+            }
+            if(area.length > 2){
+                channel.setDistrict(area[2]);
+            }
             channelService.save(channel);
         }catch (Exception e){
             logger.error(e.getMessage());

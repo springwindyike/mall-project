@@ -23,6 +23,14 @@ public class ChannelForm {
     private String businessScale;
     /**经营类别**/
     private String industry;
+    /**省份代码**/
+    private String provinceCode;
+    /**市代码**/
+    private String cityCode;
+    /**区县代码**/
+    private String districtCode;
+
+    public Integer channelId;
 
     public String getName() {
         return name;
@@ -94,5 +102,37 @@ public class ChannelForm {
 
     public void setIndustry(String industry) {
         this.industry = industry;
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
     }
 }
