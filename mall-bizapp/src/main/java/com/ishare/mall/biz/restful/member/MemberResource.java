@@ -296,7 +296,7 @@ public class MemberResource {
     @RequestMapping(value       = APPURIConstant.Member.REQUEST_MAPPING_GET_BY_ACCOUNT,
                     method      = RequestMethod.GET,
                     headers     = "Accept=application/xml, application/json",
-                    produces    = {"application/json", "application/xml"})
+                    produces    = {"application/json"})
     public Response<MemberDTO> queryByAccount(@NotEmpty @PathVariable("account") String account) {
         Member member = memberService.findByAccount(account);
         MemberDTO memberDTO = new MemberDTO();

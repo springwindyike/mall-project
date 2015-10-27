@@ -1,14 +1,8 @@
 package com.ishare.mall.biz.restful.product.brand;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.information.BrandDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.exception.brand.BrandServiceException;
-import com.ishare.mall.common.base.general.Response;
-import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.service.information.BrandService;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
-import org.hibernate.validator.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -16,10 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.information.BrandDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.BrandDTO;
+import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.exception.brand.BrandServiceException;
+import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.service.information.BrandService;
 
 /**
  * Created by YinLin on 2015/9/15.
@@ -98,6 +104,47 @@ public class BrandResource {
             log.error(e.getMessage());
             response.setMessage(e.getMessage());
             response.setSuccess(false);
+        }
+        return response;
+    }
+    
+    /**
+     * 获取所有的品牌
+     *
+     * @return Page<ProductDTO>
+     */
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
+    public Response findByChannelId(@RequestBody BrandDTO brandDTO) {
+        List<BrandDTO> brandList = new ArrayList<>();
+        int offset = brandDTO.getOffset();
+        int limit = brandDTO.getLimit();
+        Response response = new Response();
+        PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
+        Page<Brand> result;
+		try {
+			result = brandService.findAllBrand(pageRequest);
+		} catch (ProductServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
+        PageDTO<BrandDTO> pageDTO = new PageDTO<BrandDTO>();
+        if(result != null && result.getContent() != null && result.getContent().size()>0){
+            List<Brand> listBrand = result.getContent();
+         for (Brand brand:listBrand){
+        	 		BrandDTO brandDTOTemp = new BrandDTO();
+                BeanUtils.copyProperties(brand, brandDTOTemp);
+                brandList.add(brandDTOTemp);
+            }
+            pageDTO.setContent(brandList);
+            pageDTO.setTotalPages(result.getTotalPages());
+            pageDTO.setITotalDisplayRecords(result.getTotalElements());
+            pageDTO.setITotalRecords(result.getTotalElements());
+            response.setData(pageDTO);
         }
         return response;
     }

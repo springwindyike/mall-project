@@ -38,6 +38,11 @@ public interface CenterURIConstant {
 
   String INDEX = "index";
 
+  interface Brand {
+	  String REQUEST_MAPPING   = "/brand";
+	  String REQUEST_MAPPING_FORWORD="/forword";
+	  String REQUEST_MAPPING_FIND_ALL_BRAND="/allBrand";
+  }
 	interface Member {
 		String REQUEST_MAPPING = "/member";
 		interface Password {

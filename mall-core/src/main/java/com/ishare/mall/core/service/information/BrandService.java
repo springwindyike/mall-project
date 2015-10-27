@@ -1,6 +1,8 @@
 package com.ishare.mall.core.service.information;
 
+import com.ishare.mall.core.exception.BrandServiceException;
 import com.ishare.mall.core.model.information.Brand;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -26,4 +28,12 @@ public abstract interface BrandService {
      * @return
      */
     public abstract Page<Brand> search(Map<String, Object> searchParams, PageRequest pageRequest);
+    
+    /**
+     * 查看所有品牌
+     * @param channelId
+     * @param pageRequest
+     * @return
+     */
+    Page<Brand> findAllBrand(PageRequest pageRequest) throws BrandServiceException;;
 }

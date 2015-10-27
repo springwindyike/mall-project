@@ -1,11 +1,14 @@
 package com.ishare.mall.core.service.information.impl;
 
+import com.ishare.mall.core.exception.BrandServiceException;
+import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.information.BrandRepository;
 import com.ishare.mall.core.service.information.BrandService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +50,17 @@ public class BrandServiceImpl implements BrandService {
     public Logger getLog() {
         return log;
     }
+
+	@Override
+	public Page<Brand> findAllBrand(PageRequest pageRequest)
+			throws BrandServiceException {
+		try {
+			Page<Brand> page = brandRepository.findAll(null, pageRequest);
+			return page;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("查询品牌失败");
+		}
+	}
 
 }

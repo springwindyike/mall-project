@@ -21,6 +21,9 @@ public interface CenterViewConstant {
     	 String UPDATE_PRODUCT= "product/update";
     }
 
+    interface Brand {
+    	 String LIST_BRAND ="brand/list";
+    }
 
 	interface Order {
 		String LIST_ORDER = "order/list";

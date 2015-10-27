@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import com.ishare.mall.common.base.dto.express.ExpressDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
@@ -37,7 +38,8 @@ import com.ishare.mall.common.base.dto.test.TestDTO;
                 ProductTypeDTO.class,
                 OrderDetailDTO.class,
                 ExpressDTO.class,
-                TreeNodeDTO.class
+                TreeNodeDTO.class,
+                BrandDTO.class
                 
         }
 )
