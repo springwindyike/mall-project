@@ -14,8 +14,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +32,9 @@ public class ManageUserController extends BaseController {
     @Autowired
     private RestTemplate resetTemplate;
 
-    @RequestMapping(value = ManageURIConstant.ManageUser.REQUEST_MAPPING_GET_MANAGE_USER_List,method = RequestMethod.GET)
-    public PageDTO getManageUserPage(HttpServletRequest request) throws Exception{
+    @RequestMapping(value = "getManageUserList",method = RequestMethod.GET)
+    @ResponseBody
+    public PageDTO<ManageUserDTO> getManageUserPage(HttpServletRequest request) throws Exception{
         int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
         int displayStart = Integer.parseInt(request.getParameter("start"));
         int currentPage = displayStart/displayLength+1;
@@ -41,6 +44,7 @@ public class ManageUserController extends BaseController {
         ResponseEntity<Response<PageDTO<ManageUserDTO>>> responseEntity = null;
         HttpEntity<ManageUserDTO> requestDTO = new HttpEntity<ManageUserDTO>(manageUserDTO);
         try {
+            System.out.println(this.buildBizAppURI(APPURIConstant.ManageUser.REQUEST_MAPPING, ManageURIConstant.ManageUser.REQUEST_MAPPING_GET_MANAGE_USER_List));
             responseEntity = resetTemplate.exchange(this.buildBizAppURI(APPURIConstant.ManageUser.REQUEST_MAPPING, ManageURIConstant.ManageUser.REQUEST_MAPPING_GET_MANAGE_USER_List),
                     HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<ManageUserDTO>>>() {
                     });

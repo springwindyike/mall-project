@@ -65,7 +65,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
   var targetTable;
-  var url = "${pageContext.request.contextPath}/channel/getChannelPage.dhtml";
+  var url = "${pageContext.request.contextPath}/manageUser/getManageUserList.dhtml";
   $(function () {
     targetTable = $('.table-sort').DataTable({
       "oLanguage": {
@@ -86,7 +86,6 @@
       //"sAjaxDataProp":"content",
       "aoColumns": [
         { "mDataProp": null },
-        { "mDataProp": "username" },
         { "mDataProp": "name" },
         { "mDataProp": "userType" },
         { "mDataProp": null },
@@ -103,11 +102,11 @@
         {
           "targets" : 0 ,
           "render" : function(mDataProp, type, full) {
-            return ' <td><u style="cursor:pointer" class="text-primary" onclick="channel_show(\'渠道详细信息\',\'${pageContext.request.contextPath}/channel/view/'+mDataProp.id+'.dhtml\',\'500\',\'600\')">'+mDataProp.name+'</u></td>';
+            return ' <td><u style="cursor:pointer" class="text-primary" onclick="channel_show(\'渠道详细信息\',\'${pageContext.request.contextPath}/channel/view/'+mDataProp.id+'.dhtml\',\'500\',\'600\')">'+mDataProp.username+'</u></td>';
           }
         },
         {
-          "targets" : 4 ,
+          "targets" : 3 ,
           "render" : function(mDataProp, type, full) {
             if(mDataProp.use){
               return '<td class="td-status"><span class="label label-success radius">已启用</span></td>'
@@ -118,7 +117,7 @@
           }
         },
         {
-          "targets" : 5 ,
+          "targets" : 4 ,
           "render" : function(mDataProp, type, full) {
             return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/channel/update/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
                     '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/channel/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'800\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
