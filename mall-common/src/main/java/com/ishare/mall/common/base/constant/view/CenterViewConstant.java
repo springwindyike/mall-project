@@ -25,6 +25,9 @@ public interface CenterViewConstant {
     	 String LIST_BRAND ="brand/list";
     }
 
+    interface Sys {
+    	String LIST_SYS ="sys/list";
+    }
 	interface Order {
 		String LIST_ORDER = "order/list";
 	}

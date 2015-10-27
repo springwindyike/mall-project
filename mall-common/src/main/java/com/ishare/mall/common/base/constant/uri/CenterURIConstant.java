@@ -51,6 +51,10 @@ public interface CenterURIConstant {
 		}
 	}
 
+	interface Sys{
+		String REQUEST_MAPPING = "/sys";
+		String REQUEST_MAPPING_LIST = "/list";
+	}
 	interface Order {
 		String REQUEST_MAPPING = "/order";
 		String REQUEST_MAPPING_SHOW = "/list";
