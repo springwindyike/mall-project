@@ -191,7 +191,7 @@
 					<li><a _href="system-category.html" href="javascript:void(0)">栏目管理</a></li>
 					<li><a _href="system-data.html" href="javascript:void(0)">数据字典</a></li>
 					<li><a _href="system-shielding.html" href="javascript:void(0)">屏蔽词</a></li>
-					<li><a _href="system-log.html" href="javascript:void(0)">系统日志</a></li>
+					<li><a _href="${pageContext.request.contextPath}/sys/list.dhtml" href="javascript:void(0)">系统日志</a></li>
 				</ul>
 			</dd>
 		</dl>

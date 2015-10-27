@@ -73,6 +73,9 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BY_ID = "/{id}";
         String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
         String REQUEST_MAPPING_GET_BRAND_DETAIL = "/getBrandDetail";
+        String REQUEST_MAPPING_DELETE_BY_ID = "/delById";
+        String REQUEST_MAPPING_UPDATE_BY_ID = "/updateById";
+        String REQUEST_MAPPING_UPDATE = "/update";
     }
     //订单
     interface Order {

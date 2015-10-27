@@ -1,13 +1,6 @@
 package com.ishare.mall.core.service.information.impl;
 
-import com.ishare.mall.core.exception.BrandServiceException;
-import com.ishare.mall.core.exception.ProductServiceException;
-import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.repository.information.BrandRepository;
-import com.ishare.mall.core.service.information.BrandService;
-import com.ishare.mall.core.utils.filter.DynamicSpecifications;
-import com.ishare.mall.core.utils.filter.SearchFilter;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +11,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
+import com.ishare.mall.core.exception.BrandServiceException;
+import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.repository.information.BrandRepository;
+import com.ishare.mall.core.service.information.BrandService;
+import com.ishare.mall.core.utils.filter.DynamicSpecifications;
+import com.ishare.mall.core.utils.filter.SearchFilter;
 
 /**
  * Created by YinLin on 2015/8/10.
@@ -41,7 +39,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Page<Brand> search(Map<String, Object> searchParams, PageRequest pageRequest) {
         Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-        Specification<Product> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Product.class);
+        Specification<Brand> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Brand.class);
         Page<Brand> page = brandRepository.findAll(spec, pageRequest);
         log.debug("filters: {}, total: {}, content: {}", filters, page.getTotalElements(), page.getContent());
         return page;
@@ -59,8 +57,29 @@ public class BrandServiceImpl implements BrandService {
 			return page;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			throw new ProductServiceException("查询品牌失败");
+			throw new BrandServiceException("查询品牌失败");
 		}
+	}
+
+	@Override
+	public void delBrand(Integer id) throws BrandServiceException {
+		try {
+			brandRepository.delete(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new BrandServiceException("删除品牌失败");
+		}
+	}
+
+	@Override
+	public void update(Brand brand) throws BrandServiceException {
+		try {
+			brandRepository.save(brand);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new BrandServiceException("更新品牌失败");
+		}
+	
 	}
 
 }
