@@ -23,6 +23,8 @@ public interface CenterViewConstant {
 
     interface Brand {
     	 String LIST_BRAND ="brand/list";
+    	 String BRAND_UPDATE_SUCCESS = "S";
+    	 String BRAND_UPDATE = "brand/update";
     }
 
     interface Sys {

@@ -67,8 +67,19 @@ public class BrandServiceImpl implements BrandService {
 			brandRepository.delete(id);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			throw new BrandServiceException("产品删除失败");
+			throw new BrandServiceException("删除品牌失败");
 		}
+	}
+
+	@Override
+	public void update(Brand brand) throws BrandServiceException {
+		try {
+			brandRepository.save(brand);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new BrandServiceException("更新品牌失败");
+		}
+	
 	}
 
 }
