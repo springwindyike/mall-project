@@ -19,7 +19,6 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.information.BrandDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.BrandDTO;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
 import com.ishare.mall.common.base.exception.brand.BrandServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.ProductServiceException;
@@ -126,7 +125,7 @@ public class BrandResource {
         Page<Brand> result;
 		try {
 			result = brandService.findAllBrand(pageRequest);
-		} catch (ProductServiceException e) {
+		} catch (BrandServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
 			response.setSuccess(false);
@@ -148,4 +147,27 @@ public class BrandResource {
         }
         return response;
     }
+    
+    /**
+     * 根据id删除品牌
+     * @param memberDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response delete(@RequestBody BrandDTO brandDTO){
+   	 Product product = new Product();
+   	Response response = new Response();
+        try {
+			brandService.delBrand(brandDTO.getId());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
+        return response;
+   }
 }

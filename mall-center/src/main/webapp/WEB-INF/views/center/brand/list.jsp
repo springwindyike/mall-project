@@ -121,7 +121,7 @@ $(function () {
             {
                 "targets" : 9,
                 "render" : function(mDataProp, type, full) {
-                    return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="brand_edit(\'信息修改\',\'${pageContext.request.contextPath}/member/forward2UpdatePage/account/'+mDataProp.account+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/member/delete/account/'+mDataProp.account+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
+                    return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="brand_edit(\'信息修改\',\'${pageContext.request.contextPath}/member/forward2UpdatePage/account/'+mDataProp.account+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/brand/del/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
 }
             },
         ],
