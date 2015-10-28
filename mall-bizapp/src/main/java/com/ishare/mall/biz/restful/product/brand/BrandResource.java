@@ -17,15 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.information.BrandDetailDTO;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.BrandDTO;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.exception.brand.BrandServiceException;
+import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.common.base.general.Response;
-import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.service.information.BrandService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
  * Created by YinLin on 2015/9/15.
@@ -126,7 +130,7 @@ public class BrandResource {
         Page<Brand> result;
 		try {
 			result = brandService.findAllBrand(pageRequest);
-		} catch (ProductServiceException e) {
+		} catch (BrandServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
 			response.setSuccess(false);
@@ -145,6 +149,82 @@ public class BrandResource {
             pageDTO.setITotalDisplayRecords(result.getTotalElements());
             pageDTO.setITotalRecords(result.getTotalElements());
             response.setData(pageDTO);
+        }
+        return response;
+    }
+    
+    /**
+     * 根据id删除品牌
+     * @param memberDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response delete(@RequestBody BrandDTO brandDTO){
+   	 Product product = new Product();
+   	Response response = new Response();
+        try {
+			brandService.delBrand(brandDTO.getId());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
+        return response;
+   }
+    
+    /**
+     * 通过id获取品牌信息
+     * @param brandDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response updateProduct(@RequestBody BrandDTO brandDTO){
+        Response response = new Response();
+        try{
+            Brand brand = brandService.findOne(brandDTO.getId());
+            BrandDTO brandDTOTwo = (BrandDTO) MapperUtils.map(brand, BrandDTO.class);
+            response.setData(brandDTOTwo);
+        }catch (BrandServiceException e){
+            log.error(e.getMessage());
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
+        }
+        return response;
+    }
+    
+    /**
+     * 修改brand信息
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response update(@RequestBody BrandDTO brandDTO){
+        Response response = new Response();
+        try {
+            Brand brand = brandService.findOne(brandDTO.getId());
+            if (brand != null){
+            	brand.setCity(brandDTO.getCity());
+            	brand.setCountry(brandDTO.getCountry());
+            	brand.setDetail(brandDTO.getDetail());
+            	brand.setDistrict(brandDTO.getDistrict());
+            	brand.setLogoUrl(brandDTO.getLogoUrl());
+            	brand.setName(brandDTO.getName());
+            	brand.setProvince(brandDTO.getProvince());
+            	brandService.update(brand);
+            }
+        }catch (BrandServiceException e){
+            log.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
         }
         return response;
     }

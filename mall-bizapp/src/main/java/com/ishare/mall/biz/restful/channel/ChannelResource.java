@@ -13,6 +13,7 @@ import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.utils.UuidUtils;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -219,9 +220,14 @@ public class ChannelResource {
         String industry = "%" + channelDTO.getIndustry() + "%";
         int offset = channelDTO.getOffset();
         int limit = channelDTO.getLimit();
+        Page<Channel> page = null;
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
         try{
-            Page<Channel> page = channelService.getChannelpage(pageRequest,name,phone,industry);
+            if(StringUtils.isEmpty(channelDTO.getName())){
+                page = channelService.getChannelpage(pageRequest);
+            }else {
+                page = channelService.getChannelpage(pageRequest,name,phone,industry);
+            }
             PageDTO<ChannelDTO> pageChnnelDTO = PageUtils.mapper(page, ChannelDTO.class);
             response.setData(pageChnnelDTO);
         }catch (ChannelServiceException e){
