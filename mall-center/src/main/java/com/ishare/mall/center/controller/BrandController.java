@@ -52,8 +52,13 @@ public class BrandController extends BaseController {
    
   
   @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FORWORD, method = RequestMethod.GET)
- 	public String forwardTOproductList() {
+ 	public String forwardToBrandList() {
 	  return CenterViewConstant.Brand.LIST_BRAND;
+  }
+  
+  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD_FORWORD, method = RequestMethod.GET)
+ 	public String forwardToBrandAdd() {
+	  return CenterViewConstant.Brand.ADD_BRAND;
   }
   
   @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND, method = RequestMethod.GET,produces = {"application/json"})

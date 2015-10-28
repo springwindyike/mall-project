@@ -41,6 +41,7 @@ public interface CenterURIConstant {
   interface Brand {
 	  String REQUEST_MAPPING   = "/brand";
 	  String REQUEST_MAPPING_FORWORD="/forword";
+	  String REQUEST_MAPPING_ADD_FORWORD="/addForword";
 	  String REQUEST_MAPPING_FIND_ALL_BRAND="/allBrand";
 	  String REQUEST_MAPPING_DELETE_BY_ID ="/del/{id}";
 	  String REQUEST_MAPPING_UPDATE_BY_ID ="/update/{id}";
