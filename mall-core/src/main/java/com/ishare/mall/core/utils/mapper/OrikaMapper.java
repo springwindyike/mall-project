@@ -107,6 +107,8 @@ public class OrikaMapper extends ConfigurableMapper {
 		Field[] fields = ManageUserDTO.class.getDeclaredFields();
 		Set<String> otherDealField = new HashSet<String>();
 		otherDealField.add("createTimeStr");
+		otherDealField.add("offset");
+		otherDealField.add("limit");
 //		otherDealField.add("serialVersionUID");
 //		otherDealField.add("roleId");
 		for (Field field : fields) {

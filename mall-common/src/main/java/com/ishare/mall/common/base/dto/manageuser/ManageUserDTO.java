@@ -31,6 +31,8 @@ public class ManageUserDTO extends GenericDTO {
 
     private String name;
     private UserType userType;
+    private int offset;
+    private int limit;
 
     public Integer getId() {
         return id;
@@ -130,5 +132,21 @@ public class ManageUserDTO extends GenericDTO {
 
     public String getCredentialsSalt() {
         return username + salt;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }

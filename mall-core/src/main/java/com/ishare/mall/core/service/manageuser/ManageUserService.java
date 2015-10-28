@@ -3,9 +3,7 @@ package com.ishare.mall.core.service.manageuser;
 import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.exception.manageuser.ManageUserServiceException;
-import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.core.model.manage.ManageUser;
-import com.ishare.mall.core.model.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -49,4 +47,11 @@ public interface ManageUserService {
 	 * @param manageUser
 	 */
 	void update(ManageUser manageUser)throws ManageUserServiceException;
+
+	/**
+	 * 分页查询全部的manage user
+	 * @param pageRequest
+	 * @return
+	 */
+	Page<ManageUser> getManageUserPage(PageRequest pageRequest);
 }
