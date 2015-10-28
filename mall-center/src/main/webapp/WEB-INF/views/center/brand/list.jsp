@@ -22,14 +22,25 @@
 		<form class="Huiform" method="post" action="" target="_self">
 			<input type="text" placeholder="分类名称" value="" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
+				<input type="text" placeholder="国家" value="" class="input-text" style="width:120px">
+			<span class="btn-upload form-group">
+				<input type="text" placeholder="省份" value="" class="input-text" style="width:120px">
+			<span class="btn-upload form-group">
+				<input type="text" placeholder="城市" value="" class="input-text" style="width:120px">
+			<span class="btn-upload form-group">
+			<input type="text" placeholder="区域" value="" class="input-text" style="width:120px">
+			<span class="btn-upload form-group">
+				<input type="text" placeholder="具体描述" value="" class="input-text" style="width:120px">
+			<span class="btn-upload form-group">
 			<input class="input-text upload-url" type="text" name="uploadfile-2" id="uploadfile-2" readonly  datatype="*" nullmsg="请添加附件！" style="width:200px">
 			<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
 			<input type="file" multiple name="file-2" class="input-file">
-			</span> <span class="select-box" style="width:150px">
-			<select class="select" name="brandclass" size="1">
+			<span class="btn-upload form-group">
+			</span><!--  <span class="select-box" style="width:0px"> -->
+		<!-- 	<select class="select" name="brandclass" size="1">
 				<option value="1" selected>国内品牌</option>
 				<option value="0">国外品牌</option>
-			</select>
+			</select> -->
 			</span><button type="button" class="btn btn-success" id="" name="" onClick="picture_colume_add(this);"><i class="Hui-iconfont">&#xe600;</i> 添加</button>
 		</form>
 	</div>
