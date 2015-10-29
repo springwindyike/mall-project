@@ -53,5 +53,6 @@ public interface ManageUserService {
 	 * @param pageRequest
 	 * @return
 	 */
-	Page<ManageUser> getManageUserPage(PageRequest pageRequest);
+	Page<ManageUser> getManageUserPage(PageRequest pageRequest) throws ManageUserServiceException;
+
 }

@@ -136,8 +136,8 @@
                     "targets" : 12 ,
                     "render" : function(mDataProp, type, full) {
                         return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/channel/update/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
-                                '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/channel/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'800\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
-                                '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/channel/update/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a></td>';
+                                '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/channel/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'800\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe60c;</i></a> ' +
+                                '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/channel/update/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe601;</i></a></td>';
                     }
                 },
             ],
