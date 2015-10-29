@@ -76,5 +76,7 @@ public interface DataBaseConstant {
         String TABLE_ORIGIN_NAME                        = Common.TABLE_PRE + "origin";
         //订单修改日志
         String TABLE_ORDER_ACTION_LOG_NAME              = TABLE_ORDER_NAME + "_action_log";
+        //系统日志
+        String TABLE_SYS_LOG_NAME															= Common.TABLE_PRE+"_sys_log";
     }
 }

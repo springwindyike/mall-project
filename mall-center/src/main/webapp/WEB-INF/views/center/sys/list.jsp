@@ -42,7 +42,7 @@
         <th width="70">操作</th>
       </tr>
     </thead>
-    <tbody>
+    <!-- <tbody>
       <tr class="text-c">
         <td><input type="checkbox" value="" name=""></td>
         <td>15686</td>
@@ -53,7 +53,7 @@
         <td>2014-6-11 11:11:42</td>
         <td><a title="详情" href="javascript:;" onclick="system_log_show(this,'10001')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a> <a title="删除" href="javascript:;" onclick="system_log_del(this,'10001')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
       </tr>
-    </tbody>
+    </tbody> -->
   </table>
   <div id="pageNav" class="pageNav"></div>
 </div>
@@ -89,5 +89,83 @@ var _hmt = _hmt || [];
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F080836300300be57b7f34f4b3e97d911' type='text/javascript'%3E%3C/script%3E"));
 </script>
+<script type="text/javascript">
+var targetTable;
+var url = "${pageContext.request.contextPath}/artice/allartice.dhtml";
+$(function () {
+     targetTable = $('.table-sort').DataTable({
+         "oLanguage": {
+             "sInfoEmpty": "没有数据",
+             "sZeroRecords": "没有数据",
+             "sEmptyTable":"没有数据"
+         },
+         "searching": false,
+         "ordering":  false,
+        "bProcessing": true,
+        "bServerSide": true,
+        "bStateSave": false,
+        "aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+        "ajax": {
+            url:url,
+            "dataSrc": "content"
+        },
+         //"sAjaxDataProp":"content",
+        "aoColumns": [
+                      { "mDataProp": null },
+            { "mDataProp": "id" },
+            { "mDataProp": "type" },
+            { "mDataProp": "neirong" },
+            { "mDataProp": "name" },
+            { "mDataProp": "ip" },
+            { "mDataProp": "time" },
+            { "mDataProp": null },
+        ],
+
+        "createdRow" : function(row, mDataProp, dataIndex){
+            //alert('row = '+row+'mDataProp = ' +mDataProp +'dataIndex = '+dataIndex);
+            $(row).addClass('text-c');
+        },
+
+        "columnDefs" : [
+                        {
+                            "targets" : 0 ,
+                            "render" : function(mDataProp, type, full) {
+                            return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
+                        }
+                    },
+
+            {
+                "targets" : 9,
+                "render" : function(mDataProp, type, full) {
+                    return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="brand_edit(\'信息修改\',\'${pageContext.request.contextPath}/member/forward2UpdatePage/account/'+mDataProp.account+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/brand/del/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
+}
+            },
+        ],
+    });
+});
+
+/*批量-删除*/
+/* function brand_del(url) {
+    if(confirm("确认要删除吗？")){
+        $.post(
+                url,
+                function(data) {
+                    alert("删除成功");
+                    window.location.reload();
+                }
+        )
+    }
+} */
+
+/*品牌-编辑*/
+/* function brand_edit(title, url, id, w, h) {
+    layer_show(title, url, w, h);
+} */
+</script>
+
+
+
+
+
 </body>
 </html>

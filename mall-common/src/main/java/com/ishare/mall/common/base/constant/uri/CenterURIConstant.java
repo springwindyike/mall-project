@@ -43,7 +43,12 @@ public interface CenterURIConstant {
 	  String REQUEST_MAPPING_FORWORD="/forword";
 	  String REQUEST_MAPPING_FIND_ALL_BRAND="/allBrand";
 	  String REQUEST_MAPPING_DELETE_BY_ID ="/del/{id}";
-  }
+  } 
+  	interface Atrice{
+  	  String REQUEST_MAPPING   = "/atrice";
+  	  String REQUEST_MAPPING_FIND_ALL_ATRICE="/allAtrice";	
+  	  String REQUEST_MAPPING_DELETE_BY_ID ="/del/{id}";
+  	}
 	interface Member {
 		String REQUEST_MAPPING = "/member";
 		interface Password {

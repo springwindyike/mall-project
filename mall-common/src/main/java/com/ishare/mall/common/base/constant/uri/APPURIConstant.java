@@ -131,6 +131,19 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_UPDATE_CHANNEL="/updateChannel";
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
     }
+    //日志
+    interface Artice{
+    	//系统日志
+    	String REQUEST_MAPPING = "/artice";
+    	//查询所有日志信息
+    	String REQUEST_MAPPING_ALL_Artice = "/allartice";
+    	//根据条件搜索日志信息
+    	String REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION = "/findAllBySearchCondition";
+    	//批量删除
+    	 String REQUEST_MAPPING_DEL ="/del";
+    	
+    		
+    }
     
     interface Express {
     	String REQUEST_MAPPING ="/express";
