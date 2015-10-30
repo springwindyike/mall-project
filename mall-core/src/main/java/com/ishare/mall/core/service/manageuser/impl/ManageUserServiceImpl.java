@@ -58,4 +58,9 @@ public class ManageUserServiceImpl implements ManageUserService {
 		return manageUserRepository.getManageUserPage(pageRequest);
 	}
 
+	@Override
+	public Page<ManageUser> getManageUserPage(PageRequest pageRequest, String userName, String name) throws ManageUserServiceException {
+		return manageUserRepository.getManageUserPage(pageRequest,userName,name);
+	}
+
 }

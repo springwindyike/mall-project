@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ishare.mall.core.exception.BrandServiceException;
+import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.repository.information.BrandRepository;
 import com.ishare.mall.core.service.information.BrandService;
@@ -80,6 +81,17 @@ public class BrandServiceImpl implements BrandService {
 			throw new BrandServiceException("更新品牌失败");
 		}
 	
+	}
+
+	@Override
+	public void add(Brand brand) throws BrandServiceException {
+
+		try {
+			brandRepository.save(brand);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new BrandServiceException("品牌保存失败");}
+			
 	}
 
 }

@@ -17,14 +17,14 @@ import com.ishare.mall.core.model.member.Member;
  */
 public abstract interface BrandService {
     /**
-     * 根据ID查找商品类型
+     * 根据ID查找品牌
      * @param id
      * @return
      */
     public abstract Brand findOne(Integer id);
 
     /**
-     * 通过条件查询商品
+     * 通过条件查询品牌
      * @param searchParams
      * @param pageRequest
      * @return
@@ -50,4 +50,11 @@ public abstract interface BrandService {
 	 * @param brand
 	 */
 	void update(Brand brand)throws BrandServiceException;
+	
+    
+	/**
+	 * 添加品牌信息
+	 * @param brand
+	 */
+	void add (Brand brand)throws BrandServiceException;
 }

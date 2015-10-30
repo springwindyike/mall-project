@@ -13,5 +13,8 @@ public interface ManageUserRepository extends JpaRepository<ManageUser, Integer>
 	List<ManageUser> findByUsername(String username);
 	@Query("SELECT m FROM ManageUser m WHERE 1 = 1")
 	Page<ManageUser> getManageUserPage(Pageable pageable);
+
+	@Query("SELECT m FROM ManageUser m WHERE m.username like ?1 or m.name like ?2")
+	Page<ManageUser> getManageUserPage(Pageable pageable,String userName, String name);
 }
 

@@ -1,6 +1,7 @@
 package com.ishare.mall.biz.restful.product.brand;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.information.BrandDetailDTO;
 import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
+import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.exception.brand.BrandServiceException;
 import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.common.base.general.Response;
@@ -28,7 +32,9 @@ import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.information.BrandService;
+import com.ishare.mall.core.utils.UuidUtils;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
@@ -228,4 +234,26 @@ public class BrandResource {
         }
         return response;
     }
+    
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ADD, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json", "application/xml"})
+    public Response saveBrand(@RequestBody BrandDTO brandDTO){
+        Brand brand = new Brand();
+        BeanUtils.copyProperties(brandDTO, brand);
+    		
+    			
+    			try {
+					brandService.add(brand);
+				} catch (Exception e) { 
+									log.error(e.getMessage(), e);
+	            Response response = new Response();
+	            response.setMessage("系统错误");
+	            response.setSuccess(false);
+	            return response;
+	            }
+    			 Response response = new Response();
+    			return response;
+}
 }
