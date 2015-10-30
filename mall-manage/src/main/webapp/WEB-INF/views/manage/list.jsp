@@ -26,14 +26,12 @@
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
   <div class="text-c">
-    <input type="text" class="input-text" style="width:250px" placeholder="供货商、联系电话、经营类别" id="searchCondition" name="">
+    <input type="text" class="input-text" style="width:250px" placeholder="登录账号、成员姓名" id="searchCondition" name="">
     <button type="submit" onclick="searchChannel()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
     </button>
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
-                                                             class="btn btn-danger radius"><i class="Hui-iconfont">
-    &#xe6e2;</i> 批量删除</a> <a href="javascript:"
-                             onclick="channel_add('添加渠道','${pageContext.request.contextPath}/channel/forward2AddPage.dhtml','800','600')"
+  <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"> <a href="javascript:"
+                             onclick="channel_add('添加管理','${pageContext.request.contextPath}/manageUser/forward2AddPage.dhtml','800','600')"
                              class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>添加渠道</a></span>
     <span class="r"></span></div>
   <div class="mt-20">
@@ -85,9 +83,9 @@
       },
       //"sAjaxDataProp":"content",
       "aoColumns": [
-        { "mDataProp": null },
+        { "mDataProp": "username" },
         { "mDataProp": "name" },
-        { "mDataProp": "userType" },
+        { "mDataProp": null },
         { "mDataProp": null },
         { "mDataProp": null },
       ],
@@ -98,18 +96,25 @@
       },
 
       "columnDefs" : [
-
         {
-          "targets" : 0 ,
+          "targets" : 2 ,
           "render" : function(mDataProp, type, full) {
-            return ' <td><u style="cursor:pointer" class="text-primary" onclick="channel_show(\'渠道详细信息\',\'${pageContext.request.contextPath}/channel/view/'+mDataProp.id+'.dhtml\',\'500\',\'600\')">'+mDataProp.username+'</u></td>';
+            if(mDataProp.userType == "SELF"){
+              return '<td>系统管理员</td>';
+            }else if(mDataProp.userType == "ADMIN"){
+              return '<td>管理员</td>';
+            }else if(mDataProp.userType == "CLERK"){
+              return '<td>办事员</td>';
+            }else{
+              return '<td>普通成员</td>'
+            }
           }
         },
         {
           "targets" : 3 ,
           "render" : function(mDataProp, type, full) {
             if(mDataProp.use){
-              return '<td class="td-status"><span class="label label-success radius">已启用</span></td>'
+              return '<td class="td-status"><span class="label label-success radius">已启用</span></td>';
             }else{
               return '<td class="td-status"><span class="label radius">已停用</span></td>';
             }
@@ -119,9 +124,11 @@
         {
           "targets" : 4 ,
           "render" : function(mDataProp, type, full) {
-            return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/channel/update/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
-                    '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/channel/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'800\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
-                    '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/channel/update/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe631;</i></a></td>';
+            return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/manageUser/changeStatus/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
+                    '<a style="text-decoration:none" class="ml-5" onClick="user_edit(\'修改信息\',\'${pageContext.request.contextPath}/manageUser/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'500\',\'300\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe60c;</i></a> ' +
+                    '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改密码\',\'${pageContext.request.contextPath}/manageUser/forward2ChangePasswordPage/'+mDataProp.id+'.dhtml\',\'500\',\'350\')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
+                    '<a style="text-decoration:none" onClick="manage_reset(\'${pageContext.request.contextPath}/manageUser/resetPassword/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="重置密码"><i class="Hui-iconfont">&#xe62e;</i></a> ' +
+                    '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/manageUser/changeStatus/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe601;</i></a></td>';
           }
         },
       ],
@@ -146,6 +153,19 @@
               url,
               function(data) {
                 alert("启用成功");
+                window.location.reload();
+              }
+      )
+    }
+  }
+
+  /*重置密码*/
+  function manage_reset(url) {
+    if(confirm("确认要重置密码吗？")){
+      $.post(
+              url,
+              function(data) {
+                alert("重置成功");
                 window.location.reload();
               }
       )
@@ -179,7 +199,7 @@
     });
   }
   /*用户-编辑*/
-  function member_edit(title, url, id, w, h) {
+  function user_edit(title, url,w, h) {
     layer_show(title, url, w, h);
   }
   /*密码-修改*/
@@ -201,7 +221,7 @@
   /*根据条件查询*/
   function searchChannel(){
     var searchCondition = $("#searchCondition").val();
-    url = '${pageContext.request.contextPath}'+'/channel/findBySearchCondition/'+searchCondition+'.dhtml';
+    url = '${pageContext.request.contextPath}'+'/manageUser/findBySearchCondition/'+searchCondition+'.dhtml';
     targetTable.ajax.url(url).load();
 //        targetTable.ajax.load(url);
 //        var oSettings = targetTable.fnSettings();

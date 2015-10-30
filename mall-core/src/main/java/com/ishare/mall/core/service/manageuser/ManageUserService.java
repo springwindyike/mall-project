@@ -55,4 +55,14 @@ public interface ManageUserService {
 	 */
 	Page<ManageUser> getManageUserPage(PageRequest pageRequest) throws ManageUserServiceException;
 
+	/**
+	 * 根据条件查询
+	 * @param pageRequest
+	 * @param userName
+	 * @param name
+	 * @return
+	 * @throws ManageUserServiceException
+	 */
+	Page<ManageUser> getManageUserPage(PageRequest pageRequest,String userName,String name) throws ManageUserServiceException;
+
 }

@@ -62,5 +62,9 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING_SAVE = "/save";
 		String REQUEST_MAPPING_UPDATE = "/update";
 		String REQUEST_MAPPING_CHECK_NAME = "/checkLoginAccount";
+		String REQUEST_MAPPING_CHANGE_PASSWORD = "/changePassword";
+		String REQUEST_MAPPING_FORWARD_TO_ADD_PAGE = "manage/add";
+		String REQUEST_MAPPING_FIND_BY_SEARCH_CONDITION = "/findByCondition";
+		String REQUEST_MAPPING_FORWARD_TO_CHANGE_PASSWORD_PAGE = "manage/password";
 	}
 }

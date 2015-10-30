@@ -19,7 +19,7 @@ public class ManageForm {
     private boolean use = true;
     private Gender sex;
     private String name;
-    private UserType userType;
+    private String userType;
 
     public String getUsername() {
         return username;
@@ -101,11 +101,11 @@ public class ManageForm {
         this.name = name;
     }
 
-    public UserType getUserType() {
+    public String getUserType() {
         return userType;
     }
 
-    public void setUserType(UserType userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
     }
 }

@@ -28,11 +28,18 @@
 
 <body>
 <div class="pd-20">
-  <form action="${pageContext.request.contextPath}/channel/saveChannel.dhtml" method="post" class="form form-horizontal" id="form-member-add">
+  <form action="${pageContext.request.contextPath}/manageUser/add.dhtml" method="post" class="form form-horizontal" id="form-member-add">
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>登录账号：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="" placeholder="" id="name" name="name" datatype="*2-16" nullmsg="登录账号不能为空" ajaxurl="checkLoginAccount.dhtml" sucmsg="验证通过！">
+        <input type="text" class="input-text" value="" placeholder="" id="username" name="username" datatype="*2-16" nullmsg="登录账号不能为空" ajaxurl="checkLoginAccount.dhtml" sucmsg="验证通过！">
+      </div>
+      <div class="col-4"> </div>
+    </div>
+    <div class="row cl">
+      <label class="form-label col-3"><span class="c-red">*</span>昵称：</label>
+      <div class="formControls col-5">
+        <input type="text" class="input-text" value="" placeholder="" id="name" name="name" datatype="*0-16" >
       </div>
       <div class="col-4"> </div>
     </div>
@@ -53,7 +60,7 @@
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>选择用户类型：</label>
       <div class="formControls col-5">
-        <select class="select" size="1" name="type" nullmsg="请选择类型" datatype="*">
+        <select class="select" size="1" name="userType" nullmsg="请选择类型" datatype="*">
           <option value="" selected>选择用户类型</option>
           <option value="SELF">系统管理员</option>
           <option value="ADMIN">管理员</option>
@@ -82,65 +89,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/area.js"></script>
 <script type="text/javascript">
-
-  /* 省市县选择 */
-  $(function(){
-    add_select(0);
-    $('body').on('change', '#area select', function() {
-      var $me = $(this);
-      var $next = $me.next();
-      $("#provinceCode").val($(":selected","#selectedProvince").attr("id"));
-      $("#cityCode").val($(":selected","#selectedCity").attr("id"));
-      $("#districtCode").val($(":selected","#selectedDistrict").attr("id"));
-      /**
-       * 如果下一级已经是当前所选地区的子地区，则不进行处理
-       */
-      if ($me.val() == $next.data('pid')) {
-        return;
-      }
-      $me.nextAll().remove();
-      //add_select($me.val());.attr("id"));
-      add_select($me.find("option:selected").attr("id"));
-    });
-
-    function add_select(pid) {
-      var area_names = area['name'+pid];
-      if (!area_names) {
-        return false;
-      }
-      var area_codes = area['code'+pid];
-      var $select = $('<select class="select" size="1" datatype="*" nullmsg="请选择所在城市！" style="width:98px">');
-      $select.attr('name', 'city');
-      $select.data('pid', pid);
-      if($("#selectedProvince").val() == undefined){
-        $select.attr('id','selectedProvince');
-      }else if($("#selectedCity").val() == undefined){
-        $select.attr('id','selectedCity');
-      }else{
-        $select.attr('id','selectedDistrict');
-      }
-      if (area_codes[0] != -1) {
-        area_names.unshift('请选择');
-        area_codes.unshift(-1);
-      }
-      for (var idx in area_codes) {
-        var $option = $('<option>');
-        if(area_codes[idx] == -1){
-          $option.attr('value', "");
-        }else{
-          $option.attr('value', area_names[idx]);
-        }
-        $option.attr('id', area_codes[idx]);
-        $option.text(area_names[idx]);
-        $select.append($option);
-      }
-      var length = $("#area select").length;
-      if(length < 3){
-        $('#area').append($select);
-      }
-    };
-  });
-
   //验证
   $(function(){
     $('.skin-minimal input').iCheck({

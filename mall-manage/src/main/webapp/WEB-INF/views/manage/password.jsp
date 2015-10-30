@@ -21,7 +21,13 @@
 </head>
 <body>
 <div class="pd-20">
-  <form action="${pageContext.request.contextPath}/manageUser/update.dhtml" method="post" class="form form-horizontal" id="form-member-update">
+  <form action="${pageContext.request.contextPath}/manageUser/updatePassword.dhtml" method="post" class="form form-horizontal" id="form-member-update">
+    <div class="row cl">
+      <div class="formControls col-5">
+        <span style="color:#CC0000" id="msg"></span>
+      </div>
+      <div class="col-4"></div>
+    </div>
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>登录账号：</label>
       <div class="formControls col-5">
@@ -30,23 +36,23 @@
       <div class="col-4"></div>
     </div>
     <div class="row cl">
-      <label class="form-label col-3"><span class="c-red">*</span>昵称：</label>
+      <label class="form-label col-3"><span class="c-red">*</span>原密码：</label>
       <div class="formControls col-5">
-        <input type="text" class="input-text" value="${manageUserDTO.name}" placeholder="" id="name" name="name" datatype="*0-10">
+        <input type="password" class="input-text" autocomplete="off" placeholder="" name="oldPassword" id="oldPassword" datatype="*6-18" nullmsg="原密码不能为空" >
       </div>
       <div class="col-4"></div>
     </div>
     <div class="row cl">
-      <label class="form-label col-3"><span class="c-red">*</span>选择用户类型：</label>
-      <input type="hidden" id="currentType" value="${manageUserDTO.userType}">
+      <label class="form-label col-3"><span class="c-red">*</span>密码：</label>
       <div class="formControls col-5">
-        <select class="select" size="1" name="userType" nullmsg="请选择类型" datatype="*" id="select_id">
-          <option value="" selected>选择用户类型</option>
-          <option value="SELF">系统管理员</option>
-          <option value="ADMIN">管理员</option>
-          <option value="CLERK">办事员</option>
-          <option value="MEMBER">普通成员</option>
-        </select>
+        <input type="password" class="input-text" autocomplete="off" placeholder="" name="password" id="password" datatype="*6-18" nullmsg="密码不能为空" >
+      </div>
+      <div class="col-4"> </div>
+    </div>
+    <div class="row cl">
+      <label class="form-label col-3"><span class="c-red">*</span>确认密码：</label>
+      <div class="formControls col-5">
+        <input type="password" class="input-text" autocomplete="off" placeholder="" name="repassword" id="repassword" recheck="password" datatype="*6-18" errormsg="您两次输入的密码不一致！"nullmsg="请确认密码">
       </div>
       <div class="col-4"> </div>
     </div>
@@ -70,13 +76,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/area.js"></script>
 <script type="text/javascript">
   $(function(){
-    var type = $("#currentType").val();
-    $("#select_id").find("option[value="+type+"]").attr("selected","selected");
-  });
-
-
-
-  $(function(){
     $('.skin-minimal input').iCheck({
       checkboxClass: 'icheckbox-blue',
       radioClass: 'iradio-blue',
@@ -91,12 +90,15 @@
           setTimeout(function(){
             //$.Hidemsg();
             $.Showmsg("修改成功！");
-        },2000);
+          },2000);
           setTimeout(function(){
             var index = parent.layer.getFrameIndex(window.name);
             parent.window.location.reload();
             parent.layer.close(index);
           },3000);
+        }else{
+          $("#msg").html("原始密码错误");
+          $("#Validform_msg").hide();
         }
       }
     });

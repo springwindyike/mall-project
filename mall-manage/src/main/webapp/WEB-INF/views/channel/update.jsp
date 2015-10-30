@@ -17,7 +17,7 @@
   <link href="${pageContext.request.contextPath}/resources/lib/icheck/icheck.css" rel="stylesheet" type="text/css"/>
   <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet"
         type="text/css"/>
-  <title>添加用户</title>
+  <title>修改信息</title>
 </head>
 <body>
 <div class="pd-20">

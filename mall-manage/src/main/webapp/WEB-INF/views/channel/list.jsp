@@ -30,9 +30,7 @@
             <button type="submit" onclick="searchChannel()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
             </button>
         </div>
-    <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:" onclick="datadel()"
-                                                               class="btn btn-danger radius"><i class="Hui-iconfont">
-        &#xe6e2;</i> 批量删除</a> <a href="javascript:"
+    <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:"
                                  onclick="channel_add('添加渠道','${pageContext.request.contextPath}/channel/forward2AddPage.dhtml','800','600')"
                                  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>添加渠道</a></span>
         <span class="r"></span></div>
