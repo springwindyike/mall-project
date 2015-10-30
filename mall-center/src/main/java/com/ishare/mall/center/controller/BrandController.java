@@ -13,21 +13,23 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.center.form.brand.AddBrandForm;
 import com.ishare.mall.center.form.brand.BrandForm;
-import com.ishare.mall.center.form.member.MemberForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.general.Response;
@@ -159,6 +161,30 @@ public class BrandController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/update")
 	public String update(BrandForm brandForm) throws Exception{
+		BrandDTO brandDTO = new BrandDTO();
+		BeanUtils.copyProperties(brandForm, brandDTO);
+		ResponseEntity<Response<BrandDTO>> resultEntity = null;
+		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
+		try{
+			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_UPDATE),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+ APPURIConstant.Brand.REQUEST_MAPPING_UPDATE+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultEntity.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if(response != null && !response.isSuccess()){
+			throw new Exception(response.getMessage());
+		}
+		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD,method = RequestMethod.POST)
+	public String add(@ModelAttribute("addBrandForm") AddBrandForm brandForm,@RequestParam(value = "file", required = true) MultipartFile file,@CurrentMember CurrentMemberDTO member) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
 		BeanUtils.copyProperties(brandForm, brandDTO);
 		ResponseEntity<Response<BrandDTO>> resultEntity = null;
