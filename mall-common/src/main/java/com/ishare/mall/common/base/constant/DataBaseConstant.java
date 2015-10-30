@@ -77,6 +77,8 @@ public interface DataBaseConstant {
         //订单修改日志
         String TABLE_ORDER_ACTION_LOG_NAME              = TABLE_ORDER_NAME + "_action_log";
         //系统日志
-        String TABLE_SYS_LOG_NAME															= Common.TABLE_PRE+"_sys_log";
+        String TABLE_SYS_LOG_NAME															= Common.TABLE_PRE+"sys_log";
+        //分类品牌表
+        String TABLE_PRODUCT_TYPE_BRAND_NAME                 = TABLE_PRODUCT_TYPE_NAME + "_brand";
     }
 }

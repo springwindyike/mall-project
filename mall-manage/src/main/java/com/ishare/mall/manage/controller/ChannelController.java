@@ -65,6 +65,7 @@ public class ChannelController extends BaseController {
         ResponseEntity<Response<PageDTO<ChannelDTO>>> responseEntity = null;
         HttpEntity<ChannelDTO> requestDTO = new HttpEntity<ChannelDTO>(channelDTO);
         try {
+            System.out.println(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_GET_CHANNEL_PAGE));
             responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, APPURIConstant.Channel.REQUEST_MAPPING_GET_CHANNEL_PAGE),
                     HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<ChannelDTO>>>() {
                     });

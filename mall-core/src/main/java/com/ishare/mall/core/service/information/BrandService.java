@@ -5,8 +5,10 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.core.exception.BrandServiceException;
 import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.member.Member;
 
 /**
  * Created by YinLin on 2015/8/10.
@@ -42,4 +44,10 @@ public abstract interface BrandService {
      * @param id
      */
     public void delBrand(Integer id) throws BrandServiceException;
+    
+	/**
+	 * 更新品牌信息
+	 * @param brand
+	 */
+	void update(Brand brand)throws BrandServiceException;
 }

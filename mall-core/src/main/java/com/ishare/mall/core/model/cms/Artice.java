@@ -1,17 +1,21 @@
 package com.ishare.mall.core.model.cms;
 
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_SYS_LOG_NAME;
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 
 import com.ishare.mall.core.model.base.BaseEntity;
-
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_SYS_LOG_NAME;
 /**
  * 系统日志实体类
  * @author zhangzhaoxin
@@ -19,7 +23,7 @@ import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_
  */
 @Entity
 @Table(name = TABLE_SYS_LOG_NAME)
-public class Article extends BaseEntity {
+public class Artice extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,8 +32,8 @@ public class Article extends BaseEntity {
 	@Column(name = "type",length = 10)
 	private Integer type;
 	//内容
-	@Column(name = "neirong",length = 4000)
-	private String neirong;
+	@Column(name = "content",length = 200)
+	private String content;
 	//用户名
 	@Column(name = "name",length = 20)
 	private String name;
@@ -37,8 +41,11 @@ public class Article extends BaseEntity {
 	@Column(name = "ip",length = 20)
 	private String ip;
 	//时间
-	@Column(name = "time",length = 20)
-	private DateTime time;
+	 @Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "time",length = 20)
+	private Date time;
+	
+
 	public Integer getId() {
 		return id;
 	}
@@ -51,11 +58,12 @@ public class Article extends BaseEntity {
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	public String getNeirong() {
-		return neirong;
+
+	public String getContent() {
+		return content;
 	}
-	public void setNeirong(String neirong) {
-		this.neirong = neirong;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	public String getName() {
 		return name;
@@ -69,10 +77,10 @@ public class Article extends BaseEntity {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public DateTime getTime() {
+	public Date getTime() {
 		return time;
 	}
-	public void setTime(DateTime time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 

@@ -8,6 +8,8 @@ import com.ishare.mall.core.service.member.PasswordHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,4 +52,10 @@ public class ManageUserServiceImpl implements ManageUserService {
 	public void update(ManageUser manageUser) throws ManageUserServiceException {
 		manageUserRepository.save(manageUser);
 	}
+
+	@Override
+	public Page<ManageUser> getManageUserPage(PageRequest pageRequest) {
+		return manageUserRepository.getManageUserPage(pageRequest);
+	}
+
 }

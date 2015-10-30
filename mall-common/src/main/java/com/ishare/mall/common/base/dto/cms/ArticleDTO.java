@@ -1,5 +1,7 @@
 package com.ishare.mall.common.base.dto.cms;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
@@ -13,7 +15,7 @@ import com.ishare.mall.common.base.dto.generic.GenericDTO;
  */
 @XmlRootElement
 @JsonAutoDetect
-public class AtricleDTO extends GenericDTO  {
+public class ArticleDTO extends GenericDTO  {
 
 	/**
 	 * 
@@ -25,13 +27,13 @@ public class AtricleDTO extends GenericDTO  {
 	//类型
 	private int type;
 	//内容
-	private String neirong;
+	private String content;
 	//用户名
 	private String name;
 	//客户端ip
 	private String ip;
 	//时间
-	private String time;
+	private Date time;
 
 	private int offset;
 
@@ -48,11 +50,11 @@ public class AtricleDTO extends GenericDTO  {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public String getNeirong() {
-		return neirong;
+	public String getContent() {
+		return content;
 	}
-	public void setNeirong(String neirong) {
-		this.neirong = neirong;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	public String getName() {
 		return name;
@@ -66,10 +68,10 @@ public class AtricleDTO extends GenericDTO  {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public String getTime() {
+	public Date getTime() {
 		return time;
 	}
-	public void setTime(String time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 	public int getOffset() {

@@ -47,5 +47,11 @@ public interface ManageURIConstant {
 	interface Channel{
 		String REQUEST_MAPPING = "/channel";
 	}
-	
+
+	interface ManageUser{
+		String REQUEST_MAPPING = "/manageUser";
+		String REQUEST_MAPPING_GET_MANAGE_USER_List = "getManageUserList";
+		String REQYEST_MAPPING_MANAGE_USER_LIST = "manage/list";
+		String REQYEST_MAPPING_FORWARD_TO_MANAGE_USER_LIST = "/forward2ManageUsreList";
+	}
 }

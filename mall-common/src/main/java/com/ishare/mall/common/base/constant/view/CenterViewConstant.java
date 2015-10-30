@@ -23,11 +23,11 @@ public interface CenterViewConstant {
 
     interface Brand {
     	 String LIST_BRAND ="brand/list";
+    	 String ADD_BRAND ="brand/add";
+    	 String BRAND_UPDATE_SUCCESS = "S";
+    	 String BRAND_UPDATE = "brand/update";
     }
 
-    interface Sys {
-    	String LIST_SYS ="sys/list";
-    }
 	interface Order {
 		String LIST_ORDER = "order/list";
 	}
@@ -50,7 +50,10 @@ public interface CenterViewConstant {
 		}
 		
 	}
-
+	
+interface Artice {
+	String ARTICE_LIST = "artice/list";
+}
 	interface Channel{
 		String CHANNEL_VIEW = "channel/view";
 		String SUCCESS = "S";

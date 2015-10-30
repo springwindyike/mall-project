@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -20,10 +21,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.center.form.brand.BrandForm;
+import com.ishare.mall.center.form.member.MemberForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.general.Response;
@@ -48,8 +52,13 @@ public class BrandController extends BaseController {
    
   
   @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FORWORD, method = RequestMethod.GET)
- 	public String forwardTOproductList() {
+ 	public String forwardToBrandList() {
 	  return CenterViewConstant.Brand.LIST_BRAND;
+  }
+  
+  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD_FORWORD, method = RequestMethod.GET)
+ 	public String forwardToBrandAdd() {
+	  return CenterViewConstant.Brand.ADD_BRAND;
   }
   
   @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND, method = RequestMethod.GET,produces = {"application/json"})
@@ -102,7 +111,7 @@ public class BrandController extends BaseController {
 			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID),
 					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
 		}catch (Exception e){
-			log.error("call bizp app "+APPURIConstant.Member.REQUEST_MAPPING+APPURIConstant.Member.REQUEST_MAPPING_DELETE+"error");
+			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+APPURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID+"error");
 			throw new Exception(e.getMessage());
 		}
 		Response response = resultDTO.getBody();
@@ -112,6 +121,62 @@ public class BrandController extends BaseController {
 		if (response != null && !response.isSuccess()){
 			throw new Exception(response.getMessage());
 		}
-		return CenterViewConstant.Member.MEMBER_UPDATE_SUCCESS;
+		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
+	}
+	
+
+	/**
+	 * 跳转到update 页面
+	 * @return
+	 */
+	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID)
+	public String forwordUpdateBrand(@NotEmpty @PathVariable("id") Integer id,Model model) throws  Exception{
+		BrandDTO brandDTO = new BrandDTO();
+		brandDTO.setId(id);
+		ResponseEntity<Response<BrandDTO>> resultDTO = null;
+		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
+		try {
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+APPURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response != null){
+			if(response.isSuccess()){
+				BrandDTO returnDTO = (BrandDTO)response.getData();
+				model.addAttribute("returnDTO",returnDTO);
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else {
+			throw new Exception("get response error");
+		}
+		return CenterViewConstant.Brand.BRAND_UPDATE;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/update")
+	public String update(BrandForm brandForm) throws Exception{
+		BrandDTO brandDTO = new BrandDTO();
+		BeanUtils.copyProperties(brandForm, brandDTO);
+		ResponseEntity<Response<BrandDTO>> resultEntity = null;
+		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
+		try{
+			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_UPDATE),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
+		}catch (Exception e){
+			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+ APPURIConstant.Brand.REQUEST_MAPPING_UPDATE+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultEntity.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if(response != null && !response.isSuccess()){
+			throw new Exception(response.getMessage());
+		}
+		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
 	}
 }

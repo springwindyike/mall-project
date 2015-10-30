@@ -66,7 +66,7 @@ public class MemberResource {
 			        memberLoginResultDTO.setSuccess(true);
                         memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
                     } else {
-                        MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+                        MemberDetailDTO memberDetaiREQUEST_MAPPING_GET_BY_ACCOUNTlDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
 			        memberLoginResultDTO.setCode(200);
 			        memberLoginResultDTO.setSuccess(false);
 			        memberLoginResultDTO.setMessage("密码错误。");

@@ -21,7 +21,8 @@ import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.dto.cms.AtricleDTO;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
+import com.ishare.mall.common.base.dto.cms.ArticleDTO;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.general.Response;
@@ -31,7 +32,7 @@ import com.ishare.mall.common.base.general.Response;
  *
  */
 @Controller
-@RequestMapping(value = CenterURIConstant.Atrice.REQUEST_MAPPING)
+@RequestMapping(value = CenterURIConstant.Artice.REQUEST_MAPPING)
 public class ArticeController extends BaseController {
 	@Autowired
 	private RestTemplate restTemplate;
@@ -52,22 +53,22 @@ public class ArticeController extends BaseController {
  * @return
  * @throws Exception
  */
-	@RequestMapping(value = CenterURIConstant.Atrice.REQUEST_MAPPING_FIND_ALL_ATRICE, method = RequestMethod.GET)
+	@RequestMapping(value = CenterURIConstant.Artice.REQUEST_MAPPING_FIND_ALL_ATRICE, method = RequestMethod.GET)
 	@ResponseBody
 	public PageDTO findAllArtice(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model)throws Exception{
 
-		AtricleDTO atricleDTO = new AtricleDTO();
+		ArticleDTO atricleDTO = new ArticleDTO();
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displaystart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displaystart/displayLength+1;
 		atricleDTO.setLimit(displayLength);
 		atricleDTO.setOffset(currentPage);
-		HttpEntity<AtricleDTO> requestDTO = new HttpEntity<AtricleDTO>(atricleDTO);
-		ResponseEntity<Response<PageDTO<AtricleDTO>>> resultDTO = null;
+		HttpEntity<ArticleDTO> requestDTO = new HttpEntity<ArticleDTO>(atricleDTO);
+		ResponseEntity<Response<PageDTO<ArticleDTO>>> resultDTO = null;
 
 		try {
 			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Artice.REQUEST_MAPPING, APPURIConstant.Artice.REQUEST_MAPPING_ALL_Artice),
-					HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response<PageDTO<AtricleDTO>>>() {}); 
+					HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response<PageDTO<ArticleDTO>>>() {}); 
 		} catch (Exception e) {
 
 			log.error("call biz app"+APPURIConstant.Artice.REQUEST_MAPPING+APPURIConstant.Artice.REQUEST_MAPPING_ALL_Artice+"error");
@@ -101,6 +102,10 @@ public class ArticeController extends BaseController {
 	//			 
 	//		 }
 	//		
+	  @RequestMapping(value = CenterURIConstant.Artice.REQUEST_MAPPING_FORWORD_ALL_ATRICE, method = RequestMethod.GET)
+	 	public String forwardTOproductList() {
+		  return CenterViewConstant.Artice.ARTICE_LIST;
+	  }
 
 }
 
