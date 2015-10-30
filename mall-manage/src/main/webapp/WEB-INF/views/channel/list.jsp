@@ -27,7 +27,7 @@
 <div class="pd-20">
         <div class="text-c">
             <input type="text" class="input-text" style="width:250px" placeholder="供货商、联系电话、经营类别" id="searchCondition" name="">
-            <button type="submit" onclick="searchChannel()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
+            <button type="submit" onclick="searchChannel()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜渠道
             </button>
         </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:"
