@@ -1,7 +1,13 @@
 package com.ishare.mall.center.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,16 +190,17 @@ public class BrandController extends BaseController {
 	
 	@ResponseBody
 	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD,method = RequestMethod.POST)
-	public String add(@ModelAttribute("addBrandForm") AddBrandForm brandForm,@RequestParam(value = "file", required = true) MultipartFile file,@CurrentMember CurrentMemberDTO member) throws Exception{
+	public String add(@ModelAttribute("addBrandForm") AddBrandForm addBrandForm,@CurrentMember CurrentMemberDTO member) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
-		BeanUtils.copyProperties(brandForm, brandDTO);
+		BeanUtils.copyProperties(addBrandForm, brandDTO);
+		brandDTO.setLogoUrl(addBrandForm.getLogo());
 		ResponseEntity<Response<BrandDTO>> resultEntity = null;
 		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
 		try{
-			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_UPDATE),
+			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_ADD),
 					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
 		}catch (Exception e){
-			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+ APPURIConstant.Brand.REQUEST_MAPPING_UPDATE+"error");
+			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+ APPURIConstant.Brand.REQUEST_MAPPING_ADD+"error");
 			throw new Exception(e.getMessage());
 		}
 		Response response = resultEntity.getBody();
@@ -205,4 +212,30 @@ public class BrandController extends BaseController {
 		}
 		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
 	}
+	
+	  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_UPLOAD_PIC)
+	 	public String uploadPic(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	        String realPath = request.getSession().getServletContext().getRealPath("resources/upload");
+	        response.setContentType("text/plain; charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        String originalFilename = null;
+            if(file.isEmpty()){
+                out.print("1`请选择文件后上传");
+                out.flush();
+                return null;
+            }else{
+                originalFilename = file.getOriginalFilename();
+                try {
+                    FileUtils.copyInputStreamToFile(file.getInputStream(), new File(realPath, originalFilename));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    out.print("1`文件上传失败，请重试！！");
+                    out.flush();
+                    return null;
+                }
+            }
+	        out.print("0`" + request.getContextPath() + "/upload/" + originalFilename);
+	        out.flush();
+	        return null;
+	  }
 }
