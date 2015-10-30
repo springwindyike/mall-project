@@ -15,4 +15,8 @@ public interface BaseConstant {
         String ERROR_CODE = "properties/ErrorCodes.properties";
     }
 
+    String SELF = "SELF";
+    String ADMIN = "ADMIN";
+    String CLERK = "CLERK";
+    String MEMBER = "MEMBER";
 }

@@ -21,14 +21,12 @@ public class ManageUserDTO extends GenericDTO {
     private String username;
     private String password;
     private String salt;
-
     private Date createTime;
     private Date updateTime;
     private String createBy;
     private String updateBy ;
     private boolean use = true;
     private Gender sex;
-
     private String name;
     private UserType userType;
     private int offset;
