@@ -106,7 +106,7 @@ $(function () {
 		"bProcessing": true,
 		"bServerSide": true,
 		"bStateSave": false,
-		"aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+		"aLengthMenu":[[5, 7, 15, 30], [5, 7, 15, 30]],
    "ajax": {
        url:url,
        "dataSrc": "content"
@@ -174,6 +174,7 @@ $(function () {
 				"targets" : 10 ,
 				"render" : function(mDataProp, type, full) {
 					var itemHtml = mDataProp.stateValue;
+					alert(itemHtml);
 					if(itemHtml == '已取消' || itemHtml == '待审核' ){
 						return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
 					}
@@ -186,7 +187,8 @@ $(function () {
 				"orderable":false,
 				"aTargets":[11],
 				"render" : function(mDataProp, type, full) {
-					var itemHtml = mDataProp.state;
+					var itemHtml = mDataProp.stateValue;
+					alert(itemHtml);
 					if(itemHtml == '待审核' ){
 						return '<td class="td-manage">'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
