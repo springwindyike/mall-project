@@ -70,6 +70,7 @@ public interface APPURIConstant {
     interface Brand {
         String REQUEST_MAPPING = "/brand";
         String REQUEST_MAPPING_ALL_BRAND = "/allBrand";
+        String REQUEST_MAPPING_ALL_BRAND_LIST = "/allBrandList";
         String REQUEST_MAPPING_GET_BY_ID = "/{id}";
         String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
         String REQUEST_MAPPING_GET_BRAND_DETAIL = "/getBrandDetail";

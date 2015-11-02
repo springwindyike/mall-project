@@ -1,14 +1,13 @@
 package com.ishare.mall.core.service.information;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.core.exception.BrandServiceException;
 import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.model.member.Member;
 
 /**
  * Created by YinLin on 2015/8/10.
@@ -33,11 +32,19 @@ public abstract interface BrandService {
     
     /**
      * 查看所有品牌
-     * @param channelId
+     * @param 
      * @param pageRequest
      * @return
      */
     Page<Brand> findAllBrand(PageRequest pageRequest) throws BrandServiceException;
+    
+    /**
+     * 查看所有品牌的list
+     * @param 
+     * @param 
+     * @return
+     */
+    List<Brand> findAllBrandList() throws BrandServiceException;
     
     /**
      * 根据产品id删除品牌
