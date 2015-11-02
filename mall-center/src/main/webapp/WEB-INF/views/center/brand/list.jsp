@@ -19,10 +19,15 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 品牌管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
 	<div class="text-c">
-		<form class="Huiform" target="_self" id="add_brand" enctype="multipart/form-data">
+		<div  id="result" class="Huiform">
+	<img id="uploadImage" src="http://www.firefox.com.cn/favicon.ico">
+<input type="file" id="myBlogImage" name="file"/>
+<input type="button" value="上传图片" onclick="ajaxFileUpload()"/>
+</div>
+		<form target="_self" id="add_brand" enctype="multipart/form-data">
 			<input type="text" placeholder="分类名称" value="" id="name" name="name" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
-				<input type="text" placeholder="国家" value="" id="country" name="country" class="input-text" style="width:120px">
+			<input type="text" placeholder="国家" value="" id="country" name="country" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
 				<input type="text" placeholder="省份" value="" id="province" name="province" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
@@ -32,15 +37,8 @@
 			<span class="btn-upload form-group">
 				<input type="text" placeholder="具体描述"  value="" id="detail" name="detail" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
-		<	<input class="input-text upload-url" type="text" name="uploadfile-2" id="uploadfile-2" readonly  datatype="*" nullmsg="请添加附件！" style="width:200px">
-			<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
-			<input type="file" multiple name="file" class="input-file">
-			<span class="btn-upload form-group">
-			</span><!--  <span class="select-box" style="width:0px"> -->
-		<!-- 	<select class="select" name="brandclass" size="1">
-				<option value="1" selected>国内品牌</option>
-				<option value="0">国外品牌</option>
-			</select> -->
+				<input type="hidden" placeholder=""  value="" id="logo" name="logo" class="input-text" style="width:120px">
+			</span>
 			</span><button type="button" class="btn btn-success" id="" name="" onClick="picture_colume_add();"><i class="Hui-iconfont">&#xe600;</i> 添加</button>
 		</form>
 	</div>
@@ -70,7 +68,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
-<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.product.js"></script>  --%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/ajaxfileupload.js"></script> 
 <script type="text/javascript">
 var targetTable;
 var url = "${pageContext.request.contextPath}/brand/allBrand.dhtml";
@@ -119,7 +117,7 @@ $(function () {
                     },
 
             {
-                "targets" : 7,
+                "targets" : 9,
                 "render" : function(mDataProp, type, full) {
                     return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="brand_edit(\'信息修改\',\'${pageContext.request.contextPath}/brand/update/'+mDataProp.id+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/brand/del/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
 }
@@ -152,8 +150,38 @@ function picture_colume_add(){
         type: "POST",
         url:"${pageContext.request.contextPath}/brand/add.dhtml",
         data:$('#add_brand').serialize(),// 你的formid
+        success:function(data, status){ 
+        	alert("添加成功");
+        	   window.location.href="${pageContext.request.contextPath}/brand/forword.dhtml"
+        },
+        error:function(data, status, e){ 
+            $('#result').html('添加失败，请重试！！');
+        }
 	});
-	//$("#add_brand").submit();
+};
+function ajaxFileUpload(){
+    $.ajaxFileUpload({
+       url:"${pageContext.request.contextPath}/brand/uploadPic.dhtml",
+        secureuri:false,                      
+        fileElementId:'myBlogImage',         
+        dataType:'text',                      
+        success:function(data, status){       
+            data = data.replace("<PRE>", '');  
+            data = data.replace("</PRE>", '');
+            data = data.replace("<pre>", '');
+            data = data.replace("</pre>", ''); 
+            if(data.substring(0, 1) == 0){    
+                $("img[id='uploadImage']").attr("src", data.substring(2));
+                $('#result').html("图片上传成功<br/>");
+                $('#logo').val(data.substring(2));
+            }else{
+                $('#result').html('图片上传失败，请重试！！');
+            }
+        },
+        error:function(data, status, e){ 
+            $('#result').html('图片上传失败，请重试！！');
+        }
+    });
 }
 </script>
 </body>

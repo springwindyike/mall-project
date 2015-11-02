@@ -188,12 +188,12 @@ public class BrandController extends BaseController {
 		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
 	}
 	
-	@ResponseBody
+@ResponseBody
 	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD,method = RequestMethod.POST)
 	public String add(@ModelAttribute("addBrandForm") AddBrandForm addBrandForm,@CurrentMember CurrentMemberDTO member) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
 		BeanUtils.copyProperties(addBrandForm, brandDTO);
-		brandDTO.setLogoUrl(addBrandForm.getLogo());
+	 brandDTO.setLogoUrl(addBrandForm.getLogo());
 		ResponseEntity<Response<BrandDTO>> resultEntity = null;
 		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
 		try{
@@ -210,7 +210,7 @@ public class BrandController extends BaseController {
 		if(response != null && !response.isSuccess()){
 			throw new Exception(response.getMessage());
 		}
-		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
+		return CenterViewConstant.Brand.BRAND_ADD_SUCCESS;
 	}
 	
 	  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_UPLOAD_PIC)
