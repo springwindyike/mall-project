@@ -12,12 +12,8 @@
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css" />
-
 <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]--><title>系统日志</title>
+<title>系统管理</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 系统日志 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
@@ -42,52 +38,86 @@
         <th width="70">操作</th>
       </tr>
     </thead>
-    <tbody>
-      <tr class="text-c">
-        <td><input type="checkbox" value="" name=""></td>
-        <td>15686</td>
-        <td>1</td>
-        <td>登录成功!</td>
-        <td>admin</td>
-        <td>61.233.7.80</td>
-        <td>2014-6-11 11:11:42</td>
-        <td><a title="详情" href="javascript:;" onclick="system_log_show(this,'10001')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a> <a title="删除" href="javascript:;" onclick="system_log_del(this,'10001')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
-      </tr>
-    </tbody>
   </table>
   <div id="pageNav" class="pageNav"></div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/Validform/5.3.2/Validform.min.js"></script>  
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script><script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/laypage/1.2/laypage.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
-<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.system.js"></script> --%>
-<script type="text/javascript">
 
-$('.table-sort').dataTable({
-	"lengthMenu":false,//显示数量选择 
-	"bFilter": false,//过滤功能
-	"bPaginate": false,//翻页信息
-	"bInfo": false,//数量信息
-	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-	"bStateSave": true,//状态保存
-	"aoColumnDefs": [
-	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-	  {"orderable":false,"aTargets":[0,7]}// 制定列不参与排序
-	]
+<script type="text/javascript">
+var targetTable;
+var url = "${pageContext.request.contextPath}/artice/allArtice.dhtml";
+$(function () {
+     targetTable = $('.table-sort').DataTable({
+         "oLanguage": {
+             "sInfoEmpty": "没有数据",
+             "sZeroRecords": "没有数据",
+             "sEmptyTable":"没有数据"
+         },
+         "searching": false,
+         "ordering":  false,
+        "bProcessing": true,
+        "bServerSide": true,
+        "bStateSave": false,
+        "aLengthMenu":[[2, 5, 15, 30], [2, 5, 15, 30]],
+        "ajax": {
+            url:url,
+            "dataSrc": "content"
+        },
+         //"sAjaxDataProp":"content",
+        "aoColumns": [
+                      { "mDataProp": null },
+                      { "mDataProp": "id" },
+                      { "mDataProp": "type" },
+                      { "mDataProp": "content" },
+                      { "mDataProp": "name" },
+                      { "mDataProp": "ip" },
+                      { "mDataProp": "time" },
+                      { "mDataProp": null },
+        ],
+
+        "createdRow" : function(row, mDataProp, dataIndex){
+            $(row).addClass('text-c');
+        },
+
+        "columnDefs" : [
+                        {
+                            "targets" : 0 ,
+                            "render" : function(mDataProp, type, full) {
+                            return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
+                        }
+                    },
+
+            {
+                "targets" : 7,
+                "render" : function(mDataProp, type, full) {
+                    return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="brand_edit(\'信息修改\',\'${pageContext.request.contextPath}/brand/update/'+mDataProp.id+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/brand/del/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
+}
+            },
+        ],
+    });
 });
-</script>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?080836300300be57b7f34f4b3e97d911";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F080836300300be57b7f34f4b3e97d911' type='text/javascript'%3E%3C/script%3E"));
+/*品牌-删除*/
+function brand_del(url) {
+    if(confirm("确认要删除吗？")){
+        $.post(
+                url,
+                function(data) {
+                    alert("删除成功");
+                    window.location.reload();
+                }
+        )
+    }
+}
+
+/*品牌-编辑*/
+/*  function brand_edit(title, url, id, w, h) {
+    layer_show(title, url, w, h);
+}  */
 </script>
 </body>
 </html>

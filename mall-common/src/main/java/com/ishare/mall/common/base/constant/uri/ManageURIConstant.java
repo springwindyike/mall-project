@@ -50,8 +50,21 @@ public interface ManageURIConstant {
 
 	interface ManageUser{
 		String REQUEST_MAPPING = "/manageUser";
-		String REQUEST_MAPPING_GET_MANAGE_USER_List = "getManageUserList";
+		String REQUEST_MAPPING_GET_MANAGE_USER_List = "/getManageUserList";
 		String REQYEST_MAPPING_MANAGE_USER_LIST = "manage/list";
 		String REQYEST_MAPPING_FORWARD_TO_MANAGE_USER_LIST = "/forward2ManageUsreList";
+		String REQUEST_MAPPING_RESOURCE = "/manageuser";
+		String REQUEST_MAPPING_VIEW = "manage/view";
+		String REQUEST_MAPPING_CHANGE_STATUS = "/changeStatus";
+		String REQUEST_MAPPING_FORWARD_TO_UPDATE_PAGE = "manage/update";
+		String REQUEST_MAPPING_FIND_BY_ID = "/findById";
+		String REQUEST_MAPPING_RESET_PASSWORD = "/restPassword";
+		String REQUEST_MAPPING_SAVE = "/save";
+		String REQUEST_MAPPING_UPDATE = "/update";
+		String REQUEST_MAPPING_CHECK_NAME = "/checkLoginAccount";
+		String REQUEST_MAPPING_CHANGE_PASSWORD = "/changePassword";
+		String REQUEST_MAPPING_FORWARD_TO_ADD_PAGE = "manage/add";
+		String REQUEST_MAPPING_FIND_BY_SEARCH_CONDITION = "/findByCondition";
+		String REQUEST_MAPPING_FORWARD_TO_CHANGE_PASSWORD_PAGE = "manage/password";
 	}
 }

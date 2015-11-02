@@ -1,7 +1,6 @@
 package com.ishare.mall.center.form.brand;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by liaochenglei on 2015/10/27.
@@ -20,6 +19,8 @@ public class AddBrandForm {
 	  private String district;
 	  @NotEmpty(message = "详细信息不能为空")
 	  private String detail;
+	  @NotEmpty(message = "图片不能为空")
+	  private String logo;
 
 	public String getName() {
 		return name;
@@ -57,4 +58,11 @@ public class AddBrandForm {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	
 }
