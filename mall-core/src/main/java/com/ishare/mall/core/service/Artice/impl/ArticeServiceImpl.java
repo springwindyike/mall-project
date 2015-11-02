@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ishare.mall.core.exception.ArticeServiceException;
-import com.ishare.mall.core.model.cms.Artice;
+import com.ishare.mall.core.model.cms.Article;
 import com.ishare.mall.core.repository.information.ArticeRepository;
 import com.ishare.mall.core.service.Artice.ArticeService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
@@ -26,20 +26,20 @@ public class ArticeServiceImpl implements ArticeService {
 	private ArticeRepository articeRepository;
 
 	
-	public Page<Artice> search(Map<String, Object> searchParams,
+	public Page<Article> search(Map<String, Object> searchParams,
 			PageRequest pageRequest) throws ArticeServiceException {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		Specification<Artice> spec = DynamicSpecifications.bySearchFilter(filters==null ? null:filters.values(), Artice.class);
-		Page<Artice> page = articeRepository.findAll(spec,pageRequest);
+		Specification<Article> spec = DynamicSpecifications.bySearchFilter(filters==null ? null:filters.values(), Article.class);
+		Page<Article> page = articeRepository.findAll(spec,pageRequest);
 		log.debug("filters:{}, total:{},content:{}",filters,page.getTotalElements(),page.getContent());
 		return page;
 	}
 	
 	@Override
-	public Page<Artice> findByAllArtice(PageRequest pageRequest)
+	public Page<Article> findByAllArtice(PageRequest pageRequest)
 			throws ArticeServiceException {
 		try {
-			Page<Artice> page = articeRepository.findAll(null, pageRequest);
+			Page<Article> page = articeRepository.findAll(null, pageRequest);
 			return page;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
