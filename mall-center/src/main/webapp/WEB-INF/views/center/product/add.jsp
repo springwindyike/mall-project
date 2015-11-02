@@ -52,7 +52,7 @@
 				</span> </div>
 				<label class="form-label col-2"><span class="c-red">*</span>品牌栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				 <input id ='selectType'class="select" value ='请点击选择品牌分类'  readonly="readonly"/>
+				 <input id ='selectType'class="select" value ='请点击选择品牌分类'  readonly="readonly" onClick="brand_select()"/>
 				</span> </div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
@@ -807,15 +807,30 @@ function order_edit(){
        			 	var jsonData = eval(msg);
 		        	$.each(jsonData.child, function(index, jsonOne) {
 		         str+="<div><tr id =productName><a onclick=dispaly_child_sort("+jsonOne.id+")>"+jsonOne.typeName+"</a></tr></div>";}	)	;
-		        	layer_open(str);
+		        	layer_open(str,'选择分类');
                          }}
 		)
 };
-function layer_open(i) {
+function brand_select(){
+	 var str="";
+	/*  $.ajax({
+       type: "get",
+       dataType: "json",
+       url: "${pageContext.request.contextPath}/productType/firstLevel.dhtml",
+       success: function (msg) {
+      			 	var jsonData = eval(msg);
+		        	$.each(jsonData.child, function(index, jsonOne) {
+		         str+="<div><tr id =productName><a onclick=dispaly_child_sort("+jsonOne.id+")>"+jsonOne.typeName+"</a></tr></div>";}	)	;
+		        	layer_open(str,'选择分类');
+                        }}
+		) */
+	 layer_open(str,'选择品牌');
+};
+function layer_open(i,title) {
 	layer.closeAll('page');
 	var index =layer.open({
 	    type: 1,
-	    title: '选择分类',
+	    title: title,
 	    closeBtn: true,
 	    shadeClose: true,
 	    area: ['700px', '530px'],

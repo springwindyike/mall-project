@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -159,6 +161,33 @@ public class BrandResource {
         return response;
     }
     
+    /**
+     * 获取所有的品牌的list列表
+     *
+     * @return Page<ProductDTO>
+     */
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST, method = RequestMethod.GET,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"})
+    public Response findAllBrandList() {
+        List<BrandDTO> brandList = new ArrayList<>();
+        List<Brand> result;
+        Response response = new Response();
+		try {
+      result = brandService.findAllBrandList();
+			for(Brand brand:result){
+				 BrandDTO brandDTOTwo = (BrandDTO) MapperUtils.map(brand, BrandDTO.class);
+				 brandList.add(brandDTOTwo);
+			}
+		} catch (BrandServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
+ response.setData(brandList);
+        return response;
+    }
     /**
      * 根据id删除品牌
      * @param memberDTO

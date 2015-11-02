@@ -1,5 +1,6 @@
 package com.ishare.mall.core.service.information.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -92,6 +93,17 @@ public class BrandServiceImpl implements BrandService {
 			log.error(e.getMessage(), e);
 			throw new BrandServiceException("品牌保存失败");}
 			
+	}
+
+	@Override
+	public List<Brand> findAllBrandList() throws BrandServiceException {
+		try {
+			List<Brand> brandList = brandRepository.findAll();
+			return brandList;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new BrandServiceException("查询品牌失败");
+		}
 	}
 
 }
