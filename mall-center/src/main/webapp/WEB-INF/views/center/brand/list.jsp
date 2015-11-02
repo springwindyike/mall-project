@@ -28,10 +28,10 @@
 		<form target="_self" id="add_brand" enctype="multipart/form-data">
 			<input type="text" placeholder="分类名称" value="" id="name" name="name" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
-			<select id="s1" name ="country"><option>国家</option></select> 
-			<select id="s2" name ="province"><option>省份、州</option></select> 
-		<select id="s3" name ="city"><option>地级市、县</option></select> 
-	<select id="s4" name ="district"><option>市辖区</option></select> 
+			<select id="s1" name ="country" style ="height:31px" ><option>国家</option></select> 
+			<select id="s2" name ="province" style ="height:31px"><option>省份、州</option></select> 
+		<select id="s3" name ="city" style ="height:31px"><option>地级市、县</option></select> 
+	<select id="s4" name ="district" style ="height:31px"><option>市辖区</option></select> 
 			<span class="btn-upload form-group">
 				<input type="text" placeholder="具体描述"  value="" id="detail" name="detail" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
