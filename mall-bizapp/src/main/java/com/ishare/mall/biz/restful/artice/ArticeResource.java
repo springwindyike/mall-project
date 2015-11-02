@@ -19,7 +19,7 @@ import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.cms.ArticleDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.general.Response;
-import com.ishare.mall.core.model.cms.Artice;
+import com.ishare.mall.core.model.cms.Article;
 import com.ishare.mall.core.service.Artice.ArticeService;
 
 /**
@@ -51,7 +51,7 @@ public class ArticeResource {
 		int limit = atricleDTO.getLimit();
 		Response response = new Response<>();
 		PageRequest pageRequest = new PageRequest(offset - 1 <0 ? 0:offset - 1, limit <=0 ?15:limit,Sort.Direction.DESC,"id");
-		Page<Artice> result;
+		Page<Article> result;
 		try {
 			result = articeService.findByAllArtice( pageRequest);
 		} catch (Exception e) {
@@ -63,8 +63,8 @@ public class ArticeResource {
 		}
 		PageDTO<ArticleDTO> pageDTO = new PageDTO<ArticleDTO>();
 		if (result !=null && result.getContent() !=null && result.getContent().size()>0 ) {
-			List<Artice> listAtricle =result.getContent();
-			for (Artice Artice:listAtricle) {
+			List<Article> listAtricle =result.getContent();
+			for (Article Artice:listAtricle) {
 				ArticleDTO atricleDTOt = new ArticleDTO();
 				BeanUtils.copyProperties(Artice, atricleDTOt);
 				atricleList.add(atricleDTOt);

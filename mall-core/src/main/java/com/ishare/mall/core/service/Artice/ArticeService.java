@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.ishare.mall.core.exception.ArticeServiceException;
-import com.ishare.mall.core.model.cms.Artice;
+import com.ishare.mall.core.model.cms.Article;
 
 /**
  * 
@@ -21,7 +21,7 @@ public interface ArticeService {
      * @param pageRequest
      * @return
      */
-    Page<Artice> findByAllArtice(PageRequest pageRequest) throws ArticeServiceException;
+    Page<Article> findByAllArtice(PageRequest pageRequest) throws ArticeServiceException;
 	
 	
 			/**
@@ -30,7 +30,7 @@ public interface ArticeService {
 			 * @param pageRequest
 			 * @return
 			 */
-    public abstract Page<Artice> search(Map<String, Object> searchParams, PageRequest pageRequest) throws ArticeServiceException;
+    public abstract Page<Article> search(Map<String, Object> searchParams, PageRequest pageRequest) throws ArticeServiceException;
     
     /**
      * 根据系统日志id删除日志信息

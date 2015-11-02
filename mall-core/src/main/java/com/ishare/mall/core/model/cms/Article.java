@@ -1,21 +1,11 @@
 package com.ishare.mall.core.model.cms;
 
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_SYS_LOG_NAME;
+import com.ishare.mall.core.model.base.BaseEntity;
 
+import javax.persistence.*;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.joda.time.DateTime;
-
-import com.ishare.mall.core.model.base.BaseEntity;
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_SYS_LOG_NAME;
 /**
  * 系统日志实体类
  * @author zhangzhaoxin
@@ -23,7 +13,7 @@ import com.ishare.mall.core.model.base.BaseEntity;
  */
 @Entity
 @Table(name = TABLE_SYS_LOG_NAME)
-public class Artice extends BaseEntity {
+public class Article extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
