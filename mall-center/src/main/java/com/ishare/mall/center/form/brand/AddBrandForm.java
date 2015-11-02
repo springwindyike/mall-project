@@ -1,7 +1,6 @@
 package com.ishare.mall.center.form.brand;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by liaochenglei on 2015/10/27.

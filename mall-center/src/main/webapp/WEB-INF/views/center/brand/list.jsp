@@ -4,7 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="utf-8">
+<!-- <meta charset="utf-8"> -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
@@ -15,7 +16,7 @@
 <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
 <title>品牌管理</title>
 </head>
-<body>
+<body onLoad="setup()">
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 品牌管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
 	<div class="text-c">
@@ -27,13 +28,10 @@
 		<form target="_self" id="add_brand" enctype="multipart/form-data">
 			<input type="text" placeholder="分类名称" value="" id="name" name="name" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
-			<input type="text" placeholder="国家" value="" id="country" name="country" class="input-text" style="width:120px">
-			<span class="btn-upload form-group">
-				<input type="text" placeholder="省份" value="" id="province" name="province" class="input-text" style="width:120px">
-			<span class="btn-upload form-group">
-				<input type="text" placeholder="城市" value="" id="city" name="city" class="input-text" style="width:120px">
-			<span class="btn-upload form-group">
-			<input type="text" placeholder="区域" value="" id="district" name="district" class="input-text" style="width:120px">
+			<select id="s1" name ="country"><option>国家</option></select> 
+			<select id="s2" name ="province"><option>省份、州</option></select> 
+		<select id="s3" name ="city"><option>地级市、县</option></select> 
+	<select id="s4" name ="district"><option>市辖区</option></select> 
 			<span class="btn-upload form-group">
 				<input type="text" placeholder="具体描述"  value="" id="detail" name="detail" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
@@ -69,6 +67,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/ajaxfileupload.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/province.js"></script> 
 <script type="text/javascript">
 var targetTable;
 var url = "${pageContext.request.contextPath}/brand/allBrand.dhtml";
