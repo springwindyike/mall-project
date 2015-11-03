@@ -1,4 +1,4 @@
-package com.ishare.mall.core.service.Artice.impl;
+package com.ishare.mall.core.service.artice.impl;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ishare.mall.core.exception.ArticeServiceException;
 import com.ishare.mall.core.model.cms.Article;
 import com.ishare.mall.core.repository.information.ArticeRepository;
-import com.ishare.mall.core.service.Artice.ArticeService;
+import com.ishare.mall.core.service.artice.ArticeService;
 import com.ishare.mall.core.utils.filter.DynamicSpecifications;
 import com.ishare.mall.core.utils.filter.SearchFilter;
 @Service

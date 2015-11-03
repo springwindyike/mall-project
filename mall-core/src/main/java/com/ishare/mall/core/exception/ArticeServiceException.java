@@ -1,7 +1,6 @@
 package com.ishare.mall.core.exception;
 
 
-import org.springframework.http.HttpStatus;
 
 import com.ishare.mall.common.base.exception.BaseException;
 /**
@@ -11,7 +10,12 @@ import com.ishare.mall.common.base.exception.BaseException;
  */
 public class ArticeServiceException extends BaseException {
     
-    public ArticeServiceException(String systemName, String errorPropertyKey, String message, Throwable cause) {
+    /**
+	 * 系统日志
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ArticeServiceException(String systemName, String errorPropertyKey, String message, Throwable cause) {
         super(systemName, errorPropertyKey, message, cause);
     }
 

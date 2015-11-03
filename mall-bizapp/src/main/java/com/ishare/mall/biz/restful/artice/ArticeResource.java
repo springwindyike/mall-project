@@ -20,7 +20,7 @@ import com.ishare.mall.common.base.dto.cms.ArticleDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.cms.Article;
-import com.ishare.mall.core.service.Artice.ArticeService;
+import com.ishare.mall.core.service.artice.ArticeService;
 
 /**
  * 
