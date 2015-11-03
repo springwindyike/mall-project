@@ -3,6 +3,7 @@ package com.ishare.mall.center.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,6 +94,33 @@ public class BrandController extends BaseController {
 				PageDTO pageDTO = (PageDTO)response.getData();
 				model.addAttribute("pageDTO",pageDTO);
 				return pageDTO;
+			}else {
+				throw new Exception(response.getMessage());
+			}
+		}else{
+			throw new Exception("get response error");
+		}
+	}
+  
+  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND_LIST, method = RequestMethod.GET,produces = {"application/json"})
+	@ResponseBody
+	public List<BrandDTO> findAllBrandList(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model) throws Exception{
+		BrandDTO brandDTO = new BrandDTO();
+		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
+		ResponseEntity<Response<BrandDTO>> resultDTO = null;
+		try {
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING,APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST),
+					HttpMethod.GET, null,new ParameterizedTypeReference<Response<BrandDTO>>() {});
+		} catch (Exception e) {
+			log.error("call bizp app " + APPURIConstant.Brand.REQUEST_MAPPING + APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST + "error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response != null) {
+			if(response.isSuccess()){
+				List<BrandDTO> returnDTO =(List<BrandDTO>)response.getData();
+			
+				return returnDTO;
 			}else {
 				throw new Exception(response.getMessage());
 			}

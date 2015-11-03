@@ -3,6 +3,7 @@ package com.ishare.mall.core.model.cms;
 import com.ishare.mall.core.model.manage.ManageUser;
 
 import javax.persistence.*;
+
 import java.util.Date;
 
 /**
@@ -13,62 +14,75 @@ import java.util.Date;
 @Entity
 @Table(name="t_topic")
 public class Topic {
-
+	@Id
+	@GeneratedValue
 	private int id;
-
+	@Column(name="title")
 	private String title;
 	/**
 	 * 关键字:通过|来分割不同的关键字
 	 */
+	@Column(name="key_word")
 	private String keyword;
 	/**
 	 * 文章的状态，默认为0表示未发表，1表示已发布
 	 */
+	@Column(name="status")
 	private int status;
 	/**
 	 * 是否是推荐文章,0表示不推荐，1表示推荐
 	 */
+	@Column(name="recommend")
 	private int recommend;
 	/**
 	 * 文章的内容
 	 */
+	@Column(name="content")
 	private String content;
 	/**
 	 * 文章的摘要
 	 */
+	@Column(name="summary")
 	private String summary;
 	/**
 	 * 栏目图片id，如果该栏目是图片类型的栏目，就会显示这个id的图片
 	 */
+	@Column(name="channel_pic_id")
 	private int channelPicId;
 	/**
 	 * 文章的发布时间，用来进行排序的
 	 */
+	@Column(name="publish_date")
 	private Date publishDate;
 	/**
 	 * 文章的创建时间
 	 */
+	@Column(name="create_date")
 	private Date createDate;
 	/**
 	 * 文章的作者名称，用来显示用户的昵称，冗余字段
 	 */
+	@Column(name="author")
 	private String author;
 	/**
 	 * 栏目名称冗余字段
 	 */
+	@Column(name="banner_name")
 	private String bannerName;
 	
 	/**
 	 * 文章所在的频道，多对一
 	 */
+	@ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "banner_id")
 	private Banner banner;
 	/**
 	 * 文章的发布者
 	 */
+	@ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "manage_user_id")
 	private ManageUser user;
 	
-	@Id
-	@GeneratedValue
 	public int getId() {
 		return id;
 	}
@@ -112,7 +126,6 @@ public class Topic {
 		this.summary = summary;
 	}
 	
-	@Column(name="publish_date")
 	public Date getPublishDate() {
 		return publishDate;
 	}
@@ -120,7 +133,6 @@ public class Topic {
 		this.publishDate = publishDate;
 	}
 	
-	@Column(name="create_date")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -133,8 +145,7 @@ public class Topic {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	@ManyToOne
-	@JoinColumn(name="bid")
+		
 	public Banner getBanner() {
 		return banner;
 	}
@@ -142,8 +153,7 @@ public class Topic {
 	public void setBanner(Banner banner) {
 		this.banner = banner;
 	}
-	@ManyToOne
-	@JoinColumn(name="uid")
+
 	public ManageUser getUser() {
 		return user;
 	}
@@ -152,7 +162,6 @@ public class Topic {
 		this.user = user;
 	}
 
-	@Column(name="channel_pic_id")
 	public int getChannelPicId() {
 		return channelPicId;
 	}
