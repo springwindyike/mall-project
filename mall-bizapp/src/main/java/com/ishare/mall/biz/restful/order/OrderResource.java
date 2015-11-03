@@ -11,6 +11,7 @@ import com.ishare.mall.common.base.enumeration.OrderActionLogType;
 import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderActionLog;
@@ -152,25 +153,13 @@ public class OrderResource {
 					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 					BeanUtils.copyProperties(order, innerOrderDetailDTO);
 					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setChannelName(order.getChannel().getName());
 					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 					innerOrderDetailDTO.setStateValue(order.getState().getName());
 					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
-
-					List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
-
-					Iterator<OrderItem> it = orderItems.iterator();
-					Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
-					while (it.hasNext()) {
-						OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
-						OrderItem orderItem = it.next();
-						BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-						items.add(orderItemDetailDTO);
-					}
-					innerOrderDetailDTO.setItems(items);
 					listOrder.add(innerOrderDetailDTO);
 				}
 				pageDTO.setContent(listOrder);

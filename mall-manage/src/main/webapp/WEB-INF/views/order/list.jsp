@@ -65,15 +65,10 @@
 				<thead>
 					<tr class="text-c">
 						<th width="110">订单号</th>
-						<th width="70">商品图片</th>
-						<th width="120">商品名称</th>
-						<th width="90">单价（元）</th>
-						<th width="50">数量</th>
-						<th width="88">购买账号</th>
-						<th width="80">收货人</th>
-						<th>顾客留言</th>
-						<th width="90">付款（元）</th>
-						<th width="80">生成时间</th>
+						<th width="70">渠道</th>
+						<th width="88">买家</th>
+						<th width="88">总价</th>
+						<th width="80">下单时间</th>
 						<th width="80">订单状态</th>
 						<th width="110">操作</th>
 					</tr>
@@ -93,7 +88,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">	
 var targetTable;
-var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
+var url = "${pageContext.request.contextPath}/order/getOrderList.dhtml";
 $(function () {
 	targetTable = $('.table-sort').DataTable({
 		"oLanguage": {
@@ -112,18 +107,13 @@ $(function () {
        "dataSrc": "content"
         },
 		"aoColumns": [
-		   { "mDataProp": "orderId" },//订单号
-		   { "mDataProp": null },//商品图片
-		   { "mDataProp": null },//商品名称
-		   { "mDataProp": null },//单价（元）
-		   { "mDataProp": null },//数量
-		   { "mDataProp": "createBy" },//购买账号
-		   { "mDataProp": "recipients" },//收货人
-		   { "mDataProp": "note" },//顾客留言
-		   { "mDataProp": "totalPrice" },//付款（元）	
-		   { "mDataProp": "createTime" },//生成时间	
-		   { "mDataProp": null },  //订单状态
-		   { "mDataProp": null }//操作
+		   { "mDataProp": "orderId" },
+		   { "mDataProp": "channelName" },
+		   { "mDataProp": "recipients" },
+		   { "mDataProp": "productTotalPrice" },
+		   { "mDataProp": "createTime" },
+		   { "mDataProp": null },
+		   { "mDataProp": null }
 		],
 		
 		"createdRow" : function(row, mDataProp, dataIndex){

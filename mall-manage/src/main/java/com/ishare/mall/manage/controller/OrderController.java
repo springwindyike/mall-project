@@ -297,7 +297,7 @@ public class OrderController extends BaseController {
 	 *
 	 * @return Page<OrderDetailDTO>
 	 */
-	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID, method = RequestMethod.GET)
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_GET_ORDER_LIST, method = RequestMethod.GET)
 	@ResponseBody
 	public PageDTO findAll(HttpServletRequest request, Model model)throws Exception{
 

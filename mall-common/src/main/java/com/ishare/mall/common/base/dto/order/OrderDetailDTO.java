@@ -58,6 +58,8 @@ public class OrderDetailDTO extends GenericDTO {
     private String lockMember;
     /**各个订单对应的渠道**/
     private Integer channelId;
+	/**渠道名称**/
+	private String channelName;
 
     private String expressOrder;//快递单号
 
@@ -246,4 +248,11 @@ public class OrderDetailDTO extends GenericDTO {
 		this.log = log;
 	}
 
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
 }
