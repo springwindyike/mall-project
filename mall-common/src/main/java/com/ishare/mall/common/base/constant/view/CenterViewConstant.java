@@ -28,6 +28,14 @@ public interface CenterViewConstant {
     	 String BRAND_ADD_SUCCESS = "S";
     	 String BRAND_UPDATE = "brand/update";
     }
+    
+    interface Banner {
+   	 String LIST_BANNER ="banner/list";
+   	 String ADD_BANNER ="banner/add";
+   	 String BANNER_UPDATE_SUCCESS = "S";
+   	 String BANNER_ADD_SUCCESS = "S";
+   	 String BANNER_UPDATE = "banner/update";
+   }
 
 	interface Order {
 		String LIST_ORDER = "order/list";
