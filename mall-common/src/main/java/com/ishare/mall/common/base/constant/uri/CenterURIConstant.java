@@ -49,10 +49,23 @@ public interface CenterURIConstant {
 	  String REQUEST_MAPPING_UPDATE_BY_ID ="/update/{id}";
 	  String REQUEST_MAPPING_ADD ="/add";
   } 
+  interface Banner{
+	  String REQUEST_MAPPING   = "/banner";
+	  String REQUEST_MAPPING_FORWORD="/forword";
+	  String REQUEST_MAPPING_ADD_FORWORD="/addForword";
+	  String REQUEST_MAPPING_FIND_ALL_BANNER="/allbanner";
+	  String REQUEST_MAPPING_FIND_ALL_BANNER_LIST="/allBannerList";
+	  String REQUEST_MAPPING_DELETE_BY_ID ="/del/{id}";
+	  String REQUEST_MAPPING_UPDATE_BY_ID ="/update/{id}";
+	  String REQUEST_MAPPING_ADD ="/add";
+	  
+	  
+  }
+  
   	interface Artice{
   	  String REQUEST_MAPPING   = "/artice";
   	  String REQUEST_MAPPING_FIND_ALL_ATRICE="/allArtice";	
-  	 String REQUEST_MAPPING_FORWORD_ALL_ATRICE="/forwordArtice";	
+  	  String REQUEST_MAPPING_FORWORD_ALL_ATRICE="/forwordArtice";	
   	  String REQUEST_MAPPING_DELETE_BY_ID ="/del/{id}";
   	}
   
