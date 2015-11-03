@@ -1,10 +1,8 @@
 package com.ishare.mall.biz.restful.product.brand;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,23 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.information.BrandDetailDTO;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
-import com.ishare.mall.common.base.dto.member.MemberRegisterDTO;
-import com.ishare.mall.common.base.dto.member.MemberRegisterResultDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.BrandDTO;
-import com.ishare.mall.common.base.enumeration.Gender;
-import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.exception.brand.BrandServiceException;
-import com.ishare.mall.common.base.exception.member.MemberServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.information.BrandService;
-import com.ishare.mall.core.utils.UuidUtils;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
@@ -166,26 +153,29 @@ public class BrandResource {
      *
      * @return Page<ProductDTO>
      */
-    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST, method = RequestMethod.GET,
-            headers = "Accept=application/xml, application/json",
-            produces = {"application/json"})
+    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST, method = RequestMethod.POST,
+    		headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
     public Response findAllBrandList() {
-        List<BrandDTO> brandList = new ArrayList<>();
+      //  List<BrandDTO> brandList = new ArrayList<>();
         List<Brand> result;
         Response response = new Response();
 		try {
       result = brandService.findAllBrandList();
-			for(Brand brand:result){
-				 BrandDTO brandDTOTwo = (BrandDTO) MapperUtils.map(brand, BrandDTO.class);
-				 brandList.add(brandDTOTwo);
-			}
+/*			for(Brand brand:result){
+				// BrandDTO brandDTOTwo = (BrandDTO) MapperUtils.map(brand, BrandDTO.class);
+				BrandDTO brandDTO = new BrandDTO();
+	                BeanUtils.copyProperties(brand, brandDTO);
+				 brandList.add(brandDTO);
+			}*/
+  	List<BrandDTO> brandList = 	(List<BrandDTO>) MapperUtils.mapAsList(result, BrandDTO.class);
+  	 response.setData(brandList);
 		} catch (BrandServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
 			response.setSuccess(false);
 			return response;
 		}
- response.setData(brandList);
+
         return response;
     }
     /**

@@ -105,13 +105,16 @@ public class BrandController extends BaseController {
   @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND_LIST, method = RequestMethod.GET,produces = {"application/json"})
 	@ResponseBody
 	public List<BrandDTO> findAllBrandList(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model) throws Exception{
-		BrandDTO brandDTO = new BrandDTO();
-		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
-		ResponseEntity<Response<BrandDTO>> resultDTO = null;
+	  BrandDTO brandDTO = new BrandDTO();
+		ResponseEntity<Response> resultDTO = null;
+	 	HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
 		try {
-			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING,APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST),
-					HttpMethod.GET, null,new ParameterizedTypeReference<Response<BrandDTO>>() {});
+			resultDTO = restTemplate.exchange(
+                            this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING,APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST),
+                            HttpMethod.POST,requestDTO, new ParameterizedTypeReference<Response>() {
+                            });
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error("call bizp app " + APPURIConstant.Brand.REQUEST_MAPPING + APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST + "error");
 			throw new Exception(e.getMessage());
 		}

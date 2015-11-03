@@ -52,7 +52,8 @@
 				</span> </div>
 				<label class="form-label col-2"><span class="c-red">*</span>品牌栏目：</label>
 			<div class="formControls col-2"> <span class="select-box">
-				 <input id ='selectType'class="select" value ='请点击选择品牌分类'  readonly="readonly" onClick="brand_select()"/>
+				 <input id ='selectBrand'class="select" value ='请点击选择品牌分类'  readonly="readonly" onClick="brand_select()"/>
+				<form:input  id ='brandId'  readonly="readonly" class="select" value=""  placeholder="" path="brandId" type='hidden'/>
 				</span> </div>
 				<label class="form-label col-2">产品库存：</label>
 			<div class="formControls col-2">
@@ -811,21 +812,24 @@ function order_edit(){
                          }}
 		)
 };
-function brand_select(){
+
+ function brand_select(){
 	 var str="";
-	/*  $.ajax({
+	  $.ajax({
        type: "get",
        dataType: "json",
-       url: "${pageContext.request.contextPath}/productType/firstLevel.dhtml",
+       url: "${pageContext.request.contextPath}/brand/allBrandList.dhtml",
        success: function (msg) {
       			 	var jsonData = eval(msg);
-		        	$.each(jsonData.child, function(index, jsonOne) {
-		         str+="<div><tr id =productName><a onclick=dispaly_child_sort("+jsonOne.id+")>"+jsonOne.typeName+"</a></tr></div>";}	)	;
+		        	$.each(jsonData, function(index, jsonOne) {
+		         str+='<div><tr id =brandId><a onclick="brand_click(\''+jsonOne.id+'\',\''+jsonOne.name+'\')">'+jsonOne.name+'</a></tr></div>';}	)	;
+		        	/* '<a href="javascript:showWT(\''+wt_id+'\',\''+wt_title+'\')">'+wt_title+'</a>'; */
 		        	layer_open(str,'选择分类');
                         }}
-		) */
+		) 
 	 layer_open(str,'选择品牌');
-};
+}; 
+
 function layer_open(i,title) {
 	layer.closeAll('page');
 	var index =layer.open({
@@ -837,7 +841,11 @@ function layer_open(i,title) {
 	    content: i
 	});
 };
-
+function brand_click(id,name){
+	layer.closeAll('page');
+ 	$("#selectBrand").val(name);
+ 	$("#brandId").val(id);
+}; 
 var i = 0;
 function dispaly_child_sort(parentId){
 	 var str="";
