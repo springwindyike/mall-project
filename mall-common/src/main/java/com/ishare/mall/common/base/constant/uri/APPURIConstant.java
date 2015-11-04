@@ -59,6 +59,7 @@ public interface APPURIConstant {
    	    String REQUEST_MAPPING_UPDATE = "/update";
    	    String REQUEST_MAPPING_DEL ="/del";
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        String REQUEST_MAPPING_FIND_ALL = "/findAll";
         String REQUEST_MAPPING_FIND_ID="/findByID";
         String REQUEST_MAPPING_FIND_CODE="/findByCode";
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
