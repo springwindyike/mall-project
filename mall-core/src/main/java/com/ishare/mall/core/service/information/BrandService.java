@@ -63,5 +63,5 @@ public abstract interface BrandService {
 	 * 添加品牌信息
 	 * @param brand
 	 */
-	void add (Brand brand)throws BrandServiceException;
+	Brand add (Brand brand)throws BrandServiceException;
 }

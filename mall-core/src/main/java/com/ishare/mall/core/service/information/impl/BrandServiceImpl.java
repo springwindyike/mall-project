@@ -85,14 +85,15 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	@Override
-	public void add(Brand brand) throws BrandServiceException {
+	public Brand add(Brand brand) throws BrandServiceException {
 
 		try {
-			brandRepository.save(brand);
+			Brand returnBrand = brandRepository.save(brand);
+			return returnBrand;
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new BrandServiceException("品牌保存失败");}
-			
 	}
 
 	@Override

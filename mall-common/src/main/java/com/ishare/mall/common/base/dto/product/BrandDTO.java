@@ -39,7 +39,14 @@ public class BrandDTO extends GenericDTO {
 	  private int offset;
 	    
 	    private int limit;
+	    private int typeId ;
 	    
+	public int getTypeId() {
+			return typeId;
+		}
+		public void setTypeId(int typeId) {
+			this.typeId = typeId;
+		}
 	public Integer getId() {
 		return id;
 	}

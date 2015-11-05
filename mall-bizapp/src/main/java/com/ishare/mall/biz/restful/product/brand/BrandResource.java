@@ -22,8 +22,12 @@ import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.exception.brand.BrandServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.information.ProductTypeBrand;
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductType;
+import com.ishare.mall.core.service.information.BrandProductTypeService;
 import com.ishare.mall.core.service.information.BrandService;
+import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
@@ -39,7 +43,10 @@ public class BrandResource {
 
     @Autowired
     private BrandService brandService;
-
+    @Autowired
+    private ProductTypeService productTypeService;
+    @Autowired
+    private BrandProductTypeService brandProductTypeService;
     @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_GET_BRAND_DETAIL,method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json",},
@@ -261,10 +268,15 @@ public class BrandResource {
     public Response saveBrand(@RequestBody BrandDTO brandDTO){
         Brand brand = new Brand();
         BeanUtils.copyProperties(brandDTO, brand);
-    		
-    			
     			try {
-					brandService.add(brand);
+    				ProductType returnProductType = productTypeService.findOne(brandDTO.getTypeId());
+    				if (returnProductType!= null){
+    					Brand returnBrand = brandService.add(brand);
+    					ProductTypeBrand brandProductType = new ProductTypeBrand();
+    					brandProductType.setBrand(returnBrand);
+    					brandProductType.setProductType(returnProductType);
+    					brandProductTypeService.add(brandProductType);
+    				}
 				} catch (Exception e) { 
 									log.error(e.getMessage(), e);
 	            Response response = new Response();

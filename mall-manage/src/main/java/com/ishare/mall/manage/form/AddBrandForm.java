@@ -21,7 +21,7 @@ public class AddBrandForm {
 	  private String detail;
 	  @NotEmpty(message = "图片不能为空")
 	  private String logo;
-
+   private Integer typeId;
 	public String getName() {
 		return name;
 	}
@@ -63,6 +63,12 @@ public class AddBrandForm {
 	}
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+	public Integer getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(Integer typeId) {
+		this.typeId = typeId;
 	}
 	
 }
