@@ -24,4 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
 	
 	@Query("SELECT p FROM Product p WHERE p.id=?1 and p.channel.id = ?2")
 	Page<Product> findBycondition(Integer productId, Integer channelId, Pageable pageable);
+	
+	@Query("SELECT p FROM Product p WHERE p.id=?1")
+	Page<Product> findById(Integer productId,Pageable pageable);
 }

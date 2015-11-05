@@ -59,6 +59,7 @@ public interface APPURIConstant {
    	    String REQUEST_MAPPING_UPDATE = "/update";
    	    String REQUEST_MAPPING_DEL ="/del";
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        String REQUEST_MAPPING_FIND_ALL = "/findAll";
         String REQUEST_MAPPING_FIND_ID="/findByID";
         String REQUEST_MAPPING_FIND_CODE="/findByCode";
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
@@ -77,6 +78,17 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_DELETE_BY_ID = "/delById";
         String REQUEST_MAPPING_UPDATE_BY_ID = "/updateById";
         String REQUEST_MAPPING_UPDATE = "/update";
+        String REQUEST_MAPPING_ADD = "/add";
+    }
+    interface Banner {
+        String REQUEST_MAPPING = "/banner";
+        String REQUEST_MAPPING_ALL_BANNER = "/allbanner";
+        String REQUEST_MAPPING_ALL_BANNER_LIST = "/allbannerList";
+        String REQUEST_MAPPING_GET_BY_ID = "/{id}";
+        String REQUEST_MAPPING_FIND_BY_PARAM = "/findByParam";
+        String REQUEST_MAPPING_GET_BANNER_DETAIL = "/getBannerDetail";
+        String REQUEST_MAPPING_DELETE_BY_ID = "/delById";
+        String REQUEST_MAPPING_UPDATE_BY_ID = "/updateById";
         String REQUEST_MAPPING_ADD = "/add";
     }
     //订单

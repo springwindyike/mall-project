@@ -1,4 +1,4 @@
-package com.ishare.mall.center.controller;
+package com.ishare.mall.manage.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,17 +29,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ishare.mall.center.annoation.CurrentMember;
-import com.ishare.mall.center.controller.base.BaseController;
-import com.ishare.mall.center.form.brand.AddBrandForm;
-import com.ishare.mall.center.form.brand.BrandForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
-import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
+import com.ishare.mall.common.base.constant.view.ManageViewConstant;
+import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.manage.annoation.CurrentManageUser;
+import com.ishare.mall.manage.controller.base.BaseController;
+import com.ishare.mall.manage.form.AddBrandForm;
+import com.ishare.mall.manage.form.BrandForm;
 
 
 /**
@@ -48,7 +48,7 @@ import com.ishare.mall.common.base.general.Response;
  * Version 1.0
  */
 @Controller
-@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING)
+@RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING)
 public class BrandController extends BaseController {
 	@Autowired
 	private RestTemplate restTemplate;
@@ -60,19 +60,19 @@ public class BrandController extends BaseController {
     
    
   
-  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FORWORD, method = RequestMethod.GET)
+  @RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_FORWORD, method = RequestMethod.GET)
  	public String forwardToBrandList() {
-	  return CenterViewConstant.Brand.LIST_BRAND;
+	  return ManageViewConstant.Brand.LIST_BRAND;
   }
   
-  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD_FORWORD, method = RequestMethod.GET)
+  @RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_ADD_FORWORD, method = RequestMethod.GET)
  	public String forwardToBrandAdd() {
-	  return CenterViewConstant.Brand.ADD_BRAND;
+	  return ManageViewConstant.Brand.ADD_BRAND;
   }
   
-  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND, method = RequestMethod.GET,produces = {"application/json"})
+  @RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND, method = RequestMethod.GET,produces = {"application/json"})
 	@ResponseBody
-	public PageDTO findAllBrand(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model) throws Exception{
+	public PageDTO findAllBrand(@CurrentManageUser CurrentManageUserDTO CurrentManageUserDTO, HttpServletRequest request, Model model) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
@@ -102,9 +102,9 @@ public class BrandController extends BaseController {
 		}
 	}
   
-  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND_LIST, method = RequestMethod.GET,produces = {"application/json"})
+  @RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND_LIST, method = RequestMethod.GET,produces = {"application/json"})
 	@ResponseBody
-	public List<BrandDTO> findAllBrandList(@CurrentMember CurrentMemberDTO currentMemberDTO, HttpServletRequest request, Model model) throws Exception{
+	public List<BrandDTO> findAllBrandList(@CurrentManageUser CurrentManageUserDTO CurrentManageUserDTO, HttpServletRequest request, Model model) throws Exception{
 	  BrandDTO brandDTO = new BrandDTO();
 		ResponseEntity<Response> resultDTO = null;
 	 	HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
@@ -135,13 +135,13 @@ public class BrandController extends BaseController {
   /**
    * 品牌的删除
    * @param account
-   * @param currentMemberDTO
+   * @param CurrentManageUserDTO
    * @return
    * @throws Exception
    */
 	@ResponseBody
-	@RequestMapping(value =  CenterURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID)
-	public String delete(@NotEmpty @PathVariable("id") Integer id,@CurrentMember CurrentMemberDTO currentMemberDTO) throws Exception{
+	@RequestMapping(value =  ManageURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID)
+	public String delete(@NotEmpty @PathVariable("id") Integer id,@CurrentManageUser CurrentManageUserDTO CurrentManageUserDTO) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
 	  brandDTO.setId(id);
 		ResponseEntity<Response<BrandDTO>> resultDTO = null;
@@ -160,7 +160,7 @@ public class BrandController extends BaseController {
 		if (response != null && !response.isSuccess()){
 			throw new Exception(response.getMessage());
 		}
-		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
+		return ManageViewConstant.Brand.BRAND_UPDATE_SUCCESS;
 	}
 	
 
@@ -168,7 +168,7 @@ public class BrandController extends BaseController {
 	 * 跳转到update 页面
 	 * @return
 	 */
-	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID)
+	@RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID)
 	public String forwordUpdateBrand(@NotEmpty @PathVariable("id") Integer id,Model model) throws  Exception{
 		BrandDTO brandDTO = new BrandDTO();
 		brandDTO.setId(id);
@@ -192,11 +192,11 @@ public class BrandController extends BaseController {
 		}else {
 			throw new Exception("get response error");
 		}
-		return CenterViewConstant.Brand.BRAND_UPDATE;
+		return ManageViewConstant.Brand.BRAND_UPDATE;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/update")
+	@RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_UPDATE)
 	public String update(BrandForm brandForm) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
 		BeanUtils.copyProperties(brandForm, brandDTO);
@@ -216,12 +216,12 @@ public class BrandController extends BaseController {
 		if(response != null && !response.isSuccess()){
 			throw new Exception(response.getMessage());
 		}
-		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
+		return ManageViewConstant.Brand.BRAND_UPDATE_SUCCESS;
 	}
 	
 @ResponseBody
-	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD,method = RequestMethod.POST)
-	public String add(@ModelAttribute("addBrandForm") AddBrandForm addBrandForm,@CurrentMember CurrentMemberDTO member) throws Exception{
+	@RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_ADD,method = RequestMethod.POST)
+	public String add(@ModelAttribute("addBrandForm") AddBrandForm addBrandForm,@CurrentManageUser CurrentManageUserDTO member) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
 		BeanUtils.copyProperties(addBrandForm, brandDTO);
 	 brandDTO.setLogoUrl(addBrandForm.getLogo());
@@ -241,10 +241,10 @@ public class BrandController extends BaseController {
 		if(response != null && !response.isSuccess()){
 			throw new Exception(response.getMessage());
 		}
-		return CenterViewConstant.Brand.BRAND_ADD_SUCCESS;
+		return ManageViewConstant.Brand.BRAND_ADD_SUCCESS;
 	}
 	
-	  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_UPLOAD_PIC)
+	  @RequestMapping(value = ManageURIConstant.Brand.REQUEST_MAPPING_UPLOAD_PIC)
 	 	public String uploadPic(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	        String realPath = request.getSession().getServletContext().getRealPath("resources/upload");
 	        response.setContentType("text/plain; charset=UTF-8");

@@ -265,4 +265,27 @@ public class ProductServiceImpl implements ProductService {
 
 		return false;
 	}
+
+	@Override
+	public Page<Product> findAll(PageRequest pageRequest)
+			throws ProductServiceException {
+		try {
+			Page<Product> page = productRepository.findAll(pageRequest);
+			return page;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("查询产品失败");
+		}
+	}
+
+	@Override
+	public Page<Product> findById(Integer productId, PageRequest pageRequest)
+			throws ProductServiceException {
+		try {
+			return productRepository.findById(productId, pageRequest);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("搜索产品失败");
+		}
+	}
 }

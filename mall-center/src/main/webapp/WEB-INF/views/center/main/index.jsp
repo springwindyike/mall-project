@@ -195,6 +195,16 @@
 				</ul>
 			</dd>
 		</dl>
+			<dl id="menu-essay">
+			<dt><i class="Hui-iconfont">&#xe62e;</i>CMS管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="${pageContext.request.contextPath}/banner/forword.dhtml" href="javascript:void(0)">系统栏目</a></li>
+					<li><a _href="system-category.html" href="javascript:void(0)">文章管理</a></li>
+					<li><a _href="system-category.html" href="javascript:void(0)">附件管理</a></li>
+				</ul>
+			</dd>
+		</dl>
 	</div>
 </aside>
 <div class="dislpayArrow"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
