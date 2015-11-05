@@ -89,6 +89,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_BANNER_DETAIL = "/getBannerDetail";
         String REQUEST_MAPPING_DELETE_BY_ID = "/delById";
         String REQUEST_MAPPING_UPDATE_BY_ID = "/updateById";
+        String REQUEST_MAPPING_UPDATE = "/update";
         String REQUEST_MAPPING_ADD = "/add";
     }
     //订单

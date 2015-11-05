@@ -80,5 +80,7 @@ public interface DataBaseConstant {
         String TABLE_SYS_LOG_NAME															= Common.TABLE_PRE+"sys_log";
         //分类品牌表
         String TABLE_PRODUCT_TYPE_BRAND_NAME                 = TABLE_PRODUCT_TYPE_NAME + "_brand";
+   //ab
+        String TABLE_AB_NAME      															=Common.TABLE_PRE+"ab";
     }
 }

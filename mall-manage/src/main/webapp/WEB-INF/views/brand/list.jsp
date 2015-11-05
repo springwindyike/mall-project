@@ -26,7 +26,10 @@
 <input type="button" value="上传图片" onclick="ajaxFileUpload()"/>
 </div>
 		<form target="_self" id="add_brand" enctype="multipart/form-data">
-			<input type="text" placeholder="分类名称" value="" id="name" name="name" class="input-text" style="width:120px">
+			<input type="text" placeholder="品牌名称" value="" id="name" name="name" class="input-text" style="width:120px">
+			<span class="btn-upload form-group">
+				 <input id ='selectType'  readonly="readonly" class="input-text" value="选择商品分类"  placeholder="" path="typeName" onClick="order_edit()" style="width:120px">
+					<input type="hidden" placeholder=""  value="" id="typeId" name="typeId" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
 			<select id="s1" name ="country" style ="height:31px" ><option>国家</option></select> 
 			<select id="s2" name ="province" style ="height:31px"><option>省份、州</option></select> 
@@ -93,7 +96,7 @@ $(function () {
                       { "mDataProp": null },
             { "mDataProp": "id" },
             { "mDataProp": "name" },
-            { "mDataProp": "logoUrl" },
+            { "mDataProp": null },
             { "mDataProp": "country" },
             { "mDataProp": "province" },
             { "mDataProp": "city" },
@@ -114,6 +117,12 @@ $(function () {
                             return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
                         }
                     },
+                    {
+                        "targets" : 3 ,
+                        "render" : function(mDataProp, type, full) {
+                     	   return '<td><a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>';
+                    }
+                }, 
 
             {
                 "targets" : 9,
@@ -179,9 +188,69 @@ function ajaxFileUpload(){
         },
         error:function(data, status, e){ 
             $('#result').html('图片上传失败，请重试！！');
-        }
-    });
-}
+        } });
+};
+function order_edit(){
+	 var str="";
+	 $.ajax({
+       type: "get",
+       dataType: "json",
+       url: "${pageContext.request.contextPath}/productType/firstLevel.dhtml",
+       success: function (msg) {
+      			 	var jsonData = eval(msg);
+		        	$.each(jsonData.child, function(index, jsonOne) {
+		         str+="<div><tr id =productName><a onclick=dispaly_child_sort("+jsonOne.id+")>"+jsonOne.typeName+"</a></tr></div>";}	)	;
+		        	layer_open(str,'选择分类');
+                        }}
+		)
+};
+function layer_open(i,title) {
+	layer.closeAll('page');
+	var index =layer.open({
+	    type: 1,
+	    title: title,
+	    closeBtn: true,
+	    shadeClose: true,
+	    area: ['700px', '530px'],
+	    content: i
+	});
+};
+function brand_click(id,name){
+	layer.closeAll('page');
+ 	$("#selectBrand").val(name);
+ 	$("#brandId").val(id);
+}; 
+var count = 0;
+function dispaly_child_sort(parentId){
+	 var str="";
+	 if (count==2){
+			$.ajax({
+		        type: "get",
+		        dataType: "json",
+		        url: "${pageContext.request.contextPath}/productType/findById/"+parentId+".dhtml",
+		        success: function (msg) {
+		        	layer.closeAll('page');
+		        	count=0;
+		        	$("#selectType").val(msg.typeName);
+		        	$("#typeCode").val(msg.code);
+		         	$("#typeId").val(msg.id);
+		                       }
+		              })
+	 } else {
+			$.ajax({
+		        type: "get",
+		        dataType: "json",
+		        url: "${pageContext.request.contextPath}/productType/childLevel/"+parentId+".dhtml",
+		        success: function (msg) {
+		       			 	var jsonData = eval(msg);
+				        	$.each(jsonData.child, function(index, jsonOne) {
+				        		 str+="<div><tr id =productName><a onclick=dispaly_child_sort("+jsonOne.id+")>"+jsonOne.typeName+"</a></tr></div>";}	)	;
+				        	layer_open(str);
+				        	count++;
+		                       }
+		              })
+	 }
+};
 </script>
 </body>
 </html>

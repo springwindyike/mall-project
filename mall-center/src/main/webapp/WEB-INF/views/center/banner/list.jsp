@@ -19,41 +19,23 @@
 <body onLoad="setup()">
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>CMS管理 <span class="c-gray en">&gt;</span> 系统栏目 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
-	<div class="text-c">
-		<div  id="result" class="Huiform">
-	<img id="uploadImage" src="http://www.firefox.com.cn/favicon.ico">
-<input type="file" id="myBlogImage" name="file"/>
-<input type="button" value="上传图片" onclick="ajaxFileUpload()"/>
-</div>
-		<!-- <form target="_self" id="add_brand" enctype="multipart/form-data">
-			<input type="text" placeholder="分类名称" value="" id="name" name="name" class="input-text" style="width:120px">
-			<span class="btn-upload form-group">
-			<select id="s1" name ="country" style ="height:31px" ><option>国家</option></select> 
-			<select id="s2" name ="province" style ="height:31px"><option>省份、州</option></select> 
-		<select id="s3" name ="city" style ="height:31px"><option>6666666666666666</option></select> 
-	<select id="s4" name ="district" style ="height:31px"><option>市辖区</option></select> 
-			<span class="btn-upload form-group">
-				<input type="text" placeholder="具体描述"  value="" id="detail" name="detail" class="input-text" style="width:120px">
-			<span class="btn-upload form-group">
-				<input type="hidden" placeholder=""  value="" id="logo" name="logo" class="input-text" style="width:120px">
-			</span>
-			</span><button type="button" class="btn btn-success" id="" name="" onClick="picture_colume_add();"><i class="Hui-iconfont">&#xe600;</i> 添加</button>
-		</form> -->
-	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a><a class="btn btn-primary radius" onclick="product_add('添加系统栏目','add.dhtml')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加系统栏目</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-sort">
 			<thead>
 				<tr class="text-c">
 					<th width="25"><input type="checkbox" name="" value=""></th>
 					<th width="70">ID</th>
-					<th width="100">名称</th>
-					<th width="120">LOGO</th>
-					<th width="120">国家</th>
-					<th width="120">省</th>
-					<th width="120">市</th>
-					<th width="120">区</th>
-					<th>具体描述</th>
+					<th width="100">栏目序号</th>
+					<th width="120">首页栏目</th>
+					<th width="120">栏目名称</th>
+					<th width="120">导航栏目</th>
+					<th width="120">栏目类型</th>
+					<th width="120">自定义链接</th>
+					<th width="120">链接地址</th>
+					<th width="120">推荐栏目</th>
+					<th width="120">栏目状态</th>
+					<th width="120">父类栏目</th>
 					<th width="100">操作</th>
 				</tr>
 			</thead>
@@ -67,10 +49,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/ajaxfileupload.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/province.js"></script> 
 <script type="text/javascript">
 var targetTable;
-var url = "${pageContext.request.contextPath}/brand/allBrand.dhtml";
+var url ="${pageContext.request.contextPath}/banner/allbanner.dhtml";
 $(function () {
      targetTable = $('.table-sort').DataTable({
          "oLanguage": {
@@ -89,19 +70,21 @@ $(function () {
             "dataSrc": "content"
         },
          //"sAjaxDataProp":"content",
-        "aoColumns": [
+       "aoColumns": [
                       { "mDataProp": null },
-            { "mDataProp": "id" },
-            { "mDataProp": "name" },
-            { "mDataProp": "logoUrl" },
-            { "mDataProp": "country" },
-            { "mDataProp": "province" },
-            { "mDataProp": "city" },
-            { "mDataProp": "district" },
-            { "mDataProp": "detail" },
-            { "mDataProp": null },
+                      { "mDataProp": "id" },
+                      { "mDataProp": "orders" },
+                      { "mDataProp": "isIndex" },
+                      { "mDataProp": "name" },
+                      { "mDataProp": "isTopNav" },
+                      { "mDataProp": "type" },
+                      { "mDataProp": "customLink" },
+                      { "mDataProp": "customLinkUrl" },
+                      { "mDataProp": "recommend" },
+                      { "mDataProp": "status" },
+                      { "mDataProp": "parent" },
+                      { "mDataProp": null },
         ],
-
         "createdRow" : function(row, mDataProp, dataIndex){
             //alert('row = '+row+'mDataProp = ' +mDataProp +'dataIndex = '+dataIndex);
             $(row).addClass('text-c');
@@ -116,17 +99,17 @@ $(function () {
                     },
 
             {
-                "targets" : 9,
+                "targets" : 12,
                 "render" : function(mDataProp, type, full) {
-                    return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="brand_edit(\'信息修改\',\'${pageContext.request.contextPath}/brand/update/'+mDataProp.id+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/brand/del/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
+                    return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="banner_edit(\'信息修改\',\'${pageContext.request.contextPath}/banner/update/'+mDataProp.id+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/brand/del/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
 }
             },
         ],
     });
 });
 
-/*品牌-删除*/
-function brand_del(url) {
+/*系统栏目-删除*/
+function banner_del(url) {
     if(confirm("确认要删除吗？")){
         $.post(
                 url,
@@ -138,8 +121,8 @@ function brand_del(url) {
     }
 }
 
-/*品牌-编辑*/
-function brand_edit(title, url, id, w, h) {
+/*系统栏目---编辑*/
+function banner_edit(title, url, id, w, h) {
     layer_show(title, url, w, h);
 };
 
@@ -147,41 +130,17 @@ function picture_colume_add(){
 	$.ajax({
         cache: true,
         type: "POST",
-        url:"${pageContext.request.contextPath}/brand/add.dhtml",
-        data:$('#add_brand').serialize(),// 你的formid
+        url:"${pageContext.request.contextPath}/banner/add.dhtml",
+        data:$('#add_banner').serialize(),// 你的formid
         success:function(data, status){ 
         	alert("添加成功");
-        	   window.location.href="${pageContext.request.contextPath}/brand/forword.dhtml"
+        	   window.location.href="${pageContext.request.contextPath}/banner/forword.dhtml"
         },
         error:function(data, status, e){ 
             $('#result').html('添加失败，请重试！！');
         }
 	});
 };
-function ajaxFileUpload(){
-    $.ajaxFileUpload({
-       url:"${pageContext.request.contextPath}/brand/uploadPic.dhtml",
-        secureuri:false,                      
-        fileElementId:'myBlogImage',         
-        dataType:'text',                      
-        success:function(data, status){       
-            data = data.replace("<PRE>", '');  
-            data = data.replace("</PRE>", '');
-            data = data.replace("<pre>", '');
-            data = data.replace("</pre>", ''); 
-            if(data.substring(0, 1) == 0){    
-                $("img[id='uploadImage']").attr("src", data.substring(2));
-                $('#result').html("图片上传成功<br/>");
-                $('#logo').val(data.substring(2));
-            }else{
-                $('#result').html('图片上传失败，请重试！！');
-            }
-        },
-        error:function(data, status, e){ 
-            $('#result').html('图片上传失败，请重试！！');
-        }
-    });
-}
 </script>
 </body>
 </html>

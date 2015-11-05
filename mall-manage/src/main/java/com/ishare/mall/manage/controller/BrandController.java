@@ -265,7 +265,7 @@ public class BrandController extends BaseController {
                     return null;
                 }
             }
-	        out.print("0`" + request.getContextPath() + "/upload/" + originalFilename);
+	        out.print("0" + request.getContextPath() + "/upload/" + originalFilename);
 	        out.flush();
 	        return null;
 	  }

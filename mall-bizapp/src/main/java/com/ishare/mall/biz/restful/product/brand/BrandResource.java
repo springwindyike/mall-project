@@ -22,8 +22,12 @@ import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.exception.brand.BrandServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.information.ProductTypeBrand;
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductType;
+import com.ishare.mall.core.service.information.BrandProductTypeService;
 import com.ishare.mall.core.service.information.BrandService;
+import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
@@ -39,7 +43,10 @@ public class BrandResource {
 
     @Autowired
     private BrandService brandService;
-
+    @Autowired
+    private ProductTypeService productTypeService;
+    @Autowired
+    private BrandProductTypeService brandProductTypeService;
     @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_GET_BRAND_DETAIL,method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json",},
@@ -153,6 +160,30 @@ public class BrandResource {
      *
      * @return Page<ProductDTO>
      */
+<<<<<<< HEAD
+//    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST, method = RequestMethod.GET,
+//            headers = "Accept=application/xml, application/json",
+//            produces = {"application/json"})
+//    public Response findAllBrandList() {
+//        List<BrandDTO> brandList = new ArrayList<>();
+//        List<Brand> result;
+//        Response response = new Response();
+//		try {
+//      result = brandService.findAllBrandList();
+//			for(Brand brand:result){
+//				 BrandDTO brandDTOTwo = (BrandDTO) MapperUtils.map(brand, BrandDTO.class);
+//				 brandList.add(brandDTOTwo);
+//			}
+//		} catch (BrandServiceException e) {
+//			log.error(e.getMessage(), e);
+//			response.setMessage("系统错误");
+//			response.setSuccess(false);
+//			return response;
+//		}
+// response.setData(brandList);
+//        return response;
+//    }
+=======
     @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST, method = RequestMethod.POST,
     		headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
     public Response findAllBrandList() {
@@ -178,6 +209,7 @@ public class BrandResource {
 
         return response;
     }
+>>>>>>> 18f637261866ceba2f3b2d5824eeff52b12d8454
     /**
      * 根据id删除品牌
      * @param memberDTO
@@ -261,10 +293,15 @@ public class BrandResource {
     public Response saveBrand(@RequestBody BrandDTO brandDTO){
         Brand brand = new Brand();
         BeanUtils.copyProperties(brandDTO, brand);
-    		
-    			
     			try {
-					brandService.add(brand);
+    				ProductType returnProductType = productTypeService.findOne(brandDTO.getTypeId());
+    				if (returnProductType!= null){
+    					Brand returnBrand = brandService.add(brand);
+    					ProductTypeBrand brandProductType = new ProductTypeBrand();
+    					brandProductType.setBrand(returnBrand);
+    					brandProductType.setProductType(returnProductType);
+    					brandProductTypeService.add(brandProductType);
+    				}
 				} catch (Exception e) { 
 									log.error(e.getMessage(), e);
 	            Response response = new Response();

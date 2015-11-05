@@ -168,4 +168,20 @@ public class BannerController extends BaseController{
 		}
 		return CenterViewConstant.Banner.BANNER_UPDATE;
 	}
+	
+	
+//	@ResponseBody
+//	@RequestMapping(value = CenterURIConstant.Banner.REQUEST_MAPPING_ADD,method = RequestMethod.POST)
+//	public String addBanner(){
+//		BannerDTO bannerDTO = new BannerDTO();
+//		BeanUtils.copyProperties(add, target);
+//		
+//		
+//		return bizAppUrl;
+//		
+//		
+//	}
+//	
+	
+	
 }
