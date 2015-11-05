@@ -1,9 +1,14 @@
 package com.ishare.mall.center.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.ishare.mall.center.annoation.CurrentMember;
+import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.general.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.ishare.mall.center.controller.base.BaseController;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.general.Response;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/14. 
@@ -149,6 +148,11 @@ public class OrderController extends BaseController {
 		}else{
 			throw new Exception("get response error");
 		}
+	}
+
+	@RequestMapping(value = "test")
+	public String test() {
+		return "order/test";
 	}
 	
 }
