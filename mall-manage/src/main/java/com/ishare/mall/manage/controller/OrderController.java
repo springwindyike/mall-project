@@ -165,8 +165,24 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER, method = RequestMethod.GET)
-	public String deliver(@NotEmpty @PathVariable("id") String id, HttpServletRequest request) {
+	public String deliver(@NotEmpty @PathVariable("id") String id, HttpServletRequest request,Model model) throws Exception{
 		request.setAttribute("orderId", id);
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(id);
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+ 		Response<OrderDetailDTO> response = null;
+		ResponseEntity<Response<OrderDetailDTO>> responseEntity = null;
+		try{
+			responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GET_ORDER_DETAIL),
+					HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response<OrderDetailDTO>>(){});
+		}catch (Exception e){
+			log.error("has error:",e.getStackTrace());
+		}
+		response = responseEntity.getBody();
+		if (response == null || !response.isSuccess()){
+			throw new Exception("get response error.");
+		}
+		model.addAttribute("orderDetailDTO",response.getData());
 		return ManageViewConstant.Order.DELIVER_ORDER;
 	}
 	/**
@@ -175,13 +191,12 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_DELIVER_SUBMIT, method = RequestMethod.POST)
-	@ResponseBody
-	public OrderResultDTO deliverSubmit(
+	public String deliverSubmit(
 			@CurrentManageUser CurrentManageUserDTO currentManageUserDTO,
 			@NotEmpty @RequestParam("orderId") String orderId,
 			@NotEmpty @RequestParam("expressId") String expressId, 
 			@NotEmpty @RequestParam("expressOrder") String expressOrder, 
-			@NotEmpty @RequestParam("note") String note) throws Exception{
+			@NotEmpty @RequestParam("note") String note,Model model) throws Exception{
 		OrderResultDTO orderResultDTO = new OrderResultDTO();
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(orderId);
@@ -206,17 +221,20 @@ public class OrderController extends BaseController {
 			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_DELIVER),
 					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>(){});
 		}catch (Exception e){
-			log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT + "error");
+			log.error("call bizp app " + APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT + "error");
 			orderResultDTO.setMessage("发货失败！");
 			orderResultDTO.setSuccess(false);
-			return orderResultDTO;
+			model.addAttribute("status",false);
+			return ManageViewConstant.Order.LIST_ORDER;
 		}
 		orderDetailDTO = resultDTO.getBody().getData();
 
 		orderResultDTO.setMessage("发货成功！");
 		orderResultDTO.setSuccess(true);
 		orderResultDTO.setOrderDetailDTO(orderDetailDTO);
-		return orderResultDTO;
+		model.addAttribute("status",true);
+		//return orderResultDTO;
+		return ManageViewConstant.Order.LIST_ORDER;
 	}
 	/**
 	 * 访问物流页面

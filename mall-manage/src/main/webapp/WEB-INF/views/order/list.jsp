@@ -8,6 +8,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
@@ -30,6 +32,7 @@
 	<div class="pd-20">
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
+
   <tr class="text-c">
 	  <th>订单号:</th>
 	  <td><input type="text" name="" id="searchOrderId" placeholder="订单号" style="width:250px" class="input-text"></td>
@@ -89,7 +92,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+				<input id="deliverStatus" type="hidden" value="${status}"/>
 				</tbody>
 			</table>
 		</div>
@@ -104,6 +107,10 @@
 <script type="text/javascript">	
 var targetTable;
 var url = "${pageContext.request.contextPath}/order/getOrderList.dhtml";
+var deliverStatus = $("#deliverStatus").val();
+if(deliverStatus=="true"){
+	alert("发货成功");
+}
 $(function () {
 	targetTable = $('.table-sort').DataTable({
 		"oLanguage": {
@@ -163,7 +170,7 @@ $(function () {
 						+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
 						+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'
-						+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
+						+'<a style="text-decoration:none" class="ml-5" href="${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml" title="现在发货">'
 						+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 						+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
@@ -177,7 +184,7 @@ $(function () {
 					+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
 					+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
+					+'<a style="text-decoration:none" class="ml-5" href="${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml" title="现在发货">'
 					+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
 					+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
