@@ -4,6 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.center.controller.base.BaseController;
@@ -25,6 +29,7 @@ import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.general.Response;
 
 /**
@@ -150,5 +155,27 @@ public class OrderController extends BaseController {
 			throw new Exception("get response error");
 		}
 	}
+	
+    @RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_FIND_BY_ID, produces = {"application/json"})
+    @ResponseBody
+	public OrderDetailDTO findById(@NotEmpty @PathVariable("id") String id) {
+
+		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
+/*		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(id);*/
+/*		RestTemplate restTemplate = new RestTemplate();
+*/		try {
+
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_ID),
+					HttpMethod.GET, null, new ParameterizedTypeReference<Response<OrderDetailDTO>>(){},id);
+		
+		} catch (RestClientException e) {
+			e.printStackTrace();
+		}
+		OrderDetailDTO resultOrderDetailDto = (OrderDetailDTO) resultDTO
+				.getBody().getData();
+		return resultOrderDetailDto;
+	
+    }
 	
 }

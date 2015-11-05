@@ -5,6 +5,7 @@ package com.ishare.mall.common.base.enumeration;
  * Version 1.0
  */
 public enum BannerType {
+	
 
 	NAV_CHANNEL("导航栏目"),TOPIC_LIST("文章列表栏目"),
 
