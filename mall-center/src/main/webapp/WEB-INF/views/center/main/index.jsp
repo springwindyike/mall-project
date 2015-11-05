@@ -166,6 +166,7 @@
 			<dd>
 				<ul>
 					<li><a _href="channel/view.dhtml" href="javascript:void(0)">渠道详情</a></li>
+					<li><a _href="order/test.dhtml">订单详情</a></li>
 				</ul>
 			</dd>
 		</dl>

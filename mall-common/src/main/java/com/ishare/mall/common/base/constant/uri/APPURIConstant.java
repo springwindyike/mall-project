@@ -119,6 +119,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION = "/findAllBySearchCondition";
 
         String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";
+
+        String REQUEST_MAPPING_GET_ORDER_DETAIL = "/getOrderDetail";
     }
     //支付
     interface AliPay {

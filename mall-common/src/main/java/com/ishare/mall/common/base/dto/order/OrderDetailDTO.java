@@ -47,7 +47,7 @@ public class OrderDetailDTO extends GenericDTO {
     /* 顾客附言 */
     private String note;
     /* 支付方式 */
-    private PaymentWay paymentWay;
+    private String paymentWay;
     /* 支付状态 */
     private Boolean paymentState = false;
     /* 订单配送信息 */
@@ -58,7 +58,7 @@ public class OrderDetailDTO extends GenericDTO {
     private String lockMember;
     /**各个订单对应的渠道**/
     private Integer channelId;
-
+	private String channelName;
     private String expressOrder;//快递单号
 
     private String expressId;//快递代号
@@ -144,12 +144,6 @@ public class OrderDetailDTO extends GenericDTO {
 	}
 	public void setNote(String note) {
 		this.note = note;
-	}
-	public PaymentWay getPaymentWay() {
-		return paymentWay;
-	}
-	public void setPaymentWay(PaymentWay paymentWay) {
-		this.paymentWay = paymentWay;
 	}
 	public Boolean getPaymentState() {
 		return paymentState;
@@ -246,4 +240,19 @@ public class OrderDetailDTO extends GenericDTO {
 		this.log = log;
 	}
 
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
+
+	public String getPaymentWay() {
+		return paymentWay;
+	}
+
+	public void setPaymentWay(String paymentWay) {
+		this.paymentWay = paymentWay;
+	}
 }

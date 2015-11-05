@@ -166,6 +166,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		otherDealField.add("stateValue");
 		otherDealField.add("log");
 		otherDealField.add("createBy");
+		otherDealField.add("channelName");
 
 		for (Field field : fields) {
 			if (!otherDealField.contains(field.getName())) {
@@ -182,6 +183,7 @@ public class OrikaMapper extends ConfigurableMapper {
 		classMapBuilder.field("orderDeliverInfo.id", "orderDeliverInfoId");
 		classMapBuilder.field("orderContactInfo.id", "orderContactInfoId");
 		classMapBuilder.field("createBy.account", "createBy");
+		classMapBuilder.field("channel.name", "channelName");
 		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
 	@Override

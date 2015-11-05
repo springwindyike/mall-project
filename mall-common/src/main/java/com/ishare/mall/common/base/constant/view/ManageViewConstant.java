@@ -12,6 +12,7 @@ public interface ManageViewConstant {
 		String DELIVER_ORDER = "order/deliver";
 		String LOGISTICS_ORDER = "order/logistics";
 		String CANCEL_ORDER = "order/cancel";
+		String ORDER_DETAIL= "order/detail";
 	}
 	
 	interface Category {
