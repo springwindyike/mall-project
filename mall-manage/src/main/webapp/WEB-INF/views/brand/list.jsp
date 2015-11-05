@@ -26,7 +26,7 @@
 <input type="button" value="上传图片" onclick="ajaxFileUpload()"/>
 </div>
 		<form target="_self" id="add_brand" enctype="multipart/form-data">
-			<input type="text" placeholder="分类名称" value="" id="name" name="name" class="input-text" style="width:120px">
+			<input type="text" placeholder="品牌名称" value="" id="name" name="name" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
 			<select id="s1" name ="country" style ="height:31px" ><option>国家</option></select> 
 			<select id="s2" name ="province" style ="height:31px"><option>省份、州</option></select> 
@@ -93,7 +93,7 @@ $(function () {
                       { "mDataProp": null },
             { "mDataProp": "id" },
             { "mDataProp": "name" },
-            { "mDataProp": "logoUrl" },
+            { "mDataProp": null },
             { "mDataProp": "country" },
             { "mDataProp": "province" },
             { "mDataProp": "city" },
@@ -114,6 +114,12 @@ $(function () {
                             return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
                         }
                     },
+                    {
+                        "targets" : 3 ,
+                        "render" : function(mDataProp, type, full) {
+                     	   return '<td><a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>';
+                    }
+                }, 
 
             {
                 "targets" : 9,
@@ -179,8 +185,7 @@ function ajaxFileUpload(){
         },
         error:function(data, status, e){ 
             $('#result').html('图片上传失败，请重试！！');
-        }
-    });
+        } });
 }
 </script>
 </body>
