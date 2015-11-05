@@ -1,16 +1,15 @@
 package com.ishare.mall.biz.restful.order;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.order.ExchangeDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
-import com.ishare.mall.common.base.dto.order.OrderRequestDTO;
+import com.ishare.mall.common.base.dto.order.*;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.enumeration.OrderActionLogType;
 import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.order.OrderActionLog;
@@ -152,25 +151,14 @@ public class OrderResource {
 					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 					BeanUtils.copyProperties(order, innerOrderDetailDTO);
 					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setChannelName(order.getChannel().getName());
 					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 					innerOrderDetailDTO.setStateValue(order.getState().getName());
 					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-
+					innerOrderDetailDTO.setPaymentWay(order.getPaymentWay().getName());
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
-
-					List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
-
-					Iterator<OrderItem> it = orderItems.iterator();
-					Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
-					while (it.hasNext()) {
-						OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
-						OrderItem orderItem = it.next();
-						BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-						items.add(orderItemDetailDTO);
-					}
-					innerOrderDetailDTO.setItems(items);
 					listOrder.add(innerOrderDetailDTO);
 				}
 				pageDTO.setContent(listOrder);
@@ -538,22 +526,29 @@ public class OrderResource {
 
 	/**
 	 * 根据条件查询 manage
-	 * @param orderDetailDTO
+	 * @param  map
 	 * @return
 	 */
 	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json", "application/xml"},
 			consumes = {"application/json", "application/xml"})
-	public Response findAllBySearchCondition(@RequestBody OrderDetailDTO orderDetailDTO){
+	public Response findAllBySearchCondition(@RequestBody Map map){
 		List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
 		Response response = new Response();
-		String orderId = orderDetailDTO.getOrderId();
-		int offset = orderDetailDTO.getOffset();
-		int limit = orderDetailDTO.getLimit();
+		int offset = (int)map.get("offset");
+		int limit = (int)map.get("limit");
+		map.remove("offset");
+		map.remove("limit");
+		if(map.get("EQ_paymentWay") !=null ){
+			map.put("EQ_paymentWay", PaymentWay.valueOf((String)map.get("EQ_paymentWay")));
+		}
+		if(map.get("EQ_state") !=null ){
+			map.put("EQ_state", OrderState.valueOf((String) map.get("EQ_state")));
+		}
 		try{
 			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
-			Page<Order> result = orderService.findAllBycondition(orderId, pageRequest);
+			Page<Order> result = orderService.findAllBycondition(map, pageRequest);
 			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
 			if(result != null && result.getContent() != null && result.getContent().size()>0){
 				List<Order> list = result.getContent();
@@ -561,25 +556,14 @@ public class OrderResource {
 					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 					BeanUtils.copyProperties(order, innerOrderDetailDTO);
 					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setChannelName(order.getChannel().getName());
 					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 					innerOrderDetailDTO.setStateValue(order.getState().getName());
 					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-
+					innerOrderDetailDTO.setPaymentWay(order.getPaymentWay().getName());
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
-
-					List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
-
-					Iterator<OrderItem> it = orderItems.iterator();
-					Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
-					while (it.hasNext()) {
-						OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
-						OrderItem orderItem = it.next();
-						BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
-						items.add(orderItemDetailDTO);
-					}
-					innerOrderDetailDTO.setItems(items);
 					listOrder.add(innerOrderDetailDTO);
 				}
 				pageDTO.setContent(listOrder);
@@ -620,5 +604,39 @@ public class OrderResource {
 		response.setData(pageDTO);
 		return response;
 	}
-    
+
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_GET_ORDER_DETAIL, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json", "application/xml"})
+	public Response<OrderDetailDTO> getOrderDetail(@RequestBody OrderDetailDTO orderDetailDTO) {
+		Response<OrderDetailDTO> response = new Response<OrderDetailDTO>();
+		Order order = orderService.findOne(orderDetailDTO.getOrderId());
+		try {
+			orderDetailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
+			orderDetailDTO.setStateValue(order.getState().getName());
+			orderDetailDTO.setPaymentWay(order.getPaymentWay().getName());
+			orderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
+			orderDetailDTO.setDeliver( (OrderDeliverDTO) MapperUtils.map(order.getOrderDeliverInfo(), OrderDeliverDTO.class));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String newTime = sdf.format(order.getCreateTime());
+			orderDetailDTO.setCreateTime(newTime);
+			List<OrderItem> orderItems = orderItemService.findByOrderId(order.getOrderId());
+			Iterator<OrderItem> it = orderItems.iterator();
+			Set<OrderItemDetailDTO> items = new HashSet<OrderItemDetailDTO>();
+			while (it.hasNext()) {
+				OrderItemDetailDTO orderItemDetailDTO = new OrderItemDetailDTO();
+				OrderItem orderItem = it.next();
+				BeanUtils.copyProperties(orderItem, orderItemDetailDTO);
+				items.add(orderItemDetailDTO);
+			}
+			orderDetailDTO.setItems(items);
+
+		}catch (OrderServiceException e){
+			log.error("error: ",e.getStackTrace());
+			response.setSuccess(false);
+		}
+		response.setData(orderDetailDTO);
+		return response;
+	}
 }

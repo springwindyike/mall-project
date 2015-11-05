@@ -59,6 +59,7 @@ public interface APPURIConstant {
    	    String REQUEST_MAPPING_UPDATE = "/update";
    	    String REQUEST_MAPPING_DEL ="/del";
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
+        String REQUEST_MAPPING_FIND_ALL = "/findAll";
         String REQUEST_MAPPING_FIND_ID="/findByID";
         String REQUEST_MAPPING_FIND_CODE="/findByCode";
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
@@ -119,6 +120,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION = "/findAllBySearchCondition";
 
         String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";
+
+        String REQUEST_MAPPING_GET_ORDER_DETAIL = "/getOrderDetail";
     }
     //支付
     interface AliPay {

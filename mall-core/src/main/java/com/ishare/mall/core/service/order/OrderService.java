@@ -115,13 +115,13 @@ public interface OrderService {
 	Page<Order> findBycondition(String orderId, Integer channelId, PageRequest pageRequest) throws OrderServiceException;
 	/**
 	 * 根据条件查询订单 manage
-	 * @param orderId
+	 * @param
 	 * @param
 	 * @param pageRequest
 	 * @return
 	 * @throws OrderServiceException
 	 */
-	Page<Order> findAllBycondition(String orderId, PageRequest pageRequest) throws OrderServiceException;
+	Page<Order> findAllBycondition(Map<String, Object> searchParams, PageRequest pageRequest) throws OrderServiceException;
 	/**
 	 * 查询所有的Order
 	 * @param pageRequest

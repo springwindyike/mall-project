@@ -74,7 +74,7 @@ public class ProductController extends BaseController {
 	 	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
 	}
 	productDetailDTO.setName(addProductForm.getProductName());
-	productDetailDTO.setBrandId(1);
+	productDetailDTO.setBrandId(addProductForm.getBrandId());
 	productDetailDTO.setChannelId(member.getChannelId());
 	productDetailDTO.setCreateByAccount(member.getAccount());
 	productDetailDTO.setTypeId(addProductForm.getTypeId());

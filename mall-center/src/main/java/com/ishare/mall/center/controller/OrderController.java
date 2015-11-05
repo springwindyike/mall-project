@@ -1,12 +1,20 @@
 package com.ishare.mall.center.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.ishare.mall.center.annoation.CurrentMember;
+import com.ishare.mall.center.controller.base.BaseController;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
+import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
+<<<<<<< HEAD
 import com.ishare.mall.common.base.dto.member.MemberDTO;
 
 import org.hibernate.validator.constraints.NotEmpty;
+=======
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.general.Response;
+>>>>>>> 18f637261866ceba2f3b2d5824eeff52b12d8454
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+<<<<<<< HEAD
 import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
@@ -31,6 +40,9 @@ import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.general.Response;
+=======
+import javax.servlet.http.HttpServletRequest;
+>>>>>>> 18f637261866ceba2f3b2d5824eeff52b12d8454
 
 /**
  * Created by ZhangZhaoxin on 2015/9/14. 
@@ -154,6 +166,11 @@ public class OrderController extends BaseController {
 		}else{
 			throw new Exception("get response error");
 		}
+	}
+
+	@RequestMapping(value = "test")
+	public String test() {
+		return "order/test";
 	}
 	
     @RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_FIND_BY_ID, produces = {"application/json"})
