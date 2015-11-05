@@ -30,7 +30,7 @@
 			<span class="btn-upload form-group">
 				 <input id ='selectType'  readonly="readonly" class="input-text" value="选择商品分类"  placeholder="" path="typeName" onClick="order_edit()" style="width:120px">
 					<input type="hidden" placeholder=""  value="" id="typeId" name="typeId" class="input-text" style="width:120px">
-			<span class="btn-upload form-group">
+			<span class="btn-upload form-group"> 
 			<select id="s1" name ="country" style ="height:31px" ><option>国家</option></select> 
 			<select id="s2" name ="province" style ="height:31px"><option>省份、州</option></select> 
 		<select id="s3" name ="city" style ="height:31px"><option>地级市、县</option></select> 
@@ -135,7 +135,7 @@ $(function () {
 });
 
 /*品牌-删除*/
-function brand_del(url) {
+/* function brand_del(url) {
     if(confirm("确认要删除吗？")){
         $.post(
                 url,
@@ -145,8 +145,22 @@ function brand_del(url) {
                 }
         )
     }
-}
+} */
 
+function brand_del(url) {
+	$.ajax({
+        cache: true,
+        type: "POST",
+        url:url,
+        success:function(data, status){ 
+        	alert("删除成功");
+        	 window.location.reload();
+        },
+        error:function(data, status, e){ 
+        	alert("删除失败");
+        }
+	});
+}
 /*品牌-编辑*/
 function brand_edit(title, url, id, w, h) {
     layer_show(title, url, w, h);

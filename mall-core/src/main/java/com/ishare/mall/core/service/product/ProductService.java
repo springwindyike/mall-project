@@ -3,9 +3,11 @@ package com.ishare.mall.core.service.product;
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.product.Product;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -100,4 +102,11 @@ public abstract interface ProductService {
      * @return
      */
     boolean checkStore(Integer id);
+    
+    /**
+     * 根据品牌ID查找产品   
+     * @param code
+     * @return
+     */
+      List<Product> findBrandId(Integer brandId) throws ProductServiceException;
 }
