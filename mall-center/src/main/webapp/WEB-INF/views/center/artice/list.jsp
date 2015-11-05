@@ -50,7 +50,7 @@
 
 <script type="text/javascript">
 var targetTable;
-var url = "${pageContext.request.contextPath}/artice/allArtice.dhtml";
+var url ="${pageContext.request.contextPath}/banner/forword.dhtml";
 $(function () {
      targetTable = $('.table-sort').DataTable({
          "oLanguage": {

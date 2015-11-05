@@ -14,7 +14,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ishare.mall.core.exception.ArticeServiceException;
 import com.ishare.mall.core.exception.BannerServiceException;
+import com.ishare.mall.core.model.cms.Article;
 import com.ishare.mall.core.model.cms.Banner;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.repository.information.BannerRepository;
@@ -30,11 +32,13 @@ import com.ishare.mall.core.utils.filter.SearchFilter;
 @Service
 @Transactional
 public class BannerServiceImpl implements BannerService {
+	
+	
 
 	private static final Logger Log = LoggerFactory.getLogger(BannerServiceImpl.class);
 	@Autowired
     private BannerRepository bannerRepository;
-	
+
 	
 	
 	@Override
@@ -59,22 +63,22 @@ public class BannerServiceImpl implements BannerService {
 				Page<Banner> page = bannerRepository.findAll(null, pageRequest);
 				return page;
 			} catch (Exception e) {
-				Log.error(e.getMessage());
+				Log.error(e.getMessage(),e);
 				throw new BannerServiceException("查询系统栏目失败");
 			}
 	}
 
-	@Override
-	public List<Banner> findAllBannerList() throws BannerServiceException {
-		try {
-			List<Banner> bannerList = bannerRepository.findAll();
-			return bannerList;
-			
-		} catch (Exception e) {
-			Log.error(e.getMessage());
-			throw new BannerServiceException("查询系统栏目失败");
-		}
-	}
+//	@Override
+//	public List<Banner> findAllBannerList() throws BannerServiceException {
+//		try {
+//			List<Banner> bannerList = bannerRepository.findAll();
+//			return bannerList;
+//			
+//		} catch (Exception e) {
+//			Log.error(e.getMessage());
+//			throw new BannerServiceException("查询系统栏目失败");
+//		}
+//	}
 
 	@Override
 	public void delBanner(Integer id) throws BannerServiceException {
@@ -105,6 +109,11 @@ public class BannerServiceImpl implements BannerService {
 			Log.error(e.getMessage());
 			throw new BannerServiceException("添加系统栏目失败");
 		}
+	}
+
+	@Override
+	public Banner findOne(Integer id) {
+		return bannerRepository.findOne(id);
 	}
 
 }

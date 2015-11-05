@@ -83,6 +83,7 @@ public interface CenterURIConstant {
 		String REQUEST_MAPPING_SHOW = "/list";
 		String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
 		String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
+		String REQUEST_MAPPING_FIND_BY_ID = "/findById/{id}";
 	}
 
 	interface Main {

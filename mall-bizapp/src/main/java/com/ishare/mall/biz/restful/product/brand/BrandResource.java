@@ -160,6 +160,30 @@ public class BrandResource {
      *
      * @return Page<ProductDTO>
      */
+<<<<<<< HEAD
+//    @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST, method = RequestMethod.GET,
+//            headers = "Accept=application/xml, application/json",
+//            produces = {"application/json"})
+//    public Response findAllBrandList() {
+//        List<BrandDTO> brandList = new ArrayList<>();
+//        List<Brand> result;
+//        Response response = new Response();
+//		try {
+//      result = brandService.findAllBrandList();
+//			for(Brand brand:result){
+//				 BrandDTO brandDTOTwo = (BrandDTO) MapperUtils.map(brand, BrandDTO.class);
+//				 brandList.add(brandDTOTwo);
+//			}
+//		} catch (BrandServiceException e) {
+//			log.error(e.getMessage(), e);
+//			response.setMessage("系统错误");
+//			response.setSuccess(false);
+//			return response;
+//		}
+// response.setData(brandList);
+//        return response;
+//    }
+=======
     @RequestMapping(value = APPURIConstant.Brand.REQUEST_MAPPING_ALL_BRAND_LIST, method = RequestMethod.POST,
     		headers = "Accept=application/xml, application/json",produces = {"application/json", "application/xml"})
     public Response findAllBrandList() {
@@ -185,6 +209,7 @@ public class BrandResource {
 
         return response;
     }
+>>>>>>> 18f637261866ceba2f3b2d5824eeff52b12d8454
     /**
      * 根据id删除品牌
      * @param memberDTO

@@ -16,7 +16,14 @@ import com.ishare.mall.core.model.information.Brand;
  * @author zhangzhaoxin
  *
  */
-public interface BannerService {
+public  abstract interface BannerService {
+	  /**
+     * 根据ID查找品牌
+     * @param id
+     * @return
+     */
+    public abstract Banner findOne(Integer id);
+
 	/**
 	 * 通过条件查询系统栏目
 	 * @param searchParams
@@ -31,13 +38,13 @@ public interface BannerService {
 	 * @throws BannerServiceException
 	 */
 	Page<Banner> findAllBanner(PageRequest pageRequest)throws BannerServiceException;
-	/**
+/*	*//**
 	 * 查看所有系统栏目
 	 * @return
 	 * @throws BannerServiceException
-	 */
+	 *//*
 	
-	List<Banner> findAllBannerList()throws BannerServiceException;
+	List<Banner> findAllBannerList()throws BannerServiceException;*/
 	/**
 	 * 根据id删除系统栏目
 	 * @param id
@@ -54,7 +61,6 @@ public interface BannerService {
 	 * @param brand
 	 */
 	void add (Banner banner)throws BannerServiceException;
-	
 	
 	
 }

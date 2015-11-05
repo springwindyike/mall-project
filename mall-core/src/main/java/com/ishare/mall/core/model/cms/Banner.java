@@ -82,7 +82,6 @@ public class Banner {
     @Column(name="navOrder")
     private int navOrder;
 
-
     public int getNavOrder() {
         return navOrder;
     }
