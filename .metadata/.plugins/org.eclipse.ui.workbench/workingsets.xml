@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workingSetManager>
 <workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1446601003491_1" label="mall-project" name="mall-project">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-common" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-manage" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-api" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-core" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-manage" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-docs" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-center" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-bizapp" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/mall-common" type="4"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1446517977447_0" label="Window Working Set" name="Aggregate for window 1446517977446"/>
 </workingSetManager>
