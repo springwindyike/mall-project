@@ -37,8 +37,16 @@ public abstract interface ProductService {
      * @param pageRequest
      * @return
      */
-    Page<Product> findByChannelId(Integer channelId, PageRequest pageRequest) throws ProductServiceException;;
+    Page<Product> findByChannelId(Integer channelId, PageRequest pageRequest) throws ProductServiceException;
 
+    /**
+     * 查看所有产品
+     * @param channelId
+     * @param pageRequest
+     * @return
+     */
+    Page<Product> findAll(PageRequest pageRequest) throws ProductServiceException;
+    
     /**
      * 根据产品id删除产品
      * @param id
@@ -75,6 +83,16 @@ public abstract interface ProductService {
      * @throws ProductServiceException
      */
     Page<Product> findBycondition(Integer productId, Integer channelId, PageRequest pageRequest) throws ProductServiceException;
+    
+    /**
+     *  根据条件查询产品
+     * @param productId
+     * @param channelId
+     * @param pageRequest
+     * @return
+     * @throws ProductServiceException
+     */
+    Page<Product> findById(Integer productId, PageRequest pageRequest) throws ProductServiceException;
 
     /**
      * 根据商品ID判断商品库存

@@ -37,7 +37,10 @@ public class AddProductForm {
 		//分类id
 		@NotEmpty(message = "产品分类id")
 	    private Integer typeId;
- 
+ //品牌的id
+		
+		@NotEmpty(message = "品牌的id")
+	    private Integer brandId;
 		
 /*    //购买须知
 	@NotEmpty(message = "产品购买须知不能为空")
@@ -109,6 +112,14 @@ public class AddProductForm {
 
 	public void setInventory(Integer inventory) {
 		this.inventory = inventory;
+	}
+
+	public Integer getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
 	}
 	
 }

@@ -67,4 +67,36 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING_FIND_BY_SEARCH_CONDITION = "/findByCondition";
 		String REQUEST_MAPPING_FORWARD_TO_CHANGE_PASSWORD_PAGE = "manage/password";
 	}
+	
+    interface Product{
+      	 String REQUEST_MAPPING   = "/product";
+      	 String REQUEST_MAPPING_SAVE= "/add";
+      	 String REQUEST_MAPPING_UPDATE= "/update/{id}";
+      	 String REQUEST_MAPPING_DEL="/del/{id}";
+      	 String REQUEST_MAPPING_FIND_BY_ID="/findById/{id}";
+      	 String REQUEST_MAPPING_FIND_ALL="/findAll";
+      	 String REQUEST_MAPPING_FORWORD="/forword";
+      	 String REQUEST_MAPPING_ALL_TYPE_PRODUCT ="/allType";
+      	 String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
+       }
+    
+	interface ProductType {
+		 String REQUEST_MAPPING   = "/productType";
+		 String REQUEST_MAPPING_FITST_LEVEL = "/firstLevel";
+		 String REQUEST_MAPPING_CHILDREN_LEVEL = "/childLevel/{parentId}";
+		 String REQUEST_MAPPING_FIND_BY_ID = "/findById/{id}";
+	}
+	
+	  interface Brand {
+		  String REQUEST_MAPPING   = "/brand";
+		  String REQUEST_MAPPING_FORWORD="/forword";
+		  String REQUEST_MAPPING_ADD_FORWORD="/addForword";
+		  String REQUEST_MAPPING_UPLOAD_PIC="/uploadPic";
+		  String REQUEST_MAPPING_FIND_ALL_BRAND="/allBrand";
+		  String REQUEST_MAPPING_FIND_ALL_BRAND_LIST="/allBrandList";
+		  String REQUEST_MAPPING_DELETE_BY_ID ="/del/{id}";
+		  String REQUEST_MAPPING_UPDATE_BY_ID ="/update/{id}";
+		  String REQUEST_MAPPING_ADD ="/add";
+		  String REQUEST_MAPPING_UPDATE ="/update";
+	  } 
 }
