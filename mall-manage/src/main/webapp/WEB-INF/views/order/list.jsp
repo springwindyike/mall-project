@@ -30,31 +30,45 @@
 	<div class="pd-20">
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
-  <tr>
-	<td>
-		<select name="source" class="input-text" style="width:100px;">
-			<option value ="0" selected>全部订单来源</option>
-			<option>享买自营</option>
-			<option>和小宝</option>
-		</select>
-	</td>
-	<td>
-		<select name="category" style="width:100px; margin:0 10px;" class="input-text">
-			<option value ="0" selected>全部分类</option>
-			<option>手机</option>
-			<option>相机</option>
-		</select>
-	</td>
-	<td>
-		<select name="brand" style="width:100px;margin:0 10px;" class="input-text">
-			<option value ="0" selected>全部品牌</option>
-			<option>享买</option>
-			<option>锋果</option>
-		</select>
-	</td>
-    <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
+  <tr class="text-c">
+	  <th>订单号:</th>
+	  <td><input type="text" name="" id="searchOrderId" placeholder="订单号" style="width:250px" class="input-text"></td>
+	  <th>渠道名称:</th>
+	  <td><input type="text" name="" id="searchChannelName" placeholder="渠道名称" style="width:250px" class="input-text"></td>
+	  <th>订单状态:</th>
+	  <td>
+		  <select name="status" style="width:100px; margin:0 10px;" class="input-text" id="searchStatus">
+			  <option  value="0" selected>订单状态</option>
+			  <option value="CANCEL">已取消</option>
+			  <option value="WAIT_CONFIRM">待审核</option>
+			  <option value="WAIT_PAYMENT">等待付款</option>
+			  <option value="WAIT_DELIVER">等待发货</option>
+			  <option value="DELIVERED">已发货</option>
+			  <option value="RECEIVED">已收货</option>
+		  </select>
+	  </td>
 
-    <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
+  </tr>
+  <tr class="text-c">
+	  <th>下单时间:</th>
+	<td>
+		<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:118px;">
+		-
+		<input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:118px;">
+	</td>
+	  <th>买家:</th>
+	<td><input type="text" name="" id="searchCreateBy" placeholder="买家" style="width:250px" class="input-text"></td>
+	  <th>支付方式:</th>
+	  <td>
+		<select name="payWay" style="width:100px; margin:0 10px;" class="input-text" id="payWay">
+			<option  value="0" selected>支付方式</option>
+			<option value="NET">网上支付</option>
+			<option value="COD">货到付款</option>
+			<option value="BANKREMITTANCE">银行电汇</option>
+			<option value="POSTOFFICEREMITTANCE">邮局汇款</option>
+		</select>
+	</td>
+	  <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i>搜索</button></td>
   </tr>
 </table>
 
@@ -68,6 +82,7 @@
 						<th width="70">渠道</th>
 						<th width="88">买家</th>
 						<th width="88">总价</th>
+						<th width="88">支付方式</th>
 						<th width="80">下单时间</th>
 						<th width="80">订单状态</th>
 						<th width="110">操作</th>
@@ -109,8 +124,9 @@ $(function () {
 		"aoColumns": [
 		   { "mDataProp": "orderId" },
 		   { "mDataProp": "channelName" },
-		   { "mDataProp": "recipients" },
+		   { "mDataProp": "createBy" },
 		   { "mDataProp": "productTotalPrice" },
+		   { "mDataProp": "paymentWay" },
 		   { "mDataProp": "createTime" },
 		   { "mDataProp": null },
 		   { "mDataProp": null }
@@ -121,69 +137,32 @@ $(function () {
 		},
 		
 		"columnDefs" : [
+
 			{
-				"targets" : 1 ,
-				"render" : function(mDataProp, type, full) {
-					return '<a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>';
-				}
-			},
-			{
-				"targets" : 2 ,
-				"render" : function(mDataProp, type, full) {
-					var itemHtml = "";
-					for (var i = 0; i < mDataProp.items.length; i++) 
-						{
-						itemHtml = mDataProp.items[i].productName;
-						}
-					return '<a style="text-decoration:none" onClick="product_show(\''+itemHtml+'\',\'product-show.html\',\'10001\')" href="javascript:;">'+itemHtml+'</a>';
-				}
-			},
-			{
-				"targets" : 3 ,
-				"render" : function(mDataProp, type, full) {
-					var itemHtml = "";
-					for (var i = 0; i < mDataProp.items.length; i++) 
-						{
-						itemHtml = mDataProp.items[i].productPrice;
-						}
-					return itemHtml;
-					}
-			},
-			{
-				"targets" : 4 ,
-				"render" : function(mDataProp, type, full) {
-					var itemHtml = "";
-					for (var i = 0; i < mDataProp.items.length; i++) 
-						{
-						itemHtml = mDataProp.items[i].amount;
-						}
-					return itemHtml;
-				}
-			},
-			{
-				"targets" : 10 ,
+				"targets" : 6 ,
 				"render" : function(mDataProp, type, full) {
 					var itemHtml = mDataProp.stateValue;
 					if(itemHtml == '已取消' ){
 						return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
 					}
-					if(itemHtml == '待审核'){
-						return '<span class="outspan"><span class="label label-warning radius">'+itemHtml+'</span></span>';
-					}
+//					if(itemHtml == '待审核'){
+//						return '<span class="outspan"><span class="label label-warning radius">'+itemHtml+'</span></span>';
+//					}
 					return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>';
-					/* return itemHtml; */
 				 }
 			} ,
 			{
-				"targets" : 11 ,
+				"targets" : 7 ,
 				"orderable":false,
-				"aTargets":[11],
+				"aTargets":[7],
 				"render" : function(mDataProp, type, full) {
 					var itemHtml = mDataProp.stateValue;
 					if(itemHtml == '待审核' ){
 						return '<td class="td-manage">'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 						+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
+						+'<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+						+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 						+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
@@ -196,6 +175,8 @@ $(function () {
 					return '<td class="td-manage">'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 					+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
+					+'<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+					+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_deliver(\'发货\',\'${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="现在发货">'
 					+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
 					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
@@ -210,8 +191,35 @@ $(function () {
 });
 /*根据条件查询*/
 function searchOrder(){
-    var searchCondition = $("#searchCondition").val();
-    url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition/'+searchCondition+'.dhtml';
+	url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition.dhtml?'
+	var orderId = $("#searchOrderId").val();
+	var channelName = $("#searchChannelName").val();
+	var status = $("#searchStatus").val();
+	var datemin = $("#datemin").val();
+	var datemax = $("#datemax").val();
+	var createBy = $("#searchCreateBy").val();
+	var payWay = $("#payWay").val();
+	if(orderId != ""){
+		url = url+'orderId='+orderId+'&';
+	}
+	if(channelName != ""){
+		url = url + 'channelName='+channelName+'&';
+	}
+	if(status!="0"){
+		url = url + 'status='+status+'&';
+	}
+	if(datemin!=""){
+		url = url + 'datemin='+datemin+'&';
+	}
+	if(datemax!=""){
+		url = url + 'datemax='+datemax+'&';
+	}
+	if(createBy!=""){
+		url = url + 'createBy='+createBy+'&';
+	}
+	if(payWay!="0"){
+		url = url + 'payWay='+payWay
+	}
     targetTable.ajax.url(url).load();
 
 }

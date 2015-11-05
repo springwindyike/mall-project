@@ -2,10 +2,12 @@ package com.ishare.mall.manage.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailForUpdateDTO;
 import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.manage.annoation.CurrentManageUser;
+import com.ishare.mall.manage.form.SearchForm;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ import com.ishare.mall.manage.controller.base.BaseController;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -76,17 +79,6 @@ public class OrderController extends BaseController {
 
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 		orderDetailDTO.setOrderId(id);
-
-/*		ResponseEntity<Response> resultDTO = null;
-		try {
-			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GOTO_EDIT), orderDetailDTO, Response.class);
-		} catch (Exception e) {
-			log.debug("error");
-			e.printStackTrace();
-			return ManageViewConstant.Order.EDIT_ORDER;
-		}
-		orderDetailDTO = (OrderDetailDTO) resultDTO.getBody().getData();*/
-
 		ResponseEntity<Response<OrderDetailDTO>> resultDTO = null;
 		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
 		try{
@@ -332,28 +324,53 @@ public class OrderController extends BaseController {
 	
 	/**
 	 * 根据条件查询Order
-	 * @param searchCondition
-	 * @param model
 	 * @param request
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION,
+			method = RequestMethod.GET,
+			produces = {"application/json"})
 	@ResponseBody
-	public PageDTO findBySearchCondition(@PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
-
-		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-		orderDetailDTO.setOrderId(searchCondition);
+	public PageDTO findBySearchCondition(final HttpServletRequest request,SearchForm searchForm) throws Exception{
+		Map<String, Object> searchParams = Maps.newConcurrentMap();
+		boolean flag = true;
+		if (searchForm.getOrderId() != null){
+			searchParams.put("EQ_orderId",searchForm.getOrderId());
+			flag = false;
+		}
+		if (searchForm.getChannelName() != null){
+			searchParams.put("EQ_channel.name",searchForm.getChannelName());
+			flag = false;
+		}
+		if (searchForm.getCreateBy() != null){
+			searchParams.put("EQ_createBy.account",searchForm.getCreateBy());
+			flag = false;
+		}
+		if (searchForm.getDatemin() != null){
+			searchParams.put("GTE_createTime",searchForm.getDatemin());
+			flag = false;
+		}
+		if (searchForm.getDatemax() != null){
+			searchParams.put("LTE_createTime",searchForm.getDatemax());
+			flag = false;
+		}
+		if (searchForm.getPayWay() != null){
+			searchParams.put("EQ_paymentWay",searchForm.getPayWay());
+			flag = false;
+		}
+		if (searchForm.getStatus() != null){
+			searchParams.put("EQ_state",searchForm.getStatus());
+		}
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 
 		int currentPage = displayStart/displayLength+1;
-		orderDetailDTO.setLimit(displayLength);
-		orderDetailDTO.setOffset(currentPage);
+		searchParams.put("limit", displayLength);
+		searchParams.put("offset",currentPage);
 		ResponseEntity<Response<PageDTO<OrderDetailDTO>>> resultDTO = null;
-		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
-
-		if(searchCondition != null && !"".equals(searchCondition)){
+		HttpEntity<Map> requestDTO = new HttpEntity<Map>(searchParams);
+		if(!flag){
 			try{
 				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION),
 						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>() {});
@@ -375,7 +392,6 @@ public class OrderController extends BaseController {
 		if(response != null) {
 			if(response.isSuccess()){
 				PageDTO pageDTO = (PageDTO)response.getData();
-				model.addAttribute("pageDTO",pageDTO);
 				return pageDTO;
 			}else {
 				throw new Exception(response.getMessage());
@@ -383,5 +399,30 @@ public class OrderController extends BaseController {
 		}else{
 			throw new Exception("get response error");
 		}
+	}
+
+	/**
+	 * 获取订单详细
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/getOrderDetail/{id}",method = RequestMethod.GET)
+	public String getOrderDetail(@NotEmpty @PathVariable("id") String id,Model model) throws Exception{
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		orderDetailDTO.setOrderId(id);
+		ResponseEntity<Response<OrderDetailDTO>> responseEntity = null;
+		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
+		try {
+			responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GET_ORDER_DETAIL),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<OrderDetailDTO>>(){});
+		}catch (Exception e){
+			log.error("error",e.getStackTrace());
+		}
+		Response<OrderDetailDTO> response = responseEntity.getBody();
+		if (response == null || !response.isSuccess()){
+			throw new Exception("get response error");
+		}
+		model.addAttribute("orderDetailDTO",response.getData());
+		return ManageViewConstant.Order.ORDER_DETAIL;
 	}
 }

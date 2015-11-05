@@ -121,5 +121,5 @@ public class OrderItemDetailDTO implements BaseObject {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-    
+	
 }
