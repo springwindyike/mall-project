@@ -101,8 +101,9 @@ public class CategoryController extends BaseController {
     	} catch (RestClientException e) {
 			e.printStackTrace();
 		}
-		String returnExchange =	(String) resultDTO.getBody().getData();
-  return returnExchange;
-		
+    	if(resultDTO.getBody().isSuccess()==true){
+    		   return "redirect:/category/list.dhtml";
+    	}
+		return null;
     }
 }

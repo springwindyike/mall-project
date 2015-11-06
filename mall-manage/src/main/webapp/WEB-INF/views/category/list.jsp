@@ -54,11 +54,8 @@ var setting = {
 	},
 	callback: {
 		beforeClick: function(treeId, treeNode) {
-			alert(treeNode.id);
 			window.location='add.dhtml?level='+treeNode.level+'&id='+treeNode.id+'&code='+treeNode.code;
-			//var zTree = $.fn.zTree.getZTreeObj("tree");
 			if (treeNode.isParent) {
-			//	zTree.expandNode(treeNode);
 				return false;
 			} else {
 				demoIframe.attr("src",treeNode.file + ".html");
