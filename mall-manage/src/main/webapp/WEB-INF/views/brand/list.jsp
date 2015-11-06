@@ -135,32 +135,22 @@ $(function () {
 });
 
 /*品牌-删除*/
-/* function brand_del(url) {
+ function brand_del(url) {
     if(confirm("确认要删除吗？")){
         $.post(
                 url,
                 function(data) {
-                    alert("删除成功");
-                    window.location.reload();
+                	if(data.success==false){
+                		 alert(data.message);
+                	}else{
+                		   alert("删除成功");
+                           window.location.reload();
+                	}
                 }
         )
     }
-} */
+} 
 
-function brand_del(url) {
-	$.ajax({
-        cache: true,
-        type: "POST",
-        url:url,
-        success:function(data, status){ 
-        	alert("删除成功");
-        	 window.location.reload();
-        },
-        error:function(data, status, e){ 
-        	alert("删除失败");
-        }
-	});
-}
 /*品牌-编辑*/
 function brand_edit(title, url, id, w, h) {
     layer_show(title, url, w, h);

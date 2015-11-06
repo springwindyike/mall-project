@@ -23,7 +23,6 @@ import com.ishare.mall.common.base.exception.brand.BrandServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.ProductTypeBrand;
-import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.information.BrandProductTypeService;
 import com.ishare.mall.core.service.information.BrandService;
@@ -206,6 +205,8 @@ public class BrandResource {
         		brandService.delBrand(brandDTO.getId());
         	} else {
         		response.setSuccess(false);
+        	//	response.setStatus(HttpStatus.FORBIDDEN);
+        		response.setMessage("该品牌下包含商品，请删除相关商品后在进行品牌删除");
         	}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
