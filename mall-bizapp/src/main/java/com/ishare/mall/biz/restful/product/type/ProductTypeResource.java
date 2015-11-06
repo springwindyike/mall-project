@@ -303,12 +303,17 @@ public class ProductTypeResource {
         ProductType productType = new ProductType();
         int temp =0;
         List<	ProductType> allChild = productTypeService.findByParentId(productTypeDTO.getParentId());
-        for(ProductType pt:allChild){
-        	int begin = Integer.parseInt(pt.getCode());
-         if(temp<begin) {
-        	 temp = begin;
-         }
-        }productTypeDTO.setCode(String.valueOf(temp+1));
+        if (allChild!=null && !allChild.isEmpty()){
+            for(ProductType pt:allChild){
+            	int begin = Integer.parseInt(pt.getCode());
+             if(temp<begin) {
+            	 temp = begin;
+             }
+            }  productTypeDTO.setCode(String.valueOf(temp+1));
+        }else {
+        	productTypeDTO.setCode(productTypeDTO.getCode()+"001");
+        }
+      
         BeanUtils.copyProperties(productTypeDTO, productType);
         ProductType parent = productTypeService.findOne(productTypeDTO.getParentId());
        

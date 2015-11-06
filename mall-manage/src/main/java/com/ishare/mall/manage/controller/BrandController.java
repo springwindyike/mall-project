@@ -141,7 +141,7 @@ public class BrandController extends BaseController {
    */
 	@ResponseBody
 	@RequestMapping(value =  ManageURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID)
-	public String delete(@NotEmpty @PathVariable("id") Integer id,@CurrentManageUser CurrentManageUserDTO CurrentManageUserDTO) throws Exception{
+	public Response delete(@NotEmpty @PathVariable("id") Integer id,@CurrentManageUser CurrentManageUserDTO CurrentManageUserDTO) throws Exception{
 		BrandDTO brandDTO = new BrandDTO();
 	  brandDTO.setId(id);
 		ResponseEntity<Response<BrandDTO>> resultDTO = null;
@@ -157,10 +157,11 @@ public class BrandController extends BaseController {
 		if(response == null){
 			throw new Exception("get response error");
 		}
-		if (response != null && !response.isSuccess()){
+	/*	if (response != null && !response.isSuccess()){
 			throw new Exception(response.getMessage());
-		}
-		return ManageViewConstant.Brand.BRAND_UPDATE_SUCCESS;
+		}*/
+	/*	return ManageViewConstant.Brand.BRAND_UPDATE_SUCCESS;*/
+		return response;
 	}
 	
 
