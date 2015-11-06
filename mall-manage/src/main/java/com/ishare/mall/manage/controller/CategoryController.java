@@ -86,7 +86,7 @@ public class CategoryController extends BaseController {
     public String saveCategory(CategoryForm categoryForm) {
     	ResponseEntity<Response> resultDTO = null;
     	ProductTypeDTO productTypeDTO = new ProductTypeDTO();
-    	//productTypeDTO.setCode(categoryForm.getCode());
+    	productTypeDTO.setCode(categoryForm.getCode());
     	productTypeDTO.setLevel(categoryForm.getLevel()+2);
     	productTypeDTO.setNote(categoryForm.getNote());
     	productTypeDTO.setParentId(categoryForm.getParentId());
