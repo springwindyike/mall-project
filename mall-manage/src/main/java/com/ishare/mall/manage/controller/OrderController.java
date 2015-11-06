@@ -379,6 +379,7 @@ public class OrderController extends BaseController {
 		}
 		if (searchForm.getStatus() != null){
 			searchParams.put("EQ_state",searchForm.getStatus());
+			flag = false;
 		}
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));

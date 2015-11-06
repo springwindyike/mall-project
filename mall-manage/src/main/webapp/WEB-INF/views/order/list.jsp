@@ -111,6 +111,9 @@ var deliverStatus = $("#deliverStatus").val();
 if(deliverStatus=="true"){
 	alert("发货成功");
 }
+$(function(){
+
+});
 $(function () {
 	targetTable = $('.table-sort').DataTable({
 		"oLanguage": {
@@ -164,37 +167,33 @@ $(function () {
 				"aTargets":[7],
 				"render" : function(mDataProp, type, full) {
 					var itemHtml = mDataProp.stateValue;
-					if(itemHtml == '待审核' ){
-						return '<td class="td-manage">'
-						+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
+					var str = '<td class="td-manage">';
+					if(itemHtml == '已取消'){
+						str = str + '<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+								+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'+'</td>';
+					}
+					if(itemHtml == "待收货" || itemHtml == "已发货" || itemHtml == "已收货"){
+						str = str + '<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+								+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'+
+								'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
+								+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'+'</td>';
+					}
+
+					if(itemHtml =="等待发货" || itemHtml =="等待付款"){
+						str = str +'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
 						+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
 						+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" href="${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml" title="现在发货">'
 						+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
-						+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
-						+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
-						+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'
-						+'<a style="text-decoration:none" class="ml-5" onClick="order_verify(this,\'10001\')" title="通过审核">'
-						+'<i class="Hui-iconfont">&#xe6e1;</i></a></td>';
+						+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'	+'</td>';
 					}
-					return '<td class="td-manage">'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
-					+'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
-					+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" href="${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml" title="现在发货">'
-					+'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
-					+'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'
-					+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
-					+'<i class="Hui-iconfont">&#xe608;</i></a></td>';
+					return str;
 				}
 			}
 		]
 		});
-	
 });
 /*根据条件查询*/
 function searchOrder(){
