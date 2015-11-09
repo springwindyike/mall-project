@@ -189,6 +189,11 @@ $(function () {
 						+'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
 						+'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'	+'</td>';
 					}
+
+					if(itemHtml =="待审核"){
+						str = str +'<a style="text-decoration:none" class="ml-5" onClick="order_verify(\'${pageContext.request.contextPath}/order/confirmOrder/'+mDataProp.orderId+'.dhtml\')" href="javascript:;" title="审核订单">'
+								+'<i class="Hui-iconfont">&#xe615;</i></a>&nbsp;&nbsp;'
+					}
 					return str;
 				}
 			}
@@ -298,12 +303,16 @@ function order_cancel(title,url,id){
 } */
 
 /*审核-通过*/
-function order_verify(obj,id){
-	layer.confirm('确认要审核通过吗？',function(index){
-		$(obj).parents("tr").find(".outspan").html('<span class="label label-success radius">等待付款</span>');
-		$(obj).remove();
-		layer.msg('等待付款!',{icon: 6,time:1000});
-	});
+function order_verify(url){
+	if(confirm("确认审核通过？")){
+		$.post(
+				url,
+				function(data) {
+					alert("审核通过");
+					window.location.reload();
+				}
+		)
+	}
 }
 
 

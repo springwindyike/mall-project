@@ -122,6 +122,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_FIND_BY_ACCOUNT_AND_APP_ID = "/member/list";
 
         String REQUEST_MAPPING_GET_ORDER_DETAIL = "/getOrderDetail";
+
+        String REQUEST_MAPPING_CONFIRM_ORDER = "/confirmOrder";
     }
     //支付
     interface AliPay {
