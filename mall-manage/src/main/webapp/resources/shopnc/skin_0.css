@@ -527,7 +527,7 @@ table.search { margin: 12px 0 6px 4px;}
 .power-onoff a:hover.disabled {background-position: -160px -580px;}
 .power-onoff a:active.disabled {background-position: -200px -580px;}
 
-a.btn { font-size: 14px; color: #555; font-weight: 700; line-height:18px; background: transparent url(../images/sky/bg_position.gif) no-repeat scroll 0 -280px; display: inline-block; height: 38px; padding-left: 15px; margin-right:6px; cursor: pointer;}
+a.btn { font-size: 14px; color: #555; font-weight: 700; line-height:18px; background: transparent url(../images/sky/bg_position.gif) no-repeat scroll 0 -280px; display: inline-block; height: 38px; padding-left: 14px; margin-right:6px; cursor: pointer;}
 a.btn:hover { background-position: 0 -318px;}
 a.btn:active { background-position: 0 -356px;}
 a.btn span { background: #FFF url(../images/sky/bg_position.gif) no-repeat scroll 100% -280px; display: inline-block; height: 18px; padding: 10px 15px 10px 0;}
