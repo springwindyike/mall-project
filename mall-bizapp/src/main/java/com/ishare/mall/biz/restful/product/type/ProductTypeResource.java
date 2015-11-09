@@ -2,7 +2,6 @@ package com.ishare.mall.biz.restful.product.type;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -14,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
+import com.ishare.mall.common.base.exception.brand.BrandServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.ProductTypeServiceException;
 import com.ishare.mall.core.model.product.ProductType;
@@ -362,4 +360,28 @@ public class ProductTypeResource {
 		}
         return response;
    }
+    
+    /**
+     * 修改分类信息
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_UPDATE_BY_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response update(@RequestBody ProductTypeDTO productTypeDTO){
+        Response response = new Response();
+        try {
+        	ProductType productType = productTypeService.findOne(productTypeDTO.getId());
+            if (productType != null){
+            	productType.setName(productTypeDTO.getTypeName());
+            	productTypeService.saveProductType(productType);
+            }
+        }catch (BrandServiceException e){
+            log.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
+        }
+        return response;
+    }
 }

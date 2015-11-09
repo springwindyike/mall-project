@@ -67,11 +67,34 @@ var setting = {
 				return true;
 			}
 		},  beforeRemove: beforeRemove//用于捕获节点被删除之前的事件回调函数
+		,  beforeRename: beforeRename
 	},beforeDrag: beforeDrag
 };
 
 function beforeDrag(treeId, treeNodes) {
 	return false;
+};
+//修改节点信息
+function beforeRename(treeId, treeNode, newName) {
+    if (newName.length == 0) {
+        alert("节点名称不能为空.");
+        return false;
+    }
+    var treeInfo = treeNode.id;
+    $.ajax({
+        url:  "${pageContext.request.contextPath}/category/update/"+treeInfo+"/"+newName+".dhtml",
+        type: "POST",
+        async: false,
+        success: function (res) {
+            if (res.success == true) {
+                alert('修改成功!');
+                window.location.reload();
+            } else {
+                alert('修改失败!');
+                window.location.reload();
+            }
+        }
+    });
 };
 //删除节点信息
 function beforeRemove(treeId, treeNode) {
@@ -84,7 +107,7 @@ function beforeRemove(treeId, treeNode) {
             type: "POST",
             async: false,
             success: function (res) {
-                if (res = "success") {
+                if (res.success == true) {
                     alert('删除成功!');
                     window.location.reload();
                 } else {
