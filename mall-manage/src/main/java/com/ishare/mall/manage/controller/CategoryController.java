@@ -2,6 +2,7 @@ package com.ishare.mall.manage.controller;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -106,4 +108,32 @@ public class CategoryController extends BaseController {
     	}
 		return null;
     }
+    
+    /**
+     * 根据id删除分类
+     * @param 
+     * @param 
+     * @return
+     * @throws Exception
+     */
+  	@ResponseBody
+  	@RequestMapping(value =  ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_DEL_BY_ID)
+  	public Response delete(@NotEmpty @PathVariable("id") Integer id) throws Exception{
+  		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+  		productTypeDTO.setId(id);
+  		ResponseEntity<Response<ProductTypeDTO>> resultDTO = null;
+  		HttpEntity<ProductTypeDTO> requestDTO = new HttpEntity<ProductTypeDTO>(productTypeDTO);
+  		try{
+  			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_DEL_BY_ID),
+  					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<ProductTypeDTO>>() {});
+  		}catch (Exception e){
+  			log.error("call bizp app "+APPURIConstant.ProductType.REQUEST_MAPPING+APPURIConstant.ProductType.REQUEST_MAPPING_DEL_BY_ID+"error");
+  			throw new Exception(e.getMessage());
+  		}
+  		Response response = resultDTO.getBody();
+  		if(response == null){
+  			throw new Exception("get response error");
+  		}
+  		return response;
+  	}
 }

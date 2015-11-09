@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
 import com.ishare.mall.common.base.general.Response;
@@ -334,4 +335,31 @@ public class ProductTypeResource {
     			 Response response = new Response();
     			return response;
 }
+    
+    /**
+     * 根据id删除品牌
+     * @param memberDTO
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.ProductType.REQUEST_MAPPING_DEL_BY_ID, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response delete(@RequestBody ProductTypeDTO productTypeDTO){
+   	Response response = new Response();
+        try {
+        	if (productTypeService.findOne(productTypeDTO.getId())!= null){
+        		productTypeService.delProductType(productTypeDTO.getId());;
+        	} else {
+        		response.setSuccess(false);
+        		response.setMessage("删除分类失败");
+        	}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
+        return response;
+   }
 }

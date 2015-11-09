@@ -32,4 +32,9 @@ public abstract interface ProductTypeService {
      * @param productType
      */
        void saveProductType(ProductType productType) throws ProductTypeServiceException;
+       /**
+        * 根据产品id删除分类
+        * @param id
+        */
+       public void delProductType(Integer id) throws ProductTypeServiceException;
 }

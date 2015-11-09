@@ -66,12 +66,36 @@ var setting = {
 				demoIframe.attr("src",treeNode.file + ".html");
 				return true;
 			}
-		}
+		},  beforeRemove: beforeRemove//用于捕获节点被删除之前的事件回调函数
 	},beforeDrag: beforeDrag
 };
 
 function beforeDrag(treeId, treeNodes) {
 	return false;
+};
+//删除节点信息
+function beforeRemove(treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    zTree.selectNode(treeNode);
+    if (confirm("确认删除 节点 -- " + treeNode.name + " 吗？")) {
+        var treeInfo = treeNode.id;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/category/del/"+treeInfo+".dhtml",
+            type: "POST",
+            async: false,
+            success: function (res) {
+                if (res = "success") {
+                    alert('删除成功!');
+                    window.location.reload();
+                } else {
+                    alert('删除失败!');
+                    window.location.reload();
+                }
+            }
+        });
+    } else {
+        window.location.reload();
+    }
 };
 function setEdit() {
 	var zTree = $.fn.zTree.getZTreeObj("treeDemo"),

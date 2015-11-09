@@ -28,6 +28,7 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING_ALL_TYPE ="/allType";
 		String REQUEST_MAPPING_CATEGORY_ADD = "/add";
 		String REQUEST_MAPPING_CATEGORY_ADD_TEST = "/addTest";
+		String REQUEST_MAPPING_CATEGORY_DEL_BY_ID="/del/{id}";
 	}
 
 	interface Express {
