@@ -35,6 +35,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/zTree/v3/js/jquery.ztree.excheck-3.5.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/zTree/v3/js/jquery.ztree.exedit-3.5.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">
@@ -52,29 +54,98 @@ var setting = {
 			rootPId: ""
 		}
 	},
+	edit: {
+		enable: true
+	},
 	callback: {
 		beforeClick: function(treeId, treeNode) {
-			alert(treeNode.id);
 			window.location='add.dhtml?level='+treeNode.level+'&id='+treeNode.id+'&code='+treeNode.code;
-			//var zTree = $.fn.zTree.getZTreeObj("tree");
 			if (treeNode.isParent) {
-			//	zTree.expandNode(treeNode);
 				return false;
 			} else {
 				demoIframe.attr("src",treeNode.file + ".html");
 				return true;
 			}
-		}
-	}
+		},  beforeRemove: beforeRemove//用于捕获节点被删除之前的事件回调函数
+		,  beforeRename: beforeRename
+	},beforeDrag: beforeDrag
+};
+
+function beforeDrag(treeId, treeNodes) {
+	return false;
+};
+//修改节点信息
+function beforeRename(treeId, treeNode, newName) {
+    if (newName.length == 0) {
+        alert("节点名称不能为空.");
+        return false;
+    }
+    var treeInfo = treeNode.id;
+    $.ajax({
+        url:  "${pageContext.request.contextPath}/category/update/"+treeInfo+"/"+newName+".dhtml",
+        type: "POST",
+        async: false,
+        success: function (res) {
+            if (res.success == true) {
+                alert('修改成功!');
+                window.location.reload();
+            } else {
+                alert('修改失败!');
+                window.location.reload();
+            }
+        }
+    });
+};
+//删除节点信息
+function beforeRemove(treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    zTree.selectNode(treeNode);
+    if (confirm("确认删除 节点 -- " + treeNode.name + " 吗？")) {
+        var treeInfo = treeNode.id;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/category/del/"+treeInfo+".dhtml",
+            type: "POST",
+            async: false,
+            success: function (res) {
+                if (res.success == true) {
+                    alert('删除成功!');
+                    window.location.reload();
+                } else {
+                    alert('删除失败!');
+                    window.location.reload();
+                }
+            }
+        });
+    } else {
+        window.location.reload();
+    }
+};
+function setEdit() {
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+	remove = $("#remove").attr("checked"),
+	rename = $("#rename").attr("checked"),
+	removeTitle = $.trim($("#removeTitle").get(0).value),
+	renameTitle = $.trim($("#renameTitle").get(0).value);
+	zTree.setting.edit.showRemoveBtn = remove;
+	zTree.setting.edit.showRenameBtn = rename;
+	zTree.setting.edit.removeTitle = removeTitle;
+	zTree.setting.edit.renameTitle = renameTitle;
+	showCode2(['setting.edit.showRemoveBtn = ' + remove, 'setting.edit.showRenameBtn = ' + rename,
+		'setting.edit.removeTitle = "' + removeTitle +'"', 'setting.edit.renameTitle = "' + renameTitle + '"']);
 };
 var code;
-		
 function showCode(str) {
 	if (!code) code = $("#code");
 	code.empty();
 	code.append("<li>"+str+"</li>");
 }
-		
+function showCode2(str) {
+	var code = $("#code");
+	code.empty();
+	for (var i=0, l=str.length; i<l; i++) {
+		code.append("<li>"+str[i]+"</li>");
+	}
+}
 $(document).ready(function(){
 	$.ajax({
         type: "get",
@@ -87,6 +158,13 @@ $(document).ready(function(){
     	demoIframe = $("#testIframe");
     	demoIframe.bind("load", loadReady);
     	var zTree = $.fn.zTree.getZTreeObj("tree");
+    	setEdit();
+		$("#remove").bind("change", setEdit);
+		$("#rename").bind("change", setEdit);
+		$("#removeTitle").bind("propertychange", setEdit)
+		.bind("input", setEdit);
+		$("#renameTitle").bind("propertychange", setEdit)
+		.bind("input", setEdit);
                        }
               });
 });

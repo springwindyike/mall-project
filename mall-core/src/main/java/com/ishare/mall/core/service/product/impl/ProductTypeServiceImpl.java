@@ -115,4 +115,14 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		    if (allType == null || allType.size() == 0) return null;
 		    return allType;
 	}
+
+	@Override
+	public void delProductType(Integer id) throws ProductTypeServiceException {
+		try {
+			productTypeRepository.delete(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("产品分类失败");
+		}
+	}
 }

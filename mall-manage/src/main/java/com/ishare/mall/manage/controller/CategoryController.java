@@ -2,8 +2,10 @@ package com.ishare.mall.manage.controller;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,10 +23,12 @@ import org.springframework.web.client.RestTemplate;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
 import com.ishare.mall.common.base.constant.view.ManageViewConstant;
+import com.ishare.mall.common.base.dto.product.BrandDTO;
 import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
 import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.controller.base.BaseController;
+import com.ishare.mall.manage.form.BrandForm;
 import com.ishare.mall.manage.form.CategoryForm;
 
 /**
@@ -86,7 +91,7 @@ public class CategoryController extends BaseController {
     public String saveCategory(CategoryForm categoryForm) {
     	ResponseEntity<Response> resultDTO = null;
     	ProductTypeDTO productTypeDTO = new ProductTypeDTO();
-    	//productTypeDTO.setCode(categoryForm.getCode());
+    	productTypeDTO.setCode(categoryForm.getCode());
     	productTypeDTO.setLevel(categoryForm.getLevel()+2);
     	productTypeDTO.setNote(categoryForm.getNote());
     	productTypeDTO.setParentId(categoryForm.getParentId());
@@ -101,8 +106,69 @@ public class CategoryController extends BaseController {
     	} catch (RestClientException e) {
 			e.printStackTrace();
 		}
-		String returnExchange =	(String) resultDTO.getBody().getData();
-  return returnExchange;
-		
+    	if(resultDTO.getBody().isSuccess()==true){
+    		   return "redirect:/category/list.dhtml";
+    	}
+		return null;
     }
+    
+    /**
+     * 根据id删除分类
+     * @param 
+     * @param 
+     * @return
+     * @throws Exception
+     */
+  	@ResponseBody
+  	@RequestMapping(value =  ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_DEL_BY_ID)
+  	public Response delete(@NotEmpty @PathVariable("id") Integer id) throws Exception{
+  		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+  		productTypeDTO.setId(id);
+  		ResponseEntity<Response<ProductTypeDTO>> resultDTO = null;
+  		HttpEntity<ProductTypeDTO> requestDTO = new HttpEntity<ProductTypeDTO>(productTypeDTO);
+  		try{
+  			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_DEL_BY_ID),
+  					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<ProductTypeDTO>>() {});
+  		}catch (Exception e){
+  			log.error("call bizp app "+APPURIConstant.ProductType.REQUEST_MAPPING+APPURIConstant.ProductType.REQUEST_MAPPING_DEL_BY_ID+"error");
+  			throw new Exception(e.getMessage());
+  		}
+  		Response response = resultDTO.getBody();
+  		if(response == null){
+  			throw new Exception("get response error");
+  		}
+  		return response;
+  	}
+  	/**
+  	 * 编辑分类
+  	 * @param 
+  	 * @return
+  	 * @throws Exception
+  	 */
+	@ResponseBody
+	@RequestMapping(value = ManageURIConstant.Category.REQUEST_MAPPING_CATEGORY_UPDATE)
+	public Response update(@NotEmpty @PathVariable("id") Integer id, @NotEmpty @PathVariable("name") String name) throws Exception{
+		ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+		productTypeDTO.setId(id);
+		productTypeDTO.setTypeName(name);
+		ResponseEntity<Response<ProductTypeDTO>> resultEntity = null;
+		HttpEntity<ProductTypeDTO> requestDTO = new HttpEntity<ProductTypeDTO>(productTypeDTO);
+		try{
+			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.ProductType.REQUEST_MAPPING, APPURIConstant.ProductType.REQUEST_MAPPING_UPDATE_BY_ID),
+  					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<ProductTypeDTO>>() {});
+  			
+		}catch (Exception e){
+			e.printStackTrace();
+			log.error("call bizp app "+APPURIConstant.ProductType.REQUEST_MAPPING+ APPURIConstant.ProductType.REQUEST_MAPPING_UPDATE_BY_ID+"error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultEntity.getBody();
+		if(response == null){
+			throw new Exception("get response error");
+		}
+		if(response != null && !response.isSuccess()){
+			throw new Exception(response.getMessage());
+		}
+	return response;
+	}
 }
