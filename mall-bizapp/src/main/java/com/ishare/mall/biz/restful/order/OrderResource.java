@@ -658,11 +658,11 @@ public class OrderResource {
 		Response response = new Response();
 		Order order = orderService.findOne((String)map.get("id"));
 		order.setState(OrderState.WAIT_DELIVER);
-		ManageUser updateUser = manageUserService.findByUsername((String)map.get("account"));
+		ManageUser updateUser = manageUserService.findByUsername((String) map.get("account"));
 		order.setUpdateTime(new Date());
 		String logStr = "审核通过。";
 		OrderActionLog orderActionLog = new OrderActionLog();
-		orderActionLog.setOrderActionLogType(OrderActionLogType.DELIVER);
+		orderActionLog.setOrderActionLogType(OrderActionLogType.CONFIRM);
 		orderActionLog.setNote(logStr);
 		orderActionLog.setOrder(order);
 		orderActionLog.setActionById(updateUser.getId().toString());

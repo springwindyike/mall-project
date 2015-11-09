@@ -48,6 +48,7 @@
 			  <option value="WAIT_DELIVER">等待发货</option>
 			  <option value="DELIVERED">已发货</option>
 			  <option value="RECEIVED">已收货</option>
+			  <option value="WAIT_RECEIVED">待收货</option>
 		  </select>
 	  </td>
 
