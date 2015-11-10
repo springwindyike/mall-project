@@ -80,11 +80,15 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">
+var targetTable;
 var url = "${pageContext.request.contextPath}/product/findAll.dhtml";
 $(function () {
 	 targetTable = $('.table-sort').DataTable({
-	"bStateSave": true,//状态保存
-
+			"oLanguage": {
+				"sInfoEmpty": "没有数据",
+				"sZeroRecords": "没有数据",
+				"sEmptyTable":"没有数据"
+			},
 	   "bProcessing": true,
        "bServerSide": true,
        "bStateSave": false,

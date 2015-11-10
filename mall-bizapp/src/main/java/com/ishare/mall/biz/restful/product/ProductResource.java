@@ -355,26 +355,32 @@ public class ProductResource {
         Page<Product> result;
 		try {
 			result = productService.findAll(pageRequest);
+	        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
+	        if(result != null && result.getContent() != null && result.getContent().size()>0){
+	            List<Product> listProduct = result.getContent();
+	         for (Product product:listProduct){
+				 ProductDTO productDetailDTO = new ProductDTO();
+	            BeanUtils.copyProperties(product, productDetailDTO);
+	            listProductList.add(productDetailDTO);
+	            pageDTO.setContent(listProductList);
+	            pageDTO.setTotalPages(result.getTotalPages());
+	            pageDTO.setITotalDisplayRecords(result.getTotalElements());
+	            pageDTO.setITotalRecords(result.getTotalElements());
+	            response.setData(pageDTO);
+	        }
+	    }else {
+			pageDTO.setContent(listProductList);
+			pageDTO.setTotalPages(0);
+			pageDTO.setITotalDisplayRecords(0L);
+			pageDTO.setITotalRecords(0L);
+			response.setData(pageDTO);
+		}
 		} catch (ProductServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
 			response.setSuccess(false);
 			return response;
 		}
-        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Product> listProduct = result.getContent();
-         for (Product product:listProduct){
-			 ProductDTO productDetailDTO = new ProductDTO();
-            BeanUtils.copyProperties(product, productDetailDTO);
-            listProductList.add(productDetailDTO);
-            pageDTO.setContent(listProductList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setITotalDisplayRecords(result.getTotalElements());
-            pageDTO.setITotalRecords(result.getTotalElements());
-            response.setData(pageDTO);
-        }
-    }
         return response;
     }
     /**
@@ -422,7 +428,13 @@ public class ProductResource {
             pageDTO.setITotalDisplayRecords(result.getTotalElements());
             pageDTO.setITotalRecords(result.getTotalElements());
             response.setData(pageDTO);
-        }
+        }else {
+			pageDTO.setContent(listProductList);
+			pageDTO.setTotalPages(0);
+			pageDTO.setITotalDisplayRecords(0L);
+			pageDTO.setITotalRecords(0L);
+			response.setData(pageDTO);
+		}
         return response;
     }
 	/**
