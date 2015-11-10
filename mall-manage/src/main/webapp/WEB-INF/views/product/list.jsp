@@ -23,22 +23,23 @@
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
   <tr>
-    <td><select name="上架状态" class="input-text" id="上架状态"  style="width:100px; ">
-    <option selected>全部商品</option>
-              <option selected>已上架</option>
+    <td><select name="上架状态" class="input-text" id="上架状态"  style="width:100px; " id="searchStatus">
+   						  <option selected>全部商品</option>
+              <option >已上架</option>
               <option>已下架</option>
-          </select></td>
-                <td><select name="" style="width:100px; margin:0 10px; " class="input-text">
-              <option>全部分类</option>
-              <option>手机</option>
-              <option>相机</option>
-            </select></td>
-            <td><select name="" style="width:100px;margin:0 10px; " class="input-text">
+     </select></td>
+   <td><select name="" style="width:100px; margin:0 10px; " class="input-text" id ="searchSort">
+             <option>全部分类</option>
+             <option>手机</option>
+             <option>相机</option>
+   </select></td>
+            <td><select name="" style="width:100px;margin:0 10px; " class="input-text" id ="searchBrand">
               <option>全部品牌</option>
               <option>享买</option>
               <option>锋果</option>
             </select></td>
-    <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、商品货号" style="width:250px" class="input-text"></td>
+    <td><input type="text" name="" id="searchProductId" placeholder=" 请输入商品货号" style="width:150px" class="input-text"></td>
+     <td><input type="text" name="" id="searchProductName" placeholder=" 请输入商品名称" style="width:150px" class="input-text"></td>
 
     <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchProduct();"><i class="Hui-iconfont">&#xe665;</i> 搜产品</button></td>
   </tr>
@@ -148,12 +149,48 @@ $(function () {
 });
 });
    /*根据条件查询*/
-   function searchProduct(){
+/*    function searchProduct(){
        var searchCondition = $("#searchCondition").val();
        url = '${pageContext.request.contextPath}'+'/product/findBySearchCondition/'+searchCondition+'.dhtml';
        targetTable.ajax.url(url).load();
 
+   } */
+   /*根据条件查询*/
+   function searchProduct(){
+   	url = '${pageContext.request.contextPath}'+'/product/findBySearchCondition.dhtml?'
+   	var status = $("#searchStatus").val();
+   	var name = $("#searchProductName").val();
+   	var id = $("#searchProductId").val();
+   	var brandName = $("#searchBrand").val();
+   	var sort = $("#searchSort").val();
+   	if(status != ""){
+   		url = url+'status='+status+'&';
+   	}
+   	if(name != ""){
+   		url = url + 'name='+name+'&';
+   	}
+   	if(id!="0"){
+   		url = url + 'id='+id+'&';
+   	}
+   	if(brandName!=""){
+   		url = url + 'brandName='+brandName+'&';
+   	}
+   	if(sort!=""){
+   		url = url + 'sort='+sort+'&';
+   	}
+       targetTable.ajax.url(url).load();
+
    }
+   	
+   	$('.table-sort tbody').on('click', 'tr', function () {
+   		if ($(this).hasClass('selected')) {
+   			$(this).removeClass('selected');
+   		}
+   		else {
+   			$('table tr.selected').removeClass('selected');
+   			$(this).addClass('selected');
+   		}
+   	});
 /*图片-添加*/
 function product_add(title,url){
 	var index = layer.open({

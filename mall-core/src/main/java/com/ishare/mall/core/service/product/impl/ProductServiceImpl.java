@@ -18,6 +18,7 @@ import com.ishare.mall.common.base.dto.product.FetchProductDTO;
 import com.ishare.mall.common.base.enumeration.ValueType;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.model.order.Order;
 import com.ishare.mall.core.model.product.Attribute;
 import com.ishare.mall.core.model.product.Fetch;
 import com.ishare.mall.core.model.product.Product;
@@ -251,16 +252,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 
-	@Override
-	public Page<Product> findBycondition(Integer productId, Integer channelId,
-			PageRequest pageRequest) throws ProductServiceException {
-		try {
-			return productRepository.findBycondition(productId, channelId, pageRequest);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			throw new OrderServiceException("搜索产品失败");
-		}
-	}
+
 
 	@Override
 	public boolean checkStore(Integer id) {
@@ -305,4 +297,18 @@ public class ProductServiceImpl implements ProductService {
 	    if (products == null || products.size() == 0) return null;
 	    return products;
 		}
+
+	@Override
+	public Page<Product> findBycondition(Map<String, Object> searchParams,
+			PageRequest pageRequest) throws ProductServiceException {
+		try {
+			Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+			Specification<Product> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Product.class);
+
+			return productRepository.findAll(spec,pageRequest);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("搜索产品失败");
+		}
+	}
 }

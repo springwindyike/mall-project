@@ -84,7 +84,7 @@ public abstract interface ProductService {
      * @return
      * @throws ProductServiceException
      */
-    Page<Product> findBycondition(Integer productId, Integer channelId, PageRequest pageRequest) throws ProductServiceException;
+    Page<Product> findBycondition(Map<String, Object> searchParams, PageRequest pageRequest) throws ProductServiceException;
     
     /**
      *  根据条件查询产品
