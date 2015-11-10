@@ -304,34 +304,43 @@ public class ProductResource {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
         Integer channelId = productDTO.getChannelId();
         Page<Product> result;
+        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
 		try {
 			result = productService.findByChannelId(channelId, pageRequest);
+			if(result != null && result.getContent() != null && result.getContent().size()>0){
+			        if(result != null && result.getContent() != null && result.getContent().size()>0){
+			            List<Product> listProduct = result.getContent();
+			         for (Product product:listProduct){
+			               //ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+						 ProductDTO productDetailDTO = new ProductDTO();
+			                BeanUtils.copyProperties(product, productDetailDTO);
+			                productDetailDTO.setChannelId(product.getChannel().getId());
+			                //productDetailDTO.setBrandId(product.getBrand().getId());
+			                //productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
+			                //productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
+			                //productDetailDTO.setTypeId(product.getType().getId());
+			                listProductList.add(productDetailDTO);
+			            }
+			            pageDTO.setContent(listProductList);
+			            pageDTO.setTotalPages(result.getTotalPages());
+			            pageDTO.setITotalDisplayRecords(result.getTotalElements());
+			            pageDTO.setITotalRecords(result.getTotalElements());
+			            response.setData(pageDTO);
+			        }
+			}else {
+				pageDTO.setContent(listProductList);
+				pageDTO.setTotalPages(0);
+				pageDTO.setITotalDisplayRecords(0L);
+				pageDTO.setITotalRecords(0L);
+				response.setData(pageDTO);
+			}
 		} catch (ProductServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
 			response.setSuccess(false);
 			return response;
 		}
-        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Product> listProduct = result.getContent();
-         for (Product product:listProduct){
-               //ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-			 ProductDTO productDetailDTO = new ProductDTO();
-                BeanUtils.copyProperties(product, productDetailDTO);
-                productDetailDTO.setChannelId(product.getChannel().getId());
-                //productDetailDTO.setBrandId(product.getBrand().getId());
-                //productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
-                //productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
-                //productDetailDTO.setTypeId(product.getType().getId());
-                listProductList.add(productDetailDTO);
-            }
-            pageDTO.setContent(listProductList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setITotalDisplayRecords(result.getTotalElements());
-            pageDTO.setITotalRecords(result.getTotalElements());
-            response.setData(pageDTO);
-        }
+ 
         return response;
     }
 
