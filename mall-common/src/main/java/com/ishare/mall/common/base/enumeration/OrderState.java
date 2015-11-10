@@ -9,7 +9,7 @@ public enum OrderState {
     /** 已取消 */
     CANCEL {public String getName(){return "已取消";}},
     /** 待审核 */
-    WAIT_CONFIRM {public String getName(){return "待收货";}},
+    WAIT_CONFIRM {public String getName(){return "待审核";}},
     /** 等待付款 */
     WAIT_PAYMENT {public String getName(){return "等待付款";}},
     /** 等待发货 */
@@ -17,7 +17,8 @@ public enum OrderState {
     /** 已发货 */
     DELIVERED {public String getName(){return "已发货";}},
     /** 已收货 */
-    RECEIVED {public String getName(){return "已收货";}};
-
+    RECEIVED {public String getName(){return "已收货";}},
+    /**待收货**/
+    WAIT_RECEIVED {public String getName(){return "待收货";}};
     public abstract String getName();
 }
