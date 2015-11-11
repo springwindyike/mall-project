@@ -34,10 +34,7 @@ import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.controller.base.BaseController;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by ZhangZhaoxin on 2015/9/22. 
@@ -386,7 +383,7 @@ public class OrderController extends BaseController {
 
 		int currentPage = displayStart/displayLength+1;
 		searchParams.put("limit", displayLength);
-		searchParams.put("offset",currentPage);
+		searchParams.put("offset", currentPage);
 		ResponseEntity<Response<PageDTO<OrderDetailDTO>>> resultDTO = null;
 		HttpEntity<Map> requestDTO = new HttpEntity<Map>(searchParams);
 		if(!flag){
@@ -443,5 +440,33 @@ public class OrderController extends BaseController {
 		}
 		model.addAttribute("orderDetailDTO",response.getData());
 		return ManageViewConstant.Order.ORDER_DETAIL;
+	}
+
+	/**
+	 * 审核通过
+	 * @param id
+	 * @param currentManageUserDTO
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/confirmOrder/{id}")
+	public boolean confirmOrder(@NotEmpty @PathVariable("id") String id,@CurrentManageUser CurrentManageUserDTO currentManageUserDTO) throws Exception{
+		Map mpa = new HashMap();
+		mpa.put("id",id);
+		mpa.put("account",currentManageUserDTO.getUsername());
+		HttpEntity<Map> requestDTO = new HttpEntity<Map>(mpa);
+		ResponseEntity<Response> responseEntity = null;
+		try{
+			responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CONFIRM_ORDER),
+					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response>() {
+			});
+		}catch (Exception e){
+			log.error("error",e.getStackTrace());
+		}
+		Response<OrderDetailDTO> response = responseEntity.getBody();
+		if (response == null || !response.isSuccess()){
+			throw new Exception("get response error");
+		}
+		return true;
 	}
 }

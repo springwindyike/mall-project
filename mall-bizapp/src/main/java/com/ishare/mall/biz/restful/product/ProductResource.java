@@ -6,6 +6,8 @@ import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.product.*;
 import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.enumeration.MemberType;
+import com.ishare.mall.common.base.enumeration.OrderState;
+import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.information.Brand;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -301,34 +304,43 @@ public class ProductResource {
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
         Integer channelId = productDTO.getChannelId();
         Page<Product> result;
+        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
 		try {
 			result = productService.findByChannelId(channelId, pageRequest);
+			if(result != null && result.getContent() != null && result.getContent().size()>0){
+			        if(result != null && result.getContent() != null && result.getContent().size()>0){
+			            List<Product> listProduct = result.getContent();
+			         for (Product product:listProduct){
+			               //ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+						 ProductDTO productDetailDTO = new ProductDTO();
+			                BeanUtils.copyProperties(product, productDetailDTO);
+			                productDetailDTO.setChannelId(product.getChannel().getId());
+			                //productDetailDTO.setBrandId(product.getBrand().getId());
+			                //productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
+			                //productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
+			                //productDetailDTO.setTypeId(product.getType().getId());
+			                listProductList.add(productDetailDTO);
+			            }
+			            pageDTO.setContent(listProductList);
+			            pageDTO.setTotalPages(result.getTotalPages());
+			            pageDTO.setITotalDisplayRecords(result.getTotalElements());
+			            pageDTO.setITotalRecords(result.getTotalElements());
+			            response.setData(pageDTO);
+			        }
+			}else {
+				pageDTO.setContent(listProductList);
+				pageDTO.setTotalPages(0);
+				pageDTO.setITotalDisplayRecords(0L);
+				pageDTO.setITotalRecords(0L);
+				response.setData(pageDTO);
+			}
 		} catch (ProductServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
 			response.setSuccess(false);
 			return response;
 		}
-        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Product> listProduct = result.getContent();
-         for (Product product:listProduct){
-               //ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-			 ProductDTO productDetailDTO = new ProductDTO();
-                BeanUtils.copyProperties(product, productDetailDTO);
-                productDetailDTO.setChannelId(product.getChannel().getId());
-                //productDetailDTO.setBrandId(product.getBrand().getId());
-                //productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
-                //productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
-                //productDetailDTO.setTypeId(product.getType().getId());
-                listProductList.add(productDetailDTO);
-            }
-            pageDTO.setContent(listProductList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setITotalDisplayRecords(result.getTotalElements());
-            pageDTO.setITotalRecords(result.getTotalElements());
-            response.setData(pageDTO);
-        }
+ 
         return response;
     }
 
@@ -352,26 +364,32 @@ public class ProductResource {
         Page<Product> result;
 		try {
 			result = productService.findAll(pageRequest);
+	        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
+	        if(result != null && result.getContent() != null && result.getContent().size()>0){
+	            List<Product> listProduct = result.getContent();
+	         for (Product product:listProduct){
+				 ProductDTO productDetailDTO = new ProductDTO();
+	            BeanUtils.copyProperties(product, productDetailDTO);
+	            listProductList.add(productDetailDTO);
+	            pageDTO.setContent(listProductList);
+	            pageDTO.setTotalPages(result.getTotalPages());
+	            pageDTO.setITotalDisplayRecords(result.getTotalElements());
+	            pageDTO.setITotalRecords(result.getTotalElements());
+	            response.setData(pageDTO);
+	        }
+	    }else {
+			pageDTO.setContent(listProductList);
+			pageDTO.setTotalPages(0);
+			pageDTO.setITotalDisplayRecords(0L);
+			pageDTO.setITotalRecords(0L);
+			response.setData(pageDTO);
+		}
 		} catch (ProductServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
 			response.setSuccess(false);
 			return response;
 		}
-        PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
-            List<Product> listProduct = result.getContent();
-         for (Product product:listProduct){
-			 ProductDTO productDetailDTO = new ProductDTO();
-            BeanUtils.copyProperties(product, productDetailDTO);
-            listProductList.add(productDetailDTO);
-            pageDTO.setContent(listProductList);
-            pageDTO.setTotalPages(result.getTotalPages());
-            pageDTO.setITotalDisplayRecords(result.getTotalElements());
-            pageDTO.setITotalRecords(result.getTotalElements());
-            response.setData(pageDTO);
-        }
-    }
         return response;
     }
     /**
@@ -383,21 +401,23 @@ public class ProductResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public Response findBySearchCondition(@RequestBody ProductDTO productDTO) {
+    public Response findBySearchCondition(@RequestBody Map map) {
         List<ProductDTO> listProductList = new ArrayList<>();
-        int offset = productDTO.getOffset();
-        int limit = productDTO.getLimit();
+    	int offset = (int)map.get("offset");
+		int limit = (int)map.get("limit");
+		map.remove("offset");
+		map.remove("limit");
+		if(map.get("EQ_id") !=null ){
+			map.put("EQ_id", (Integer)map.get("EQ_id"));
+		}
+		if(map.get("LIKE_name") !=null ){
+			map.put("LIKE_name", (String) map.get("LIKE_name"));
+		}
         Response response = new Response();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
-        Integer channelId = productDTO.getChannelId();
         Page<Product> result;
 		try {
-			if (channelId ==null || channelId.equals("")){
-				result = productService.findById(productDTO.getId(), pageRequest);
-			}else{
-				result = productService.findBycondition(productDTO.getId(), productDTO.getChannelId(), pageRequest);
-			}
-		
+				result = productService.findBycondition(map, pageRequest);
 		} catch (ProductServiceException e) {
 			log.error(e.getMessage(), e);
 			response.setMessage("系统错误");
@@ -410,7 +430,6 @@ public class ProductResource {
          for (Product product:listProduct){
 			 ProductDTO productDetailDTO = new ProductDTO();
                 BeanUtils.copyProperties(product, productDetailDTO);
-                productDetailDTO.setChannelId(product.getChannel().getId());
                 listProductList.add(productDetailDTO);
             }
             pageDTO.setContent(listProductList);
@@ -418,7 +437,13 @@ public class ProductResource {
             pageDTO.setITotalDisplayRecords(result.getTotalElements());
             pageDTO.setITotalRecords(result.getTotalElements());
             response.setData(pageDTO);
-        }
+        }else {
+			pageDTO.setContent(listProductList);
+			pageDTO.setTotalPages(0);
+			pageDTO.setITotalDisplayRecords(0L);
+			pageDTO.setITotalRecords(0L);
+			response.setData(pageDTO);
+		}
         return response;
     }
 	/**

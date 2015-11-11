@@ -605,6 +605,11 @@ public class OrderResource {
 		return response;
 	}
 
+	/**
+	 * 订单详情
+	 * @param orderDetailDTO
+	 * @return
+	 */
 	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_GET_ORDER_DETAIL, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json"},
@@ -637,6 +642,40 @@ public class OrderResource {
 			response.setSuccess(false);
 		}
 		response.setData(orderDetailDTO);
+		return response;
+	}
+
+	/**
+	 * 审核通过
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_CONFIRM_ORDER, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json", "application/xml"})
+	public Response confirmOrder(@RequestBody Map map){
+		Response response = new Response();
+		Order order = orderService.findOne((String)map.get("id"));
+		order.setState(OrderState.WAIT_DELIVER);
+		ManageUser updateUser = manageUserService.findByUsername((String) map.get("account"));
+		order.setUpdateTime(new Date());
+		String logStr = "审核通过。";
+		OrderActionLog orderActionLog = new OrderActionLog();
+		orderActionLog.setOrderActionLogType(OrderActionLogType.CONFIRM);
+		orderActionLog.setNote(logStr);
+		orderActionLog.setOrder(order);
+		orderActionLog.setActionById(updateUser.getId().toString());
+		orderActionLog.setActionByname(updateUser.getName());
+		orderActionLog.setActionBytype(updateUser.getUserType().getName());
+		orderActionLog.setActionByfrom("manage");
+		orderActionLog.setActionTime(order.getUpdateTime());
+		try{
+			orderService.updateOrder(order, orderActionLog);
+		}catch (OrderServiceException e){
+			log.error("error",e.getStackTrace());
+			response.setSuccess(false);
+		}
 		return response;
 	}
 }

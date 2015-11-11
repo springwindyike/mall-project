@@ -29,6 +29,12 @@ public enum OrderActionLogType {
         public String getName() {
             return "发货";
         }
+    },
+    CONFIRM {
+        @Override
+        public String getName() {
+            return "审核通过";
+        }
     };
     public abstract String getName();
 }
