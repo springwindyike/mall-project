@@ -21,10 +21,10 @@
 <div class="pd-20">
 	<div class="text-c">
 		<div  id="result" class="Huiform">
-	<img id="uploadImage" src="http://www.firefox.com.cn/favicon.ico">
+	<!-- <img id="uploadImage" src="http://www.firefox.com.cn/favicon.ico">
 <input type="file" id="myBlogImage" name="file"/>
-<input type="button" value="上传图片" onclick="ajaxFileUpload()"/>
-</div>
+<input type="button" value="上传图片" onclick="ajaxFileUpload()"/> -->
+<!-- </div>
 		<form target="_self" id="add_brand" enctype="multipart/form-data">
 			<input type="text" placeholder="分类名称" value="" id="name" name="name" class="input-text" style="width:120px">
 			<span class="btn-upload form-group">
@@ -39,7 +39,7 @@
 			</span>
 			</span><button type="button" class="btn btn-success" id="" name="" onClick="picture_colume_add();"><i class="Hui-iconfont">&#xe600;</i> 添加</button>
 		</form>
-	</div>
+	</div> -->
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-sort">
@@ -54,7 +54,7 @@
 					<th width="120">市</th>
 					<th width="120">区</th>
 					<th>具体描述</th>
-					<th width="100">操作</th>
+				<!-- 	<th width="100">操作</th> -->
 				</tr>
 			</thead>
 		</table>
@@ -66,7 +66,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/ajaxfileupload.js"></script> 
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/ajaxfileupload.js"></script>  --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/province.js"></script> 
 <script type="text/javascript">
 var targetTable;
@@ -99,7 +99,7 @@ $(function () {
             { "mDataProp": "city" },
             { "mDataProp": "district" },
             { "mDataProp": "detail" },
-            { "mDataProp": null },
+          /*   { "mDataProp": null }, */
         ],
 
         "createdRow" : function(row, mDataProp, dataIndex){
@@ -115,12 +115,12 @@ $(function () {
                         }
                     },
 
-            {
+/*             {
                 "targets" : 9,
                 "render" : function(mDataProp, type, full) {
                     return '<td class="td-manage"><a title="编辑" href="javascript:;" onclick="brand_edit(\'信息修改\',\'${pageContext.request.contextPath}/brand/update/'+mDataProp.id+'.dhtml\',\'\',\'510\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a><a title="删除" href="javascript:;" onclick="brand_del(\'${pageContext.request.contextPath}/brand/del/'+mDataProp.id+'.dhtml\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>  </td>';
 }
-            },
+            }, */
         ],
     });
 });
@@ -143,7 +143,7 @@ function brand_edit(title, url, id, w, h) {
     layer_show(title, url, w, h);
 };
 
-function picture_colume_add(){
+/* function picture_colume_add(){
 	$.ajax({
         cache: true,
         type: "POST",
@@ -157,8 +157,8 @@ function picture_colume_add(){
             $('#result').html('添加失败，请重试！！');
         }
 	});
-};
-function ajaxFileUpload(){
+}; */
+/* function ajaxFileUpload(){
     $.ajaxFileUpload({
        url:"${pageContext.request.contextPath}/brand/uploadPic.dhtml",
         secureuri:false,                      
@@ -181,7 +181,7 @@ function ajaxFileUpload(){
             $('#result').html('图片上传失败，请重试！！');
         }
     });
-}
+} */
 </script>
 </body>
 </html>
