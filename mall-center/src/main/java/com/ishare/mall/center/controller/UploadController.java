@@ -38,8 +38,10 @@ public class UploadController extends BaseController {
             String rootPath = request.getSession().getServletContext().getRealPath("/");
             try {
                     String exec = new ActionEnter(request, rootPath).exec();
-                  /*  JSONObject jsonObject = new JSONObject(exec);
-                    String URL = jsonObject.toString();*/
+                   JSONObject jsonObject = new JSONObject(exec);
+                    String URL = jsonObject.getString("url");
+                    String[] ab = URL.split("/");
+                    System.out.println(ab[4]+ab[5].substring(0,9));
                     session.setAttribute("URL", exec);
                     PrintWriter writer = response.getWriter();
                     writer.write(exec);
