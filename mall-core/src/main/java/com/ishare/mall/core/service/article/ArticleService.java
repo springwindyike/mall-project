@@ -1,23 +1,22 @@
-package com.ishare.mall.core.service.artice;
-
-import java.util.Map;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+package com.ishare.mall.core.service.article;
 
 import com.ishare.mall.core.exception.ArticeServiceException;
 import com.ishare.mall.core.model.cms.Article;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.Map;
 
 /**
  * 
  * @author zhangzhaoxin
  *系统日志service
  */
-public interface ArticeService {
+public interface ArticleService {
 	
 	 /**
      * 查看所有系统日志
-     * @param channelId
+     * @param
      * @param pageRequest
      * @return
      */
