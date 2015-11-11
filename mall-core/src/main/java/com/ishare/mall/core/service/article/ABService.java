@@ -1,4 +1,4 @@
-package com.ishare.mall.core.service.artice;
+package com.ishare.mall.core.service.article;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -1,10 +1,11 @@
-package com.ishare.mall.core.service.artice.impl;
+package com.ishare.mall.core.service.article.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
-
+import com.ishare.mall.core.exception.BannerServiceException;
+import com.ishare.mall.core.model.cms.Banner;
+import com.ishare.mall.core.repository.information.BannerRepository;
+import com.ishare.mall.core.service.article.BannerService;
+import com.ishare.mall.core.utils.filter.DynamicSpecifications;
+import com.ishare.mall.core.utils.filter.SearchFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ishare.mall.core.exception.ArticeServiceException;
-import com.ishare.mall.core.exception.BannerServiceException;
-import com.ishare.mall.core.model.cms.Article;
-import com.ishare.mall.core.model.cms.Banner;
-import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.repository.information.BannerRepository;
-import com.ishare.mall.core.repository.information.BrandRepository;
-import com.ishare.mall.core.service.artice.BannerService;
-import com.ishare.mall.core.utils.filter.DynamicSpecifications;
-import com.ishare.mall.core.utils.filter.SearchFilter;
+import java.util.Map;
 /**
  * 系统栏目逻辑表
  * @author zhangzhaoxin
