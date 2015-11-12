@@ -7,6 +7,7 @@ import com.ishare.mall.center.controller.base.BaseController;
 import com.ishare.mall.center.controller.test.Person;
 import com.ishare.mall.center.controller.test.PersonJsonObject;
 import com.ishare.mall.center.form.register.RegisterForm;
+import com.ishare.mall.center.service.product.ProductService;
 import com.ishare.mall.center.shiro.exception.IncorrectCaptchaException;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
@@ -25,6 +26,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +53,9 @@ public class IndexController extends BaseController {
     public static Logger getLog() {
         return log;
     }
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping("/res")
     @ResponseBody
@@ -169,7 +174,7 @@ public class IndexController extends BaseController {
         ResponseEntity<MemberPermissionDTO> resultDTO = null;
         RestTemplate restTemplate = new RestTemplate();
         log.debug(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940");
-        resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING,"") + "/13885268940", MemberPermissionDTO.class);
+        resultDTO = restTemplate.getForEntity(this.buildBizAppURI(APPURIConstant.Permission.REQUEST_MAPPING, "") + "/13885268940", MemberPermissionDTO.class);
         MemberPermissionDTO memberPermissionDTO = resultDTO.getBody();
         log.debug(memberPermissionDTO.toString());
         return CenterViewConstant.Index.LOGIN;
@@ -307,5 +312,11 @@ public class IndexController extends BaseController {
             personsList.add(person2);
         }
         return personsList;
+    }
+
+    @RequestMapping(value = "welcome",method = RequestMethod.GET,produces = { "application/json"} )
+    public String welcome(Model model) {
+        model.addAttribute("product", productService.findOne(66));
+        return "main/welcome";
     }
 }
