@@ -69,8 +69,9 @@ public class ProductDetailDTO extends GenericDTO {
     private Integer typeId;
 
     private String typeName;//商品类型名字
-    //默认样式图片
-    private String defaultImageUrl;
+/*    //默认样式图片
+    private String defaultImageUrl;*/
+    private String url;
     //库存
     private Integer inventory;
     
@@ -286,13 +287,13 @@ public class ProductDetailDTO extends GenericDTO {
         this.typeName = typeName;
     }
 
-    public String getDefaultImageUrl() {
+/*    public String getDefaultImageUrl() {
         return defaultImageUrl;
     }
 
     public void setDefaultImageUrl(String defaultImageUrl) {
         this.defaultImageUrl = defaultImageUrl;
-    }
+    }*/
 
 	public Integer getInventory() {
 		return inventory;
@@ -309,4 +310,13 @@ public class ProductDetailDTO extends GenericDTO {
     public void setList(List<ProductStyleDTO> list) {
         this.list = list;
     }
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+    
 }

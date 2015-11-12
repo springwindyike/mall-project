@@ -61,25 +61,14 @@ public class ProductController extends BaseController {
     }
     
     @RequestMapping(value = CenterURIConstant.Product.REQUEST_MAPPING_SAVE, method = RequestMethod.POST)
-    public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember CurrentMemberDTO member) {JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
+    public String addProductPost(@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember CurrentMemberDTO member) {
 	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-/*	productDetailDTO.setName(apf.getProductName());
-	productDetailDTO.setDescription(apf.getDescription());
-	productDetailDTO.setTypeCode(apf.getTypeCode());
-	productDetailDTO.setBasePrice(apf.getBasePrice());
-	productDetailDTO.setMarketPrice(apf.getMarketPrice());
-	productDetailDTO.setInventory(apf.getInventory());*/
 	BeanUtils.copyProperties(addProductForm,productDetailDTO);
-	if(jsonObject.has("url") ){
-	 	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
-	}
 	productDetailDTO.setName(addProductForm.getProductName());
 	productDetailDTO.setBrandId(addProductForm.getBrandId());
 	productDetailDTO.setChannelId(member.getChannelId());
 	productDetailDTO.setCreateByAccount(member.getAccount());
 	productDetailDTO.setTypeId(addProductForm.getTypeId());
-/*	productDetailDTO.setTypeCode(addProductForm.getTypeCode());
-	productDetailDTO.setTypeName(addProductForm.getTypeName());*/
 	productDetailDTO.setGender(member.getGender());
 	ResponseEntity<Response> resultDTO = null;
 	RestTemplate restTemplate = new RestTemplate();
@@ -126,16 +115,7 @@ e.printStackTrace();
     public String updateProductPost(@NotEmpty @PathVariable("id") Integer id,@ModelAttribute("productAttribute") AddProductForm addProductForm,HttpSession session,@CurrentMember CurrentMemberDTO member) {
     	JSONObject jsonObject = new JSONObject((String)session.getAttribute("URL"));
     	ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-    /*productDetailDTO.setName(apf.getProductName());
-    	productDetailDTO.setDescription(apf.getDescription());
-    	productDetailDTO.setTypeCode(apf.getTypeCode());
-    	productDetailDTO.setBasePrice(apf.getBasePrice());
-    	productDetailDTO.setMarketPrice(apf.getMarketPrice());
-    	productDetailDTO.setInventory(apf.getInventory());*/
     	BeanUtils.copyProperties(addProductForm,productDetailDTO);
-    	if(jsonObject.has("url") ){
-    	 	productDetailDTO.setDefaultImageUrl(jsonObject.getString("url"));
-    	}
     	productDetailDTO.setName(addProductForm.getProductName());
     	productDetailDTO.setBrandId(1);
     	productDetailDTO.setChannelId(1);

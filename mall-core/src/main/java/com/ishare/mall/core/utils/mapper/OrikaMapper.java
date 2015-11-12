@@ -69,6 +69,7 @@ public class OrikaMapper extends ConfigurableMapper {
         otherDealField.add("channelName");
         otherDealField.add("typeName");
         otherDealField.add("gender");
+        otherDealField.add("url");
 		otherDealField.add("list");
 		otherDealField.add("serialVersionUID");
         for (Field field : fields) {
