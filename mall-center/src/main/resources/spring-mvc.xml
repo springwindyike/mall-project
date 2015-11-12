@@ -69,10 +69,10 @@
 
 	<bean class="com.ishare.mall.center.handler.exception.DefaultExceptionHandler"/>
 	<!-- 添加上传文件支持 -->
- <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+<!--  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
         <property name="defaultEncoding" value="UTF-8"/>  
         <property name="maxUploadSize" value="1048576"/>  
-  </bean>
+  </bean> -->
  	<import resource="shiro/spring-mvc-shiro.xml"/>
     <!-- 自定义拦截链配置
     <mvc:interceptors>

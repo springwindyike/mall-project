@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,10 @@ public class UploadController extends BaseController {
             String rootPath = request.getSession().getServletContext().getRealPath("/");
             try {
                     String exec = new ActionEnter(request, rootPath).exec();
+                   JSONObject jsonObject = new JSONObject(exec);
+                    String URL = jsonObject.getString("url");
+                    String[] ab = URL.split("/");
+                    System.out.println(ab[4]+ab[5].substring(0,9));
                     session.setAttribute("URL", exec);
                     PrintWriter writer = response.getWriter();
                     writer.write(exec);

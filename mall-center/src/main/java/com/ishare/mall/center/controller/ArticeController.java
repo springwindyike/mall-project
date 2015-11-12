@@ -95,7 +95,7 @@ public class ArticeController extends BaseController {
 	//		 public String delArtice(@NotEmpty @PathVariable("id") Integer id){
 	//		ResponseEntity<Response> resultDTO = null;
 	//		RestTemplate restTemplate =  new RestTemplate();
-	//		resultDTO=restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Artice.REQUEST_MAPPING, APPURIConstant.Artice.REQUEST_MAPPING_DEL,resultDTO,Response.class)
+	//		resultDTO=restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.article.REQUEST_MAPPING, APPURIConstant.article.REQUEST_MAPPING_DEL,resultDTO,Response.class)
 	//			 
 	//			 
 	//			return bizAppUrl;

@@ -403,7 +403,11 @@ $(function(){
             fileSizeLimit: 200 * 1024 * 1024,    // 200 M
             fileSingleSizeLimit: 50 * 1024 * 1024    // 50 M
         });
-
+     	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    	uploader.on( 'uploadSuccess', function( file,response ) {
+    		alert(response.url);
+    		$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
+    	});
         // 拖拽时不接受 js, txt 文件。
         uploader.on( 'dndAccept', function( items ) {
             var denied = false,

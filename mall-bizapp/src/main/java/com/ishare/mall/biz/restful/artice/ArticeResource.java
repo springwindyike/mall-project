@@ -20,7 +20,6 @@ import com.ishare.mall.common.base.dto.cms.ArticleDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.cms.Article;
-import com.ishare.mall.core.service.artice.ArticeService;
 
 /**
  * 
@@ -32,8 +31,7 @@ import com.ishare.mall.core.service.artice.ArticeService;
 public class ArticeResource {
 	private static final Logger log = LoggerFactory.getLogger(ArticeResource.class);
 
-	@Autowired
-	private ArticeService articeService;
+
 
 
 
@@ -46,10 +44,10 @@ public class ArticeResource {
             produces = {"application/json"},
             consumes = {"application/json", "application/xml"})
 	public Response findByAllArtice(@RequestBody ArticleDTO atricleDTO){
-		List<ArticleDTO> atricleList = new ArrayList<>();
+	/*	List<ArticleDTO> atricleList = new ArrayList<>();
 		int offset = atricleDTO.getOffset();
-		int limit = atricleDTO.getLimit();
-		Response response = new Response<>();
+		int limit = atricleDTO.getLimit();*/
+		Response response = new Response<>();/*
 		PageRequest pageRequest = new PageRequest(offset - 1 <0 ? 0:offset - 1, limit <=0 ?15:limit,Sort.Direction.DESC,"id");
 		Page<Article> result;
 		try {
@@ -74,7 +72,7 @@ public class ArticeResource {
 			pageDTO.setITotalDisplayRecords(result.getTotalElements());
 			pageDTO.setITotalRecords(result.getTotalElements());
 			response.setData(pageDTO);
-		}
+		}*/
 		return response;
 	}
 

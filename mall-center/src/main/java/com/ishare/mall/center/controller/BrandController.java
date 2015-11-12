@@ -1,18 +1,11 @@
 package com.ishare.mall.center.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.FileUtils;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -20,19 +13,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ishare.mall.center.annoation.CurrentMember;
 import com.ishare.mall.center.controller.base.BaseController;
-import com.ishare.mall.center.form.brand.AddBrandForm;
-import com.ishare.mall.center.form.brand.BrandForm;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.view.CenterViewConstant;
@@ -64,11 +51,11 @@ public class BrandController extends BaseController {
  	public String forwardToBrandList() {
 	  return CenterViewConstant.Brand.LIST_BRAND;
   }
-  
+/*  
   @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD_FORWORD, method = RequestMethod.GET)
  	public String forwardToBrandAdd() {
 	  return CenterViewConstant.Brand.ADD_BRAND;
-  }
+  }*/
   
   @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_FIND_ALL_BRAND, method = RequestMethod.GET,produces = {"application/json"})
 	@ResponseBody
@@ -131,142 +118,5 @@ public class BrandController extends BaseController {
 			throw new Exception("get response error");
 		}
 	}
- 
-  /**
-   * 品牌的删除
-   * @param account
-   * @param currentMemberDTO
-   * @return
-   * @throws Exception
-   */
-	@ResponseBody
-	@RequestMapping(value =  CenterURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID)
-	public String delete(@NotEmpty @PathVariable("id") Integer id,@CurrentMember CurrentMemberDTO currentMemberDTO) throws Exception{
-		BrandDTO brandDTO = new BrandDTO();
-	  brandDTO.setId(id);
-		ResponseEntity<Response<BrandDTO>> resultDTO = null;
-		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
-		try{
-			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
-		}catch (Exception e){
-			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+APPURIConstant.Brand.REQUEST_MAPPING_DELETE_BY_ID+"error");
-			throw new Exception(e.getMessage());
-		}
-		Response response = resultDTO.getBody();
-		if(response == null){
-			throw new Exception("get response error");
-		}
-		if (response != null && !response.isSuccess()){
-			throw new Exception(response.getMessage());
-		}
-		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
-	}
-	
 
-	/**
-	 * 跳转到update 页面
-	 * @return
-	 */
-	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID)
-	public String forwordUpdateBrand(@NotEmpty @PathVariable("id") Integer id,Model model) throws  Exception{
-		BrandDTO brandDTO = new BrandDTO();
-		brandDTO.setId(id);
-		ResponseEntity<Response<BrandDTO>> resultDTO = null;
-		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
-		try {
-			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
-		}catch (Exception e){
-			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+APPURIConstant.Brand.REQUEST_MAPPING_UPDATE_BY_ID+"error");
-			throw new Exception(e.getMessage());
-		}
-		Response response = resultDTO.getBody();
-		if(response != null){
-			if(response.isSuccess()){
-				BrandDTO returnDTO = (BrandDTO)response.getData();
-				model.addAttribute("returnDTO",returnDTO);
-			}else {
-				throw new Exception(response.getMessage());
-			}
-		}else {
-			throw new Exception("get response error");
-		}
-		return CenterViewConstant.Brand.BRAND_UPDATE;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/update")
-	public String update(BrandForm brandForm) throws Exception{
-		BrandDTO brandDTO = new BrandDTO();
-		BeanUtils.copyProperties(brandForm, brandDTO);
-		ResponseEntity<Response<BrandDTO>> resultEntity = null;
-		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
-		try{
-			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_UPDATE),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
-		}catch (Exception e){
-			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+ APPURIConstant.Brand.REQUEST_MAPPING_UPDATE+"error");
-			throw new Exception(e.getMessage());
-		}
-		Response response = resultEntity.getBody();
-		if(response == null){
-			throw new Exception("get response error");
-		}
-		if(response != null && !response.isSuccess()){
-			throw new Exception(response.getMessage());
-		}
-		return CenterViewConstant.Brand.BRAND_UPDATE_SUCCESS;
-	}
-	
-@ResponseBody
-	@RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_ADD,method = RequestMethod.POST)
-	public String add(@ModelAttribute("addBrandForm") AddBrandForm addBrandForm,@CurrentMember CurrentMemberDTO member) throws Exception{
-		BrandDTO brandDTO = new BrandDTO();
-		BeanUtils.copyProperties(addBrandForm, brandDTO);
-	 brandDTO.setLogoUrl(addBrandForm.getLogo());
-		ResponseEntity<Response<BrandDTO>> resultEntity = null;
-		HttpEntity<BrandDTO> requestDTO = new HttpEntity<BrandDTO>(brandDTO);
-		try{
-			resultEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Brand.REQUEST_MAPPING, APPURIConstant.Brand.REQUEST_MAPPING_ADD),
-					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<BrandDTO>>() {});
-		}catch (Exception e){
-			log.error("call bizp app "+APPURIConstant.Brand.REQUEST_MAPPING+ APPURIConstant.Brand.REQUEST_MAPPING_ADD+"error");
-			throw new Exception(e.getMessage());
-		}
-		Response response = resultEntity.getBody();
-		if(response == null){
-			throw new Exception("get response error");
-		}
-		if(response != null && !response.isSuccess()){
-			throw new Exception(response.getMessage());
-		}
-		return CenterViewConstant.Brand.BRAND_ADD_SUCCESS;
-	}
-	
-	  @RequestMapping(value = CenterURIConstant.Brand.REQUEST_MAPPING_UPLOAD_PIC)
-	 	public String uploadPic(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
-	        String realPath = request.getSession().getServletContext().getRealPath("resources/upload");
-	        response.setContentType("text/plain; charset=UTF-8");
-	        PrintWriter out = response.getWriter();
-	        String originalFilename = null;
-            if(file.isEmpty()){
-                out.print("1`请选择文件后上传");
-                out.flush();
-                return null;
-            }else{
-                originalFilename = file.getOriginalFilename();
-                try {
-                    FileUtils.copyInputStreamToFile(file.getInputStream(), new File(realPath, originalFilename));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    out.print("1`文件上传失败，请重试！！");
-                    out.flush();
-                    return null;
-                }
-            }
-	        out.print("0`" + request.getContextPath() + "/upload/" + originalFilename);
-	        out.flush();
-	        return null;
-	  }
 }

@@ -81,7 +81,7 @@ public interface ManageURIConstant {
       	 String REQUEST_MAPPING_FIND_ALL="/findAll";
       	 String REQUEST_MAPPING_FORWORD="/forword";
       	 String REQUEST_MAPPING_ALL_TYPE_PRODUCT ="/allType";
-      	 String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
+      	 String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
        }
     
 	interface ProductType {

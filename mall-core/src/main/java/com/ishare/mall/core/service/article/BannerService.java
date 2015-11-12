@@ -1,4 +1,4 @@
-package com.ishare.mall.core.service.artice;
+package com.ishare.mall.core.service.article;
 
 import java.util.List;
 import java.util.Map;
