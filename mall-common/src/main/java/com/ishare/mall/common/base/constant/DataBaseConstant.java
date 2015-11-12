@@ -44,6 +44,8 @@ public interface DataBaseConstant {
         String TABLE_MANAGE_USER_NAME                   = Common.TABLE_PRE + "manage_user";
         //订单表
         String TABLE_ORDER_NAME                         = Common.TABLE_PRE + "order";
+        //退货退款表
+        String TABLE_ORDER_REFUND                         = Common.TABLE_PRE+"order_refund";
         //订单号表
         String TABLE_ORDER_ID_NAME                      = TABLE_ORDER_NAME + "_id";
         //订单附加信息表

@@ -12,7 +12,11 @@ public interface ManageViewConstant {
 		String DELIVER_ORDER = "order/deliver";
 		String LOGISTICS_ORDER = "order/logistics";
 		String CANCEL_ORDER = "order/cancel";
-		String ORDER_DETAIL= "order/detail";
+		String ORDER_DETAIL = "order/detail";
+		String REFUND_MONEY = "order/refund/list_money";
+		String REFUND_PRODUCT = "order/refund/list_product";
+		String REFUND_MONEY_DETAIL = "order/refund/money_detail";
+		String FORWARD_TO_REFUND_PAGE = "order/refund/confirm";
 	}
 	
 	interface Category {
