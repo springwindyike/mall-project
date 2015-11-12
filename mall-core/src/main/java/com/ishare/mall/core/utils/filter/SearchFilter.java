@@ -56,7 +56,9 @@ public class SearchFilter {
             if (filedName.toLowerCase().contains("time")) {
                 value = DateTime.parse(value.toString()).toDate();
             }
-
+            if(filedName.toLowerCase().contains("date")){
+                value = DateTime.parse(value.toString()).toDate();
+            }
             // 创建searchFilter
             SearchFilter filter = new SearchFilter(filedName, operator, value);
             filters.put(key, filter);

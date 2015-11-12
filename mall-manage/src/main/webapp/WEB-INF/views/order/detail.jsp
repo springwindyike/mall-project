@@ -105,7 +105,7 @@
       </tbody>
       <tfoot>
       <tr class="tfoot">
-      <td><a href="JavaScript:void(0);" class="btn" onclick="history.go(-1)"><span>返回</span></a></td>
+      <td><a href="${pageContext.request.contextPath}/order/list.dhtml" class="btn"><span>返回</span></a></td>
       </tr>
       </tfoot>
       </table>
