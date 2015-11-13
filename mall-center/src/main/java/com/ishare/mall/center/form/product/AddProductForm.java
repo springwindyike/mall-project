@@ -25,6 +25,9 @@ public class AddProductForm {
 	 //描述
 		@NotEmpty(message = "分类名称不能为空")
 	    private String typeName;
+		
+		//图片路径
+		private String url;
 	
 	 public String getTypeName() {
 			return typeName;
@@ -120,6 +123,14 @@ public class AddProductForm {
 
 	public void setBrandId(Integer brandId) {
 		this.brandId = brandId;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 }
