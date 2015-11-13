@@ -2,11 +2,13 @@ package com.ishare.mall.core.utils.filter;
 
 import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.constant.CommonConstant;
+import com.ishare.mall.common.base.utils.DateUntil;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -55,8 +57,16 @@ public class SearchFilter {
 
             if (filedName.toLowerCase().contains("time")) {
                 value = DateTime.parse(value.toString()).toDate();
+                if (operator.equals(Operator.LTE)){
+                    value = DateUntil.getTheEndOfDay((Date)value);
+                }
             }
-
+            if(filedName.toLowerCase().contains("date")){
+                value = DateTime.parse(value.toString()).toDate();
+                if (operator.equals(Operator.LTE)){
+                    value = DateUntil.getTheEndOfDay((Date)value);
+                }
+            }
             // 创建searchFilter
             SearchFilter filter = new SearchFilter(filedName, operator, value);
             filters.put(key, filter);

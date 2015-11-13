@@ -3,6 +3,7 @@ package com.ishare.mall.core.service.product;
 import com.ishare.mall.common.base.dto.product.FetchProductDTO;
 import com.ishare.mall.core.exception.ProductServiceException;
 import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductReviewCover;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,7 +61,7 @@ public abstract interface ProductService {
   * 保存产品
   * @param product
   */
-    void saveProduct(Product product) throws ProductServiceException;
+    void saveProduct(Product product,List<ProductReviewCover> productReviewCover) throws ProductServiceException;
     
     /**
      * 保存产品

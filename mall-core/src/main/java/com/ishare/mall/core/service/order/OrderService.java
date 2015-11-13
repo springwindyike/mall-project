@@ -6,11 +6,8 @@ import com.ishare.mall.common.base.dto.order.OrderRequestDTO;
 import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.manage.ManageUser;
-import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.order.*;
 
-import com.ishare.mall.core.model.order.OrderActionLog;
-import com.ishare.mall.core.model.order.OrderDeliverInfo;
-import com.ishare.mall.core.model.order.OrderItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -135,4 +132,26 @@ public interface OrderService {
 	 * @return
 	 */
 	Page<Order> listByAccount(OrderRequestDTO requestDTO);
+
+	/**
+	 * 查询退货退款订单
+	 * @param searchParams
+	 * @param pageRequest
+	 * @return
+	 */
+	Page<OrderRefund> findRefundPage(Map<String, Object> searchParams, PageRequest pageRequest);
+
+	/**
+	 * 查询退货详情
+	 * @param refundId
+	 * @return
+	 */
+	OrderRefund getRefundDetail(String refundId);
+
+	/**
+	 * 查询退货详情
+	 * @param orderRefund
+	 * @return
+	 */
+	OrderRefund saveRefund(OrderRefund orderRefund);
 }

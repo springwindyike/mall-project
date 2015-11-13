@@ -1,26 +1,9 @@
 package com.ishare.mall.biz.restful.product;
 
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.*;
-import com.ishare.mall.common.base.enumeration.Gender;
-import com.ishare.mall.common.base.enumeration.MemberType;
-import com.ishare.mall.common.base.enumeration.OrderState;
-import com.ishare.mall.common.base.enumeration.PaymentWay;
-import com.ishare.mall.common.base.general.Response;
-import com.ishare.mall.core.exception.ProductServiceException;
-import com.ishare.mall.core.model.information.Brand;
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.member.Member;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductStyle;
-import com.ishare.mall.core.model.product.ProductType;
-import com.ishare.mall.core.service.member.MemberService;
-import com.ishare.mall.core.service.product.ProductService;
-import com.ishare.mall.core.service.product.ProductStyleService;
-import com.ishare.mall.core.service.product.ProductTypeService;
-import com.ishare.mall.core.utils.mapper.MapperUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +17,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.FetchProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductListDTO;
+import com.ishare.mall.common.base.dto.product.ProductStyleDTO;
+import com.ishare.mall.common.base.enumeration.Gender;
+import com.ishare.mall.common.base.enumeration.MemberType;
+import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.model.information.Brand;
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
+import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductReviewCover;
+import com.ishare.mall.core.model.product.ProductStyle;
+import com.ishare.mall.core.model.product.ProductType;
+import com.ishare.mall.core.service.member.MemberService;
+import com.ishare.mall.core.service.product.ProductService;
+import com.ishare.mall.core.service.product.ProductStyleService;
+import com.ishare.mall.core.service.product.ProductTypeService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -76,6 +79,19 @@ public class ProductResource {
     			Channel channel = new Channel();
     			channel.setId(productDetailDTO.getChannelId());
     			ProductType productType = productTypeService.findOne(productDetailDTO.getTypeId());
+    			List<ProductReviewCover> productReviewCovers = new ArrayList<ProductReviewCover>();
+    			String URL = productDetailDTO.getUrl();
+        String[] urlArray = URL.split("_");
+        for(int index = 1 ;index<urlArray.length;index++){
+        	String signleUrl = urlArray[index];
+       	 String[] temp = signleUrl.split("/");
+        	String commonId =temp[4]+temp[5].substring(0,9);
+        	ProductReviewCover productReviewCover =new ProductReviewCover();
+        	productReviewCover.setProduct(product);
+        	productReviewCover.setUrl(urlArray[index]);
+        	productReviewCover.setCommonId(commonId);
+        	productReviewCovers.add(productReviewCover);
+        }
     			product.setBrand(brand);
     			product.setCreateBy(member);
     			product.setUpdateBy(member);
@@ -83,7 +99,7 @@ public class ProductResource {
     			product.setType(productType);
     			
     			try {
-					productService.saveProduct(product);
+					productService.saveProduct(product,productReviewCovers);
 				} catch (Exception e) { 
 									log.error(e.getMessage(), e);
 	            Response response = new Response();
@@ -118,6 +134,7 @@ public class ProductResource {
     			productType.setName("衬衫");
     			productType.setNote("非常好");
     			productType.setLevel(3);
+    			List<ProductReviewCover> productReviewCovers = new ArrayList<ProductReviewCover>();
     			product.setBrand(brand);
     			product.setCreateBy(member);
     			product.setUpdateBy(member);
@@ -125,7 +142,7 @@ public class ProductResource {
     			product.setType(productType);
     			product.setId(productDetailDTO.getId());
     			try {
-					productService.saveProduct(product);
+					productService.saveProduct(product,productReviewCovers);
 				} catch (Exception e) {
 					log.error(e.getMessage(), e);
 					response.setMessage("系统错误");
@@ -311,14 +328,9 @@ public class ProductResource {
 			        if(result != null && result.getContent() != null && result.getContent().size()>0){
 			            List<Product> listProduct = result.getContent();
 			         for (Product product:listProduct){
-			               //ProductDetailDTO productDetailDTO = new ProductDetailDTO();
 						 ProductDTO productDetailDTO = new ProductDTO();
 			                BeanUtils.copyProperties(product, productDetailDTO);
 			                productDetailDTO.setChannelId(product.getChannel().getId());
-			                //productDetailDTO.setBrandId(product.getBrand().getId());
-			                //productDetailDTO.setCreateByAccount(product.getCreateBy().getAccount());
-			                //productDetailDTO.setUpdateByAccount(product.getUpdateBy().getAccount());
-			                //productDetailDTO.setTypeId(product.getType().getId());
 			                listProductList.add(productDetailDTO);
 			            }
 			            pageDTO.setContent(listProductList);
