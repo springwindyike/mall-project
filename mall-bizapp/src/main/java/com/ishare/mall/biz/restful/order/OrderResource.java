@@ -1,5 +1,8 @@
 package com.ishare.mall.biz.restful.order;
 
+import com.google.common.collect.Maps;
+import com.ishare.mall.common.base.constant.CodeConstant;
+import com.ishare.mall.common.base.constant.ErrorConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.*;
 import com.ishare.mall.common.base.dto.page.PageDTO;
@@ -11,10 +14,7 @@ import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.manage.ManageUser;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.model.order.OrderActionLog;
-import com.ishare.mall.core.model.order.OrderDeliverInfo;
-import com.ishare.mall.core.model.order.OrderItem;
+import com.ishare.mall.core.model.order.*;
 import com.ishare.mall.core.service.information.ChannelService;
 import com.ishare.mall.core.service.information.OrderItemService;
 import com.ishare.mall.core.service.manageuser.ManageUserService;
@@ -22,6 +22,7 @@ import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
+import org.apache.commons.collections.ListUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -474,7 +475,7 @@ public class OrderResource {
 		Integer channelId = orderDetailDTO.getChannelId();
 		try{
 			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
-			Page<Order> result = orderService.findBycondition(orderId, channelId,pageRequest);
+			Page<Order> result = orderService.findBycondition(orderId, channelId, pageRequest);
 			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
 			if(result != null && result.getContent() != null && result.getContent().size()>0){
 				List<Order> list = result.getContent();
@@ -646,7 +647,7 @@ public class OrderResource {
 	}
 
 	/**
-	 * 审核通过
+	 * 审核订单通过
 	 * @param map
 	 * @return
 	 */
@@ -656,7 +657,7 @@ public class OrderResource {
 			consumes = {"application/json", "application/xml"})
 	public Response confirmOrder(@RequestBody Map map){
 		Response response = new Response();
-		Order order = orderService.findOne((String)map.get("id"));
+		Order order = orderService.findOne((String) map.get("id"));
 		order.setState(OrderState.WAIT_DELIVER);
 		ManageUser updateUser = manageUserService.findByUsername((String) map.get("account"));
 		order.setUpdateTime(new Date());
@@ -677,5 +678,155 @@ public class OrderResource {
 			response.setSuccess(false);
 		}
 		return response;
+	}
+
+	/**
+	 * 获取退款列表
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_MONEY, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json", "application/xml"})
+	public Response<PageDTO<OrderRefundDTO>> getRefundMoney(@RequestBody Map map){
+		Response<PageDTO<OrderRefundDTO>> response = new Response<PageDTO<OrderRefundDTO>>();
+		int limit = (int)map.get("limit");
+		int offset = (int)map.get("offset");
+		map.remove("limit");
+		map.remove("offset");
+		List<OrderRefundDTO> orderRefundDTOList = new ArrayList<OrderRefundDTO>();
+		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "refundId");
+		try {
+			Page<OrderRefund> page = orderService.findRefundPage(map,pageRequest);
+			PageDTO<OrderRefundDTO> pageDTO = new PageDTO<OrderRefundDTO>();
+			if(page != null && page.getContent() != null && page.getContent().size() >0){
+				List<OrderRefund> orderRefundList = page.getContent();
+				for(OrderRefund orderRefund:orderRefundList){
+					OrderRefundDTO orderRefundDTO = new OrderRefundDTO();
+					BeanUtils.copyProperties(orderRefund, orderRefundDTO);
+					orderRefundDTO.setBuyerDateStr(this.getDateStr(orderRefund.getBuyerDate()));
+					orderRefundDTO.setCenterDateStr(this.getDateStr(orderRefund.getCenterDate()));
+					orderRefundDTO.setManageDateStr(this.getDateStr(orderRefund.getManageDate()));
+					orderRefundDTO.setCenterStateStr(this.getCenterStateStr(orderRefundDTO.getCenterState()));
+					orderRefundDTO.setRefundStateStr(this.getRefundStateStr(orderRefundDTO.getRefundState()));
+					orderRefundDTOList.add(orderRefundDTO);
+				}
+			}
+			pageDTO.setContent(orderRefundDTOList);
+			pageDTO.setTotalPages(page.getTotalPages());
+			pageDTO.setITotalDisplayRecords(page.getTotalElements());
+			pageDTO.setITotalRecords(page.getTotalElements());
+			response.setData(pageDTO);
+		}catch (Exception e){
+			log.error("error",e.getStackTrace());
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+	/**
+	 * 获取退款详情
+	 * @param refundId
+	 * @return
+	 */
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_DETAIL_BY_REFUND_ID, method = RequestMethod.POST,
+			headers     = "Accept=application/xml, application/json",
+			produces    = {"application/json"})
+	public Response<OrderRefundDTO> getRefundDetail(@NotEmpty @PathVariable("refundId") String refundId){
+		OrderRefund orderRefund = orderService.getRefundDetail(refundId);
+		OrderRefundDTO orderRefundDTO = new OrderRefundDTO();
+		BeanUtils.copyProperties(orderRefund, orderRefundDTO);
+		orderRefundDTO.setBuyerDateStr(this.getDateStr(orderRefund.getBuyerDate()));
+		orderRefundDTO.setCenterDateStr(this.getDateStr(orderRefund.getCenterDate()));
+		orderRefundDTO.setManageDateStr(this.getDateStr(orderRefund.getManageDate()));
+		orderRefundDTO.setCenterStateStr(this.getCenterStateStr(orderRefundDTO.getCenterState()));
+		orderRefundDTO.setRefundStateStr(this.getRefundStateStr(orderRefundDTO.getRefundState()));
+		Response<OrderRefundDTO> response = new Response<OrderRefundDTO>();
+		response.setData(orderRefundDTO);
+		return response;
+	}
+
+	/**
+	 * 确认退款
+	 * @param orderRefundDTO
+	 * @return
+	 */
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_GO_TO_CONFIRM, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json", "application/xml"})
+	public Response go2Confirm(@RequestBody OrderRefundDTO orderRefundDTO){
+		OrderRefund orderRefund = orderService.getRefundDetail(orderRefundDTO.getRefundId());
+		orderRefund.setAdminMessage(orderRefundDTO.getAdminMessage());
+		orderRefund.setRefundState(CodeConstant.Refund.MANAGE_CONFIRM);
+		orderRefund.setManageDate(new Date());
+		orderRefund.setManageId(orderRefundDTO.getManageId());
+		orderService.saveRefund(orderRefund);
+		return new Response();
+	}
+
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPOMG_GET_REFUND_BY_CONDITION, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"},
+			consumes = {"application/json", "application/xml"})
+	public Response getRefundMoneyByCondition(@RequestBody Map map){
+		Response<PageDTO<OrderRefundDTO>> response = new Response<PageDTO<OrderRefundDTO>>();
+		int limit = (int)map.get("limit");
+		int offset = (int)map.get("offset");
+		map.remove("limit");
+		map.remove("offset");
+		List<OrderRefundDTO> orderRefundDTOList = new ArrayList<OrderRefundDTO>();
+		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "refundId");
+		Page<OrderRefund> page = null;
+		try {
+			if (map.size()==0){
+				page = orderService.findRefundPage(null,pageRequest);
+			}else {
+				page = orderService.findRefundPage(map,pageRequest);
+			}
+			PageDTO<OrderRefundDTO> pageDTO = new PageDTO<OrderRefundDTO>();
+			if(page != null && page.getContent() != null && page.getContent().size() >0){
+				List<OrderRefund> orderRefundList = page.getContent();
+				for(OrderRefund orderRefund:orderRefundList){
+					OrderRefundDTO orderRefundDTO = new OrderRefundDTO();
+					BeanUtils.copyProperties(orderRefund, orderRefundDTO);
+					orderRefundDTO.setBuyerDateStr(this.getDateStr(orderRefund.getBuyerDate()));
+					orderRefundDTO.setCenterDateStr(this.getDateStr(orderRefund.getCenterDate()));
+					orderRefundDTO.setManageDateStr(this.getDateStr(orderRefund.getManageDate()));
+					orderRefundDTO.setCenterStateStr(this.getCenterStateStr(orderRefundDTO.getCenterState()));
+					orderRefundDTO.setRefundStateStr(this.getRefundStateStr(orderRefundDTO.getRefundState()));
+					orderRefundDTOList.add(orderRefundDTO);
+				}
+			}
+			pageDTO.setContent(orderRefundDTOList);
+			pageDTO.setTotalPages(page.getTotalPages());
+			pageDTO.setITotalDisplayRecords(page.getTotalElements());
+			pageDTO.setITotalRecords(page.getTotalElements());
+			response.setData(pageDTO);
+		}catch (Exception e){
+			log.error("error",e.getStackTrace());
+			response.setSuccess(false);
+		}
+		return response;
+	}
+	public String getDateStr(Date date){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if (date == null) return CodeConstant.Refund.BLANK;
+		return dateFormat.format(date);
+	}
+
+	public String getCenterStateStr(Integer state){
+		if (state == CodeConstant.Refund.CENTER_CONFIRM) return CodeConstant.Refund.CENTER_CONFIRM_STRING;
+		if (state == CodeConstant.Refund.CENTER_NOT_CONFIRM) return CodeConstant.Refund.CENTER_NOT_CONFIRM_STRING;
+		if (state == CodeConstant.Refund.WAIT_CENTER_CONFIRM) return CodeConstant.Refund.WAIT_CENTER_CONFIRM_STRING;
+		return CodeConstant.Refund.BLANK;
+	}
+
+	public String getRefundStateStr(Integer state){
+		if (state == CodeConstant.Refund.MANAGE_CONFIRM) return CodeConstant.Refund.MANAGE_CONFIRM_STRING;
+		if (state == CodeConstant.Refund.WAIT_MANAGE_CONFIRM) return CodeConstant.Refund.WAIT_MANAGE_CONFIRM_STRING;
+		if (state == CodeConstant.Refund.MANAGE_NOT_CONFIRM) return CodeConstant.Refund.MANAGE_NOT_CONFIRM_STRING;
+		return CodeConstant.Refund.BLANK;
 	}
 }

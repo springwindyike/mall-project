@@ -22,6 +22,8 @@ public interface DataBaseConstant {
         String TABLE_PRODUCT_NAME                       = Common.TABLE_PRE + "product";
         //商品样式表
         String TABLE_PRODUCT_STYLE_NAME                 = TABLE_PRODUCT_NAME + "_style";
+        //商品封面表
+        String TABLE_PRODUCT_REVIEW_COVER               = TABLE_PRODUCT_NAME + "_review_cover";
         //商品样式图片表
         String TABLE_PRODUCT_STYLE_IMAGE_NAME           = TABLE_PRODUCT_STYLE_NAME + "_image";
         //商品图文描述
@@ -42,6 +44,8 @@ public interface DataBaseConstant {
         String TABLE_MANAGE_USER_NAME                   = Common.TABLE_PRE + "manage_user";
         //订单表
         String TABLE_ORDER_NAME                         = Common.TABLE_PRE + "order";
+        //退货退款表
+        String TABLE_ORDER_REFUND                         = Common.TABLE_PRE+"order_refund";
         //订单号表
         String TABLE_ORDER_ID_NAME                      = TABLE_ORDER_NAME + "_id";
         //订单附加信息表

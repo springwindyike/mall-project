@@ -12,6 +12,7 @@ import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.repository.deliver.DeliverRepository;
 import com.ishare.mall.core.repository.information.OrderItemRepository;
 import com.ishare.mall.core.repository.order.GeneratedOrderIdRepository;
+import com.ishare.mall.core.repository.order.OrderRefundRepository;
 import com.ishare.mall.core.repository.order.OrderRepository;
 import com.ishare.mall.core.repository.order.OrderActionLogRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
@@ -64,7 +65,8 @@ public class OrderServiceImpl implements OrderService {
 	private OrderActionLogRepository orderActionLogRepository;
 	@Autowired
 	private OrderPayLogService orderPayLogService;
-
+	@Autowired
+	private OrderRefundRepository orderRefundRepository;
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public Order findOne(String id) {
@@ -408,6 +410,28 @@ public class OrderServiceImpl implements OrderService {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("用户订单收索失败");
 		}
+	}
+
+	@Override
+	public Page<OrderRefund> findRefundPage(Map<String, Object> searchParams, PageRequest pageRequest) throws OrderServiceException{
+		try {
+			Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+			Specification<OrderRefund> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), OrderRefund.class);
+			return orderRefundRepository.findAll(spec,pageRequest);
+		}catch (OrderServiceException e){
+			log.error("error",e.getStackTrace());
+			throw new OrderServiceException(e);
+		}
+	}
+
+	@Override
+	public OrderRefund getRefundDetail(String refundId) {
+		return orderRefundRepository.findOne(refundId);
+	}
+
+	@Override
+	public OrderRefund saveRefund(OrderRefund orderRefund) {
+		return orderRefundRepository.save(orderRefund);
 	}
 
 	@Override

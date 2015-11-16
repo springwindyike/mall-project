@@ -1,14 +1,18 @@
 package com.ishare.mall.core.model.product;
 
+import com.google.common.collect.Sets;
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.information.Origin;
 import com.ishare.mall.core.model.member.Member;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
+
 import java.util.Date;
+import java.util.Set;
 
 import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_NAME;
 
@@ -111,6 +115,11 @@ public class Product extends BaseEntity {
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "origin_id")
     private Origin origin;
+    //产品对应的所有封面图
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "product", fetch = FetchType.LAZY)
+    private Set<ProductReviewCover> productReviewCovers = Sets.newConcurrentHashSet();
+    
     //第三方link
     @Column(name = "origin_link", length = 1024)
     private String link;

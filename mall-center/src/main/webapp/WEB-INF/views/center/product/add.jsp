@@ -40,6 +40,7 @@
 			<label class="form-label col-2"><span class="c-red">*</span>产品标题：</label>
 			<div class="formControls col-10">
 			<form:input type="text" class="input-text" value="" placeholder="" id="" path="productName"/>
+			 <form:input type="hidden" class="input-text" value="" placeholder="" id="url" path="url"/>
 			</div>
 		</div>
 		<div class="row cl">
@@ -403,7 +404,11 @@ $(function(){
             fileSizeLimit: 200 * 1024 * 1024,    // 200 M
             fileSingleSizeLimit: 50 * 1024 * 1024    // 50 M
         });
-
+     	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    	uploader.on( 'uploadSuccess', function( file,response ) {
+    		$("#url").val($("#url")[0].value+"_"+response.url);
+    		$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
+    	});
         // 拖拽时不接受 js, txt 文件。
         uploader.on( 'dndAccept', function( items ) {
             var denied = false,

@@ -3,7 +3,6 @@ package com.ishare.mall.biz.restful.artice;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +21,7 @@ import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.cms.Banner;
 import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.service.artice.BannerService;
+import com.ishare.mall.core.service.article.BannerService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 @RestController

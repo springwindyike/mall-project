@@ -34,13 +34,10 @@ public class UploadController extends BaseController {
     }
     
     @RequestMapping("/dispatch")
-    public void config(HttpServletRequest request,  HttpServletResponse response, String action,HttpSession session) {
+    public void config(HttpServletRequest request,  HttpServletResponse response, String action) {
             String rootPath = request.getSession().getServletContext().getRealPath("/");
             try {
                     String exec = new ActionEnter(request, rootPath).exec();
-                  /*  JSONObject jsonObject = new JSONObject(exec);
-                    String URL = jsonObject.toString();*/
-                    session.setAttribute("URL", exec);
                     PrintWriter writer = response.getWriter();
                     writer.write(exec);
                     writer.flush();
