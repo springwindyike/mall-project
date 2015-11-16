@@ -19,7 +19,7 @@ import com.ishare.mall.core.model.base.BaseEntity;
 
 /**
  * Created by liaochenglei on 2015/11/12.
- * Description: 商品信息
+ * Description: 用户对应的商品相册
  * Version 1.0
  */
 @Table(name = TABLE_PRODUCT_REVIEW_COVER)
@@ -34,6 +34,10 @@ public class ProductReviewCover extends BaseEntity {
     //一个产品对应每个图片的url
     @Column(name = "product_single_url",length = 100)
     private String url;
+    
+    //产品颜色
+    @Column(name = "color_id",length = 100)
+    private String colorId;
     
     @JsonIgnore
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
