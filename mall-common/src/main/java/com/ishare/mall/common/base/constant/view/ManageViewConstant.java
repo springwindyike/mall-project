@@ -15,7 +15,7 @@ public interface ManageViewConstant {
 		String ORDER_DETAIL = "order/detail";
 		String REFUND_MONEY = "order/refund/list_money";
 		String REFUND_PRODUCT = "order/refund/list_product";
-		String REFUND_MONEY_DETAIL = "order/refund/money_detail";
+		String REFUND_MONEY_DETAIL = "order/refund/detail";
 		String FORWARD_TO_REFUND_PAGE = "order/refund/confirm";
 	}
 	

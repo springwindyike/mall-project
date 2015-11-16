@@ -95,6 +95,7 @@ public class MemberRepositoryTests extends RepositoryTestTemplate {
 		orderRefund.setManageId(1);
 		orderRefund.setCenterState(2);
 		orderRefund.setRefundState(2);
+		orderRefund.setRefundType(2);
 		refundRepository.save(orderRefund);
 
 	}

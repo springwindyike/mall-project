@@ -682,21 +682,23 @@ public class OrderResource {
 
 	/**
 	 * 获取退款列表
-	 * @param transferDTO
+	 * @param map
 	 * @return
 	 */
 	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_MONEY, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json"},
 			consumes = {"application/json", "application/xml"})
-	public Response<PageDTO<OrderRefundDTO>> getRefundMoney(@RequestBody PageDTO transferDTO){
+	public Response<PageDTO<OrderRefundDTO>> getRefundMoney(@RequestBody Map map){
 		Response<PageDTO<OrderRefundDTO>> response = new Response<PageDTO<OrderRefundDTO>>();
-		int limit = transferDTO.getLimit();
-		int offset = transferDTO.getOffset();
+		int limit = (int)map.get("limit");
+		int offset = (int)map.get("offset");
+		map.remove("limit");
+		map.remove("offset");
 		List<OrderRefundDTO> orderRefundDTOList = new ArrayList<OrderRefundDTO>();
 		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "refundId");
 		try {
-			Page<OrderRefund> page = orderService.findRefundPage(null,pageRequest);
+			Page<OrderRefund> page = orderService.findRefundPage(map,pageRequest);
 			PageDTO<OrderRefundDTO> pageDTO = new PageDTO<OrderRefundDTO>();
 			if(page != null && page.getContent() != null && page.getContent().size() >0){
 				List<OrderRefund> orderRefundList = page.getContent();

@@ -475,25 +475,34 @@ public class OrderController extends BaseController {
 	 * 跳转到退货管理页面
 	 * @return
 	 */
+	@RequestMapping("/orderRefundProduct")
+	public String forward2RefundProduct(){
+		return ManageViewConstant.Order.REFUND_PRODUCT;
+	}
+
+	/**
+	 * 跳转到退款管理页面
+	 * @return
+	 */
 	@RequestMapping("/orderRefundMoney")
 	public String forward2RefundMoney(){
 		return ManageViewConstant.Order.REFUND_MONEY;
 	}
-
 	/**
 	 * 获取退款列表
 	 * @return
 	 */
-	@RequestMapping(value = "getRefundMoney",method = RequestMethod.GET)
+	@RequestMapping(value = "getRefundMoney/{refundType}",method = RequestMethod.GET)
 	@ResponseBody
-	public PageDTO<OrderRefundDTO> getRefundMoney(HttpServletRequest request) throws Exception{
+	public PageDTO<OrderRefundDTO> getRefundMoney(HttpServletRequest request,@NotEmpty @PathVariable("refundType") Integer refundType) throws Exception{
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
 		int currentPage = displayStart/displayLength+1;
-		PageDTO pageDTO = new PageDTO();
-		pageDTO.setLimit(displayLength);
-		pageDTO.setOffset(currentPage);
-		HttpEntity<PageDTO> requestDTO = new HttpEntity<PageDTO>(pageDTO);
+		Map map = Maps.newConcurrentMap();
+		map.put("EQ_refundType",refundType);
+		map.put("limit", displayLength);
+		map.put("offset", currentPage);
+		HttpEntity<Map> requestDTO = new HttpEntity<Map>(map);
 		ResponseEntity<Response<PageDTO<OrderRefundDTO>>> responseEntity = null;
 		try {
 			responseEntity = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_MONEY),
@@ -615,19 +624,20 @@ public class OrderController extends BaseController {
 		return ManageViewConstant.Order.REFUND_MONEY;
 	}
 
-	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPOMG_GET_REFUND_BY_CONDITION,
+	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_GET_REFUND_BY_CONDITION,
 			method = RequestMethod.GET,
 			produces = {"application/json"})
 	@ResponseBody
 	public PageDTO getRefundMoneyByCondition(final HttpServletRequest request) throws Exception{
 		Map<String, Object> searchParams = Maps.newConcurrentMap();
+		int refundType = Integer.valueOf(request.getParameter("refundType"));
 		String findBy = request.getParameter("findBy");
 		String detail = request.getParameter("detail");
 		String datemin = request.getParameter("datemin");
 		String datemax = request.getParameter("datemax");
-		Map searchParam =  Maps.newConcurrentMap();
+		searchParams.put("EQ_refundType",refundType);
 		if(StringUtils.isNotEmpty(findBy) && StringUtils.isNotEmpty(detail)){
-			searchParam.put("EQ_"+findBy,detail);
+			searchParams.put("EQ_"+findBy,detail);
 		}
 		if (StringUtils.isNotEmpty(datemin)){
 			searchParams.put("GTE_buyerDate",datemin);
