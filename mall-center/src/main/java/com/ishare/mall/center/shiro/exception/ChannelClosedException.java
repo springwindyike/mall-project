@@ -5,21 +5,21 @@ import org.apache.shiro.authc.AuthenticationException;
 /**
  * Created by Administrator on 2015/11/16.
  */
-public class CloseChannelException extends AuthenticationException {
+public class ChannelClosedException extends AuthenticationException {
 
-    public CloseChannelException(){
+    public ChannelClosedException(){
         super();
     }
 
-    public CloseChannelException(String massage){
+    public ChannelClosedException(String massage){
         super(massage);
     }
 
-    public CloseChannelException(Throwable cause){
+    public ChannelClosedException(Throwable cause){
         super(cause);
     }
 
-    public CloseChannelException(String massage,Throwable cause){
+    public ChannelClosedException(String massage, Throwable cause){
         super(massage,cause);
     }
 }

@@ -2,8 +2,8 @@ package com.ishare.mall.center.shiro.realm;
 
 import com.ishare.mall.center.service.channel.ChannelService;
 import com.ishare.mall.center.service.member.MemberService;
-import com.ishare.mall.center.shiro.exception.CloseChannelException;
-import com.ishare.mall.center.shiro.exception.DeleteAccountException;
+import com.ishare.mall.center.shiro.exception.ChannelClosedException;
+import com.ishare.mall.center.shiro.exception.AccountDeletedException;
 import com.ishare.mall.center.shiro.exception.NoPermissionLoginException;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelDTO;
@@ -81,14 +81,14 @@ public class MemberRealm extends AuthorizingRealm {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();
         }
-        if(memberDTO.getUse() == false){
+        if (!memberDTO.getUse()) {
             log.debug("use:用户被禁用！");
-            throw new DeleteAccountException();
+            throw new AccountDeletedException();
         }
         ChannelDTO channelDTO = channelService.findByChannelId(memberDTO.getChannelId());
-        if(channelDTO.getVisible() == false){
+        if (!channelDTO.getVisible()) {
             log.debug("channelId:用户渠道已关闭！");
-            throw new CloseChannelException();
+            throw new ChannelClosedException();
         }
         MemberType memberType = memberDTO.getMemberType();
         log.debug("用户类型 : " + memberType.getName());
