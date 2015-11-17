@@ -61,7 +61,6 @@
 						<th width="40">订单号</th>
 						<th width="110">商品</th>
 						<th width="20">总价</th>
-						<th width="50">卖家</th>
 						<th width="50">买家</th>
 						<th width="30">支付方式</th>
 						<th width="80">下单时间</th>
@@ -83,7 +82,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
 <script type="text/javascript">	
 var targetTable;
-var url = "${pageContext.request.contextPath}/order/findByChannelId.dhtml";
+var url = "${pageContext.request.contextPath}/order/findBySellerId.dhtml";
 $(function () {
 	 targetTable = $('.table-sort').DataTable({
 		"oLanguage": {
@@ -105,7 +104,6 @@ $(function () {
 			{ "mDataProp": "orderId" },
 			{ "mDataProp": null },
 			{ "mDataProp": "productTotalPrice" },
-			{ "mDataProp": "sellerName" },
 			{ "mDataProp": "createBy" },
 			{ "mDataProp": "paymentWay" },
 			{ "mDataProp": "createTime" },
@@ -132,7 +130,7 @@ $(function () {
 				},
 
 				{
-					"targets" : 7 ,
+					"targets" : 6 ,
 					"render" : function(mDataProp, type, full) {
 						var itemHtml = mDataProp.stateValue;
 						if(itemHtml == '已取消' ){
@@ -142,7 +140,7 @@ $(function () {
 					}
 				} ,
 				{
-					"targets" : 8 ,
+					"targets" : 7 ,
 					"orderable":false,
 					"aTargets":[7],
 					"render" : function(mDataProp, type, full) {

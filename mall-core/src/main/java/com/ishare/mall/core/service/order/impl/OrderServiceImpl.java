@@ -207,6 +207,17 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 
+	@Override
+	public Page<Order> findBySellerId(Integer id, PageRequest pageRequest) throws OrderServiceException {
+		try {
+			Page<Order> page = orderRepository.findBySellerId(id, pageRequest);
+			return page;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OrderServiceException("查询订单失败");
+		}
+	}
+
 	//订单生成流程
 	private OrderDetailDTO initProcessor(ExchangeDTO exchangeDTO) {
 		Order order = new Order();

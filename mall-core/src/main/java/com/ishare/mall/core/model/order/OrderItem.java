@@ -58,6 +58,9 @@ public class OrderItem extends BaseEntity {
     @ManyToOne(cascade= CascadeType.REFRESH, optional=false, fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
+    /**渠道Id**/
+    @Column(length = 11, name="channel_id")
+    private Integer channelId;
     public OrderItem(){}
     public OrderItem(String productName, Integer productId, Float productPrice,
                      Integer amount, String styleName, Long styleId) {
@@ -178,6 +181,14 @@ public class OrderItem extends BaseEntity {
 
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
     }
 
     @Override
