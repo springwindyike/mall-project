@@ -27,6 +27,10 @@ public class Attribute {
     @JoinColumn(name = "attr_group_id")
     private AttributeGroup attributeGroup;
 
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType;
+    
     public AttributeGroup getAttributeGroup() {
         return attributeGroup;
     }

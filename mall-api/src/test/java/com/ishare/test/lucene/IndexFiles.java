@@ -6,4 +6,7 @@ package com.ishare.test.lucene;
  * Version 1.0
  */
 public class IndexFiles {
+    public static void main(String[] args) {
+        System.out.println("hello");
+    }
 }
