@@ -10,6 +10,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.login.css" rel="stylesheet" type="text/css" />
@@ -36,9 +37,9 @@
 		<a href="javascript:;" onclick="member_add('找回密码','${pageContext.request.contextPath}/member/password/find.dhtml','','440')">找回密码</a>
 	</span>
 </div>
-<div class="error">${error}</div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
+      <div class="error" style="color: #ff0000;margin-left:150px;">${error}</div>
     <form class="form form-horizontal" method="POST">
       <div class="row cl">
         <label class="form-label col-3"><i class="Hui-iconfont">&#xe60d;</i></label>

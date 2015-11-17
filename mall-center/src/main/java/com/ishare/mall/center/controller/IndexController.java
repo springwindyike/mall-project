@@ -8,6 +8,8 @@ import com.ishare.mall.center.controller.test.Person;
 import com.ishare.mall.center.controller.test.PersonJsonObject;
 import com.ishare.mall.center.form.register.RegisterForm;
 import com.ishare.mall.center.service.product.ProductService;
+import com.ishare.mall.center.shiro.exception.CloseChannelException;
+import com.ishare.mall.center.shiro.exception.DeleteAccountException;
 import com.ishare.mall.center.shiro.exception.IncorrectCaptchaException;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
@@ -98,8 +100,12 @@ public class IndexController extends BaseController {
             error = "密码错误";
         } else if(exceptionClass instanceof IncorrectCaptchaException) {
             error = "验证码错误";
+        } else if(exceptionClass instanceof DeleteAccountException){
+            error = "用户被禁用";
+        } else if(exceptionClass instanceof CloseChannelException){
+            error = "用户渠道已关闭";
         } else {
-            error = "其他错误 ： ";
+            error = "其他错误";
         }
         log.debug("error" + error);
         model.addAttribute("error", error);
