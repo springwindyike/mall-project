@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImageResource {
     /**
      * 上传图片返回地址
-     * @return
+     * @return String
      */
     @RequestMapping(value="upload", method = RequestMethod.PUT)
     public String index() {
