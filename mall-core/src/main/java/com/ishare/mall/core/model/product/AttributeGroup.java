@@ -16,10 +16,20 @@ public class AttributeGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
+    //属性名称
+    @Column(name = "attr_group_name")
+    private String attriGroupName;
+    
+    public String getAttriGroupName() {
+		return attriGroupName;
+	}
 
-    @ManyToOne(cascade = CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_type_id")
-    private ProductType productType;
+	public void setAttriGroupName(String attriGroupName) {
+		this.attriGroupName = attriGroupName;
+	}
+
+	
 
     public Integer getId() {
         return id;
@@ -27,13 +37,5 @@ public class AttributeGroup {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
     }
 }

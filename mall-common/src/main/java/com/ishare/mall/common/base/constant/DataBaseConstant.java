@@ -22,6 +22,9 @@ public interface DataBaseConstant {
         String TABLE_PRODUCT_NAME                       = Common.TABLE_PRE + "product";
         //商品样式表
         String TABLE_PRODUCT_STYLE_NAME                 = TABLE_PRODUCT_NAME + "_style";
+        
+        //商品公共表
+        String TABLE_PRODUCT_COMMON                = TABLE_PRODUCT_NAME + "_common";
         //商品封面表
         String TABLE_PRODUCT_REVIEW_COVER               = TABLE_PRODUCT_NAME + "_review_cover";
         //商品样式图片表
