@@ -89,5 +89,13 @@ public interface DataBaseConstant {
         String TABLE_PRODUCT_TYPE_BRAND_NAME                 = TABLE_PRODUCT_TYPE_NAME + "_brand";
    //ab
         String TABLE_AB_NAME      															=Common.TABLE_PRE+"ab";
+
+        String TABLE_SUPPLIER_NAME                      = Common.TABLE_PRE + "_supplier";//供应商表名
+
+        String TABLE_SUPPLIER_MEMBER_NAME               = TABLE_SUPPLIER_NAME + "_member";//供应商用户
+
+        String TABLE_SUPPLIER_TYPE_NAME                 = TABLE_SUPPLIER_NAME + "_type";//供应商供货类型
+
+        String TABLE_SUPPLIER_LOG_NAME                  = TABLE_SUPPLIER_NAME + "_log";//供应商LOG
     }
 }
