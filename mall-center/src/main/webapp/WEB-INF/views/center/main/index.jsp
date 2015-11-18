@@ -105,7 +105,8 @@
 			<dt><i class="Hui-iconfont">&#xe627;</i> 订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="${pageContext.request.contextPath}/order/list.dhtml" href="javascript:void(0)">订单列表</a></li>
+					<li><a _href="${pageContext.request.contextPath}/order/list.dhtml" href="javascript:void(0)">渠道订单</a></li>
+					<li><a _href="${pageContext.request.contextPath}/order/sellerList.dhtml" href="javascript:void(0)">销售订单</a></li>
 				</ul>
 			</dd>
 		</dl>

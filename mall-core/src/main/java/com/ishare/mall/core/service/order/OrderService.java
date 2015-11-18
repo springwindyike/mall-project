@@ -86,6 +86,15 @@ public interface OrderService {
 	 * @return
 	 */
 	Page<Order> findByChannelId(Integer channelId, PageRequest pageRequest) throws OrderServiceException;
+
+	/**
+	 * 根据seller id 查询
+	 * @param id
+	 * @param pageRequest
+	 * @return
+	 * @throws OrderServiceException
+	 */
+	Page<Order> findBySellerId(Integer id, PageRequest pageRequest) throws OrderServiceException;
 	
 	/**
 	 * 更新订单状态

@@ -97,12 +97,16 @@ public class Order implements BaseObject {
     /**客服留言**/
     @OneToMany(mappedBy = "order", cascade=CascadeType.REMOVE)
     private Set<OrderItem> orderItems = new HashSet<>();
-    
+    /**卖家Id**/
+    @Column(length = 11,name = "seller_id")
+    private Integer sellerId;
+    @Column(length = 25,name = "seller_name")
+    private String sellerName;
     public Order(){}
 
     public String getOrderId() {
-				return orderId;
-			}
+        return orderId;
+    }
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
@@ -301,5 +305,21 @@ public class Order implements BaseObject {
                 ", expressOrder='" + expressOrder + '\'' +
                 ", expressId='" + expressId + '\'' +
                 '}';
+    }
+
+    public Integer getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(Integer sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
     }
 }
