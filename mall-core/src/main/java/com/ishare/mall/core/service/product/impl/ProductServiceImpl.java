@@ -22,9 +22,9 @@ import com.ishare.mall.core.model.product.Attribute;
 import com.ishare.mall.core.model.product.Fetch;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductAttribute;
+import com.ishare.mall.core.model.product.ProductCommon;
 import com.ishare.mall.core.model.product.ProductIntroImage;
 import com.ishare.mall.core.model.product.ProductPhotoImage;
-import com.ishare.mall.core.model.product.ProductReviewCover;
 import com.ishare.mall.core.repository.information.BrandRepository;
 import com.ishare.mall.core.repository.information.ChannelRepository;
 import com.ishare.mall.core.repository.information.FetchRepository;
@@ -33,7 +33,7 @@ import com.ishare.mall.core.repository.information.ProductIntroImageRepository;
 import com.ishare.mall.core.repository.information.ProductPhotoImageRepository;
 import com.ishare.mall.core.repository.member.MemberRepository;
 import com.ishare.mall.core.repository.product.ProductRepository;
-import com.ishare.mall.core.repository.product.ProductReviewCoverRepository;
+import com.ishare.mall.core.repository.product.ProductCommonRepository;
 import com.ishare.mall.core.repository.product.ProductTypeRepository;
 import com.ishare.mall.core.service.information.AttributeService;
 import com.ishare.mall.core.service.product.ProductService;
@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ChannelRepository channelRepository;
     @Autowired
-    private ProductReviewCoverRepository productReviewCoverRepository;
+    private ProductCommonRepository productCommonRepository;
 
 	@Autowired
 	private AttributeService attributeService;
@@ -100,17 +100,18 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void saveProduct(Product product,List<ProductReviewCover> productReviewCovers) {
+	public void saveProduct(Product product,ProductCommon productCommon) {
 		try {
 			// TODO Auto-generated method stub
 			/*productTypeRepository.save(product.getType());
 			memberRepository.save(product.getCreateBy());
 			brandRepository.save(product.getBrand());
 			channelRepository.save(product.getChannel());*/
+			productCommonRepository.save(productCommon);
 			productRepository.save(product);
-			for(ProductReviewCover productReviewCover:productReviewCovers){
+			/*for(ProductReviewCover productReviewCover:productReviewCovers){
 				productReviewCoverRepository.save(productReviewCover);
-			}
+			}*/
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new ProductServiceException("产品保存失败");}

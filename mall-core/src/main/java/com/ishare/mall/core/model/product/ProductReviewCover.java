@@ -28,12 +28,10 @@ public class ProductReviewCover extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    //一个产品对应图片公共的id
-    @Column(name = "product_common_id",length = 100)
-    private String commonId;
+ 
     //一个产品对应每个图片的url
-    @Column(name = "product_single_url",length = 100)
-    private String url;
+    @Column(name = "products_url",length = 100)
+    private String imageurl;
     
     //产品颜色
     @Column(name = "color_id",length = 100)
@@ -41,8 +39,8 @@ public class ProductReviewCover extends BaseEntity {
     
     @JsonIgnore
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_cover_id")
-    private Product product;
+    @JoinColumn(name = "common_id")
+    private ProductCommon productCOmmon;
  
     public Integer getId() {
         return id;
@@ -52,29 +50,28 @@ public class ProductReviewCover extends BaseEntity {
         this.id = id;
     }
 
-	public String getCommonId() {
-		return commonId;
+	public String getImageurl() {
+		return imageurl;
 	}
 
-	public void setCommonId(String commonId) {
-		this.commonId = commonId;
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getColorId() {
+		return colorId;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setColorId(String colorId) {
+		this.colorId = colorId;
 	}
 
-	public Product getProduct() {
-		return product;
+	public ProductCommon getProductCOmmon() {
+		return productCOmmon;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductCOmmon(ProductCommon productCOmmon) {
+		this.productCOmmon = productCOmmon;
 	}
-
     
 }

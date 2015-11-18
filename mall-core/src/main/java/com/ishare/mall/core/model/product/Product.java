@@ -130,10 +130,6 @@ public class Product extends BaseEntity {
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "origin_id")
     private Origin origin;
-   /* //产品对应的所有封面图
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "product", fetch = FetchType.LAZY)
-    private Set<ProductReviewCover> productReviewCovers = Sets.newConcurrentHashSet();*/
     
     //第三方link
     @Column(name = "origin_link", length = 1024)
