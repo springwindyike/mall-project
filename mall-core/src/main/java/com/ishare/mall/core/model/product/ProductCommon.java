@@ -125,7 +125,13 @@ public class ProductCommon extends BaseEntity {
          //是否自营
     @Column(name = "is_self")
     private Boolean self;
-  
+  //属性组的名称
+    @Column(name ="attribute_Group_Name")
+    private String arrtibuteGroupName;
+    
+    //包含的属性
+    @Column(name ="attribute_name")
+    private String attributeName;
     
 	public String getCode() {
 		return code;
@@ -309,6 +315,22 @@ public class ProductCommon extends BaseEntity {
 
 	public void setSelf(Boolean self) {
 		this.self = self;
+	}
+
+	public String getArrtibuteGroupName() {
+		return arrtibuteGroupName;
+	}
+
+	public void setArrtibuteGroupName(String arrtibuteGroupName) {
+		this.arrtibuteGroupName = arrtibuteGroupName;
+	}
+
+	public String getAttributeName() {
+		return attributeName;
+	}
+
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
 	}
 
 	@Override
