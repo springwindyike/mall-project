@@ -77,8 +77,15 @@ public class OrderResource {
         Response response = new Response();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
         Integer channelId = orderDetailDTO.getChannelId();
+		Integer sellerId = orderDetailDTO.getSellerId();
+		Page<Order> result = null;
         try {
-			Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
+			if (sellerId != null){
+				result = orderService.findBySellerId(sellerId, pageRequest);
+			}else {
+				result = orderService.findByChannelId(channelId, pageRequest);
+			}
+
 			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
 			if(result != null && result.getContent() != null && result.getContent().size()>0){
 				List<Order> list = result.getContent();
@@ -86,10 +93,11 @@ public class OrderResource {
 					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 					BeanUtils.copyProperties(order, innerOrderDetailDTO);
 					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setChannelName(order.getChannel().getName());
 					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 					innerOrderDetailDTO.setStateValue(order.getState().getName());
 					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-
+					innerOrderDetailDTO.setPaymentWay(order.getPaymentWay().getName());
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);

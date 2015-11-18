@@ -39,6 +39,7 @@ public interface CenterViewConstant {
 
 	interface Order {
 		String LIST_ORDER = "order/list";
+		String SELLER_LIST_ORDER = "order/seller_list";
 	}
 
 	interface Main {
