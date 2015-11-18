@@ -48,6 +48,7 @@
 				<c:when test="${orderDetailDTO.items != null && orderDetailDTO.items.size() != 0}">
 					<input name="orderId" type="hidden" value="${orderDetailDTO.orderId}"/>
 					<c:forEach var="item" items="${orderDetailDTO.items}" varStatus="s">
+
 						<tr>
 						<td class="bdl w10"></td>
 						<td class="w50"><div class="pic-thumb"><a href="" target="_blank"><img src="http://localhost:9528/${item.imageUrl}" width="60px"/></a></div></td>

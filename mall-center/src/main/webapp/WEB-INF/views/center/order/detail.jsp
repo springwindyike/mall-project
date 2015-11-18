@@ -83,7 +83,7 @@
   <c:when test="${orderDetailDTO.items != null && orderDetailDTO.items.size() != 0}">
     <c:forEach var="item" items="${orderDetailDTO.items}" >
       <tr>
-      <td class="w60 picture"><div class="size-56x56"><span class="thumb size-56x56"><i></i><a href="" target="_blank"><img width="60px" alt="" src="${item.imageUrl}" /> </a></span></div></td>
+      <td class="w60 picture"><div class="size-56x56"><span class="thumb size-56x56"><i></i><a href="" target="_blank"><img width="60px" alt="" src="http://localhost:9528/${item.imageUrl}" /> </a></span></div></td>
       <td class="w50pre"><p><a href="" target="_blank">${item.productName}</a></p><p></p></td>
       <td class="w96 align-center"><span class="red_common">￥<c:out value="${item.productPrice}"/></span></td>
       <td class="w96 align-center"><span class="red_common">￥<c:out value="${item.productPrice * item.amount}"/></span></td>

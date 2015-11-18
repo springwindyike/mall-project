@@ -145,7 +145,7 @@ $(function () {
 
 						for (var i = 0; i < mDataProp.items.length; i++)
 						{
-							str  = str +'<td class="td-manage"> <img width="60px" alt="" src=http://localhost:9528/' +mDataProp.items[i].imageUrl+' /><a href="" target="_blank">'+mDataProp.items[i].productName+'</a><br>数量：1&nbsp;&nbsp;&nbsp;单价：222<br></td>';
+							str  = str +'<td class="td-manage"> <img width="60px" alt="" src=http://localhost:9528/' +mDataProp.items[i].imageUrl+' /><a href="" target="_blank">'+mDataProp.items[i].productName+'</a><br>数量：'+mDataProp.items[i].amount+'&nbsp;&nbsp;&nbsp;单价：'+mDataProp.items[i].productPrice+'<br></td>';
 						}
 						return str;
 					}

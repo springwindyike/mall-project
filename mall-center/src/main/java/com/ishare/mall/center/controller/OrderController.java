@@ -157,62 +157,6 @@ public class OrderController extends BaseController {
 
 	}
 
-
-//	/**
-//	 * 根据条件查询Order
-//	 * @param searchCondition
-//	 * @param model
-//	 * @param request
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	@RequestMapping(value = CenterURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
-//	@ResponseBody
-//	public PageDTO findBySearchCondition(@CurrentMember CurrentMemberDTO currentMemberDTO, @PathVariable("searchCondition") String searchCondition,Model model,HttpServletRequest request) throws Exception{
-//		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-//		orderDetailDTO.setOrderId(searchCondition);
-//		orderDetailDTO.setChannelId(currentMemberDTO.getChannelId());
-//		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
-//		int displayStart = Integer.parseInt(request.getParameter("start"));
-//
-//		int currentPage = displayStart/displayLength+1;
-//		orderDetailDTO.setLimit(displayLength);
-//		orderDetailDTO.setOffset(currentPage);
-//		ResponseEntity<Response<PageDTO<OrderDetailDTO>>> resultDTO = null;
-//		HttpEntity<OrderDetailDTO> requestDTO = new HttpEntity<OrderDetailDTO>(orderDetailDTO);
-//
-//		if(searchCondition != null && !"".equals(searchCondition)){
-//			try{
-//				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION),
-//						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>() {});
-//
-//			}catch (Exception e){
-//				log.error("call bizp app " + APPURIConstant.Order.REQUEST_MAPPING + APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION + "error");
-//				throw new Exception(e.getMessage());
-//			}
-//		}else {
-//			try{
-//				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID),
-//						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>(){});
-//			}catch (Exception e){
-//				log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_CHANNEL_ID + "error");
-//				throw new Exception(e.getMessage());
-//			}
-//		}
-//		Response response = resultDTO.getBody();
-//		if(response != null) {
-//			if(response.isSuccess()){
-//				PageDTO pageDTO = (PageDTO)response.getData();
-//				model.addAttribute("pageDTO",pageDTO);
-//				return pageDTO;
-//			}else {
-//				throw new Exception(response.getMessage());
-//			}
-//		}else{
-//			throw new Exception("get response error");
-//		}
-//	}
-
 	@RequestMapping(value = "test")
 	@ResponseBody
 	public PageDTO test() {
@@ -376,35 +320,27 @@ public class OrderController extends BaseController {
 	@ResponseBody
 	public PageDTO findBySearchCondition(final HttpServletRequest request,SearchForm searchForm,@CurrentMember CurrentMemberDTO currentMemberDTO) throws Exception{
 		Map<String, Object> searchParams = Maps.newConcurrentMap();
-		boolean flag = true;
 		searchParams.put("EQ_channel.id",currentMemberDTO.getChannelId());
 		if (StringUtils.isNotEmpty(searchForm.getOrderId())){
 			searchParams.put("EQ_orderId",searchForm.getOrderId());
-			flag = false;
 		}
 		if (StringUtils.isNotEmpty(searchForm.getChannelName())){
 			searchParams.put("EQ_channel.name",searchForm.getChannelName());
-			flag = false;
 		}
 		if (StringUtils.isNotEmpty(searchForm.getCreateBy())){
 			searchParams.put("EQ_createBy.account",searchForm.getCreateBy());
-			flag = false;
 		}
 		if (StringUtils.isNotEmpty(searchForm.getDatemin())){
 			searchParams.put("GTE_createTime",searchForm.getDatemin());
-			flag = false;
 		}
 		if (StringUtils.isNotEmpty(searchForm.getDatemax())){
 			searchParams.put("LTE_createTime",searchForm.getDatemax());
-			flag = false;
 		}
 		if (searchForm.getPayWay() != null){
 			searchParams.put("EQ_paymentWay",searchForm.getPayWay());
-			flag = false;
 		}
 		if (searchForm.getStatus() != null){
 			searchParams.put("EQ_state",searchForm.getStatus());
-			flag = false;
 		}
 		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
 		int displayStart = Integer.parseInt(request.getParameter("start"));
@@ -414,24 +350,14 @@ public class OrderController extends BaseController {
 		searchParams.put("offset", currentPage);
 		ResponseEntity<Response<PageDTO<OrderDetailDTO>>> resultDTO = null;
 		HttpEntity<Map> requestDTO = new HttpEntity<Map>(searchParams);
-		if(!flag){
 			try{
-				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION),
+				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION),
 						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>() {});
 
 			}catch (Exception e){
 				log.error("call bizp app " + APPURIConstant.Order.REQUEST_MAPPING + APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL_BY_SEARCHCONDITION + "error");
 				throw new Exception(e.getMessage());
 			}
-		}else {
-			try{
-				resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL),
-						HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderDetailDTO>>>(){});
-			}catch (Exception e){
-				log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL + "error");
-				throw new Exception(e.getMessage());
-			}
-		}
 		Response response = resultDTO.getBody();
 		if(response != null) {
 			if(response.isSuccess()){
