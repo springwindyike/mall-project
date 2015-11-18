@@ -17,6 +17,7 @@
         <module>mall-center</module>
         <module>mall-bizapp</module>
         <module>mall-image</module>
+        <module>mall-supplier</module>
         <!--<module>mall-crawler</module>-->
     </modules>
 
