@@ -30,25 +30,47 @@
 	<div class="pd-20">
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
-  <tr>
-	<td>
-	  <select name="category" style="width:100px; margin:0 10px;" class="input-text">
-		  <option value ="0" selected>全部分类</option>
-		  <option>手机</option>
-		  <option>相机</option>
-	  </select>
-	</td>
-	<td>
-	  <select name="brand" style="width:100px;margin:0 10px;" class="input-text">
-		  <option value ="0" selected>全部品牌</option>
-		  <option>享买</option>
-		  <option>锋果</option>
-	  </select>
-	</td>
-    <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
+				<tr class="text-c">
+					<th>订单号:</th>
+					<td><input type="text" name="" id="searchOrderId" placeholder="订单号" style="width:250px" class="input-text"></td>
+					<th>渠道名称:</th>
+					<td><input type="text" name="" id="searchChannelName" placeholder="渠道名称" style="width:250px" class="input-text"></td>
+					<th>订单状态:</th>
+					<td>
+						<select name="status" style="width:100px; margin:0 10px;" class="input-text" id="searchStatus">
+							<option  value="0" selected>订单状态</option>
+							<option value="CANCEL">已取消</option>
+							<option value="WAIT_CONFIRM">待审核</option>
+							<option value="WAIT_PAYMENT">等待付款</option>
+							<option value="WAIT_DELIVER">等待发货</option>
+							<option value="DELIVERED">已发货</option>
+							<option value="RECEIVED">已收货</option>
+							<option value="WAIT_RECEIVED">待收货</option>
+						</select>
+					</td>
 
-    <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
-  </tr>
+				</tr>
+				<tr class="text-c">
+					<th>下单时间:</th>
+					<td>
+						<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:118px;">
+						-
+						<input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:118px;">
+					</td>
+					<th>买家:</th>
+					<td><input type="text" name="" id="searchCreateBy" placeholder="买家" style="width:250px" class="input-text"></td>
+					<th>支付方式:</th>
+					<td>
+						<select name="payWay" style="width:100px; margin:0 10px;" class="input-text" id="payWay">
+							<option  value="0" selected>支付方式</option>
+							<option value="NET">网上支付</option>
+							<option value="COD">货到付款</option>
+							<option value="BANKREMITTANCE">银行电汇</option>
+							<option value="POSTOFFICEREMITTANCE">邮局汇款</option>
+						</select>
+					</td>
+					<td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i>搜索</button></td>
+				</tr>
 </table>
 
 
@@ -123,7 +145,7 @@ $(function () {
 
 						for (var i = 0; i < mDataProp.items.length; i++)
 						{
-							str  = str +'<td class="td-manage"> <img width="60px" alt="" src=http://localhost:9528/' +mDataProp.items[i].imageUrl+' /><a href="" target="_blank">'+mDataProp.items[i].productName+'</a><br>数量：1&nbsp;&nbsp;&nbsp;单价：222<br></td>';
+							str  = str +'<td class="td-manage"> <img width="60px" alt="" src=http://localhost:9528/' +mDataProp.items[i].imageUrl+' /><a href="" target="_blank">'+mDataProp.items[i].productName+'</a><br>数量：'+mDataProp.items[i].amount+'&nbsp;&nbsp;&nbsp;单价：'+mDataProp.items[i].productPrice+'<br></td>';
 						}
 						return str;
 					}
@@ -191,89 +213,98 @@ $(function () {
 });	
 /*根据条件查询*/
 function searchOrder(){
-    var searchCondition = $("#searchCondition").val();
-    url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition/'+searchCondition+'.dhtml';
-    targetTable.ajax.url(url).load();
+
+	url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition.dhtml?'
+	var orderId = $("#searchOrderId").val();
+	var channelName = $("#searchChannelName").val();
+	var status = $("#searchStatus").val();
+	var datemin = $("#datemin").val();
+	var datemax = $("#datemax").val();
+	var createBy = $("#searchCreateBy").val();
+	var payWay = $("#payWay").val();
+	if(orderId != ""){
+		url = url+'orderId='+orderId+'&';
+	}
+	if(channelName != ""){
+		url = url + 'channelName='+channelName+'&';
+	}
+	if(status!="0"){
+		url = url + 'status='+status+'&';
+	}
+	if(datemin!=""){
+		url = url + 'datemin='+datemin+'&';
+	}
+	if(datemax!=""){
+		url = url + 'datemax='+datemax+'&';
+	}
+	if(createBy!=""){
+		url = url + 'createBy='+createBy+'&';
+	}
+	if(payWay!="0"){
+		url = url + 'payWay='+payWay
+	}
+	targetTable.ajax.url(url).load();
+
 
 }
 
-/*图片-添加*/
-/* function product_add(title,url){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-} */
-/*图片-查看详情*/
-/* function product_show(title,url,id){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-} */
-/*图片-审核*/
-/* function product_shenhe(obj,id){
-	layer.confirm('审核文章？', {
-		btn: ['通过','不通过'], 
-		shade: false
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="product_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布', {icon:6,time:1000});
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="product_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-		$(obj).remove();
-    	layer.msg('未通过', {icon:5,time:1000});
-	});	
-} */
-/*图片-下架  在页面已删除 可改为订但相关*/
-/* function product_stop(obj,id){
-	layer.confirm('确认要下架吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-		$(obj).remove();
-		layer.msg('已下架!',{icon: 5,time:1000});
-	});
-} */
+/*审核-通过*/
+function order_verify(url){
+	if(confirm("确认审核通过？")){
+		$.post(
+				url,
+				function(data) {
+					alert("审核通过");
+					window.location.reload();
+				}
+		)
+	}
+}
 
-/*图片-发布 在页面已删除 可改为订但相关*/
-/* function product_start(obj,id){
-	layer.confirm('确认要发布吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布!',{icon: 6,time:1000});
-	});
-} */
-/*图片-申请上线 在页面已删除 可改为订但相关*/
-/* function product_shenqing(obj,id){
-	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
-	$(obj).parents("tr").find(".td-manage").html("");
-	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
-} */
 /*图片-编辑*/
-/* function product_edit(title,url,id){
+function order_edit(title,url,id){
 	var index = layer.open({
 		type: 2,
+		area: ['700px', '530px'],
 		title: title,
+		fix: false, //不固定
+		maxmin: true,
 		content: url
 	});
-	layer.full(index);
-} */
-/*图片-删除*/
-/* function product_del(obj,id){
-	layer.confirm('确认要删除吗？',function(index){
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',{icon:1,time:1000});
+}
+
+function order_deliver(title,url,id){
+	var index = layer.open({
+		type: 2,
+		area: ['700px', '330px'],
+		title: title,
+		fix: false, //不固定
+		maxmin: true,
+		content: url
 	});
-} */
+	//layer.full(index);
+}
+
+function order_logistics(title,url,id){
+	var index = layer.open({
+		type: 2,
+		area: ['700px', '530px'],
+		title: title,
+		fix: false, //不固定
+		maxmin: true,
+		content: url
+	});
+}
+
+function order_cancel(title,url,id) {
+	var index = layer.open({
+		type: 2,
+		area: ['700px', '330px'],
+		title: title,
+		fix: false, //不固定
+		maxmin: true,
+		content: url
+	});
+}
 </script>
 </body>
