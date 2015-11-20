@@ -1,8 +1,6 @@
 package com.ishare.mall.biz.restful.order;
 
-import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.constant.CodeConstant;
-import com.ishare.mall.common.base.constant.ErrorConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.*;
 import com.ishare.mall.common.base.dto.page.PageDTO;
@@ -12,7 +10,6 @@ import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
-import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.order.*;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -22,7 +19,6 @@ import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
-import org.apache.commons.collections.ListUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

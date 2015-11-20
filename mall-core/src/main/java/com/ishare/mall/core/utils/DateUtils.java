@@ -1,4 +1,4 @@
-package com.ishare.mall.manage.common.utils;
+package com.ishare.mall.core.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 

@@ -1,9 +1,7 @@
 package com.ishare.mall.common.base.dto.order;
 
 import com.ishare.mall.common.base.dto.generic.GenericDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.enumeration.OrderState;
-import com.ishare.mall.common.base.enumeration.PaymentWay;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;

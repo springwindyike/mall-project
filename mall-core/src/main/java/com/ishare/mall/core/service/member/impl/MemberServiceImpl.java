@@ -1,6 +1,7 @@
 package com.ishare.mall.core.service.member.impl;
 
 import com.ishare.mall.common.base.exception.member.MemberServiceException;
+import com.ishare.mall.common.base.utils.DateUntil;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.repository.information.ChannelRepository;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +32,8 @@ public class MemberServiceImpl implements MemberService {
 
 	private static final Logger log = LoggerFactory.getLogger(MemberServiceImpl.class);
 
+
+	private DateUntil dateUntil = new DateUntil();
 	@Autowired
 	private MemberRepository memberRepository;
 	
@@ -112,4 +117,29 @@ public class MemberServiceImpl implements MemberService {
 	public static Logger getLog() {
 		return log;
 	}
+	/**
+	 * 查询所有实体
+	 * @return
+	 */
+	public List<Member> findAll(){
+		List<Member> members = memberRepository.findAll();
+		System.out.println(members);
+		return  members;
+	};
+	/**
+	 * 查询本周新增的会员
+	 */
+	public Page<Member> findAllThisWeek(PageRequest pageRequest) {
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MINUTE, 0);
+		Page<Member> page = memberRepository.findThisWeek(cal.getTime(), pageRequest);
+		return page;
+
+	}
+
 }

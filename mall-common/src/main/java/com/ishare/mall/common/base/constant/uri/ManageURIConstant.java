@@ -47,6 +47,16 @@ public interface ManageURIConstant {
 		// 首页
 		String INDEX = "main";
 	}
+	interface Welcome {
+		// manage欢迎
+		String INDEX = "welcome";
+	}
+	interface Member{
+		String REQUEST_MAPPING = "/member";
+		//查询本周的会员/member
+		String FindThisWeek = "/findthisweek";
+		String REQUEST_MAPPING_SHOW = "/list";
+	}
 
 	interface Channel{
 		String REQUEST_MAPPING = "/channel";

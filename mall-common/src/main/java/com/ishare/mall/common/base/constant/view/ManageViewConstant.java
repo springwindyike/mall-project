@@ -30,6 +30,15 @@ public interface ManageViewConstant {
 	
 	interface Main {
 		String MAIN = "main/index";
+
+	}
+	interface Welcome {
+		String WELCOME = "welcome/index";
+		String FINDTHISWEEK ="member/list";
+
+	}
+	interface  Member {
+		String LIST_THISWEEKMEMBER = "member/list";
 	}
 
 	interface Channel{

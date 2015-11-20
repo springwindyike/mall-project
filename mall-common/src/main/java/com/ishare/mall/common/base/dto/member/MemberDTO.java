@@ -6,14 +6,11 @@ import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.enumeration.MemberType;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Created by YinLin on 2015/9/1.
  * Description :
  * Version 1.0
  */
-@XmlRootElement
 @JsonAutoDetect
 public class MemberDTO extends GenericDTO {
 
