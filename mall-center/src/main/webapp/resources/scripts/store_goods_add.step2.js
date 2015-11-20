@@ -23,7 +23,7 @@ $(function(){
     });
     
     /* 商品图片ajax上传 */
-    $('#goods_image').fileupload({
+/*    $('#goods_image').fileupload({
         dataType: 'json',
         url: SITEURL + '/index.php?act=store_goods_add&op=image_upload&upload_type=uploadedfile',
         formData: {name:'goods_image'},
@@ -41,11 +41,11 @@ $(function(){
                 $('img[nctype="goods_image"]').attr('src',param.thumb_name);
             }
         }
-    });
+    });*/
 
     /* ajax打开图片空间 */
     // 商品主图使用
-    $('a[nctype="show_image"]').unbind().ajaxContent({
+  /*  $('a[nctype="show_image"]').unbind().ajaxContent({
         event:'click', //mouseover
         loaderType:"img",
         loadingMsg:SHOP_TEMPLATES_URL+"/images/loading.gif",
@@ -91,7 +91,7 @@ $(function(){
             }
             $('i[nctype="add_album_i"]').attr('data_type', _counter);
         }
-    });
+    });*/
     /* ajax打开图片空间 end */
     
     // 商品属性
@@ -102,7 +102,7 @@ $(function(){
         $(this).attr('name',name);
     });
     
-    // 修改规格名称
+  // 修改规格名称
     $('dl[nctype="spec_group_dl"]').on('click', 'input[type="checkbox"]', function(){
         pv = $(this).parents('li').find('span[nctype="pv_name"]');
         if(typeof(pv.find('input').val()) == 'undefined'){
@@ -112,11 +112,11 @@ $(function(){
         }
     });
     
-    $('span[nctype="pv_name"] > input').live('change',function(){
+  /*  $('span[nctype="pv_name"] > input').live('change',function(){
         change_img_name($(this));       // 修改相关的颜色名称
         into_array();           // 将选中的规格放入数组
         goods_stock_set();      // 生成库存配置
-    });
+    });*/
     
 
     // 运费部分显示隐藏
@@ -125,7 +125,7 @@ $(function(){
             $(this).nextAll('div[nctype="div_freight"]').show();
     });
     
-    // 商品所在地
+/*    // 商品所在地
     var area_select = $("#province_id");
     areaInit(area_select,0);//初始化地区
     $("#province_id").change(function (){
@@ -149,7 +149,7 @@ $(function(){
                 }
             }
         }
-     });
+     });*/
     
     // 定时发布时间
     $('#starttime').datepicker({dateFormat: 'yy-mm-dd'});
@@ -272,20 +272,20 @@ $(function(){
         $('.ncsc-brand-select > .ncsc-brand-select-container').hide();
     });
     //搜索品牌列表滚条绑定
-    $('div[nctype="brandList"]').perfectScrollbar();
+/*    $('div[nctype="brandList"]').perfectScrollbar();
     $('select[name="b_id"]').change(function(){
         getBrandName();
     });
     $('input[name="b_name"]').focus(function(){
         $('.ncsc-brand-select > .ncsc-brand-select-container').show();
-    });
+    });*/
 	//下拉隐藏显示品牌列表
         $('.add-on[nctype="add-on"]').click(function(){
             $('.ncsc-brand-select > .ncsc-brand-select-container').fadeToggle();
         });
     
     //Ajax提示
-    $('.tip').poshytip({
+   /* $('.tip').poshytip({
         className: 'tip-yellowsimple',
         showTimeout: 1,
         alignTo: 'target',
@@ -304,7 +304,7 @@ $(function(){
         offsetX: 5,
         offsetY: 0,
         allowTipHover: false
-    });
+    });*/
 
     /* 虚拟控制 */
     // 虚拟商品有效期
@@ -717,7 +717,7 @@ function setArea(area1, area2) {
 }
 
 // 插入品牌
-function insertBrand(param, search) {
+/*function insertBrand(param, search) {
     $('div[nctype="brandList"]').show();
     $('div[nctype="noBrandList"]').hide();
     var _ul = $('ul[nctype="brand_list"]');
@@ -729,8 +729,8 @@ function insertBrand(param, search) {
     }
     $.each(param, function(i, n){
         $('<li data-id="' + n.brand_id + '" data-name="' + n.brand_name + '"><em>' + n.brand_initial + '</em>' + n.brand_name + '</li>').appendTo(_ul);
-    });
+    });*/
 
     //搜索品牌列表滚条绑定
-    $('div[nctype="brandList"]').perfectScrollbar('update');
-}
+   /* $('div[nctype="brandList"]').perfectScrollbar('update')
+};*/

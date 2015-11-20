@@ -101,6 +101,9 @@
 						</a>
 						</div>
 						<div style="display: none;" nctype="specAdd2">
+							<input class="text w60" type="text" maxlength="20" placeholder="规格值名称">
+						<a class="ncsc-btn ncsc-btn-acidblue ml5 mr5" nctype="specAddSubmit" href="javascript:void(0);">确认</a>
+						<a class="ncsc-btn ncsc-btn-orange" nctype="specAddCancel" href="javascript:void(0);">取消</a>
 						</li>
 						</ul>
 						</dd>
@@ -180,7 +183,8 @@
                 </div></th>
               <th class="w100">商家货号</th>
                 </tr></thead>
-            <tbody nc_type="spec_table"><tr><input type="hidden" value="" nc_type="i_456457|id" name="spec[i_456457][goods_id]"><input type="hidden" value="456" name="spec[i_456457][color]"><td><input type="hidden" value="红色" name="spec[i_456457][sp_value][456]">红色</td><td><input type="hidden" value="L" name="spec[i_456457][sp_value][457]">L</td><td><input type="text" value="" nc_type="i_456457|marketprice" data_type="marketprice" name="spec[i_456457][marketprice]" class="text price"><em class="add-on"><i class="icon-renminbi"></i></em></td><td><input type="text" value="" nc_type="i_456457|price" data_type="price" name="spec[i_456457][price]" class="text price"><em class="add-on"><i class="icon-renminbi"></i></em></td><td><input type="text" value="" nc_type="i_456457|stock" data_type="stock" name="spec[i_456457][stock]" class="text stock"></td><td><input type="text" value="" nc_type="i_456457|alarm" data_type="alarm" name="spec[i_456457][alarm]" class="text stock"></td><td><input type="text" value="" nc_type="i_456457|sku" name="spec[i_456457][sku]" class="text sku"></td></tr></tbody>
+            <tbody nc_type="spec_table">
+            </tbody>
           </table>
           <p class="hint">点击<i class="icon-edit"></i>可批量修改所在列的值。</p>
         </dd>
@@ -248,7 +252,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.validation.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/common.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/member.js"></script> 
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/store_goods_add.step2.js"></script>
 <script type="text/javascript">
 $(function(){
 	$("#showType").hide();
