@@ -16,6 +16,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/base.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/seller_center.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
@@ -70,6 +72,119 @@
 			<div class="formControls col-4">
 					<form:input type="text" path="marketPrice" id="" placeholder="" value="" class="input-text" style="width:90%"/>
 				元</div>
+		</div>
+				<div class="ncsc-form-goods">
+						<dl class="spec-bg" spec_img="t" nctype="spec_group_dl" nc_type="spec_group_dl_0">
+						<dt>
+						<input class="text w60 tip2 tr" type="text" data-param="{id:1,name:'颜色'}" nctype="spec_name" maxlength="4" value="颜色" title="自定义规格类型名称，规格值名称最多不超过4个字" name="sp_name[1]">
+						：
+						</dt>
+						<dd nctype="sp_group_val">
+						<ul class="spec">
+						<li>
+						<span nctype="input_checkbox">
+						<input class="sp_val" type="checkbox" name="sp_val[1][456]" nc_type="456" value="红色">
+						</span>
+						<span nctype="pv_name">红色</span>
+						</li>
+						<li>
+						<span nctype="input_checkbox">
+						<input class="sp_val" type="checkbox" name="sp_val[1][459]" nc_type="459" value="黑色">
+						</span>
+						<span nctype="pv_name">黑色</span>
+						</li>
+						<li data-param="{gc_id:35,sp_id:1,url:'http://10.100.100.15/shop/index.php?act=store_goods_add&op=ajax_add_spec'}">
+						<div nctype="specAdd1" style="display: block;">
+						<a class="ncsc-btn" nctype="specAdd" href="javascript:void(0);">
+						<i class="icon-plus"></i>
+						添加规格值
+						</a>
+						</div>
+						<div style="display: none;" nctype="specAdd2">
+						</li>
+						</ul>
+						</dd>
+						</dl>
+						
+						<dl class="spec-bg" nctype="spec_group_dl" nc_type="spec_group_dl_1">
+						<dt>
+						<input class="text w60 tip2 tr" type="text" data-param="{id:15,name:'尺码'}" nctype="spec_name" maxlength="4" value="尺码" title="自定义规格类型名称，规格值名称最多不超过4个字" name="sp_name[15]">
+						：
+						</dt>
+						<dd>
+						<ul class="spec">
+						<li>
+						<span nctype="input_checkbox">
+						<input type="checkbox" name="sp_val[15][457]" nc_type="457" value="L">
+						</span>
+						<span nctype="pv_name">L</span>
+						</li>
+						<li>
+						<span nctype="input_checkbox">
+						<input type="checkbox" name="sp_val[15][458]" nc_type="458" value="X">
+						</span>
+						<span nctype="pv_name">X</span>
+						</li>
+						<li data-param="{gc_id:35,sp_id:15,url:'http://10.100.100.15/shop/index.php?act=store_goods_add&op=ajax_add_spec'}">
+						<div nctype="specAdd1">
+						<a class="ncsc-btn" nctype="specAdd" href="javascript:void(0);">
+						<i class="icon-plus"></i>
+						添加规格值
+						</a>
+						</div>
+						<div style="display:none;" nctype="specAdd2">
+						<input class="text w60" type="text" maxlength="20" placeholder="规格值名称">
+						<a class="ncsc-btn ncsc-btn-acidblue ml5 mr5" nctype="specAddSubmit" href="javascript:void(0);">确认</a>
+						<a class="ncsc-btn ncsc-btn-orange" nctype="specAddCancel" href="javascript:void(0);">取消</a>
+						</div>
+						</li>
+						</ul>
+						</dd>
+						</dl>
+						<dl style="overflow: visible; display: block;" class="spec-bg" nc_type="spec_dl">
+        <dt>库存配置：</dt>
+        <dd class="spec-dd">
+          <table border="0" cellspacing="0" cellpadding="0" class="spec_table">
+            <thead>
+                                        <tr><th nctype="spec_name_1">颜色</th>
+                          <th nctype="spec_name_15">尺码</th>
+                                          <th class="w90"><span class="red">*</span>市场价
+                <div class="batch"><i title="批量操作" class="icon-edit"></i>
+                  <div style="display:none;" class="batch-input">
+                    <h6>批量设置价格：</h6>
+                    <a class="close" href="javascript:void(0)">X</a>
+                    <input type="text" class="text price" name="">
+                    <a data-type="marketprice" class="ncsc-btn-mini" href="javascript:void(0)">设置</a><span class="arrow"></span></div>
+                </div></th>
+              <th class="w90"><span class="red">*</span>价格                <div class="batch"><i title="批量操作" class="icon-edit"></i>
+                  <div style="display:none;" class="batch-input">
+                    <h6>批量设置价格：</h6>
+                    <a class="close" href="javascript:void(0)">X</a>
+                    <input type="text" class="text price" name="">
+                    <a data-type="price" class="ncsc-btn-mini" href="javascript:void(0)">设置</a><span class="arrow"></span></div>
+                </div></th>
+              <th class="w60"><span class="red">*</span>库存                <div class="batch"><i title="批量操作" class="icon-edit"></i>
+                  <div style="display:none;" class="batch-input">
+                    <h6>批量设置库存：</h6>
+                    <a class="close" href="javascript:void(0)">X</a>
+                    <input type="text" class="text stock" name="">
+                    <a data-type="stock" class="ncsc-btn-mini" href="javascript:void(0)">设置</a><span class="arrow"></span></div>
+                </div></th>
+              <th class="w70">预警值
+                <div class="batch"><i title="批量操作" class="icon-edit"></i>
+                  <div style="display:none;" class="batch-input">
+                    <h6>批量设置预警值：</h6>
+                    <a class="close" href="javascript:void(0)">X</a>
+                    <input type="text" class="text stock" name="">
+                    <a data-type="alarm" class="ncsc-btn-mini" href="javascript:void(0)">设置</a><span class="arrow"></span></div>
+                </div></th>
+              <th class="w100">商家货号</th>
+                </tr></thead>
+            <tbody nc_type="spec_table"><tr><input type="hidden" value="" nc_type="i_456457|id" name="spec[i_456457][goods_id]"><input type="hidden" value="456" name="spec[i_456457][color]"><td><input type="hidden" value="红色" name="spec[i_456457][sp_value][456]">红色</td><td><input type="hidden" value="L" name="spec[i_456457][sp_value][457]">L</td><td><input type="text" value="" nc_type="i_456457|marketprice" data_type="marketprice" name="spec[i_456457][marketprice]" class="text price"><em class="add-on"><i class="icon-renminbi"></i></em></td><td><input type="text" value="" nc_type="i_456457|price" data_type="price" name="spec[i_456457][price]" class="text price"><em class="add-on"><i class="icon-renminbi"></i></em></td><td><input type="text" value="" nc_type="i_456457|stock" data_type="stock" name="spec[i_456457][stock]" class="text stock"></td><td><input type="text" value="" nc_type="i_456457|alarm" data_type="alarm" name="spec[i_456457][alarm]" class="text stock"></td><td><input type="text" value="" nc_type="i_456457|sku" name="spec[i_456457][sku]" class="text sku"></td></tr></tbody>
+          </table>
+          <p class="hint">点击<i class="icon-edit"></i>可批量修改所在列的值。</p>
+        </dd>
+      </dl>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-2">图片上传：</label>
@@ -126,6 +241,14 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.js"></script>  --%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/seller.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/waypoints.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.ui.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery.validation.min.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/common.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/member.js"></script> 
+
 <script type="text/javascript">
 $(function(){
 	$("#showType").hide();
@@ -882,6 +1005,134 @@ function dispaly_child_sort(parentId){
 		              })
 	 }
 };
+var spec_group_checked = ['',''];
+var str = '';
+var V = new Array();
+
+var spec_group_checked_0 = new Array();
+var spec_group_checked_1 = new Array();
+
+$(function(){
+	$('dl[nctype="spec_group_dl"]').on('click', 'span[nctype="input_checkbox"] > input[type="checkbox"]',function(){
+		into_array();
+		goods_stock_set();
+	});
+
+	// 提交后不没有填写的价格或库存的库存配置设为默认价格和0
+	// 库存配置隐藏式 里面的input加上disable属性
+	$('input[type="submit"]').click(function(){
+		$('input[data_type="price"]').each(function(){
+			if($(this).val() == ''){
+				$(this).val($('input[name="g_price"]').val());
+			}
+		});
+		$('input[data_type="stock"]').each(function(){
+			if($(this).val() == ''){
+				$(this).val('0');
+			}
+		});
+		$('input[data_type="alarm"]').each(function(){
+			if($(this).val() == ''){
+				$(this).val('0');
+			}
+		});
+		if($('dl[nc_type="spec_dl"]').css('display') == 'none'){
+			$('dl[nc_type="spec_dl"]').find('input').attr('disabled','disabled');
+		}
+	});
+	
+});
+
+// 将选中的规格放入数组
+function into_array(){
+		
+		spec_group_checked_0 = new Array();
+		$('dl[nc_type="spec_group_dl_0"]').find('input[type="checkbox"]:checked').each(function(){
+			i = $(this).attr('nc_type');
+			v = $(this).val();
+			c = null;
+			if ($(this).parents('dl:first').attr('spec_img') == 't') {
+				c = 1;
+			}
+			spec_group_checked_0[spec_group_checked_0.length] = [v,i,c];
+		});
+
+		spec_group_checked[0] = spec_group_checked_0;
+
+		
+		spec_group_checked_1 = new Array();
+		$('dl[nc_type="spec_group_dl_1"]').find('input[type="checkbox"]:checked').each(function(){
+			i = $(this).attr('nc_type');
+			v = $(this).val();
+			c = null;
+			if ($(this).parents('dl:first').attr('spec_img') == 't') {
+				c = 1;
+			}
+			spec_group_checked_1[spec_group_checked_1.length] = [v,i,c];
+		});
+
+		spec_group_checked[1] = spec_group_checked_1;
+
+}
+
+// 生成库存配置
+function goods_stock_set(){
+    //  店铺价格 商品库存改为只读
+    $('input[name="g_price"]').attr('readonly','readonly').css('background','#E7E7E7 none');
+    $('input[name="g_storage"]').attr('readonly','readonly').css('background','#E7E7E7 none');
+
+    $('dl[nc_type="spec_dl"]').show();
+    str = '<tr>';
+    for (var i_0=0; i_0<spec_group_checked[0].length; i_0++){td_1 = spec_group_checked[0][i_0];
+for (var i_1=0; i_1<spec_group_checked[1].length; i_1++){td_2 = spec_group_checked[1][i_1];
+var tmp_spec_td = new Array();
+tmp_spec_td[0] = td_1[1];
+tmp_spec_td[1] = td_2[1];
+tmp_spec_td.sort(function(a,b){return a-b});
+var spec_bunch = 'i_';
+spec_bunch += tmp_spec_td[0];
+spec_bunch += tmp_spec_td[1];
+str += '<input type="hidden" name="spec['+spec_bunch+'][goods_id]" nc_type="'+spec_bunch+'|id" value="" />';if (td_1[2] != null) { str += '<input type="hidden" name="spec['+spec_bunch+'][color]" value="'+td_1[1]+'" />';}str +='<td><input type="hidden" name="spec['+spec_bunch+'][sp_value]['+td_1[1]+']" value="'+td_1[0]+'" />'+td_1[0]+'</td>';
+if (td_2[2] != null) { str += '<input type="hidden" name="spec['+spec_bunch+'][color]" value="'+td_2[1]+'" />';}str +='<td><input type="hidden" name="spec['+spec_bunch+'][sp_value]['+td_2[1]+']" value="'+td_2[0]+'" />'+td_2[0]+'</td>';
+str +='<td><input class="text price" type="text" name="spec['+spec_bunch+'][marketprice]" data_type="marketprice" nc_type="'+spec_bunch+'|marketprice" value="" /><em class="add-on"><i class="icon-renminbi"></i></em></td><td><input class="text price" type="text" name="spec['+spec_bunch+'][price]" data_type="price" nc_type="'+spec_bunch+'|price" value="" /><em class="add-on"><i class="icon-renminbi"></i></em></td><td><input class="text stock" type="text" name="spec['+spec_bunch+'][stock]" data_type="stock" nc_type="'+spec_bunch+'|stock" value="" /></td><td><input class="text stock" type="text" name="spec['+spec_bunch+'][alarm]" data_type="alarm" nc_type="'+spec_bunch+'|alarm" value="" /></td><td><input class="text sku" type="text" name="spec['+spec_bunch+'][sku]" nc_type="'+spec_bunch+'|sku" value="" /></td></tr>';
+}
+}
+    if(str == '<tr>'){
+        //  店铺价格 商品库存取消只读
+        $('input[name="g_price"]').removeAttr('readonly').css('background','');
+        $('input[name="g_storage"]').removeAttr('readonly').css('background','');
+        $('dl[nc_type="spec_dl"]').hide();
+    }else{
+        $('tbody[nc_type="spec_table"]').empty().html(str)
+            .find('input[nc_type]').each(function(){
+                s = $(this).attr('nc_type');
+                try{$(this).val(V[s]);}catch(ex){$(this).val('');};
+                if ($(this).attr('data_type') == 'marketprice' && $(this).val() == '') {
+                    $(this).val($('input[name="g_marketprice"]').val());
+                }
+                if ($(this).attr('data_type') == 'price' && $(this).val() == ''){
+                    $(this).val($('input[name="g_price"]').val());
+                }
+                if ($(this).attr('data_type') == 'stock' && $(this).val() == ''){
+                    $(this).val('0');
+                }
+                if ($(this).attr('data_type') == 'alarm' && $(this).val() == ''){
+                    $(this).val('0');
+                }
+            }).end()
+            .find('input[data_type="stock"]').change(function(){
+                computeStock();    // 库存计算
+            }).end()
+            .find('input[data_type="price"]').change(function(){
+                computePrice();     // 价格计算
+            }).end()
+            .find('input[nc_type]').change(function(){
+                s = $(this).attr('nc_type');
+                V[s] = $(this).val();
+            });
+    }
+}
+
 </script>
 </body>
 </html>
