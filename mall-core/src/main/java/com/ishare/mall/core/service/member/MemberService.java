@@ -7,6 +7,8 @@ import com.ishare.mall.core.model.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * Created by YinLin on 2015/8/12.
  * Description :
@@ -79,4 +81,15 @@ public interface MemberService {
 	 * @param member
 	 */
 	void update(Member member)throws MemberServiceException;
+
+	/**
+	 * 查询所有实体
+	 * @return
+	 */
+	List<Member> findAll();
+	/**
+	 * 查询所有本周新增会员
+	 * @return
+	 */
+	public Page<Member> findAllThisWeek(PageRequest pageRequest);
 }

@@ -5,14 +5,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Created by YinLin on 2015/8/27.
  * Description : DTO父类
  * Version 1.0
  */
-@XmlRootElement
 @JsonAutoDetect
 public class GenericDTO implements BaseObject {
     /**

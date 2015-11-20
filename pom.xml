@@ -665,10 +665,10 @@
             <properties>
                 <db.host>localhost</db.host>
                 <db.username>root</db.username>
-                <db.password>123456</db.password>
+                <db.password>admin</db.password>
                 <schema.name>mall</schema.name>
                 <schema.user>mall</schema.user>
-                <schema.password>123456</schema.password>
+                <schema.password>admin</schema.password>
             </properties>
             <repositories>
                 <repository>

@@ -1,14 +1,19 @@
 package com.ishare.mall.manage.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.google.common.collect.Maps;
-import com.ishare.mall.common.base.constant.CodeConstant;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
+import com.ishare.mall.common.base.constant.view.ManageViewConstant;
 import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
-import com.ishare.mall.common.base.dto.order.*;
+import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
+import com.ishare.mall.common.base.dto.order.OrderRefundDTO;
+import com.ishare.mall.common.base.dto.order.OrderResultDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.annoation.CurrentManageUser;
+import com.ishare.mall.manage.controller.base.BaseController;
 import com.ishare.mall.manage.form.SearchForm;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
@@ -20,20 +25,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
-import com.ishare.mall.common.base.constant.view.ManageViewConstant;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.general.Response;
-import com.ishare.mall.manage.controller.base.BaseController;
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -61,7 +56,7 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
-	public String list() {
+	 public String list() {
 		return ManageViewConstant.Order.LIST_ORDER;
 	}
 	

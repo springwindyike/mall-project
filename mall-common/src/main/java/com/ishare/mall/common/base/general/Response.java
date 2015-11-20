@@ -1,25 +1,10 @@
 package com.ishare.mall.common.base.general;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.springframework.http.HttpStatus;
 
-import com.ishare.mall.common.base.dto.express.ExpressDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.BrandDTO;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
-import com.ishare.mall.common.base.dto.test.TestDTO;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/22.
@@ -27,22 +12,7 @@ import com.ishare.mall.common.base.dto.test.TestDTO;
  * Version 1.0
  */
 
-@XmlRootElement
-@XmlAccessorType(value = XmlAccessType.PROPERTY)
-@XmlSeeAlso(
-        {
-                TestDTO.class,
-                ProductDetailDTO.class,
-                ProductDTO.class,
-                PageDTO.class,
-                ProductTypeDTO.class,
-                OrderDetailDTO.class,
-                ExpressDTO.class,
-                TreeNodeDTO.class,
-                BrandDTO.class
-                
-        }
-)
+
 @JsonAutoDetect
 public class Response<T> implements Serializable {
 

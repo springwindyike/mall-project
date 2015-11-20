@@ -1,8 +1,17 @@
 package com.ishare.mall.manage.controller;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.collect.Maps;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
+import com.ishare.mall.common.base.constant.view.ManageViewConstant;
+import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
+import com.ishare.mall.common.base.dto.page.PageDTO;
+import com.ishare.mall.common.base.dto.product.ProductDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
+import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
+import com.ishare.mall.common.base.general.Response;
+import com.ishare.mall.manage.annoation.CurrentManageUser;
+import com.ishare.mall.manage.controller.base.BaseController;
+import com.ishare.mall.manage.form.ProductSearchForm;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,20 +28,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.common.collect.Maps;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
-import com.ishare.mall.common.base.constant.view.ManageViewConstant;
-import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
-import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
-import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductTypeDTO;
-import com.ishare.mall.common.base.general.Response;
-import com.ishare.mall.manage.annoation.CurrentManageUser;
-import com.ishare.mall.manage.controller.base.BaseController;
-import com.ishare.mall.manage.form.ProductSearchForm;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Created by liaochenglei on 2015/8/13.

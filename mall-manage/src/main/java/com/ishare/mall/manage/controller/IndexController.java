@@ -1,24 +1,26 @@
 package com.ishare.mall.manage.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
+import com.ishare.mall.common.base.constant.view.ManageViewConstant;
 import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
+import com.ishare.mall.manage.annoation.CurrentManageUser;
+import com.ishare.mall.manage.controller.base.BaseController;
+import com.ishare.mall.manage.exception.IncorrectCaptchaException;
+import com.ishare.mall.manage.service.manageuser.ManageUserService;
+import com.ishare.mall.manage.service.member.MemberService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
-import com.ishare.mall.common.base.constant.view.ManageViewConstant;
-import com.ishare.mall.manage.annoation.CurrentManageUser;
-import com.ishare.mall.manage.controller.base.BaseController;
-import com.ishare.mall.manage.exception.IncorrectCaptchaException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by YinLin on 2015/9/22.
@@ -28,7 +30,13 @@ import com.ishare.mall.manage.exception.IncorrectCaptchaException;
 @Controller
 @RequestMapping
 public class IndexController extends BaseController {
-	
+
+	@Autowired
+	private ManageUserService manageUserService;
+
+    @Autowired
+	private MemberService memberService;
+
 	private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 	
 	public static Logger getLog() {
@@ -86,5 +94,17 @@ public class IndexController extends BaseController {
     public String main(@CurrentManageUser CurrentManageUserDTO currentManageUserDTO) {
         return ManageViewConstant.Main.MAIN;
     }
-	
+
+	/**
+	 *访问欢迎主界面
+	 * @param currentManageUserDTO
+	 * @return
+	 */
+	@RequestMapping(value = ManageURIConstant.Welcome.INDEX,method=RequestMethod.GET)
+	public String welcome(@CurrentManageUser CurrentManageUserDTO currentManageUserDTO, Model model) {
+		model.addAttribute("memberNum", memberService.findAll().size());
+		return ManageViewConstant.Welcome.WELCOME;
+	}
+
+
 }

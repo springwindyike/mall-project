@@ -90,7 +90,7 @@ public interface DataBaseConstant {
    //ab
         String TABLE_AB_NAME      															=Common.TABLE_PRE+"ab";
 
-        String TABLE_SUPPLIER_NAME                      = Common.TABLE_PRE + "_supplier";//供应商表名
+        String TABLE_SUPPLIER_NAME                      = Common.TABLE_PRE + "supplier";//供应商表名
 
         String TABLE_SUPPLIER_MEMBER_NAME               = TABLE_SUPPLIER_NAME + "_member";//供应商用户
 
