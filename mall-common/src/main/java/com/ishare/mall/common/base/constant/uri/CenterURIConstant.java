@@ -35,7 +35,10 @@ public interface CenterURIConstant {
    	 String ALL_TYPE_PRODUCT ="/allType";
    	 String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
     }
-
+    interface Attribute{
+    	String REQUEST_MAPPING ="/attribute";
+    	String REQUEST_MAPPING_SAVE ="/add";
+    }
   String INDEX = "index";
 
   interface Brand {

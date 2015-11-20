@@ -82,6 +82,11 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_UPDATE = "/update";
         String REQUEST_MAPPING_ADD = "/add";
     }
+    
+    interface Attribute {
+    	String REQUEST_MAPPING ="/attribute";
+    	String REQUEST_MAPPING_SAVE ="/add";
+    }
     interface Banner {
         String REQUEST_MAPPING = "/banner";
         String REQUEST_MAPPING_ALL_BANNER = "/allbanner";
