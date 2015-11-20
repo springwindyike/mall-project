@@ -107,6 +107,8 @@
 				<ul>
 					<li><a _href="${pageContext.request.contextPath}/order/list.dhtml" href="javascript:void(0)">渠道订单</a></li>
 					<li><a _href="${pageContext.request.contextPath}/order/sellerList.dhtml" href="javascript:void(0)">销售订单</a></li>
+					<li><a _href="${pageContext.request.contextPath}/order/orderRefundMoney.dhtml" href="javascript:void(0)">退款管理</a></li>
+					<li><a _href="${pageContext.request.contextPath}/order/orderRefundProduct.dhtml" href="javascript:void(0)">退货管理</a></li>
 				</ul>
 			</dd>
 		</dl>

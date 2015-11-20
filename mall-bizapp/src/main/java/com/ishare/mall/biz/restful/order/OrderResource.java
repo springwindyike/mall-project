@@ -764,7 +764,7 @@ public class OrderResource {
 	}
 
 	/**
-	 * 确认退款
+	 * 是否退款
 	 * @param orderRefundDTO
 	 * @return
 	 */
@@ -774,15 +774,30 @@ public class OrderResource {
 			consumes = {"application/json", "application/xml"})
 	public Response go2Confirm(@RequestBody OrderRefundDTO orderRefundDTO){
 		OrderRefund orderRefund = orderService.getRefundDetail(orderRefundDTO.getRefundId());
-		orderRefund.setAdminMessage(orderRefundDTO.getAdminMessage());
-		orderRefund.setRefundState(CodeConstant.Refund.MANAGE_CONFIRM);
-		orderRefund.setManageDate(new Date());
-		orderRefund.setManageId(orderRefundDTO.getManageId());
+		if (orderRefundDTO.getSellerMessage() != null ){
+			orderRefund.setCenterState(orderRefundDTO.getCenterState());
+			orderRefund.setSellerMessage(orderRefundDTO.getSellerMessage());
+			orderRefund.setCenterDate(new Date());
+			orderRefund.setCenterId(orderRefundDTO.getCenterId());
+			if (orderRefundDTO.getRefundType() == 1){
+				orderRefund.setRefundState(CodeConstant.Refund.REFUND_STATE_WAIT_MANAGE_CONFIRM);
+			}
+		}else {
+			orderRefund.setAdminMessage(orderRefundDTO.getAdminMessage());
+			orderRefund.setRefundState(CodeConstant.Refund.REFUND_STATE_CONFIRM);
+			orderRefund.setManageDate(new Date());
+			orderRefund.setManageId(orderRefundDTO.getManageId());
+		}
 		orderService.saveRefund(orderRefund);
 		return new Response();
 	}
 
-	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPOMG_GET_REFUND_BY_CONDITION, method = RequestMethod.POST,
+	/**
+	 * 条件查询退款退货列表
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_BY_CONDITION, method = RequestMethod.POST,
 			headers = "Accept=application/xml, application/json",
 			produces = {"application/json"},
 			consumes = {"application/json", "application/xml"})
@@ -826,6 +841,29 @@ public class OrderResource {
 		}
 		return response;
 	}
+	/**
+	 * 确认收到货
+	 * @param refundId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_REFUND_CONFIRM, method = RequestMethod.POST,
+			headers     = "Accept=application/xml, application/json",
+			produces    = {"application/json"})
+	public Response refundConfirm(@NotEmpty @PathVariable("refundId") String refundId){
+		Response response = new Response();
+		try {
+			OrderRefund orderRefund = orderService.getRefundDetail(refundId);
+			orderRefund.setProductState(CodeConstant.Refund.PRODUCT_STATE_RECEIVE);
+			orderRefund.setReceiveDate(new Date());
+			orderService.saveRefund(orderRefund);
+		}catch (Exception e){
+			log.error(e.getLocalizedMessage());
+			response.setSuccess(false);
+		}
+
+		return response;
+	}
 	public String getDateStr(Date date){
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if (date == null) return CodeConstant.Refund.BLANK;
@@ -840,9 +878,9 @@ public class OrderResource {
 	}
 
 	public String getRefundStateStr(Integer state){
-		if (state == CodeConstant.Refund.MANAGE_CONFIRM) return CodeConstant.Refund.MANAGE_CONFIRM_STRING;
-		if (state == CodeConstant.Refund.WAIT_MANAGE_CONFIRM) return CodeConstant.Refund.WAIT_MANAGE_CONFIRM_STRING;
-		if (state == CodeConstant.Refund.MANAGE_NOT_CONFIRM) return CodeConstant.Refund.MANAGE_NOT_CONFIRM_STRING;
+		if (state == CodeConstant.Refund.REFUND_STATE_CONFIRM) return CodeConstant.Refund.REFUND_STATE_CONFIRM_STRING;
+		if (state == CodeConstant.Refund.REFUND_STATE_WAIT_MANAGE_CONFIRM) return CodeConstant.Refund.REFUND_STATE_WAIT_MANAGE_CONFIRM_STRING;
+		if (state == CodeConstant.Refund.REFUND_STATE_WAIT_CENTER_CONFIRM) return CodeConstant.Refund.REFUND_STATE_WAIT_CENTER_CONFIRM_STRING;
 		return CodeConstant.Refund.BLANK;
 	}
 }

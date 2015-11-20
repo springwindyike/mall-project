@@ -44,6 +44,12 @@ public interface CenterViewConstant {
 		String LOGISTICS_ORDER = "order/logistics";
 		String DELIVER_ORDER = "order/deliver";
 		String CANCEL_ORDER = "order/cancel";
+		String REFUND_PRODUCT = "order/refund/list_product";
+		String REFUND_MONEY_DETAIL = "order/refund/detail";
+		String FORWARD_TO_REFUND_PAGE = "order/refund/confirm";
+		String EDIT_ORDER = "order/edit";
+		String REFUND_MONEY = "order/refund/list_money";
+		String REFUND_RECEIVE = "order/refund/receive";
 	}
 
 	interface Main {

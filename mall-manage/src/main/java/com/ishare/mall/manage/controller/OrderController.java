@@ -502,6 +502,7 @@ public class OrderController extends BaseController {
 		map.put("EQ_refundType",refundType);
 		map.put("limit", displayLength);
 		map.put("offset", currentPage);
+		map.put("EQ_refundState",CodeConstant.Refund.REFUND_STATE_WAIT_MANAGE_CONFIRM);
 		HttpEntity<Map> requestDTO = new HttpEntity<Map>(map);
 		ResponseEntity<Response<PageDTO<OrderRefundDTO>>> responseEntity = null;
 		try {
@@ -552,7 +553,7 @@ public class OrderController extends BaseController {
 	public String confirmRefund(@NotEmpty @PathVariable("refundId") String refundId,Model model) throws Exception {
 		ResponseEntity<Response<OrderRefundDTO>> responseEntity = null;
 		try {
-			responseEntity =  restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_DETAIL_BY_REFUND_ID),
+			responseEntity =  restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GO_TO_CONFIRM),
 					HttpMethod.POST, null, new ParameterizedTypeReference<Response<OrderRefundDTO>>() {}, refundId);
 		}catch (Exception e){
 			log.error("error",e.getStackTrace());
@@ -575,7 +576,7 @@ public class OrderController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "forward2ConfirmRefund/{refundId}")
-	public String forwar2ConfirmRefund(@NotEmpty @PathVariable("refundId") String refundId,Model model) throws Exception{
+	public String forward2ConfirmRefund(@NotEmpty @PathVariable("refundId") String refundId,Model model) throws Exception{
 		ResponseEntity<Response<OrderRefundDTO>> responseEntity = null;
 		try {
 			responseEntity =  restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_DETAIL_BY_REFUND_ID),
@@ -624,6 +625,12 @@ public class OrderController extends BaseController {
 		return ManageViewConstant.Order.REFUND_MONEY;
 	}
 
+	/**
+	 * 按条件查询脱货退款订单
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = ManageURIConstant.Order.REQUEST_MAPPING_GET_REFUND_BY_CONDITION,
 			method = RequestMethod.GET,
 			produces = {"application/json"})
@@ -653,7 +660,7 @@ public class OrderController extends BaseController {
 		ResponseEntity<Response<PageDTO<OrderRefundDTO>>> resultDTO = null;
 		HttpEntity<Map> requestDTO = new HttpEntity<Map>(searchParams);
 		try{
-			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPOMG_GET_REFUND_BY_CONDITION),
+			resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING,APPURIConstant.Order.REQUEST_MAPPING_GET_REFUND_BY_CONDITION),
 					HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<OrderRefundDTO>>>() {});
 
 		}catch (Exception e){
