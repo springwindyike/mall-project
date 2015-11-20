@@ -20,9 +20,12 @@ import com.ishare.mall.core.model.order.Order;
 public interface OrderRepository extends JpaRepository<Order, String>, JpaSpecificationExecutor {
     @Query("SELECT o FROM Order o WHERE o.createBy=?1")
     List<Order> findByCreateBy(String createBy);
-    
+
 	@Query("SELECT o FROM Order o WHERE o.channel.id = ?1")
 	Page<Order> findByChannelId(Integer channelId, Pageable pageable);
+
+	@Query("SELECT o FROM Order o WHERE o.sellerId = ?1")
+	Page<Order> findBySellerId(Integer sellerId, Pageable pageable);
 
 	@Query("SELECT o FROM Order o WHERE o.orderId like ?1 and o.channel.id = ?2")
 	Page<Order> findBycondition(String orderId, Integer channelId, Pageable pageable);

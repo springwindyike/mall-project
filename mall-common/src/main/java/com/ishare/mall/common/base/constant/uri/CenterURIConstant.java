@@ -79,6 +79,18 @@ public interface CenterURIConstant {
 		String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
 		String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition/{searchCondition}";
 		String REQUEST_MAPPING_FIND_BY_ID = "/findById/{id}";
+		String REQUESR_MAPPING_FIND_BY_SELLER_ID = "/findBySellerId";
+		String REQUEST_MAPPING_SELLER_LIST = "/sellerList";
+		String REQUEST_MAPPING_EDIT = "/edit/{id}";
+		String REQUEST_MAPPING_EDIT_SUBMIT = "/edit";
+		String REQUEST_MAPPING_DELIVER = "/deliver/{id}";
+		String REQUEST_MAPPING_DELIVER_SUBMIT = "/deliver";
+		String REQUEST_MAPPING_LOGISTICS = "/logistics/{order}/{id}";
+		String REQUEST_MAPPING_CANCEL = "/cancel/{id}";
+		String REQUEST_MAPPING_CANCEL_SUBMIT = "/cancel";
+		String REQUEST_MAPPING_GET_ORDER_LIST = "/getOrderList";
+		String REQUEST_MAPPING_GET_REFUND_BY_CONDITION = "/getRefundMoneyByCondition";
+		String REQUEST_MAPPING_FIND_BY_SEARCH_CONDITION = "/findBySearchCondition";
 	}
 
 	interface Main {

@@ -1,15 +1,19 @@
 package com.ishare.mall.center.shiro.realm;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.ishare.mall.center.service.channel.ChannelService;
+import com.ishare.mall.center.service.member.MemberService;
+import com.ishare.mall.center.shiro.exception.ChannelClosedException;
+import com.ishare.mall.center.shiro.exception.AccountDeletedException;
+import com.ishare.mall.center.shiro.exception.NoPermissionLoginException;
+import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.dto.channel.ChannelDTO;
+import com.ishare.mall.common.base.dto.member.MemberDTO;
+import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
+import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
+import com.ishare.mall.common.base.dto.permission.PermissionDTO;
+import com.ishare.mall.common.base.dto.permission.RoleDTO;
 import com.ishare.mall.common.base.enumeration.MemberType;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -21,14 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.ishare.mall.center.service.member.MemberService;
-import com.ishare.mall.center.shiro.exception.NoPermissionLoginException;
-import com.ishare.mall.common.base.constant.uri.APPURIConstant;
-import com.ishare.mall.common.base.dto.member.MemberDTO;
-import com.ishare.mall.common.base.dto.member.MemberPermissionDTO;
-import com.ishare.mall.common.base.dto.member.MemberRoleDTO;
-import com.ishare.mall.common.base.dto.permission.PermissionDTO;
-import com.ishare.mall.common.base.dto.permission.RoleDTO;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/9/6.
@@ -43,6 +42,9 @@ public class MemberRealm extends AuthorizingRealm {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private ChannelService channelService;
 
     public MemberRealm() {
 
@@ -75,10 +77,18 @@ public class MemberRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException{
         String account = (String) token.getPrincipal();
         MemberDTO memberDTO = memberService.findByAccount(account);
-
         if (memberDTO == null) {
             log.debug("account : 用户不存在！");
             throw new UnknownAccountException();
+        }
+        if (!memberDTO.getUse()) {
+            log.debug("use:用户被禁用！");
+            throw new AccountDeletedException();
+        }
+        ChannelDTO channelDTO = channelService.findByChannelId(memberDTO.getChannelId());
+        if (!channelDTO.getVisible()) {
+            log.debug("channelId:用户渠道已关闭！");
+            throw new ChannelClosedException();
         }
         MemberType memberType = memberDTO.getMemberType();
         log.debug("用户类型 : " + memberType.getName());

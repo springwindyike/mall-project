@@ -30,25 +30,47 @@
 	<div class="pd-20">
 		<div class="text-c"> 
 			<table  style="width:auto;" border="0">
-  <tr>
-	<td>
-	  <select name="category" style="width:100px; margin:0 10px;" class="input-text">
-		  <option value ="0" selected>全部分类</option>
-		  <option>手机</option>
-		  <option>相机</option>
-	  </select>
-	</td>
-	<td>
-	  <select name="brand" style="width:100px;margin:0 10px;" class="input-text">
-		  <option value ="0" selected>全部品牌</option>
-		  <option>享买</option>
-		  <option>锋果</option>
-	  </select>
-	</td>
-    <td><input type="text" name="" id="searchCondition" placeholder=" 请输入关键字、订单号" style="width:250px" class="input-text"></td>
+				<tr class="text-c">
+					<th>订单号:</th>
+					<td><input type="text" name="" id="searchOrderId" placeholder="订单号" style="width:250px" class="input-text"></td>
+					<th>渠道名称:</th>
+					<td><input type="text" name="" id="searchChannelName" placeholder="渠道名称" style="width:250px" class="input-text"></td>
+					<th>订单状态:</th>
+					<td>
+						<select name="status" style="width:100px; margin:0 10px;" class="input-text" id="searchStatus">
+							<option  value="0" selected>订单状态</option>
+							<option value="CANCEL">已取消</option>
+							<option value="WAIT_CONFIRM">待审核</option>
+							<option value="WAIT_PAYMENT">等待付款</option>
+							<option value="WAIT_DELIVER">等待发货</option>
+							<option value="DELIVERED">已发货</option>
+							<option value="RECEIVED">已收货</option>
+							<option value="WAIT_RECEIVED">待收货</option>
+						</select>
+					</td>
 
-    <td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button></td>
-  </tr>
+				</tr>
+				<tr class="text-c">
+					<th>下单时间:</th>
+					<td>
+						<input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:118px;">
+						-
+						<input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:118px;">
+					</td>
+					<th>买家:</th>
+					<td><input type="text" name="" id="searchCreateBy" placeholder="买家" style="width:250px" class="input-text"></td>
+					<th>支付方式:</th>
+					<td>
+						<select name="payWay" style="width:100px; margin:0 10px;" class="input-text" id="payWay">
+							<option  value="0" selected>支付方式</option>
+							<option value="NET">网上支付</option>
+							<option value="COD">货到付款</option>
+							<option value="BANKREMITTANCE">银行电汇</option>
+							<option value="POSTOFFICEREMITTANCE">邮局汇款</option>
+						</select>
+					</td>
+					<td><button name="" id="" class="btn btn-success" type="submit" onclick="searchOrder();"><i class="Hui-iconfont">&#xe665;</i>搜索</button></td>
+				</tr>
 </table>
 
 
@@ -57,50 +79,19 @@
 		<div class="mt-20">
 			<table class="table table-border table-bordered table-bg table-hover table-sort">
 				<thead>
-					<tr class="text-c">
-						<!-- <th width="40"><input name="" type="checkbox" value=""></th> -->
-						<th width="110">订单号</th>
-						<th width="70">商品图片</th>
-						<th width="120">商品名称</th>
-<!-- 						<th>商品来源</th>
-						<th width="110">联系方式</th> -->
-						<th width="90">单价（元）</th>
-						<th width="50">数量</th>
-						<th width="88">购买账号</th>
-						<th width="80">收货人</th>
-						<th>顾客留言</th>
-						<th width="90">付款（元）</th>
-						<th width="80">生成时间</th>
-						<th width="80">订单状态</th>
-						<!-- <th width="70">操作</th> -->
+					<tr class="text-l">
+						<th width="40">订单号</th>
+						<th width="110">商品</th>
+						<th width="20">总价</th>
+						<th width="50">卖家</th>
+						<th width="50">买家</th>
+						<th width="30">支付方式</th>
+						<th width="80">下单时间</th>
+						<th width="40">订单状态</th>
+						<th width="80">操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<!-- <tr class="text-c va-m"> -->
-						<!-- <td rowspan="2"><input name="" type="checkbox" value=""></td> -->
-<%-- 						<td>20150825000002</td>
-						
-						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>
-						<td class="text-l"><a style="text-decoration:none" onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>
-						<td>小明</td>
-						<td>要大一号的，发顺丰。</td>
-						<td>121.1元</td>
-						<td>3</td>
-						<td>2015-08-25 19:22:17</td>
-						<td>热的方</td>
-						<td><span class="price">356.0</span> 元</td>
-						<td class="td-status"><span class="label label-success radius">已发布</span></td>
-						<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit('订单编辑','product-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a><!--  <a style="text-decoration:none" class="ml-5" onClick="product_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> --></td>
-					</tr> --%>
-<%-- 					<tr class="text-c va-m">
-						<td><a onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>
-						<td class="text-l"><a style="text-decoration:none" onClick="product_show('哥本哈根橡木地板','product-show.html','10001')" href="javascript:;"><b class="text-success">圣象</b> 哥本哈根橡木地板KS8373</a></td>
-						<td>小明</td>
-						<td>要大一号的，发顺丰。</td>
-						<td>121.1元</td>
-						<td>3</td>
-					</tr> --%>
-					
 				</tbody>
 			</table>
 		</div>
@@ -133,82 +124,59 @@ $(function () {
 			"dataSrc": "content"
 		},
 		"aoColumns": [
-			{ "mDataProp": "orderId" },//订单号
-			{ "mDataProp": null },//商品图片
-			{ "mDataProp": null },//商品名称
-			{ "mDataProp": null },//单价（元）
-			{ "mDataProp": null },//数量
-			{ "mDataProp": "createBy" },//购买账号
-			{ "mDataProp": "recipients" },//收货人
-			{ "mDataProp": "note" },//顾客留言
-			{ "mDataProp": "totalPrice" },//付款（元）
-			{ "mDataProp": "createTime" },//生成时间
-			{ "mDataProp": null }  //订单状态
-			//{ "mDataProp": null }//操作
+			{ "mDataProp": "orderId" },
+			{ "mDataProp": null },
+			{ "mDataProp": "productTotalPrice" },
+			{ "mDataProp": "sellerName" },
+			{ "mDataProp": "createBy" },
+			{ "mDataProp": "paymentWay" },
+			{ "mDataProp": "createTime" },
+			{ "mDataProp": null },
+			{ "mDataProp": null }
 		],
-			
-			"createdRow" : function(row, mDataProp, dataIndex){
-			   $(row).addClass('text-c');
-			},
-			
+
+
+		 "createdRow" : function(row, mDataProp, dataIndex){
+			 $(row).addClass('text-l');
+		 },
 			"columnDefs" : [
 				{
 					"targets" : 1 ,
 					"render" : function(mDataProp, type, full) {
-						return '<a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a>';
-					}
-				},
-				{
-					"targets" : 2 ,
-					"render" : function(mDataProp, type, full) {
-						var itemHtml = "";
-						for (var i = 0; i < mDataProp.items.length; i++) 
-							{
-							itemHtml = mDataProp.items[i].productName;
-							}
-						return '<a style="text-decoration:none" onClick="product_show(\''+itemHtml+'\',\'product-show.html\',\'10001\')" href="javascript:;">'+itemHtml+'</a>';
-					}
-				},
-				{
-					"targets" : 3 ,
-					"render" : function(mDataProp, type, full) {
-						var itemHtml = "";
-						for (var i = 0; i < mDataProp.items.length; i++) 
-							{
-							itemHtml = mDataProp.items[i].productPrice;
-							}
-						return itemHtml;
+						var str = ""  ;
+						alert(mDataProp.items.length);
+
+						for (var i = 0; i < mDataProp.items.length; i++)
+						{
+							alert(111111);
+							str  = str +'<td class="td-manage"> <img width="60px" alt="" src=http://localhost:9528/' +mDataProp.items[i].imageUrl+' /><a href="" target="_blank">'+mDataProp.items[i].productName+'</a><br>数量：'+mDataProp.items[i].amount+'&nbsp;&nbsp;&nbsp;单价：'+mDataProp.items[i].productPrice+'<br></td>';
 						}
-				},
-				{
-					"targets" : 4 ,
-					"render" : function(mDataProp, type, full) {
-						var itemHtml = "";
-						for (var i = 0; i < mDataProp.items.length; i++) 
-							{
-							itemHtml = mDataProp.items[i].amount;
-							}
-						return itemHtml;
+						return str;
 					}
 				},
+
 				{
-					"targets" : 10 ,
+					"targets" : 7 ,
 					"render" : function(mDataProp, type, full) {
 						var itemHtml = mDataProp.stateValue;
-						if(itemHtml == '已取消' || itemHtml == '待审核' ){
+						if(itemHtml == '已取消' ){
 							return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
 						}
-						return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>'; 
-					 }
-				}/* ,
-				{
-					"targets" : 11 ,
-					"orderable":false,
-					"aTargets":[11],
-					"render" : function(mDataProp, type, full) {
-						return '<td class="td-manage"> <a style="text-decoration:none" class="ml-5" onClick="product_edit(\'订单编辑\',\'product-add.html\',\'10001\')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a></td>';
+						return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>';
 					}
-				} */
+				} ,
+				{
+					"targets" : 8 ,
+					"orderable":false,
+					"aTargets":[7],
+					"render" : function(mDataProp, type, full) {
+						var str = '<td class="td-manage">';
+							str = str + '<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+									+'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'+'</td>';
+						return str;
+					}
+				}
+
 			]
 			});
 	
@@ -224,10 +192,36 @@ $(function () {
 });	
 /*根据条件查询*/
 function searchOrder(){
-    var searchCondition = $("#searchCondition").val();
-    url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition/'+searchCondition+'.dhtml';
-    targetTable.ajax.url(url).load();
-
+	url = '${pageContext.request.contextPath}'+'/order/findBySearchCondition.dhtml?'
+	var orderId = $("#searchOrderId").val();
+	var channelName = $("#searchChannelName").val();
+	var status = $("#searchStatus").val();
+	var datemin = $("#datemin").val();
+	var datemax = $("#datemax").val();
+	var createBy = $("#searchCreateBy").val();
+	var payWay = $("#payWay").val();
+	if(orderId != ""){
+		url = url+'orderId='+orderId+'&';
+	}
+	if(channelName != ""){
+		url = url + 'channelName='+channelName+'&';
+	}
+	if(status!="0"){
+		url = url + 'status='+status+'&';
+	}
+	if(datemin!=""){
+		url = url + 'datemin='+datemin+'&';
+	}
+	if(datemax!=""){
+		url = url + 'datemax='+datemax+'&';
+	}
+	if(createBy!=""){
+		url = url + 'createBy='+createBy+'&';
+	}
+	if(payWay!="0"){
+		url = url + 'payWay='+payWay
+	}
+	targetTable.ajax.url(url).load();
 }
 
 /*图片-添加*/

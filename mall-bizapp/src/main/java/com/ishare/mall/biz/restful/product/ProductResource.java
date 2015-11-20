@@ -32,7 +32,7 @@ import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductReviewCover;
+import com.ishare.mall.core.model.product.ProductCommon;
 import com.ishare.mall.core.model.product.ProductStyle;
 import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.member.MemberService;
@@ -79,27 +79,24 @@ public class ProductResource {
     			Channel channel = new Channel();
     			channel.setId(productDetailDTO.getChannelId());
     			ProductType productType = productTypeService.findOne(productDetailDTO.getTypeId());
-    			List<ProductReviewCover> productReviewCovers = new ArrayList<ProductReviewCover>();
-    			String URL = productDetailDTO.getUrl();
-        String[] urlArray = URL.split("_");
-        for(int index = 1 ;index<urlArray.length;index++){
-        	String signleUrl = urlArray[index];
-       	 String[] temp = signleUrl.split("/");
-        	String commonId =temp[4]+temp[5].substring(0,9);
-        	ProductReviewCover productReviewCover =new ProductReviewCover();
-        	productReviewCover.setProduct(product);
-        	productReviewCover.setUrl(urlArray[index]);
-        	productReviewCover.setCommonId(commonId);
-        	productReviewCovers.add(productReviewCover);
-        }
+    			ProductCommon productCommon = new ProductCommon();
+    			productCommon.setArrtibuteGroupName("黑色");
+    			productCommon.setAttributeName("黑色:L");
+    			BeanUtils.copyProperties(productDetailDTO, productCommon);
+    			productCommon.setBrand(brand);
+    			productCommon.setChannel(channel);
+    			productCommon.setCreateBy(member);
+    			productCommon.setUpdateBy(member);
+    			productCommon.setType(productType);
     			product.setBrand(brand);
     			product.setCreateBy(member);
     			product.setUpdateBy(member);
     			product.setChannel(channel);
     			product.setType(productType);
+    		 product.setProductCommon(productCommon);
     			
     			try {
-					productService.saveProduct(product,productReviewCovers);
+					productService.saveProduct(product,productCommon);
 				} catch (Exception e) { 
 									log.error(e.getMessage(), e);
 	            Response response = new Response();
@@ -134,7 +131,7 @@ public class ProductResource {
     			productType.setName("衬衫");
     			productType.setNote("非常好");
     			productType.setLevel(3);
-    			List<ProductReviewCover> productReviewCovers = new ArrayList<ProductReviewCover>();
+    			ProductCommon productCommon = new ProductCommon();
     			product.setBrand(brand);
     			product.setCreateBy(member);
     			product.setUpdateBy(member);
@@ -142,7 +139,7 @@ public class ProductResource {
     			product.setType(productType);
     			product.setId(productDetailDTO.getId());
     			try {
-					productService.saveProduct(product,productReviewCovers);
+					productService.saveProduct(product,productCommon);
 				} catch (Exception e) {
 					log.error(e.getMessage(), e);
 					response.setMessage("系统错误");

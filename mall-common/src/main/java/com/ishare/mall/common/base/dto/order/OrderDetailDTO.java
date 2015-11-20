@@ -73,10 +73,10 @@ public class OrderDetailDTO extends GenericDTO {
 	private OrderDeliverDTO deliver;
 	//订购者信息
 	private OrderContactDTO contact;
-	
 	//日志信息
 	private String log;
-    
+	private Integer sellerId;
+	private String sellerName;
 	public String getOrderId() {
 		return orderId;
 	}
@@ -253,4 +253,21 @@ public class OrderDetailDTO extends GenericDTO {
 	public void setPaymentWay(String paymentWay) {
 		this.paymentWay = paymentWay;
 	}
+
+	public Integer getSellerId() {
+		return sellerId;
+	}
+
+	public void setSellerId(Integer sellerId) {
+		this.sellerId = sellerId;
+	}
+
+	public String getSellerName() {
+		return sellerName;
+	}
+
+	public void setSellerName(String sellerName) {
+		this.sellerName = sellerName;
+	}
+
 }

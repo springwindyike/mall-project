@@ -1,20 +1,29 @@
 package com.ishare.mall.core.model.product;
 
-import com.google.common.collect.Sets;
+import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_NAME;
+
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.ishare.mall.core.model.base.BaseEntity;
 import com.ishare.mall.core.model.information.Brand;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.information.Origin;
 import com.ishare.mall.core.model.member.Member;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import javax.persistence.*;
-
-import java.util.Date;
-import java.util.Set;
-
-import static com.ishare.mall.common.base.constant.DataBaseConstant.Table.TABLE_PRODUCT_NAME;
 
 /**
  * Created by YinLin on 2015/7/30.
@@ -80,6 +89,7 @@ public class Product extends BaseEntity {
     //默认的图片地址 冗余
     @Column(name = "default_img_url",length = 200)
     private String defaultImageUrl;
+
     //库存
     @Column(name = "product_inventory",length = 6)
     private Integer inventory;
@@ -108,6 +118,11 @@ public class Product extends BaseEntity {
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_type_id")
     private ProductType type;
+    
+    @JsonIgnore
+    @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "common_id")
+    private ProductCommon productCommon;
     //是否自营
     @Column(name = "is_self")
     private Boolean self;
@@ -115,10 +130,6 @@ public class Product extends BaseEntity {
     @ManyToOne(cascade= CascadeType.REFRESH, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "origin_id")
     private Origin origin;
-    //产品对应的所有封面图
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "product", fetch = FetchType.LAZY)
-    private Set<ProductReviewCover> productReviewCovers = Sets.newConcurrentHashSet();
     
     //第三方link
     @Column(name = "origin_link", length = 1024)
@@ -385,7 +396,15 @@ public class Product extends BaseEntity {
         this.fetch = fetch;
     }
 
-    @Override
+    public ProductCommon getProductCommon() {
+		return productCommon;
+	}
+
+	public void setProductCommon(ProductCommon productCommon) {
+		this.productCommon = productCommon;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

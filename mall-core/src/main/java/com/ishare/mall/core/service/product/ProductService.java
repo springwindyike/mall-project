@@ -1,15 +1,15 @@
 package com.ishare.mall.core.service.product;
 
-import com.ishare.mall.common.base.dto.product.FetchProductDTO;
-import com.ishare.mall.core.exception.ProductServiceException;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductReviewCover;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
-import java.util.Map;
+import com.ishare.mall.common.base.dto.product.FetchProductDTO;
+import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.model.product.Product;
+import com.ishare.mall.core.model.product.ProductCommon;
 
 /**
  * Created by liaochenglei on 2015/9/22.
@@ -61,7 +61,7 @@ public abstract interface ProductService {
   * 保存产品
   * @param product
   */
-    void saveProduct(Product product,List<ProductReviewCover> productReviewCover) throws ProductServiceException;
+    void saveProduct(Product product,ProductCommon productCommon) throws ProductServiceException;
     
     /**
      * 保存产品

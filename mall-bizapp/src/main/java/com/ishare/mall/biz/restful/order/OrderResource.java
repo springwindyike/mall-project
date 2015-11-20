@@ -73,8 +73,15 @@ public class OrderResource {
         Response response = new Response();
         PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
         Integer channelId = orderDetailDTO.getChannelId();
+		Integer sellerId = orderDetailDTO.getSellerId();
+		Page<Order> result = null;
         try {
-			Page<Order> result = orderService.findByChannelId(channelId, pageRequest);
+			if (sellerId != null){
+				result = orderService.findBySellerId(sellerId, pageRequest);
+			}else {
+				result = orderService.findByChannelId(channelId, pageRequest);
+			}
+
 			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
 			if(result != null && result.getContent() != null && result.getContent().size()>0){
 				List<Order> list = result.getContent();
@@ -82,10 +89,11 @@ public class OrderResource {
 					OrderDetailDTO innerOrderDetailDTO = new OrderDetailDTO();
 					BeanUtils.copyProperties(order, innerOrderDetailDTO);
 					innerOrderDetailDTO.setChannelId(order.getChannel().getId());
+					innerOrderDetailDTO.setChannelName(order.getChannel().getName());
 					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 					innerOrderDetailDTO.setStateValue(order.getState().getName());
 					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-
+					innerOrderDetailDTO.setPaymentWay(order.getPaymentWay().getName());
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
@@ -455,23 +463,30 @@ public class OrderResource {
     
 	/**
 	 * 根据条件查询 center
-	 * @param orderDetailDTO
+	 * @param map
 	 * @return
 	 */
     @RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.POST,
-            headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
-    public Response findBySearchCondition(@RequestBody OrderDetailDTO orderDetailDTO){
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json", "application/xml"},
+			consumes = {"application/json", "application/xml"})
+    public Response findBySearchCondition(@RequestBody Map map){
 		List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
 		Response response = new Response();
-		String orderId = orderDetailDTO.getOrderId();
-		int offset = orderDetailDTO.getOffset();
-		int limit = orderDetailDTO.getLimit();
-		Integer channelId = orderDetailDTO.getChannelId();
+		//String orderId = orderDetailDTO.getOrderId();
+		int offset = (int)map.get("offset");
+		int limit = (int)map.get("limit");
+		map.remove("offset");
+		map.remove("limit");
+		if(map.get("EQ_paymentWay") !=null ){
+			map.put("EQ_paymentWay", PaymentWay.valueOf((String)map.get("EQ_paymentWay")));
+		}
+		if(map.get("EQ_state") !=null ){
+			map.put("EQ_state", OrderState.valueOf((String) map.get("EQ_state")));
+		}
 		try{
 			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
-			Page<Order> result = orderService.findBycondition(orderId, channelId, pageRequest);
+			Page<Order> result = orderService.findAllBycondition(map, pageRequest);
 			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
 			if(result != null && result.getContent() != null && result.getContent().size()>0){
 				List<Order> list = result.getContent();
@@ -482,7 +497,7 @@ public class OrderResource {
 					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 					innerOrderDetailDTO.setStateValue(order.getState().getName());
 					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-
+					innerOrderDetailDTO.setPaymentWay(order.getPaymentWay().getName());
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
@@ -562,6 +577,7 @@ public class OrderResource {
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
 					listOrder.add(innerOrderDetailDTO);
+
 				}
 				pageDTO.setContent(listOrder);
 				pageDTO.setTotalPages(result.getTotalPages());

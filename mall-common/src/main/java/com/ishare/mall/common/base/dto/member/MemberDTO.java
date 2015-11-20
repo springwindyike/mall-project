@@ -33,6 +33,7 @@ public class MemberDTO extends GenericDTO {
     private PageDTO pageDTO;
     private Gender gender;
     private String channelName;
+    private boolean use;
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -167,5 +168,13 @@ public class MemberDTO extends GenericDTO {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public boolean getUse() {
+        return use;
+    }
+
+    public void setUse(boolean use) {
+        this.use = use;
     }
 }

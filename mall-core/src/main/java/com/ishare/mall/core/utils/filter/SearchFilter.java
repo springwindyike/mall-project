@@ -57,15 +57,9 @@ public class SearchFilter {
 
             if (filedName.toLowerCase().contains("time")) {
                 value = DateTime.parse(value.toString()).toDate();
-                if (operator.equals(Operator.LTE)){
-                    value = DateUntil.getTheEndOfDay((Date)value);
-                }
             }
             if(filedName.toLowerCase().contains("date")){
                 value = DateTime.parse(value.toString()).toDate();
-                if (operator.equals(Operator.LTE)){
-                    value = DateUntil.getTheEndOfDay((Date)value);
-                }
             }
             // 创建searchFilter
             SearchFilter filter = new SearchFilter(filedName, operator, value);
