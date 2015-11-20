@@ -2,6 +2,7 @@ package com.ishare.mall.biz.restful.member;
 
 import com.ishare.mall.common.base.constant.CommonConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
 import com.ishare.mall.common.base.dto.member.*;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
@@ -27,7 +28,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.List;
 @RestController
 @RequestMapping(APPURIConstant.Member.REQUEST_MAPPING)
 public class MemberResource {
-	
+
     private static final Logger log = LoggerFactory.getLogger(MemberResource.class);
     @Autowired
     private MemberService memberService;
@@ -52,35 +52,35 @@ public class MemberResource {
     }
 
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_LOGIN,
-                    method = RequestMethod.POST, headers = "Accept=application/xml, application/json",
-                    produces = {"application/json", "application/xml"},
-                    consumes = {"application/json", "application/xml"})
+            method = RequestMethod.POST, headers = "Accept=application/xml, application/json",
+            produces = {"application/json", "application/xml"},
+            consumes = {"application/json", "application/xml"})
     public MemberLoginResultDTO login(@RequestBody MemberLoginDTO memberLoginDTO) {
         log.debug(memberLoginDTO.toString());
         Member member = memberService.findByAccount(memberLoginDTO.getAccount());
         MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
-        if(null != member){
-                    if (memberLoginDTO.getPassword().equals(member.getPassword())) {
-                        MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
-                        memberLoginResultDTO.setCode(200);
-			        memberLoginResultDTO.setSuccess(true);
-                        memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
-                    } else {
-                        MemberDetailDTO memberDetaiREQUEST_MAPPING_GET_BY_ACCOUNTlDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
-			        memberLoginResultDTO.setCode(200);
-			        memberLoginResultDTO.setSuccess(false);
-			        memberLoginResultDTO.setMessage("密码错误。");
-                        memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
-                    }
-        }else {
-					MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
-        memberLoginResultDTO.setCode(200);
-        memberLoginResultDTO.setSuccess(false);
-        memberLoginResultDTO.setMessage("账号不存在。");
-                    memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
+        if (null != member) {
+            if (memberLoginDTO.getPassword().equals(member.getPassword())) {
+                MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+                memberLoginResultDTO.setCode(200);
+                memberLoginResultDTO.setSuccess(true);
+                memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
+            } else {
+                MemberDetailDTO memberDetaiREQUEST_MAPPING_GET_BY_ACCOUNTlDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+                memberLoginResultDTO.setCode(200);
+                memberLoginResultDTO.setSuccess(false);
+                memberLoginResultDTO.setMessage("密码错误。");
+                memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
+            }
+        } else {
+            MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
+            memberLoginResultDTO.setCode(200);
+            memberLoginResultDTO.setSuccess(false);
+            memberLoginResultDTO.setMessage("账号不存在。");
+            memberLoginResultDTO.setMemberLoginDTO(memberLoginDTO);
 
         }
-    	
+
 //        log.debug(memberDTO.toString());
 //        MemberLoginResultDTO memberLoginResultDTO = new MemberLoginResultDTO();
 //        memberLoginResultDTO.setCode(200);
@@ -107,9 +107,9 @@ public class MemberResource {
         Integer rolId = memberDTO.getRoleId();
         Page<Member> result = memberService.findByRoleId(rolId, pageRequest);
         PageDTO pageDTO = new PageDTO();
-        if(result != null && result.getContent() != null && result.getContent().size()>0){
+        if (result != null && result.getContent() != null && result.getContent().size() > 0) {
             List<Member> listMember = result.getContent();
-            for (Member member:listMember){
+            for (Member member : listMember) {
                 MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
                 BeanUtils.copyProperties(member, memberDetailDTO);
                 memberDetailDTO.setChannelId(member.getChannel().getId());
@@ -138,7 +138,7 @@ public class MemberResource {
         Response response = new Response();
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
-        try{
+        try {
             PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
             Integer channelId = memberDTO.getChannelId();
             Page<Member> result = memberService.findByChannelId(channelId, pageRequest);
@@ -165,7 +165,7 @@ public class MemberResource {
 //            }
 //            memberDTO.setPageDTO(pageDTO);
             response.setData(pageDTO);
-        }catch (MemberServiceException e){
+        } catch (MemberServiceException e) {
             log.error(e.getMessage());
             response.setSuccess(false);
             response.setMessage(e.getMessage());
@@ -185,20 +185,22 @@ public class MemberResource {
             consumes = {"application/json"})
     public Response findByAccount(@RequestBody MemberDTO memberDTO) {
         Response response = new Response();
-        try{
+        try {
             Member member = memberService.findByAccount(memberDTO.getAccount());
             MemberDetailDTO memberDetailDTO = (MemberDetailDTO) MapperUtils.map(member, MemberDetailDTO.class);
             memberDTO.setMemberDetailDTO(memberDetailDTO);
             response.setData(memberDTO);
-        }catch (MemberServiceException e){
+        } catch (MemberServiceException e) {
             log.error(e.getMessage());
             response.setSuccess(false);
             response.setMessage(e.getMessage());
         }
         return response;
     }
+
     /**
      * 通过account查询出memeber是否存在
+     *
      * @return Member 返回的数据对象
      */
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_FIND_VALID_BY_ACCOUNT, method = RequestMethod.POST,
@@ -208,23 +210,23 @@ public class MemberResource {
     public ValidformRespDTO findValidByAccount(@RequestBody MemberRegisterDTO memberRegisterDTO) {
         Member member = memberService.findByAccount(memberRegisterDTO.getAccount());
         ValidformRespDTO validformRespDTO = new ValidformRespDTO();
-        if(null != member){
-		        validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_FAIL_INFO);
-		        validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_FAIL_STATUS);
-	    			}else{
-		        validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_SUCCESS_INFO);
-		        validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_SUCCESS_STATUS);
-        				}
-         return validformRespDTO;
-    	}
+        if (null != member) {
+            validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_FAIL_INFO);
+            validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_FAIL_STATUS);
+        } else {
+            validformRespDTO.setInfo(CommonConstant.ValidForm.VALIDFORM_SUCCESS_INFO);
+            validformRespDTO.setStatus(CommonConstant.ValidForm.VALIDFORM_SUCCESS_STATUS);
+        }
+        return validformRespDTO;
+    }
 
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_SAVE_MEMBER, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public Response saveMeber(@RequestBody MemberDTO memberDTO){
+    public Response saveMeber(@RequestBody MemberDTO memberDTO) {
         Response response = new Response();
-        try{
+        try {
             Member member = new Member();
             BeanUtils.copyProperties(memberDTO, member);
             member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
@@ -234,7 +236,7 @@ public class MemberResource {
             Channel channel = channelService.findOne(memberDTO.getChannelId());
             member.setChannel(channel);
             memberService.saveMember(member);
-        }catch (MemberServiceException e){
+        } catch (MemberServiceException e) {
             log.error(e.getMessage());
             response.setMessage(e.getMessage());
             response.setSuccess(false);
@@ -246,18 +248,18 @@ public class MemberResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public Response<PageDTO> findBySearchCondition(@RequestBody MemberDTO memberDTO){
+    public Response<PageDTO> findBySearchCondition(@RequestBody MemberDTO memberDTO) {
         List<MemberDetailDTO> listMemberList = new ArrayList<MemberDetailDTO>();
         Response response = new Response();
-        String account = "%"+memberDTO.getAccount()+"%";
-        String name = "%"+memberDTO.getName()+"%";
-        String mobile = "%"+memberDTO.getMobile()+"%";
+        String account = "%" + memberDTO.getAccount() + "%";
+        String name = "%" + memberDTO.getName() + "%";
+        String mobile = "%" + memberDTO.getMobile() + "%";
         int offset = memberDTO.getOffset();
         int limit = memberDTO.getLimit();
         Integer channelId = memberDTO.getChannelId();
-        try{
+        try {
             PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "account");
-            Page<Member> result = memberService.findBycondition(account, name, mobile, channelId,pageRequest);
+            Page<Member> result = memberService.findBycondition(account, name, mobile, channelId, pageRequest);
             PageDTO<MemberDetailDTO> pageDTO = PageUtils.mapper(result, MemberDetailDTO.class);
 //            if(result != null && result.getContent() != null && result.getContent().size()>0){
 //                List<Member> listMember = result.getContent();
@@ -280,7 +282,7 @@ public class MemberResource {
 //            pageDTO.setITotalDisplayRecords(result.getTotalElements());
 //            pageDTO.setITotalRecords(result.getTotalElements());
             response.setData(pageDTO);
-        }catch (MemberServiceException e){
+        } catch (MemberServiceException e) {
             log.error(e.getMessage());
             response.setSuccess(false);
             response.setMessage(e.getMessage());
@@ -290,18 +292,19 @@ public class MemberResource {
 
     /**
      * 通过账号获取用户信息，用于登录
+     *
      * @param account
      * @return
      */
-    @RequestMapping(value       = APPURIConstant.Member.REQUEST_MAPPING_GET_BY_ACCOUNT,
-                    method      = RequestMethod.GET,
-                    headers     = "Accept=application/xml, application/json",
-                    produces    = {"application/json"})
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_GET_BY_ACCOUNT,
+            method = RequestMethod.GET,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"})
     public Response<MemberDTO> queryByAccount(@NotEmpty @PathVariable("account") String account) {
         Member member = memberService.findByAccount(account);
         MemberDTO memberDTO = new MemberDTO();
         Response response = new Response();
-        if (member == null){
+        if (member == null) {
             response.setSuccess(Response.Status.FAILURE);
             return response;
         }
@@ -313,9 +316,10 @@ public class MemberResource {
         response.setData(memberDTO);
         return response;
     }
-    
+
     /**
      * 账号注册
+     *
      * @param memberRegisterDTO
      * @return
      */
@@ -323,14 +327,14 @@ public class MemberResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json", "application/xml"},
             consumes = {"application/json", "application/xml"})
-    public MemberRegisterResultDTO registerMember(@RequestBody MemberRegisterDTO memberRegisterDTO){
+    public MemberRegisterResultDTO registerMember(@RequestBody MemberRegisterDTO memberRegisterDTO) {
         MemberRegisterResultDTO memberRegisterResultDTO = new MemberRegisterResultDTO();
         Member memberValid = memberService.findByAccount(memberRegisterDTO.getAccount());
-        if(null != memberValid){
-        	memberRegisterResultDTO.setMessage("账户已存在！");
-						memberRegisterResultDTO.setSuccess(false);
-						return memberRegisterResultDTO;
-        			}
+        if (null != memberValid) {
+            memberRegisterResultDTO.setMessage("账户已存在！");
+            memberRegisterResultDTO.setSuccess(false);
+            return memberRegisterResultDTO;
+        }
         String[] area = memberRegisterDTO.getCity().split(",");
 
         Member member = new Member();
@@ -343,7 +347,7 @@ public class MemberResource {
         member.setMemberType(MemberType.ADMIN);
         member.setCreateTime(date);
         member.setUse(true);//这里将账户账户设置为可用
-        
+
         channel.setUpdateBy(memberRegisterDTO.getAccount());
         channel.setName(memberRegisterDTO.getChannel());
         channel.setCountry("中国");
@@ -354,45 +358,46 @@ public class MemberResource {
         String appId = uu.App_Id();
         channel.setAppId(appId);
         channel.setAppSecret(uu.App_screct(dateStr, appId));
-        if(area.length > 1){
-        	channel.setCity(area[1]);
-        			 }
-        if(area.length > 2){
-        	channel.setDistrict(area[2]);
-        			 }
-        
+        if (area.length > 1) {
+            channel.setCity(area[1]);
+        }
+        if (area.length > 2) {
+            channel.setDistrict(area[2]);
+        }
+
         member.setChannel(channel);
         try {
-						memberService.saveMember(member);
-					} catch (Exception e) {
-						e.printStackTrace();
-						memberRegisterResultDTO.setMessage("数据库出错！");
-						memberRegisterResultDTO.setSuccess(false);
-						return memberRegisterResultDTO;
-					}
+            memberService.saveMember(member);
+        } catch (Exception e) {
+            e.printStackTrace();
+            memberRegisterResultDTO.setMessage("数据库出错！");
+            memberRegisterResultDTO.setSuccess(false);
+            return memberRegisterResultDTO;
+        }
         memberRegisterResultDTO.setSuccess(true);
         return memberRegisterResultDTO;
     }
-    
-    public static void main(String[] args) {
-    	String str = ",2";
-    	String[] area = str.split(",");
 
-    	System.out.println(area[0]);
-    	System.out.println(area[1]);
+    public static void main(String[] args) {
+        String str = ",2";
+        String[] area = str.split(",");
+
+        System.out.println(area[0]);
+        System.out.println(area[1]);
 //    	System.out.println(area[2]);
-	}
+    }
 
 
     /**
      * 修改member信息
+     *
      * @return
      */
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_CHANGE_PASSWORD, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public Response changePassword(@RequestBody MemberDTO memberDTO){
+    public Response changePassword(@RequestBody MemberDTO memberDTO) {
         Response response = new Response();
         try {
             Member member = memberService.findByAccount(memberDTO.getAccount());
@@ -402,7 +407,7 @@ public class MemberResource {
                 member.setChannel(channel);
                 memberService.saveMember(member);
             }
-        }catch (MemberServiceException e){
+        } catch (MemberServiceException e) {
             log.error(e.getMessage());
             response.setSuccess(false);
             response.setMessage(e.getMessage());
@@ -414,17 +419,17 @@ public class MemberResource {
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public Response delete(@RequestBody MemberDTO memberDTO){
+    public Response delete(@RequestBody MemberDTO memberDTO) {
         Response response = new Response();
         try {
             Member member = memberService.findByAccount(memberDTO.getAccount());
-            if (member != null){
+            if (member != null) {
                 member.setUse(false);
                 Channel channel = channelService.findOne(memberDTO.getChannelId());
                 member.setChannel(channel);
                 memberService.saveMember(member);
             }
-        }catch (MemberServiceException e){
+        } catch (MemberServiceException e) {
             log.error(e.getMessage());
             response.setSuccess(false);
             response.setMessage(e.getMessage());
@@ -434,17 +439,18 @@ public class MemberResource {
 
     /**
      * 修改member信息
+     *
      * @return
      */
     @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING_UPDATE, method = RequestMethod.POST,
             headers = "Accept=application/xml, application/json",
             produces = {"application/json"},
             consumes = {"application/json"})
-    public Response update(@RequestBody MemberDTO memberDTO){
+    public Response update(@RequestBody MemberDTO memberDTO) {
         Response response = new Response();
         try {
             Member member = memberService.findByAccount(memberDTO.getAccount());
-            if (member != null){
+            if (member != null) {
                 member.setMobile(memberDTO.getMobile());
                 member.setSex("M".equals(memberDTO.getSex()) ? Gender.MAN : Gender.WOMEN);
                 member.setName(memberDTO.getName());
@@ -452,7 +458,7 @@ public class MemberResource {
                 member.setChannel(channel);
                 memberService.update(member);
             }
-        }catch (MemberServiceException e){
+        } catch (MemberServiceException e) {
             log.error(e.getMessage());
             response.setMessage(e.getMessage());
             response.setSuccess(false);
@@ -462,6 +468,7 @@ public class MemberResource {
 
     /**
      * 检测是否存在 如果不存在则新建
+     *
      * @param checkAndCreateDTO
      * @return
      */
@@ -471,7 +478,7 @@ public class MemberResource {
             consumes = {"application/json"})
     public Response check(@RequestBody CheckAndCreateDTO checkAndCreateDTO) {
         if (StringUtils.isNotBlank(checkAndCreateDTO.getAccount())) {
-                memberService.checkAndCreateByAccount(checkAndCreateDTO.getAccount(), checkAndCreateDTO.getClientId());
+            memberService.checkAndCreateByAccount(checkAndCreateDTO.getAccount(), checkAndCreateDTO.getClientId());
         } else {
             throw new MemberServiceException("用户创建失败");
         }
@@ -486,4 +493,72 @@ public class MemberResource {
 //        if(date == null) return "";
 //        return dateFormat.format(date);
 //    }
+
+    /**
+     * 检测是否存在 如果不存在则新建
+     *
+     * @param
+     * @return
+     */
+
+    @RequestMapping(value = APPURIConstant.Member.REQUEST_MAPPING, method = RequestMethod.GET,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"})
+    public Response<List<MemberDTO>> findAll() {
+        log.debug("findAll start");
+        List<Member> members = memberService.findAll();
+        List<MemberDTO> memberDTOs = (List<MemberDTO>) MapperUtils.mapAsList(members, MemberDTO.class);
+        Response response = new Response();
+        response.setData(memberDTOs);
+        return response;
+    }
+
+    /**
+     * 查询本周的新增的会员
+     */
+    @RequestMapping(value = ManageURIConstant.Member.FindThisWeek, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response findAllThisWeek(@RequestBody MemberDTO memberDTO) {
+        List<MemberDTO> listMember = new ArrayList<MemberDTO>();
+        Integer offset = memberDTO.getOffset();
+        Integer limit = memberDTO.getLimit();
+        PageDTO<MemberDTO> pageDTO = new PageDTO<MemberDTO>();
+        Response<PageDTO<MemberDTO>> response = new Response();
+        Page<Member> result = null;
+        try {
+            PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+           // MemberServiceImpl memberServiceimpl = new MemberServiceImpl();
+            result = memberService.findAllThisWeek(pageRequest);
+            if (result != null && result.getContent() != null && result.getContent().size() > 0) {
+                List<MemberDTO> list = (List<MemberDTO>)MapperUtils.mapAsList(result.getContent(),MemberDTO.class);
+                pageDTO.setContent(list);
+                pageDTO.setTotalPages(result.getTotalPages());
+                pageDTO.setITotalDisplayRecords(result.getTotalElements());
+                pageDTO.setITotalRecords(result.getTotalElements());
+                pageDTO.setLimit(limit);
+                pageDTO.setOffset(offset);
+                response.setData(pageDTO);
+            } else {
+                pageDTO.setContent(listMember);
+                pageDTO.setTotalPages(0);
+                pageDTO.setITotalDisplayRecords(0L);
+                pageDTO.setITotalRecords(0L);
+                response.setData(pageDTO);
+            }
+             return response;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
+            return response;
+        }
+
+    }
+
 }
+
+
+
+

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -207,5 +208,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 //		System.out.println(getDate("yyyy年MM月dd日 E"));
 //		long time = new Date().getTime()-parseDate("2012-11-19").getTime();
 //		System.out.println(time/(24*60*60*1000));
+	}
+	// 根据日期取得星期几
+	public static String getWeek(Date date) {
+		 String[] weeks = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};
+		 Calendar cal = Calendar.getInstance();
+		 cal.setTime(date);
+		 int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		 if(week_index<0) {
+			 week_index = 0;
+		 }
+		return weeks[week_index];
 	}
 }

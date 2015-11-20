@@ -108,9 +108,9 @@
 <script type="text/javascript">	
 var targetTable;
 var url = "${pageContext.request.contextPath}/order/getOrderList.dhtml";
-var deliverStatus = $("#deliverStatus").val();
-if(deliverStatus=="true"){
-	alert("发货成功");
+	var deliverStatus = $("#deliverStatus").val();
+	if(deliverStatus=="true"){
+		alert("发货成功");
 }
 $(function(){
 

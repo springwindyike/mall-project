@@ -1,8 +1,6 @@
 package com.ishare.mall.biz.restful.order;
 
-import com.google.common.collect.Maps;
 import com.ishare.mall.common.base.constant.CodeConstant;
-import com.ishare.mall.common.base.constant.ErrorConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.order.*;
 import com.ishare.mall.common.base.dto.page.PageDTO;
@@ -12,7 +10,6 @@ import com.ishare.mall.common.base.enumeration.OrderState;
 import com.ishare.mall.common.base.enumeration.PaymentWay;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.exception.OrderServiceException;
-import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.order.*;
 import com.ishare.mall.core.service.information.ChannelService;
@@ -22,7 +19,6 @@ import com.ishare.mall.core.service.member.MemberService;
 import com.ishare.mall.core.service.order.OrderService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import com.ishare.mall.core.utils.page.PageUtils;
-import org.apache.commons.collections.ListUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -467,23 +463,30 @@ public class OrderResource {
     
 	/**
 	 * 根据条件查询 center
-	 * @param orderDetailDTO
+	 * @param map
 	 * @return
 	 */
     @RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.POST,
-            headers = "Accept=application/xml, application/json",
-            produces = {"application/json", "application/xml"},
-            consumes = {"application/json", "application/xml"})
-    public Response findBySearchCondition(@RequestBody OrderDetailDTO orderDetailDTO){
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json", "application/xml"},
+			consumes = {"application/json", "application/xml"})
+    public Response findBySearchCondition(@RequestBody Map map){
 		List<OrderDetailDTO> listOrder = new ArrayList<OrderDetailDTO>();
 		Response response = new Response();
-		String orderId = orderDetailDTO.getOrderId();
-		int offset = orderDetailDTO.getOffset();
-		int limit = orderDetailDTO.getLimit();
-		Integer channelId = orderDetailDTO.getChannelId();
+		//String orderId = orderDetailDTO.getOrderId();
+		int offset = (int)map.get("offset");
+		int limit = (int)map.get("limit");
+		map.remove("offset");
+		map.remove("limit");
+		if(map.get("EQ_paymentWay") !=null ){
+			map.put("EQ_paymentWay", PaymentWay.valueOf((String)map.get("EQ_paymentWay")));
+		}
+		if(map.get("EQ_state") !=null ){
+			map.put("EQ_state", OrderState.valueOf((String) map.get("EQ_state")));
+		}
 		try{
 			PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "orderId");
-			Page<Order> result = orderService.findBycondition(orderId, channelId, pageRequest);
+			Page<Order> result = orderService.findAllBycondition(map, pageRequest);
 			PageDTO<OrderDetailDTO> pageDTO = new PageDTO<OrderDetailDTO>();
 			if(result != null && result.getContent() != null && result.getContent().size()>0){
 				List<Order> list = result.getContent();
@@ -494,7 +497,7 @@ public class OrderResource {
 					innerOrderDetailDTO.setCreateBy(order.getCreateBy().getAccount());
 					innerOrderDetailDTO.setStateValue(order.getState().getName());
 					innerOrderDetailDTO.setRecipients(order.getOrderDeliverInfo().getRecipients());
-
+					innerOrderDetailDTO.setPaymentWay(order.getPaymentWay().getName());
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
@@ -574,6 +577,7 @@ public class OrderResource {
 					String newTime =  sdf.format(order.getCreateTime());
 					innerOrderDetailDTO.setCreateTime(newTime);
 					listOrder.add(innerOrderDetailDTO);
+
 				}
 				pageDTO.setContent(listOrder);
 				pageDTO.setTotalPages(result.getTotalPages());
