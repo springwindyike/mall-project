@@ -62,4 +62,14 @@ public class Attribute {
     public void setDescription(String description) {
         this.description = description;
     }
+
+	public ProductType getProductType() {
+		return productType;
+	}
+
+	public void setProductType(ProductType productType) {
+		this.productType = productType;
+	}
+    
+    
 }
