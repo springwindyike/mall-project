@@ -1,6 +1,7 @@
 package com.ishare.mall.manage.controller;
 
 import com.google.common.collect.Maps;
+import com.ishare.mall.common.base.constant.CodeConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
 import com.ishare.mall.common.base.constant.view.ManageViewConstant;
@@ -497,7 +498,7 @@ public class OrderController extends BaseController {
 		map.put("EQ_refundType",refundType);
 		map.put("limit", displayLength);
 		map.put("offset", currentPage);
-		map.put("EQ_refundState",CodeConstant.Refund.REFUND_STATE_WAIT_MANAGE_CONFIRM);
+		map.put("EQ_refundState", CodeConstant.Refund.REFUND_STATE_WAIT_MANAGE_CONFIRM);
 		HttpEntity<Map> requestDTO = new HttpEntity<Map>(map);
 		ResponseEntity<Response<PageDTO<OrderRefundDTO>>> responseEntity = null;
 		try {
