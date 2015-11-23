@@ -479,25 +479,13 @@ public class OrderServiceImpl implements OrderService {
 		for (OrderItemDetailDTO orderItemDetailDTO:orderItemDetailDTOs){
 			Product product = productRepository.findOne(orderItemDetailDTO.getProductId());
 			if(product != null){
-				//设置样式相关
-				//orderItem.setStyleId(orderItemDetailDTO.getStyleId().longValue());
-				//if (style != null) {
-				//orderItem.setStyleName(style.getName());
-				//orderItem.setImageUrl(style.getImageUrl());
-				//}
 				orderItemDetailDTO.setImageUrl(product.getDefaultImageUrl());
-				//设置商品相关
-				//orderItemDetailDTO.setAmount(orderItemDetailDTO.getAmount());
 				orderItemDetailDTO.setProductId(product.getId());
 				orderItemDetailDTO.setProductName(product.getName());
-//				orderItemDetailDTO.setState(OrderItemState.COMPLETE_VERIFY);
 				orderItemDetailDTO.setChannelId(product.getChannel().getId());
-				//销售价格
 				orderItemDetailDTO.setProductPrice(product.getSellPrice());
-//				orderItems.add(orderItem);
 				if(map.get(product.getChannel().getId()) != null){
 					map.get(product.getChannel().getId()).add(orderItemDetailDTO);
-					map.put(product.getChannel().getId(),map.get(orderItemDetailDTO.getChannelId()));
 				}else {
 					List<OrderItemDetailDTO> list = new ArrayList<OrderItemDetailDTO>();
 					list.add(orderItemDetailDTO);
