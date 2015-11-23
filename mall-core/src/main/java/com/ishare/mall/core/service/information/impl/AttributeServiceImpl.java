@@ -1,13 +1,17 @@
 package com.ishare.mall.core.service.information.impl;
 
-import com.ishare.mall.core.model.product.Attribute;
-import com.ishare.mall.core.repository.information.AttributeRepository;
-import com.ishare.mall.core.service.information.AttributeService;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.ishare.mall.core.exception.BrandServiceException;
+import com.ishare.mall.core.model.product.Attribute;
+import com.ishare.mall.core.repository.information.AttributeRepository;
+import com.ishare.mall.core.service.information.AttributeService;
 
 /**
  * Created by YinLin on 2015/10/10.
@@ -17,6 +21,7 @@ import java.util.List;
 @Service
 @Transactional
 public class AttributeServiceImpl implements AttributeService {
+	  private static final Logger log = LoggerFactory.getLogger(AttributeServiceImpl.class);
     @Autowired
     private AttributeRepository attributeRepository;
 
@@ -32,12 +37,15 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public Attribute save(Attribute attribute) {
-        if (attribute != null) {
-            attributeRepository.save(attribute);
-        }
-        return attribute;
-    }
+	public Attribute save(Attribute attribute) {
+		try {
+			Attribute returnAttribute = attributeRepository.save(attribute);
+			return returnAttribute;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new BrandServiceException("属性保存失败");
+		}
+	}
 
     @Override
     public List<Attribute> save(List<Attribute> attributes) {

@@ -1,6 +1,22 @@
 
 package com.ishare.mall.core.utils.mapper;
 
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
+
+import ma.glasnost.orika.CustomMapper;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.converter.builtin.PassThroughConverter;
+import ma.glasnost.orika.impl.ConfigurableMapper;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.metadata.ClassMapBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ishare.mall.common.base.dto.attribute.AttributeDTO;
 import com.ishare.mall.common.base.dto.manageuser.ManageUserDTO;
 import com.ishare.mall.common.base.dto.member.MemberDetailDTO;
 import com.ishare.mall.common.base.dto.order.OrderDetailDTO;
@@ -11,21 +27,9 @@ import com.ishare.mall.common.base.dto.product.TreeNodeDTO;
 import com.ishare.mall.core.model.manage.ManageUser;
 import com.ishare.mall.core.model.member.Member;
 import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.model.product.Attribute;
 import com.ishare.mall.core.model.product.Product;
 import com.ishare.mall.core.model.product.ProductType;
-import ma.glasnost.orika.CustomMapper;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.converter.builtin.PassThroughConverter;
-import ma.glasnost.orika.impl.ConfigurableMapper;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.metadata.ClassMapBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by YinLin on 2015/8/7.
@@ -44,12 +48,14 @@ public class OrikaMapper extends ConfigurableMapper {
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ProductType.class, ProductTypeDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ManageUser.class, ManageUserDTO.class));
 		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(ProductType.class, TreeNodeDTO.class));
+		mapperFactory.getConverterFactory().registerConverter(new PassThroughConverter(Attribute.class, AttributeDTO.class));
 	    this.registerProductClassMap(mapperFactory);
 	    this.registerMemberClassMap(mapperFactory);
 	    this.registerOrderClassMap(mapperFactory);
 	    this.registerProductTypeClassMap(mapperFactory);
 	    this.registerTreeNodeClassMap(mapperFactory);
 		this.registerManageUserClassMap(mapperFactory);
+		this.registerAttributeClassMap(mapperFactory);
     }
 
 	/**
@@ -134,6 +140,20 @@ public class OrikaMapper extends ConfigurableMapper {
 		classMapBuilder.field("note", "note");
 		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
 	}
+	
+	private void registerAttributeClassMap(MapperFactory mapperFactory) {
+		ClassMapBuilder<Attribute,AttributeDTO>classMapBuilder = mapperFactory.classMap(Attribute.class, AttributeDTO.class);
+		Field[] fields = AttributeDTO.class.getDeclaredFields();
+		Set<String> otherDealField = new HashSet<String>();
+		otherDealField.add("productTypeId");
+		otherDealField.add("attributeGroupId");
+		classMapBuilder.field("productType.id", "productTypeId");
+		classMapBuilder.field("attributeGroup.id", "attributeGroupId");
+		classMapBuilder.field("id", "id");
+		classMapBuilder.field("name", "name");
+		mapperFactory.registerClassMap(classMapBuilder.toClassMap());
+	}
+	
 	
 	private void registerTreeNodeClassMap(MapperFactory mapperFactory) {
 		ClassMapBuilder<ProductType, TreeNodeDTO>classMapBuilder = mapperFactory.classMap(ProductType.class, TreeNodeDTO.class);

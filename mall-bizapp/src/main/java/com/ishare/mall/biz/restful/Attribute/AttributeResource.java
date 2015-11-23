@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.attribute.AttributeDTO;
+import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.core.model.product.Attribute;
 import com.ishare.mall.core.model.product.AttributeGroup;
@@ -19,6 +20,7 @@ import com.ishare.mall.core.model.product.ProductType;
 import com.ishare.mall.core.service.information.AttributeGroupService;
 import com.ishare.mall.core.service.information.AttributeService;
 import com.ishare.mall.core.service.product.ProductTypeService;
+import com.ishare.mall.core.utils.mapper.MapperUtils;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -47,24 +49,21 @@ public class AttributeResource {
             consumes = {"application/json", "application/xml"})
     public Response saveProduct(@RequestBody AttributeDTO attributeDTO){
         Attribute attribute = new Attribute();
-        AttributeGroup attributeGroup = new AttributeGroup();
-        ProductType productType = new ProductType();
-        BeanUtils.copyProperties(attributeDTO, attribute);
-        attribute.setAttributeGroup(attributeGroupService.findOne(attributeDTO.getAttributeGroupId()));
-        
-        attribute.setProductType(productTypeService.findOne(attributeDTO.getProductTypeId()));
-             
-    			
+        Response response = new Response();
     			try {
-					attributeService.save(attribute);
+    				 BeanUtils.copyProperties(attributeDTO, attribute);
+    			        attribute.setAttributeGroup(attributeGroupService.findOne(attributeDTO.getAttributeGroupId()));
+    			        attribute.setProductType(productTypeService.findOne(attributeDTO.getProductTypeId()));
+    				Attribute returnAttribute =	attributeService.save(attribute);
+    				AttributeDTO returnDTO = (AttributeDTO)MapperUtils.map(returnAttribute, AttributeDTO.class);
+    				response.setData(returnDTO);
 				} catch (Exception e) { 
 									log.error(e.getMessage(), e);
-	            Response response = new Response();
 	            response.setMessage("系统错误");
 	            response.setSuccess(false);
 	            return response;
 	            }
-    			 Response response = new Response();
+    			
     			return response;
 }
 }
