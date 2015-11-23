@@ -23,7 +23,7 @@ public class AttributeDTO extends GenericDTO {
 	private Integer productTypeId;
 	
 	//属性规格的名字
-	private String attributeName;
+	private String name;
 	
 	//属性规格所属的组的id
 	private Integer attributeGroupId;
@@ -36,12 +36,13 @@ public class AttributeDTO extends GenericDTO {
 		this.productTypeId = productTypeId;
 	}
 
-	public String getAttributeName() {
-		return attributeName;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getAttributeGroupId() {

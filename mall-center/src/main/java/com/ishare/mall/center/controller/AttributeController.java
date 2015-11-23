@@ -42,18 +42,18 @@ public class AttributeController extends BaseController {
 
 	}
 
-    @RequestMapping(value = CenterURIConstant.Attribute.REQUEST_MAPPING_SAVE, method = RequestMethod.POST)
+    @RequestMapping(value = CenterURIConstant.Attribute.REQUEST_MAPPING_SAVE, method = RequestMethod.GET)
     public AttributeDTO addAttributeGet(@RequestParam int productTypeId,@RequestParam String attributeName,@RequestParam int attributeGroupId)throws Exception {
 	AttributeDTO attributeDTO = new AttributeDTO();
 	attributeDTO.setAttributeGroupId(attributeGroupId);
-	attributeDTO.setAttributeName(attributeName);
+	attributeDTO.setName(attributeName);
 	attributeDTO.setProductTypeId(productTypeId);
 
 	HttpEntity<AttributeDTO> requestDTO = new HttpEntity<AttributeDTO>(attributeDTO);
-	ResponseEntity<Response<PageDTO<BrandDTO>>> resultDTO = null;
+	ResponseEntity<Response<AttributeDTO>> resultDTO = null;
 	try {
 		resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Attribute.REQUEST_MAPPING,APPURIConstant.Attribute.REQUEST_MAPPING_SAVE),
-				HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<BrandDTO>>>() {});
+				HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<AttributeDTO>>() {});
 	} catch (Exception e) {
 		log.error("call bizp app " + APPURIConstant.Attribute.REQUEST_MAPPING + APPURIConstant.Attribute.REQUEST_MAPPING_SAVE + "error");
 		throw new Exception(e.getMessage());
