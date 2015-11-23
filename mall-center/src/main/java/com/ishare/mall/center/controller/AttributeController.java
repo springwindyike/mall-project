@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.ishare.mall.center.controller.base.BaseController;
@@ -43,10 +44,11 @@ public class AttributeController extends BaseController {
 	}
 
     @RequestMapping(value = CenterURIConstant.Attribute.REQUEST_MAPPING_SAVE, method = RequestMethod.GET)
-    public AttributeDTO addAttributeGet(@RequestParam int productTypeId,@RequestParam String attributeName,@RequestParam int attributeGroupId)throws Exception {
+    @ResponseBody
+    public AttributeDTO addAttributeGet(@RequestParam int productTypeId,@RequestParam String name,@RequestParam int attributeGroupId)throws Exception {
 	AttributeDTO attributeDTO = new AttributeDTO();
 	attributeDTO.setAttributeGroupId(attributeGroupId);
-	attributeDTO.setName(attributeName);
+	attributeDTO.setName(name);
 	attributeDTO.setProductTypeId(productTypeId);
 
 	HttpEntity<AttributeDTO> requestDTO = new HttpEntity<AttributeDTO>(attributeDTO);
@@ -61,14 +63,14 @@ public class AttributeController extends BaseController {
 	Response response = resultDTO.getBody();
 	if(response != null) {
 		if(response.isSuccess()){
-			AttributeDTO pageDTO = (AttributeDTO)response.getData();
+			AttributeDTO returnDTO = (AttributeDTO)response.getData();
+			return returnDTO;
 		}else {
 			throw new Exception(response.getMessage());
 		}
 	}else{
 		throw new Exception("get response error");
 	}
-	return null;
 }
 }
 

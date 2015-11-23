@@ -18,7 +18,9 @@ import java.util.Date;
 public class AttributeDTO extends GenericDTO {
    
 	private static final long serialVersionUID = 1L;
-
+ 
+	//属性的id
+	private Integer id;
 	//产品分类的id
 	private Integer productTypeId;
 	
@@ -27,6 +29,15 @@ public class AttributeDTO extends GenericDTO {
 	
 	//属性规格所属的组的id
 	private Integer attributeGroupId;
+
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getProductTypeId() {
 		return productTypeId;

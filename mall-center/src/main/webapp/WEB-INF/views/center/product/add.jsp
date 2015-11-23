@@ -93,7 +93,7 @@
 						</span>
 						<span nctype="pv_name">黑色</span>
 						</li>
-						<li data-param="{gc_id:35,sp_id:1,url:'http://10.100.100.15/shop/index.php?act=store_goods_add&op=ajax_add_spec'}">
+						<li data-param="{productTypeId:59,attributeGroupId:1,url:'${pageContext.request.contextPath}/attribute/add.dhtml'}">
 						<div nctype="specAdd1" style="display: block;">
 						<a class="ncsc-btn" nctype="specAdd" href="javascript:void(0);">
 						<i class="icon-plus"></i>
@@ -128,7 +128,7 @@
 						</span>
 						<span nctype="pv_name">X</span>
 						</li>
-						<li data-param="{gc_id:35,sp_id:15,url:'http://10.100.100.15/shop/index.php?act=store_goods_add&op=ajax_add_spec'}">
+						<li data-param="{productTypeId:59,attributeGroupId:1,url:'${pageContext.request.contextPath}/attribute/add.dhtml'}">
 						<div nctype="specAdd1">
 						<a class="ncsc-btn" nctype="specAdd" href="javascript:void(0);">
 						<i class="icon-plus"></i>

@@ -188,13 +188,14 @@ $(function(){
     // 提交
     $('a[nctype="specAddSubmit"]').click(function(){
         var _parent = $(this).parents('li:first');
+       alert('var data_str = ' + _parent.attr('data-param'));
         eval('var data_str = ' + _parent.attr('data-param'));
         var _input = _parent.find('input');
         _parent.find('div[nctype="specAdd1"]').show();
         _parent.find('div[nctype="specAdd2"]').hide();
-        $.getJSON(data_str.url, {gc_id : data_str.gc_id , sp_id : data_str.sp_id , name : _input.val()}, function(data){
-            if (data.done) {
-                _parent.before('<li><span nctype="input_checkbox"><input type="checkbox" name="sp_val[' + data_str.sp_id + '][' + data.value_id + ']" nc_type="' + data.value_id + '" value="' +_input.val()+ '" /></span><span nctype="pv_name">' + _input.val() + '</span></li>');
+        $.getJSON(data_str.url, {productTypeId : data_str.productTypeId , attributeGroupId : data_str.attributeGroupId , name : _input.val()}, function(data){
+            if (data.id != null) {
+                _parent.before('<li><span nctype="input_checkbox"><input type="checkbox" name="sp_val[' + data_str.attributeGroupId + '][' + data.id + ']" nc_type="' + data.id + '" value="' +_input.val()+ '" /></span><span nctype="pv_name">' + _input.val() + '</span></li>');
                 _input.val('');
             }
         });
