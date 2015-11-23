@@ -135,8 +135,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_REFUND_DETAIL = "/getRefundDetail";
         String REQUEST_MAPPING_GET_REFUND_DETAIL_BY_REFUND_ID = "/getRefundDetail/{refundId}";
         String REQUEST_MAPPING_GO_TO_CONFIRM = "/go2confirmRefund";
-        String REQUEST_MAPPOMG_GET_REFUND_BY_CONDITION = "/getRefundMoneyByCondition";
-
+        String REQUEST_MAPPING_GET_REFUND_BY_CONDITION = "/getRefundMoneyByCondition";
+        String REQUEST_MAPPING_REFUND_CONFIRM = "/refundConfirm/{refundId}";
     }
     //支付
     interface AliPay {

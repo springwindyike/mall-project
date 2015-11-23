@@ -1,5 +1,8 @@
 package com.ishare.mall.common.base.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -40,6 +43,17 @@ public class DateUntil {
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.MILLISECOND, 999);
         return calendar.getTime();
+    }
+
+    public static String getDateStr(String format,Date date){
+        if (StringUtils.isEmpty(format)){
+            format = "yyyy-dd-mm HH:mm:SS";
+        }
+        if (date == null){
+            return null;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+       return simpleDateFormat.format(date);
     }
     // 根据日期取得星期几
     public static String getWeek(Date date) {

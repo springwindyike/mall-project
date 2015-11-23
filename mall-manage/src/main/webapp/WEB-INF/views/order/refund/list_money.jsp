@@ -135,10 +135,10 @@
           "targets" : 10 ,
           "render" : function(mDataProp, type, full) {
             var str = '<td class="td-manage">';
-            if(mDataProp.centerState == 1 || mDataProp.centerState == 3 || mDataProp.refundState == 3){
+            if(mDataProp.refundState == 3 ){
               str = str + '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>'
             }
-            if(mDataProp.centerState == 2 && mDataProp.refundState == 2){
+            if(mDataProp.refundState == 2){
               str = str +'<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>' +
               '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/forward2ConfirmRefund/'+mDataProp.refundId+'.dhtml" title="确认退款"><i class="Hui-iconfont">&#xe615;</i></a>'
             }

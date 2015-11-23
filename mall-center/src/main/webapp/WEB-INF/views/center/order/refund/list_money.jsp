@@ -61,7 +61,7 @@
         <thead>
         <tr class="text-c">
           <th width="40">订单编号</th>
-          <th width="40">退货编号</th>
+          <th width="40">退款编号</th>
           <th width="88">渠道</th>
           <th width="88">商品名称</th>
           <th width="88">买家名称</th>
@@ -88,7 +88,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
   var targetTable;
-  var url = "${pageContext.request.contextPath}/order/getRefundMoney/2.dhtml";
+  var url = "${pageContext.request.contextPath}/order/getRefundMoney/1.dhtml";
   var refundStatus = $("#refundStatus").val();
   if(refundStatus == "true"){
     alert("退款成功");
@@ -135,12 +135,12 @@
           "targets" : 10 ,
           "render" : function(mDataProp, type, full) {
             var str = '<td class="td-manage">';
-            if(mDataProp.refundState == 3){
-              str = str + '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>'
-            }
-            if(mDataProp.refundState == 2){
+            if(mDataProp.refundState == 1){
               str = str +'<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>' +
-              '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/forward2ConfirmRefund/'+mDataProp.refundId+'.dhtml" title="确认退款"><i class="Hui-iconfont">&#xe615;</i></a>'
+                      '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/forward2ConfirmRefund/'+mDataProp.refundId+'.dhtml" title="确认退款"><i class="Hui-iconfont">&#xe615;</i></a>'
+            }
+            if(mDataProp.refundState == 3 || mDataProp.refundState == 2){
+              str = str + '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>'
             }
             str = str + '</td>';
             return  str;
@@ -155,7 +155,7 @@
     var detail = $("#detail").val();
     var datemin = $("#datemin").val();
     var datemax = $("#datemax").val();
-    url = '${pageContext.request.contextPath}'+'/order/getRefundMoneyByCondition.dhtml?findBy='+findBy +'&detail='+detail+'&datemin='+datemin+'&datemax='+datemax+"&refundType=2";
+    url = '${pageContext.request.contextPath}'+'/order/getRefundMoneyByCondition.dhtml?findBy='+findBy +'&detail='+detail+'&datemin='+datemin+'&datemax='+datemax+"&refundType=1";
     targetTable.ajax.url(url).load();
   }
 

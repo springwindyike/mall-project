@@ -135,12 +135,15 @@
           "targets" : 10 ,
           "render" : function(mDataProp, type, full) {
             var str = '<td class="td-manage">';
-            if(mDataProp.refundState == 3){
+            if(mDataProp.refundState == 1){
+              str = str +'<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>' +
+                      '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/forward2ConfirmRefund/'+mDataProp.refundId+'.dhtml" title="处理"><i class="Hui-iconfont">&#xe615;</i></a>'
+            }
+            if(mDataProp.refundState == 3 || mDataProp.refundState == 2){
               str = str + '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>'
             }
-            if(mDataProp.refundState == 2){
-              str = str +'<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/getRefundDetail/'+mDataProp.refundId+'.dhtml" title="查看"><i class="Hui-iconfont">&#xe624;</i></a>' +
-              '<a style="text-decoration:none" href="${pageContext.request.contextPath}/order/forward2ConfirmRefund/'+mDataProp.refundId+'.dhtml" title="确认退款"><i class="Hui-iconfont">&#xe615;</i></a>'
+            if(mDataProp.productState == 2){
+              str = str + '<a style="text-decoration:none" class="ml-5" onClick="confirm_refund(\'确认收货\',\'${pageContext.request.contextPath}/order/forward2ConfirmReceive/'+mDataProp.refundId+'.dhtml\',\'500\',\'350\')" href="javascript:;" title="收货"><i class="Hui-iconfont">&#xe6a8;</i></a>'
             }
             str = str + '</td>';
             return  str;
@@ -239,6 +242,9 @@
     }
   }
 
+  function confirm_refund(title, url, w, h) {
+    layer_show(title, url, w, h);
+  }
 
 </script>
 </body>

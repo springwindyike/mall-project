@@ -60,6 +60,7 @@ public class OrderRefund implements BaseObject {
     private Integer refundState;
     /**物流状态**/
     @Column(length = 1, name = "product_state")
+    /**物流状态:1为待发货,2为待收货,3为未收到,4为已收货,默认为1**/
     private Integer productState;
     /**卖家处理时间**/
     @Temporal(TemporalType.TIMESTAMP)
@@ -97,6 +98,13 @@ public class OrderRefund implements BaseObject {
     @Column(name = "express_id", nullable = true, length = 15)
     private String expressId;
 
+    /**买家退货时发货时间**/
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(length = 20, name = "buyer_ship_date")
+    private Date buyerShipDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(length = 20, name = "receive_date")
+    private Date receiveDate;
     public String getRefundId() {
         return refundId;
     }
@@ -303,5 +311,21 @@ public class OrderRefund implements BaseObject {
 
     public void setManageId(Integer manageId) {
         this.manageId = manageId;
+    }
+
+    public Date getBuyerShipDate() {
+        return buyerShipDate;
+    }
+
+    public void setBuyerShipDate(Date buyerShipDate) {
+        this.buyerShipDate = buyerShipDate;
+    }
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate) {
+        this.receiveDate = receiveDate;
     }
 }

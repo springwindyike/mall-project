@@ -94,6 +94,7 @@ public interface CenterURIConstant {
 		String REQUEST_MAPPING_GET_ORDER_LIST = "/getOrderList";
 		String REQUEST_MAPPING_GET_REFUND_BY_CONDITION = "/getRefundMoneyByCondition";
 		String REQUEST_MAPPING_FIND_BY_SEARCH_CONDITION = "/findBySearchCondition";
+
 	}
 
 	interface Main {

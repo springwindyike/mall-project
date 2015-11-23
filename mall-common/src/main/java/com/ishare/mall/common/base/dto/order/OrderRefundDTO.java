@@ -44,7 +44,7 @@ public class OrderRefundDTO extends GenericDTO {
     /**申请状态:1为处理中,2为待管理员处理,3为已完成,默认为1**/
     private Integer refundState;
     private String refundStateStr;
-    /**物流状态**/
+    /**物流状态:1为待发货,2为待收货,3为未收到,4为已收货,默认为1**/
     private Integer productState;
     /**卖家处理时间**/
     private Date centerDate;
@@ -71,6 +71,11 @@ public class OrderRefundDTO extends GenericDTO {
     private Integer centerId;
     /**管理员Id**/
     private Integer manageId;
+    /**买家退货时发货时间**/
+    private Date buyerShipDate;
+    private String buyerShipDateStr;
+    /**收货时间**/
+    private  Date receiveDate;
     public String getRefundId() {
         return refundId;
     }
@@ -325,5 +330,29 @@ public class OrderRefundDTO extends GenericDTO {
 
     public void setCenterId(Integer centerId) {
         this.centerId = centerId;
+    }
+
+    public Date getBuyerShipDate() {
+        return buyerShipDate;
+    }
+
+    public void setBuyerShipDate(Date buyerShipDate) {
+        this.buyerShipDate = buyerShipDate;
+    }
+
+    public String getBuyerShipDateStr() {
+        return buyerShipDateStr;
+    }
+
+    public void setBuyerShipDateStr(String buyerShipDateStr) {
+        this.buyerShipDateStr = buyerShipDateStr;
+    }
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate) {
+        this.receiveDate = receiveDate;
     }
 }
