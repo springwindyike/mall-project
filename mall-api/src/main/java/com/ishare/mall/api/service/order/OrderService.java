@@ -8,6 +8,8 @@ import com.ishare.mall.common.base.dto.pay.AliPayNotifyDTO;
 import com.ishare.mall.common.base.exception.web.api.ApiLogicException;
 import com.ishare.mall.common.base.general.Response;
 
+import java.util.List;
+
 /**
  * Created by YinLin on 2015/9/24.
  * Description : 客户端 order Service
@@ -29,7 +31,7 @@ public interface OrderService {
      * @return
      * @throws ApiLogicException
      */
-    OrderDetailDTO create(ExchangeDTO exchangeDTO) throws ApiLogicException;
+    List<OrderDetailDTO> create(ExchangeDTO exchangeDTO) throws ApiLogicException;
 
     /**
      * 支付完成

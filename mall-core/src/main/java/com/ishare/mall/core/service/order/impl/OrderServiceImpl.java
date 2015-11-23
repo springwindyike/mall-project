@@ -181,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public OrderDetailDTO create(ExchangeDTO exchangeDTO) {
+	public List<OrderDetailDTO> create(ExchangeDTO exchangeDTO) {
 		return initProcessor(exchangeDTO);
 	}
 
@@ -219,67 +219,76 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	//订单生成流程
-	private OrderDetailDTO initProcessor(ExchangeDTO exchangeDTO) {
-		Order order = new Order();
-		OrderDetailDTO detailDTO = new OrderDetailDTO();
-		Channel channel = channelService.findByAppId(exchangeDTO.getClientId());
+	private List<OrderDetailDTO> initProcessor(ExchangeDTO exchangeDTO) {
+		List<OrderDetailDTO> orderDetailDTOList = new ArrayList<OrderDetailDTO>();
+		Channel channelSeller = channelService.findByAppId(exchangeDTO.getClientId());
 		Member buyer = memberService.findByAccount(exchangeDTO.getAccount());
+		Map<Integer,List<OrderItemDetailDTO>> map = this.splitChannel(exchangeDTO);
+		Set<Integer> set = map.keySet();
+		for(Integer channelId:set){
+			List<OrderItemDetailDTO> list = map.get(channelId);
+			Order order = new Order();
+			OrderDetailDTO detailDTO = new OrderDetailDTO();
+			Channel channel = channelService.findOne(channelId);
+			String orderId = this.nextOrderId();
+			log.debug("ID : " + orderId);
+			order.setOrderId(orderId);
+			order.setCreateTime(new Date());
+			order.setChannel(channel);
+			order.setSellerId(channelSeller.getId());
+			List<OrderItem> orderItems = this.initItemProcessor(order, list);
+			Float total = 0f;
+			//费用计算
+			for (OrderItem orderItem : orderItems) {
+				total += orderItem.getAmount() * orderItem.getProductPrice();
+			}
+			order.setProductTotalPrice(total);
+			//商品费用
+			//TODO 运费
+			Float transFee = 0f;
+			//总计
+			order.setTotalPrice(total + transFee);
+			//实际支付
+			order.setPayableFee(total + transFee);
+			//支付方式
+			order.setPaymentWay(exchangeDTO.getPaymentWay());
+			//等待支付状态 TODO 如果这里的支付方式可选货到付款之后需要变动
+			order.setState(OrderState.WAIT_PAYMENT);
+			//是否支付
+			order.setPaymentState(false);
+			//保存 返回
+			//修改商品库存
+			order.setCreateBy(buyer);
+			//收货人
+			OrderDeliverInfo orderDeliverInfo = this.initDeliverProcessor(order, exchangeDTO);
+			try {
+				order.setOrderDeliverInfo(orderDeliverInfo);
+				Order newOrder = orderRepository.save(order);
+				itemRepository.save(orderItems);
 
-		String orderId = this.nextOrderId();
-		log.debug("ID : " + orderId);
-		order.setOrderId(orderId);
-		order.setCreateTime(new Date());
-		order.setChannel(channel);
-		List<OrderItem> orderItems = this.initItemProcessor(order, exchangeDTO);
-		Float total = 0f;
-		//费用计算
-		for (OrderItem orderItem : orderItems) {
-			total += orderItem.getAmount() * orderItem.getProductPrice();
+				OrderActionLog orderActionLog = new OrderActionLog();
+				orderActionLog.setOrderActionLogType(OrderActionLogType.DELIVER);
+				orderActionLog.setNote("创建订单");
+				orderActionLog.setOrder(newOrder);
+				orderActionLog.setActionById(buyer.getId().toString());
+				orderActionLog.setActionByname(buyer.getName());
+				orderActionLog.setActionBytype(buyer.getMemberType().getName());
+				orderActionLog.setActionByfrom("center");
+				orderActionLog.setActionTime(order.getUpdateTime());
+				orderActionLogRepository.save(orderActionLog);
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				throw new OrderServiceException("订单保存失败");
+			}
+			detailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
+			//设置收货人信息
+			detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
+			//设置订单项
+			detailDTO.setItems((Set<OrderItemDetailDTO>) MapperUtils.mapAsSet(orderItems, OrderItemDetailDTO.class));
+			orderDetailDTOList.add(detailDTO);
 		}
-		order.setProductTotalPrice(total);
-		//商品费用
-		//TODO 运费
-		Float transFee = 0f;
-		//总计
-		order.setTotalPrice(total + transFee);
-		//实际支付
-		order.setPayableFee(total + transFee);
-		//支付方式
-		order.setPaymentWay(exchangeDTO.getPaymentWay());
-		//等待支付状态 TODO 如果这里的支付方式可选货到付款之后需要变动
-		order.setState(OrderState.WAIT_PAYMENT);
-		//是否支付
-		order.setPaymentState(false);
-		//保存 返回
-		//修改商品库存
-		order.setCreateBy(buyer);
-		//收货人
-		OrderDeliverInfo orderDeliverInfo = this.initDeliverProcessor(order, exchangeDTO);
-		try {
-			order.setOrderDeliverInfo(orderDeliverInfo);
-			Order newOrder = orderRepository.save(order);
-			itemRepository.save(orderItems);
 
-			OrderActionLog orderActionLog = new OrderActionLog();
-			orderActionLog.setOrderActionLogType(OrderActionLogType.DELIVER);
-			orderActionLog.setNote("创建订单");
-			orderActionLog.setOrder(newOrder);
-			orderActionLog.setActionById(buyer.getId().toString());
-			orderActionLog.setActionByname(buyer.getName());
-			orderActionLog.setActionBytype(buyer.getMemberType().getName());
-			orderActionLog.setActionByfrom("center");
-			orderActionLog.setActionTime(order.getUpdateTime());
-			orderActionLogRepository.save(orderActionLog);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			throw new OrderServiceException("订单保存失败");
-		}
-		detailDTO = (OrderDetailDTO) MapperUtils.map(order, OrderDetailDTO.class);
-		//设置收货人信息
-		detailDTO.setDeliver((OrderDeliverDTO) MapperUtils.map(orderDeliverInfo, OrderDeliverDTO.class));
-		//设置订单项
-		detailDTO.setItems((Set<OrderItemDetailDTO>) MapperUtils.mapAsSet(orderItems, OrderItemDetailDTO.class));
-		return detailDTO;
+		return orderDetailDTOList;
 	}
 
 	/**
@@ -309,38 +318,41 @@ public class OrderServiceImpl implements OrderService {
 	/**
 	 * 初始化订单项
 	 * @param order
-	 * @param exchangeDTO
+	 * @param orderItemDetailDTOList
 	 * @return
 	 */
-	private List<OrderItem> initItemProcessor(Order order, ExchangeDTO exchangeDTO) {
+	private List<OrderItem> initItemProcessor(Order order, List<OrderItemDetailDTO> orderItemDetailDTOList) {
 
 		List<OrderItem> orderItems = new ArrayList<>();
 		// TODO 判断商品是否是来自第三方
 		// TODO 判断商品库存
 		// TODO 暂时单个商品
-		Product product = productRepository.findOne(exchangeDTO.getProductId());
-		// 去掉style
-		//ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
-
-		OrderItem orderItem = new OrderItem();
-		orderItem.setOrder(order);
-		//设置样式相关
-		orderItem.setStyleId(exchangeDTO.getStyleId());
-		//if (style != null) {
-			//orderItem.setStyleName(style.getName());
-			//orderItem.setImageUrl(style.getImageUrl());
-		//}
-		orderItem.setImageUrl(product.getDefaultImageUrl());
-		//设置商品相关
-		orderItem.setAmount(exchangeDTO.getAmount());
-		orderItem.setProductId(product.getId());
-		orderItem.setProductName(product.getName());
-		orderItem.setState(OrderItemState.COMPLETE_VERIFY);
-		//销售价格
-		orderItem.setProductPrice(product.getSellPrice());
-
-		orderItems.add(orderItem);
-
+		//List<OrderItemDetailDTO> orderItemDetailDTOList = exchangeDTO.getOrderItemDetailDTOList();
+		for (OrderItemDetailDTO orderItemDetailDTO:orderItemDetailDTOList){
+			Product product = productRepository.findOne(orderItemDetailDTO.getProductId());
+			// 去掉style
+			//ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
+			if(product != null){
+				OrderItem orderItem = new OrderItem();
+				orderItem.setOrder(order);
+				//设置样式相关
+				//orderItem.setStyleId(orderItemDetailDTO.getStyleId().longValue());
+				//if (style != null) {
+				//orderItem.setStyleName(style.getName());
+				//orderItem.setImageUrl(style.getImageUrl());
+				//}
+				orderItem.setImageUrl(product.getDefaultImageUrl());
+				//设置商品相关
+				orderItem.setAmount(orderItemDetailDTO.getAmount());
+				orderItem.setProductId(product.getId());
+				orderItem.setProductName(product.getName());
+				orderItem.setState(OrderItemState.COMPLETE_VERIFY);
+				orderItem.setChannelId(orderItemDetailDTO.getChannelId());
+				//销售价格
+				orderItem.setProductPrice(product.getSellPrice());
+				orderItems.add(orderItem);
+			}
+		}
 		return orderItems;
 	}
 
@@ -392,7 +404,7 @@ public class OrderServiceImpl implements OrderService {
 			Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 			Specification<Order> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Order.class);
 
-			return orderRepository.findAll(spec,pageRequest);
+			return orderRepository.findAll(spec, pageRequest);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("搜索订单失败");
@@ -428,7 +440,7 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 			Specification<OrderRefund> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), OrderRefund.class);
-			return orderRefundRepository.findAll(spec,pageRequest);
+			return orderRefundRepository.findAll(spec, pageRequest);
 		}catch (OrderServiceException e){
 			log.error("error",e.getStackTrace());
 			throw new OrderServiceException(e);
@@ -457,5 +469,22 @@ public class OrderServiceImpl implements OrderService {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("订单编辑失败");
 		}
+	}
+
+	//根据channel获取对应商品
+	public Map splitChannel(ExchangeDTO exchangeDTO){
+		Map<Integer,List<OrderItemDetailDTO>> map = new HashMap<Integer,List<OrderItemDetailDTO>>();
+		List<OrderItemDetailDTO> orderItemDetailDTOs = exchangeDTO.getOrderItemDetailDTOList();
+		for (OrderItemDetailDTO orderItemDetailDTO:orderItemDetailDTOs){
+			if(map.get(orderItemDetailDTO.getChannelId()) != null){
+				map.get(orderItemDetailDTO.getChannelId()).add(orderItemDetailDTO);
+				map.put(orderItemDetailDTO.getChannelId(),map.get(orderItemDetailDTO.getChannelId()));
+			}else {
+				List<OrderItemDetailDTO> list = new ArrayList<OrderItemDetailDTO>();
+				list.add(orderItemDetailDTO);
+				map.put(orderItemDetailDTO.getChannelId(),list);
+			}
+		}
+		return map;
 	}
 }

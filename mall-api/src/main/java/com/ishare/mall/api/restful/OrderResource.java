@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.LIMIT;
 import static com.ishare.mall.common.base.constant.ResourceConstant.PAGE.OFFSET;
 
@@ -61,10 +63,10 @@ public class OrderResource extends BaseResource {
         //从缓存中通过accessToken获取用户信息
 		exchangeDTO.setAccount(oAuthService.getAccountByAccessToken(orderForm.getAccess_token()));
 		exchangeDTO.setClientId(oAuthService.getAuthObjectByAccessToken(orderForm.getAccess_token()).getClientId());
-        Response<OrderDetailDTO> response = new Response<>();
+        Response< List<OrderDetailDTO>> response = new Response<List<OrderDetailDTO>>();
         //创建订单
-        OrderDetailDTO orderDetailDTO = orderService.create(exchangeDTO);
-        response.setData(orderDetailDTO);
+        List<OrderDetailDTO> orderDetailDTOList = orderService.create(exchangeDTO);
+        response.setData(orderDetailDTOList);
         response.setCode(200);
         //请求成功
 		return new ResponseEntity(response, HttpStatus.OK);

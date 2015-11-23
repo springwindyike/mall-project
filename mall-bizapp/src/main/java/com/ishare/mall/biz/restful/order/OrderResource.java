@@ -199,10 +199,10 @@ public class OrderResource {
                     produces    = {"application/json"},
                     consumes    = {"application/json"})
     public Response create(@RequestBody ExchangeDTO exchangeDTO) throws OrderServiceException{
-        OrderDetailDTO orderDetailDTO = orderService.create(exchangeDTO);
+		List<OrderDetailDTO> orderDetailDTOList = orderService.create(exchangeDTO);
         Response response = new Response();
         response.setCode(Response.Status.OK);
-        response.setData(orderDetailDTO);
+        response.setData(orderDetailDTOList);
         return response;
     }
     

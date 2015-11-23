@@ -42,6 +42,7 @@ public class OrderItemDetailDTO implements BaseObject {
     /* 所属订单 */
     private String orderId;
 
+	private Integer channelId;
 	public Integer getProductId() {
 		return productId;
 	}
@@ -121,5 +122,12 @@ public class OrderItemDetailDTO implements BaseObject {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-	
+
+	public Integer getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(Integer channelId) {
+		this.channelId = channelId;
+	}
 }

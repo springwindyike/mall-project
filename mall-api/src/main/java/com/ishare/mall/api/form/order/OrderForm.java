@@ -1,12 +1,14 @@
 package com.ishare.mall.api.form.order;
 
 import com.ishare.mall.common.base.dto.order.ExchangeDTO;
+import com.ishare.mall.common.base.dto.order.OrderItemDetailDTO;
 import com.ishare.mall.common.base.enumeration.DeliverWay;
 import com.ishare.mall.common.base.enumeration.PaymentWay;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/16.
@@ -18,9 +20,10 @@ public class OrderForm {
     @NotEmpty(message = "token不能为空")
     private String access_token;
 
+//    @NotNull(message = "商品ID不能为空")
+//    private Integer[] productId;
     @NotNull(message = "商品ID不能为空")
-    private Integer productId;
-
+    private List<OrderItemDetailDTO> orderItemDetailDTOList;
     private Long [] attributeIds;
 
     private Long styleId;
@@ -73,13 +76,6 @@ public class OrderForm {
     @NotNull(message = "支付方式不能为空")
     private PaymentWay paymentWay;
 
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
 
     public Long[] getAttributeIds() {
         return attributeIds;
@@ -205,5 +201,22 @@ public class OrderForm {
 
     public void setPaymentWay(PaymentWay paymentWay) {
         this.paymentWay = paymentWay;
+    }
+
+//    public Integer[] getProductId() {
+//        return productId;
+//    }
+//
+//    public void setProductId(Integer[] productId) {
+//        this.productId = productId;
+//    }
+
+
+    public List<OrderItemDetailDTO> getOrderItemDetailDTOList() {
+        return orderItemDetailDTOList;
+    }
+
+    public void setOrderItemDetailDTOList(List<OrderItemDetailDTO> orderItemDetailDTOList) {
+        this.orderItemDetailDTOList = orderItemDetailDTOList;
     }
 }

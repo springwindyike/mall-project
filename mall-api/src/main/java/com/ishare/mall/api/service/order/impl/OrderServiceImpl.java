@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 /**
  * Created by YinLin on 2015/9/24.
  * Description : 客户端
@@ -60,20 +62,20 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     }
 
     @Override
-    public OrderDetailDTO create(ExchangeDTO exchangeDTO) throws ApiLogicException {
-        ResponseEntity<Response<OrderDetailDTO>> responseEntity;
+    public List<OrderDetailDTO> create(ExchangeDTO exchangeDTO) throws ApiLogicException {
+        ResponseEntity<Response<List<OrderDetailDTO>>> responseEntity;
 
         try {
             responseEntity = restTemplate.exchange(
                     this.buildBizAppURI(APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_CREATE),
-                    HttpMethod.POST, new HttpEntity<ExchangeDTO>(exchangeDTO), new ParameterizedTypeReference<Response<OrderDetailDTO>>() {
+                    HttpMethod.POST, new HttpEntity<ExchangeDTO>(exchangeDTO), new ParameterizedTypeReference<Response<List<OrderDetailDTO>>>() {
                     });
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ApiLogicException("订单创建失败", HttpStatus.BAD_REQUEST);
         }
 
-        Response<OrderDetailDTO> response = responseEntity.getBody();
+        Response<List<OrderDetailDTO>> response = responseEntity.getBody();
 
         if (!response.isSuccess() || response.getData() == null) {
             throw new ApiLogicException("订单创建失败", HttpStatus.BAD_REQUEST);

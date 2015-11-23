@@ -63,7 +63,7 @@ public interface OrderService {
 	 * @param exchangeDTO
 	 * @return
 	 */
-	OrderDetailDTO create(ExchangeDTO exchangeDTO) throws OrderServiceException;
+	List<OrderDetailDTO> create(ExchangeDTO exchangeDTO) throws OrderServiceException;
 
 	/**
 	 * 确认订单

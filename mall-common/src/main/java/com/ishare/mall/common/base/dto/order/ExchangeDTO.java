@@ -5,6 +5,7 @@ import com.ishare.mall.common.base.enumeration.PaymentWay;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/9/16.
@@ -19,8 +20,8 @@ public class ExchangeDTO {
 
     private String account;
 
-    private Integer productId;
-
+    //private Integer[] productId;
+    private List<OrderItemDetailDTO> orderItemDetailDTOList;
     private Long [] attributeIds;
 
     private Long styleId;
@@ -44,15 +45,6 @@ public class ExchangeDTO {
 
     //支付方式
     private PaymentWay paymentWay;
-
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
 
     public Long[] getAttributeIds() {
         return attributeIds;
@@ -188,5 +180,22 @@ public class ExchangeDTO {
 
     public void setPaymentWay(PaymentWay paymentWay) {
         this.paymentWay = paymentWay;
+    }
+
+//    public Integer[] getProductId() {
+//        return productId;
+//    }
+//
+//    public void setProductId(Integer[] productId) {
+//        this.productId = productId;
+//    }
+
+
+    public List<OrderItemDetailDTO> getOrderItemDetailDTOList() {
+        return orderItemDetailDTOList;
+    }
+
+    public void setOrderItemDetailDTOList(List<OrderItemDetailDTO> orderItemDetailDTOList) {
+        this.orderItemDetailDTOList = orderItemDetailDTOList;
     }
 }
