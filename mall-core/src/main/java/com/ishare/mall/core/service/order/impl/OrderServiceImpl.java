@@ -26,6 +26,7 @@ import com.ishare.mall.core.utils.filter.SearchFilter;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -329,11 +330,12 @@ public class OrderServiceImpl implements OrderService {
 		// TODO 暂时单个商品
 		//List<OrderItemDetailDTO> orderItemDetailDTOList = exchangeDTO.getOrderItemDetailDTOList();
 		for (OrderItemDetailDTO orderItemDetailDTO:orderItemDetailDTOList){
-			Product product = productRepository.findOne(orderItemDetailDTO.getProductId());
-			// 去掉style
-			//ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
-			if(product != null){
+//			Product product = productRepository.findOne(orderItemDetailDTO.getProductId());
+//			// 去掉style
+//			//ProductStyle style = styleRepository.findOne(exchangeDTO.getStyleId());
+//			if(product != null){
 				OrderItem orderItem = new OrderItem();
+				BeanUtils.copyProperties(orderItemDetailDTO,orderItem);
 				orderItem.setOrder(order);
 				//设置样式相关
 				//orderItem.setStyleId(orderItemDetailDTO.getStyleId().longValue());
@@ -341,17 +343,16 @@ public class OrderServiceImpl implements OrderService {
 				//orderItem.setStyleName(style.getName());
 				//orderItem.setImageUrl(style.getImageUrl());
 				//}
-				orderItem.setImageUrl(product.getDefaultImageUrl());
+				//orderItem.setImageUrl(product.getDefaultImageUrl());
 				//设置商品相关
-				orderItem.setAmount(orderItemDetailDTO.getAmount());
-				orderItem.setProductId(product.getId());
-				orderItem.setProductName(product.getName());
+				//orderItem.setAmount(orderItemDetailDTO.getAmount());
+//				orderItem.setProductId(product.getId());
+//				orderItem.setProductName(product.getName());
 				orderItem.setState(OrderItemState.COMPLETE_VERIFY);
 				orderItem.setChannelId(orderItemDetailDTO.getChannelId());
 				//销售价格
-				orderItem.setProductPrice(product.getSellPrice());
+//				orderItem.setProductPrice(product.getSellPrice());
 				orderItems.add(orderItem);
-			}
 		}
 		return orderItems;
 	}
@@ -476,13 +477,32 @@ public class OrderServiceImpl implements OrderService {
 		Map<Integer,List<OrderItemDetailDTO>> map = new HashMap<Integer,List<OrderItemDetailDTO>>();
 		List<OrderItemDetailDTO> orderItemDetailDTOs = exchangeDTO.getOrderItemDetailDTOList();
 		for (OrderItemDetailDTO orderItemDetailDTO:orderItemDetailDTOs){
-			if(map.get(orderItemDetailDTO.getChannelId()) != null){
-				map.get(orderItemDetailDTO.getChannelId()).add(orderItemDetailDTO);
-				map.put(orderItemDetailDTO.getChannelId(),map.get(orderItemDetailDTO.getChannelId()));
-			}else {
-				List<OrderItemDetailDTO> list = new ArrayList<OrderItemDetailDTO>();
-				list.add(orderItemDetailDTO);
-				map.put(orderItemDetailDTO.getChannelId(),list);
+			Product product = productRepository.findOne(orderItemDetailDTO.getProductId());
+			if(product != null){
+				//设置样式相关
+				//orderItem.setStyleId(orderItemDetailDTO.getStyleId().longValue());
+				//if (style != null) {
+				//orderItem.setStyleName(style.getName());
+				//orderItem.setImageUrl(style.getImageUrl());
+				//}
+				orderItemDetailDTO.setImageUrl(product.getDefaultImageUrl());
+				//设置商品相关
+				//orderItemDetailDTO.setAmount(orderItemDetailDTO.getAmount());
+				orderItemDetailDTO.setProductId(product.getId());
+				orderItemDetailDTO.setProductName(product.getName());
+//				orderItemDetailDTO.setState(OrderItemState.COMPLETE_VERIFY);
+				orderItemDetailDTO.setChannelId(product.getChannel().getId());
+				//销售价格
+				orderItemDetailDTO.setProductPrice(product.getSellPrice());
+//				orderItems.add(orderItem);
+				if(map.get(product.getChannel().getId()) != null){
+					map.get(product.getChannel().getId()).add(orderItemDetailDTO);
+					map.put(product.getChannel().getId(),map.get(orderItemDetailDTO.getChannelId()));
+				}else {
+					List<OrderItemDetailDTO> list = new ArrayList<OrderItemDetailDTO>();
+					list.add(orderItemDetailDTO);
+					map.put(product.getChannel().getId(),list);
+				}
 			}
 		}
 		return map;
