@@ -52,7 +52,7 @@ public class ProductController extends BaseController {
         productDetailDTO.setId(id);
         ResponseEntity<Response> resultEntity = null;
         RestTemplate restTemplate = new RestTemplate();
-        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID),productDetailDTO,Response.class);
+        resultEntity = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ID), productDetailDTO, Response.class);
         ProductDetailDTO returnTO =  (ProductDetailDTO) resultEntity.getBody().getData();
         return returnTO;
     }
@@ -84,7 +84,7 @@ public class ProductController extends BaseController {
  	public String forwardTOproductList() {
 	  return ManageViewConstant.Product.LIST_PRODUCT;
   }
-  
+
   @RequestMapping(value = ManageURIConstant.Product.REQUEST_MAPPING_FIND_ALL, method = RequestMethod.GET)
 	@ResponseBody
 	public PageDTO findAll(@CurrentManageUser CurrentManageUserDTO currentMemberDTO, HttpServletRequest request, Model model) {
@@ -100,13 +100,57 @@ public class ProductController extends BaseController {
 			resultDTO = restTemplate.postForEntity(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_ALL), productDTO, Response.class);
 		} catch (Exception e) {
 			log.debug("error");
-				e.printStackTrace();		
+				e.printStackTrace();
 				}
 		PageDTO pageDTO = (PageDTO) resultDTO.getBody().getData();
 		model.addAttribute("pageDTO",pageDTO);
 		return pageDTO;
 	}
-	
+
+	@RequestMapping(value = ManageURIConstant.Product.REQUEST_MAPPING_THISWEEK, method = RequestMethod.GET)
+	public String forwardTOThisWeekProductList() {
+		return ManageViewConstant.Product.LIST_PRODUCT_THISWEEK;
+	}
+
+	@RequestMapping(value = ManageURIConstant.Product.REQUEST_MAPPING_FINDTHISWEEK, method = RequestMethod.GET,
+			produces = {"application/json"})
+	@ResponseBody
+	public PageDTO findAllThisWeek(HttpServletRequest request,Model model) throws  Exception{
+		int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+		int displayStart = Integer.parseInt(request.getParameter("start"));
+		int currentPage = displayStart/displayLength+1;
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setLimit(displayLength);
+		productDTO.setOffset(currentPage);
+		ResponseEntity<Response<PageDTO<ProductDetailDTO>>> resultDTO = null;
+		HttpEntity<ProductDTO> requestDTO = new HttpEntity<ProductDTO>(productDTO);
+		try{
+			resultDTO=restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Product.REQUEST_MAPPING,APPURIConstant.Product.REQUEST_MAPPING_FIND_ALL_THISWEEK)
+			, HttpMethod.POST,requestDTO,new ParameterizedTypeReference<Response<PageDTO<ProductDetailDTO>>>(){});
+
+
+		}catch (Exception e){
+			log.error("call bizp app" + APPURIConstant.Product.REQUEST_MAPPING, APPURIConstant.Product.REQUEST_MAPPING_FIND_ALL_THISWEEK + "error");
+			throw new Exception(e.getMessage());
+		}
+		Response response = resultDTO.getBody();
+		if(response!=null){
+				if(response.isSuccess()){
+					PageDTO pageDTO = (PageDTO)response.getData();
+					model.addAttribute("pageDTO",pageDTO);
+					return pageDTO;
+				}else {
+					throw  new Exception(response.getMessage());
+				}
+		}else{
+			throw  new Exception("get response error");
+		}
+
+	}
+
+
+
+
 /*	@RequestMapping(value = ManageURIConstant.Product.REQUEST_MAPPING_FIND_BY_SEARCHCONDITION, method = RequestMethod.GET)
 	@ResponseBody
 	public PageDTO findBySearchCondition(@CurrentManageUser CurrentManageUserDTO currentMemberDTO, @PathVariable("searchCondition") Integer searchCondition,Model model,HttpServletRequest request) throws Exception{
@@ -186,7 +230,7 @@ public class ProductController extends BaseController {
 			}catch (Exception e){
 				log.error("call bizp app "+ APPURIConstant.Order.REQUEST_MAPPING, APPURIConstant.Order.REQUEST_MAPPING_FIND_ALL + "error");
 				throw new Exception(e.getMessage());
-			}
+		}
 		}
 		Response response = resultDTO.getBody();
 		if(response != null) {

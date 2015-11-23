@@ -2,6 +2,7 @@ package com.ishare.mall.biz.restful.channel;
 
 import com.ishare.mall.common.base.constant.CommonConstant;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
+import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelDTO;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +40,9 @@ public class ChannelResource {
     private static final Logger logger = LoggerFactory.getLogger(ChannelResource.class);
     @Autowired
     private ChannelService channelService;
+    public static Logger getLog() {
+        return logger;
+    }
     /**
      * 通过appId获取订单
      * @param id
@@ -237,4 +242,80 @@ public class ChannelResource {
         }
         return response;
     }
+
+
+    /**
+     * 查询本周的新增的渠道
+     */
+    @RequestMapping(value = ManageURIConstant.Channel.REQUEST_MAPPING_FindThisWeek, method = RequestMethod.POST,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    public Response findAllThisWeek(@RequestBody ChannelDTO channelDTO) {
+        List<ChannelDTO> listChannel = new ArrayList<ChannelDTO>();
+        Integer offset = channelDTO.getOffset();
+        Integer limit = channelDTO.getLimit();
+        PageDTO<ChannelDTO> pageDTO = new PageDTO<ChannelDTO>();
+        Response<PageDTO<ChannelDTO>> response = new Response();
+        Page<Channel> result = null;
+        try {
+            PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit, Sort.Direction.DESC, "id");
+            // ChannelServiceImpl ChannelServiceimpl = new ChannelServiceImpl();
+            result = channelService.findAllThisWeek(pageRequest);
+            if (result != null && result.getContent() != null && result.getContent().size() > 0) {
+                List<ChannelDTO> list = (List<ChannelDTO>)MapperUtils.mapAsList(result.getContent(),ChannelDTO.class);
+                pageDTO.setContent(list);
+                pageDTO.setTotalPages(result.getTotalPages());
+                pageDTO.setITotalDisplayRecords(result.getTotalElements());
+                pageDTO.setITotalRecords(result.getTotalElements());
+                pageDTO.setLimit(limit);
+                pageDTO.setOffset(offset);
+                response.setData(pageDTO);
+            } else {
+                pageDTO.setContent(listChannel);
+                pageDTO.setTotalPages(0);
+                pageDTO.setITotalDisplayRecords(0L);
+                pageDTO.setITotalRecords(0L);
+                response.setData(pageDTO);
+            }
+            return response;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            response.setMessage(e.getMessage());
+            response.setSuccess(false);
+            return response;
+        }
+
+    }
+
+    /**
+     * 查询本周新增渠道的数量
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_THISWEEK_COUNT, method = RequestMethod.GET,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"})
+    public Response findThisWeekCount(){
+        logger.debug("findAll start");
+        Long count = channelService.findThisWeekCount();
+        Response response = new Response();
+        response.setData(count);
+        return response;
+    }
+
+    /**
+     * 查询Channel数量
+     * @return
+     */
+    @RequestMapping(value = APPURIConstant.Channel.REQUEST_MAPPING_COUNT, method = RequestMethod.GET,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"})
+    public Response findCount(){
+        logger.debug("findAll start");
+        Long count = channelService.findCount();
+        Response response = new Response();
+        response.setData(count);
+        return response;
+    }
+
 }

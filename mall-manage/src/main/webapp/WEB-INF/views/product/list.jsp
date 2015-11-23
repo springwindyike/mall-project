@@ -20,7 +20,7 @@
 <div >
 	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 产品列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="pd-20">
-		<div class="text-c"> 
+		<div class="text-c">
 			<table  style="width:auto;" border="0">
   <tr>
     <td><select name="上架状态" class="input-text" id="上架状态"  style="width:100px; " id="searchStatus">
@@ -45,9 +45,9 @@
   </tr>
 </table>
 
-            
-            
-			
+
+
+
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
 		<div class="mt-20">
@@ -72,13 +72,13 @@
 	</div>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/layer/1.9.3/layer.js"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/My97DatePicker/WdatePicker.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script> 
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
 var targetTable;
 var url = "${pageContext.request.contextPath}/product/findAll.dhtml";
@@ -113,34 +113,58 @@ $(function () {
            $(row).addClass('text-c');
        },
 
-       "columnDefs" : [
-               {
-                   "targets" : 0 ,
-                   "render" : function(mDataProp, type, full) {
-                   return '<tr class="text-c"><td ><input type="checkbox" value="1" name="" ></td></tr>';
-               }
-           },
+		 "columnDefs" : [
 
-              {
-                   "targets" : 2 ,
-                   "render" : function(mDataProp, type, full) {
-                	   return '<td><a onClick="product_show(\'哥本哈根橡木地板\',\'product-show.html\',\'10001\')" href="javascript:;"><img width="60" class="product-thumb" src="${pageContext.request.contextPath}/resources/images/admin-login-bg.jpg"></a></td>';
-               }
-           }, 
-           {
-               "targets" : 7 ,
-               "render" : function(mDataProp, type, full) {
-                   return '<td><span class="label td-status label-success radius">已启用</span></td>';
-               }
-           },
+			 {
+				 "targets" : 6 ,
+				 "render" : function(mDataProp, type, full) {
+					 var itemHtml = mDataProp.stateValue;
+					 if(itemHtml == '已取消' ){
+						 return '<span class="outspan"><span class="label label-defaunt radius">'+itemHtml+'</span></span>';
+					 }
+//					if(itemHtml == '待审核'){
+//						return '<span class="outspan"><span class="label label-warning radius">'+itemHtml+'</span></span>';
+//					}
+					 return '<span class="outspan"><span class="label label-success radius">'+itemHtml+'</span></span>';
+				 }
+			 } ,
+			 {
+				 "targets" : 7 ,
+				 "orderable":false,
+				 "aTargets":[7],
+				 "render" : function(mDataProp, type, full) {
+					 var itemHtml = mDataProp.stateValue;
+					 var str = '<td class="td-manage">';
+					 if(itemHtml == '已取消'){
+						 str = str + '<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+								 +'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'+'</td>';
+					 }
+					 if(itemHtml == "待收货" || itemHtml == "已发货" || itemHtml == "已收货"){
+						 str = str + '<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+								 +'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'+
+								 '<a style="text-decoration:none" class="ml-5" onClick="order_logistics(\'物流\',\'${pageContext.request.contextPath}/order/logistics/'+ mDataProp.expressOrder + "/"+ mDataProp.expressId +'.dhtml\',\'10001\')" href="javascript:;" title="查询物流">'
+								 +'<i class="Hui-iconfont">&#xe669;</i></a>&nbsp;&nbsp;'+'</td>';
+					 }
 
-           {
-               "targets" : 8 ,
-               "render" : function(mDataProp, type, full) {
-   								return '<td><div class="td-manage"><a style="text-decoration:none" onClick="product_stop(this,'+mDataProp.id+')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a></a><a style="text-decoration:none" class="ml-5" onClick="product_del(this,'+mDataProp.id+')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></div></td>';
-               }
-           },
-       ],
+					 if(itemHtml =="等待发货" || itemHtml =="等待付款"){
+						 str = str +'<a style="text-decoration:none" class="ml-5" onClick="order_edit(\'订单编辑\',\'${pageContext.request.contextPath}/order/edit/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="编辑">'
+								 +'<i class="Hui-iconfont">&#xe6df;</i></a>&nbsp;&nbsp;'
+								 +'<a style="text-decoration:none" class="ml-5"  href="${pageContext.request.contextPath}/order/getOrderDetail/'+mDataProp.orderId+'.dhtml" title="订单详情">'
+								 +'<i class="Hui-iconfont">&#xe695;</i></a>&nbsp;&nbsp;'
+								 +'<a style="text-decoration:none" class="ml-5" href="${pageContext.request.contextPath}/order/deliver/'+mDataProp.orderId+'.dhtml" title="现在发货">'
+								 +'<i class="Hui-iconfont">&#xe634;</i></a>&nbsp;&nbsp;'
+								 +'<a style="text-decoration:none" class="ml-5" onClick="order_cancel(\'取消订单\',\'${pageContext.request.contextPath}/order/cancel/'+mDataProp.orderId+'.dhtml\',\'10001\')" href="javascript:;" title="取消订单">'
+								 +'<i class="Hui-iconfont">&#xe608;</i></a>&nbsp;&nbsp;'	+'</td>';
+					 }
+
+					 if(itemHtml =="待审核"){
+						 str = str +'<a style="text-decoration:none" class="ml-5" onClick="order_verify(\'${pageContext.request.contextPath}/order/confirmOrder/'+mDataProp.orderId+'.dhtml\')" href="javascript:;" title="审核订单">'
+								 +'<i class="Hui-iconfont">&#xe615;</i></a>&nbsp;&nbsp;'
+					 }
+					 return str;
+				 }
+			 }
+		 ]
    });
    $('.table-sort tbody').on('click', 'tr', function () {
        if ($(this).hasClass('selected')) {
@@ -185,7 +209,7 @@ $(function () {
        targetTable.ajax.url(url).load();
 
    }
-   	
+
    	$('.table-sort tbody').on('click', 'tr', function () {
    		if ($(this).hasClass('selected')) {
    			$(this).removeClass('selected');
@@ -216,7 +240,7 @@ function product_show(title,url,id){
 /*图片-审核*/
 function product_shenhe(obj,id){
 	layer.confirm('审核文章？', {
-		btn: ['通过','不通过'], 
+		btn: ['通过','不通过'],
 		shade: false
 	},
 	function(){
@@ -230,7 +254,7 @@ function product_shenhe(obj,id){
 		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
 		$(obj).remove();
     	layer.msg('未通过', {icon:5,time:1000});
-	});	
+	});
 }
 /*图片-下架*/
 function product_stop(obj,id){

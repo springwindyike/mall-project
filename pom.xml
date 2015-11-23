@@ -725,6 +725,17 @@
                 <schema.password>mall</schema.password>
             </properties>
         </profile>
+        <profile>
+            <id>dengyihome</id>
+            <properties>
+                <db.host>localhost</db.host>
+                <db.username>root</db.username>
+                <db.password>123456</db.password>
+                <schema.name>mall</schema.name>
+                <schema.user>mall</schema.user>
+                <schema.password>123456</schema.password>
+            </properties>
+        </profile>
     </profiles>
 
 </project>

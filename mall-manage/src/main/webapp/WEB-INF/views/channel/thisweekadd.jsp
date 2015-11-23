@@ -20,28 +20,36 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span
-        class="c-gray en">&gt;</span> 会员管理 <a class="btn btn-success radius r mr-20"
+        class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r mr-20"
                                               style="line-height:1.6em;margin-top:3px
                                               href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
   <div class="text-c">
-    <input type="text" class="input-text" style="width:250px" placeholder="登录账号、成员姓名" id="searchCondition" name="">
-    <button type="submit" onclick="searchChannel()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户
+    <input type="text" class="input-text" style="width:250px" placeholder="供货商、联系电话、经营类别" id="searchCondition" name="">
+    <button type="submit" onclick="searchChannel()" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜渠道
     </button>
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"> <a href="javascript:"
-                                                              onclick="channel_add('添加管理','${pageContext.request.contextPath}/manageUser/forward2AddPage.dhtml','800','600')"
-                                                              class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>添加渠道</a></span>
+  <div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"><a href="javascript:"
+                                                             onclick="channel_add('添加渠道','${pageContext.request.contextPath}/channel/forward2AddPage.dhtml','800','600')"
+                                                             class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>添加渠道</a></span>
     <span class="r"></span></div>
   <div class="mt-20">
     <table class="table table-border table-bordered table-hover table-bg table-sort">
       <thead>
       <tr class="text-c">
-        <th width="80">登录账号</th>
-        <th width="100">成员姓名</th>
-        <th width="100">性别</th>
-        <th width="90">类别</th>
+        <th width="80">供货商</th>
+        <th width="80">联系人姓名</th>
+        <th width="100">联系电话</th>
+        <th width="90">公司营业规模</th>
+        <th width="40">经营类别</th>
+        <th width="40">国家</th>
+        <th width="40">省</th>
+        <th width="40">市</th>
+        <th width="40">县区</th>
+        <th width="40">详细街道</th>
+        <th width="130">加入时间</th>
+        <th width="130">状态</th>
         <th width="100">操作</th>
       </tr>
       </thead>
@@ -63,7 +71,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/H-ui.admin.js"></script>
 <script type="text/javascript">
   var targetTable;
-  var url = "${pageContext.request.contextPath}/member/findthisweek.dhtml";
+  var url = "${pageContext.request.contextPath}/channel/findthisweek.dhtml";
   $(function () {
     targetTable = $('.table-sort').DataTable({
       "oLanguage": {
@@ -83,9 +91,17 @@
       },
       //"sAjaxDataProp":"content",
       "aoColumns": [
-        { "mDataProp": "account" },
         { "mDataProp": null },
-        { "mDataProp": null },
+        { "mDataProp": "linkName" },
+        { "mDataProp": "phone" },
+        { "mDataProp": "businessScale" },
+        { "mDataProp": "industry" },
+        { "mDataProp": "country" },
+        { "mDataProp": "province" },
+        { "mDataProp": "city" },
+        { "mDataProp": "district" },
+        { "mDataProp": "detail" },
+        { "mDataProp": "createTime" },
         { "mDataProp": null },
         { "mDataProp": null },
       ],
@@ -98,46 +114,28 @@
       "columnDefs" : [
 
         {
-          "targets" : 2 ,
+          "targets" : 0 ,
           "render" : function(mDataProp, type, full) {
-            if(mDataProp.gender == "MAN"){
-              return '<td>男</td>';
-            }else{
-              return '<td>女</td>'
-            }
+            return ' <td><u style="cursor:pointer" class="text-primary" onclick="channel_show(\'渠道详细信息\',\'${pageContext.request.contextPath}/channel/view/'+mDataProp.id+'.dhtml\',\'500\',\'600\')">'+mDataProp.name+'</u></td>';
           }
         },
         {
-          "targets" : 3 ,
+          "targets" : 11 ,
           "render" : function(mDataProp, type, full) {
-            if(mDataProp.memberType == "ADMIN"){
-              return '<td>管理员</td>';
-            }else if(mDataProp.memberType == "MEMBER"){
-              return '<td>普通成员</td>';
+            if(mDataProp.visible){
+              return '<td class="td-status"><span class="label label-success radius">已启用</span></td>'
             }else{
-              return '<td>普通成员</td>'
+              return '<td class="td-status"><span class="label radius">已停用</span></td>';
             }
+
           }
         },
-//        {
-//          "targets" : 3 ,
-//          "render" : function(mDataProp, type, full) {
-//            if(mDataProp.use){
-//              return '<td class="td-status"><span class="label label-success radius">已启用</span></td>';
-//            }else{
-//              return '<td class="td-status"><span class="label radius">已停用</span></td>';
-//            }
-//
-//          }
-//        },
         {
-          "targets" : 4 ,
+          "targets" : 12 ,
           "render" : function(mDataProp, type, full) {
-            return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/manageUser/changeStatus/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
-                    '<a style="text-decoration:none" class="ml-5" onClick="user_edit(\'修改信息\',\'${pageContext.request.contextPath}/manageUser/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'500\',\'300\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe60c;</i></a> ' +
-                    '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改密码\',\'${pageContext.request.contextPath}/manageUser/forward2ChangePasswordPage/'+mDataProp.id+'.dhtml\',\'500\',\'350\')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> ' +
-                    '<a style="text-decoration:none" onClick="manage_reset(\'${pageContext.request.contextPath}/manageUser/resetPassword/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="重置密码"><i class="Hui-iconfont">&#xe62e;</i></a> ' +
-                    '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/manageUser/changeStatus/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe601;</i></a></td>';
+            return '<td class="td-manage"><a style="text-decoration:none" onClick="channel_del(\'${pageContext.request.contextPath}/channel/update/0/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>' +
+                    '<a style="text-decoration:none" class="ml-5" onClick="change_password(\'修改信息\',\'${pageContext.request.contextPath}/channel/forward2UpdatePage/'+mDataProp.id+'.dhtml\',\'800\',\'600\')" href="javascript:;" title="修改信息"><i class="Hui-iconfont">&#xe60c;</i></a> ' +
+                    '<a style="text-decoration:none" onClick="channel_stat(\'${pageContext.request.contextPath}/channel/update/1/'+mDataProp.id+'.dhtml\')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe601;</i></a></td>';
           }
         },
       ],
@@ -162,19 +160,6 @@
               url,
               function(data) {
                 alert("启用成功");
-                window.location.reload();
-              }
-      )
-    }
-  }
-
-  /*重置密码*/
-  function manage_reset(url) {
-    if(confirm("确认要重置密码吗？")){
-      $.post(
-              url,
-              function(data) {
-                alert("重置成功");
                 window.location.reload();
               }
       )
@@ -208,7 +193,7 @@
     });
   }
   /*用户-编辑*/
-  function user_edit(title, url,w, h) {
+  function member_edit(title, url, id, w, h) {
     layer_show(title, url, w, h);
   }
   /*密码-修改*/
@@ -230,7 +215,7 @@
   /*根据条件查询*/
   function searchChannel(){
     var searchCondition = $("#searchCondition").val();
-    url = '${pageContext.request.contextPath}'+'/manageUser/findBySearchCondition/'+searchCondition+'.dhtml';
+    url = '${pageContext.request.contextPath}'+'/channel/findBySearchCondition/'+searchCondition+'.dhtml';
     targetTable.ajax.url(url).load();
 //        targetTable.ajax.load(url);
 //        var oSettings = targetTable.fnSettings();

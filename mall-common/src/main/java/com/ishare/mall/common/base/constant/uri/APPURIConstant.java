@@ -26,6 +26,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_CHECK_AND_CREATE = "/check";
 
         String REQUEST_MAPPING_GET_BY_ACCOUNT = "/{account}";
+        String REQUEST_MAPPING_COUNT ="/count";
+        String REQUEST_MAPPING_THISWEEK_COUNT="/thisweekcount";
     }
     interface ManageUser {
         String REQUEST_MAPPING   = "/manageuser";
@@ -62,12 +64,15 @@ public interface APPURIConstant {
    	    String REQUEST_MAPPING_DEL ="/del";
         String REQUEST_MAPPING_FIND_BY_CHANNEL_ID = "/findByChannelId";
         String REQUEST_MAPPING_FIND_ALL = "/findAll";
+        String REQUEST_MAPPING_FIND_ALL_THISWEEK = "/findAllThisWeek";
+        String REQUEST_MAPPING_FIND_ALL_THISWEEK_COUNT ="/findAllThisWeekCount";
         String REQUEST_MAPPING_FIND_ID="/findByID";
         String REQUEST_MAPPING_FIND_CODE="/findByCode";
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
         String REQUEST_MAPPING_CRAWLER_ADD = "/crawler/add";
         String REQUEST_MAPPING_CRAWLER_LIST_ADD = "/crawler/list/add";
         String REQUEST_MAPPING_FIND_BY_SEARCHCONDITION = "/findBySearchCondition";
+        String REQUEST_MAPPING_COUNT = "/count";
     }
 
     interface Brand {
@@ -131,6 +136,7 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_GET_REFUND_DETAIL_BY_REFUND_ID = "/getRefundDetail/{refundId}";
         String REQUEST_MAPPING_GO_TO_CONFIRM = "/go2confirmRefund";
         String REQUEST_MAPPOMG_GET_REFUND_BY_CONDITION = "/getRefundMoneyByCondition";
+        String REQUEST_MAPPOMG_COUNT = "/count";
 
     }
     //支付
@@ -159,6 +165,8 @@ public interface APPURIConstant {
         String REQUEST_MAPPING_SAVE_CHANNEL="/saveChannel";
         String REQUEST_MAPPING_UPDATE_CHANNEL="/updateChannel";
         String REQUEST_MAPPING_FIND_BY_PARAM="/findByParam";
+        String REQUEST_MAPPING_THISWEEK_COUNT="/countthisweek";
+        String REQUEST_MAPPING_COUNT = "/count";
     }
     //日志
     interface Artice{
@@ -172,6 +180,10 @@ public interface APPURIConstant {
     	 String REQUEST_MAPPING_DEL ="/del";
     	
     		
+    }
+    //供应商
+    interface Supplier{
+        String REQUEST_MAPPING = "/supplier";
     }
     
     interface Express {

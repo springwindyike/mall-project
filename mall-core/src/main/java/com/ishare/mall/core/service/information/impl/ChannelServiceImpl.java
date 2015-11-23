@@ -1,8 +1,9 @@
 package com.ishare.mall.core.service.information.impl;
 
-import java.util.List;
-import java.util.Set;
-
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.order.Order;
+import com.ishare.mall.core.repository.information.ChannelRepository;
+import com.ishare.mall.core.service.information.ChannelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ishare.mall.core.model.information.Channel;
-import com.ishare.mall.core.model.order.Order;
-import com.ishare.mall.core.repository.information.ChannelRepository;
-import com.ishare.mall.core.service.information.ChannelService;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/8/12.
@@ -72,7 +73,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Page<Channel> getChannelpage(PageRequest pageRequest, String name, String phone, String industry) {
-        return channelRepository.getChannelpage(pageRequest,name,phone,industry);
+        return channelRepository.getChannelpage(pageRequest, name, phone, industry);
     }
 
     @Override
@@ -81,4 +82,36 @@ public class ChannelServiceImpl implements ChannelService {
     if (channels == null || channels.size() == 0) return null;
     return channels.get(0);
 	}
+    @Override
+    public Page<Channel> findAllThisWeek(PageRequest pageRequest){
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        Page<Channel> page = channelRepository.findThisWeek(cal.getTime(), pageRequest);
+        return page;
+
+    }
+    /**
+     *查询本周新增渠道的数量
+     */
+    public Long findThisWeekCount(){
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        return  channelRepository.findThisWeekCount(cal.getTime());
+    }
+    /**
+     * 查询所有渠道数量
+     */
+    public long findCount(){
+        return channelRepository.findCount();
+    }
 }

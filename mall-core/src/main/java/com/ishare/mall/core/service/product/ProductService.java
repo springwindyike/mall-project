@@ -49,7 +49,11 @@ public abstract interface ProductService {
      * @return
      */
     Page<Product> findAll(PageRequest pageRequest) throws ProductServiceException;
-    
+
+    /**
+     * 查看所有本周新增的产品
+     */
+    Page<Product> findAllThisWeek(PageRequest pageRequest) throws ProductServiceException;
     /**
      * 根据产品id删除产品
      * @param id
@@ -110,4 +114,12 @@ public abstract interface ProductService {
      * @return
      */
       List<Product> findBrandId(Integer brandId) throws ProductServiceException;
+    /**
+     * 查询总共商品条数
+     */
+     long findcount();
+    /**
+     * 查询本周商品新增数量
+     */
+    long findThisWeekcount();
 }

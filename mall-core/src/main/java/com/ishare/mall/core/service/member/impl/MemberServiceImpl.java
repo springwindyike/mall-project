@@ -126,6 +126,15 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println(members);
 		return  members;
 	};
+
+	/**
+	 * 查询所有实体(分页)
+	 * @return
+	 */
+	public Page<Member> findAll(PageRequest pageRequest){
+		Page<Member> page = memberRepository.findAll(pageRequest);
+		return  page;
+	};
 	/**
 	 * 查询本周新增的会员
 	 */
@@ -140,6 +149,25 @@ public class MemberServiceImpl implements MemberService {
 		Page<Member> page = memberRepository.findThisWeek(cal.getTime(), pageRequest);
 		return page;
 
+	}
+	/**
+	 * 查询会员数量
+	 */
+	public Long findCount(){
+		return memberRepository.findCount();
+	}
+	/**
+	 * 查询会员本周新增数量
+	 */
+	public Long findThisWeekCount(){
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MINUTE, 0);
+		return memberRepository.findThisWeekCount(cal.getTime());
 	}
 
 }

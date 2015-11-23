@@ -69,7 +69,10 @@ public class MemberController  extends BaseController{
         }
     }
 
-
+    /**
+     * 返回到本周新增会员界面
+     * @return
+     */
     @RequestMapping(value = ManageURIConstant.Member.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
     public String list() {
         return ManageViewConstant.Member.LIST_THISWEEKMEMBER;

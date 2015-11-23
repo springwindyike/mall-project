@@ -1,12 +1,11 @@
 package com.ishare.mall.core.service.information;
 
-import java.util.Set;
-
-import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.core.model.information.Channel;
 import com.ishare.mall.core.model.order.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import java.util.Set;
 
 /**
  * Created by YinLin on 2015/8/12.
@@ -39,4 +38,16 @@ public interface ChannelService {
      * @return
      */
     Page<Channel> getChannelpage(PageRequest pageRequest,String name,String phone,String industry);
+    /**
+     * 查询本周的新增渠道
+     */
+    Page<Channel> findAllThisWeek(PageRequest pageRequest);
+    /**
+     * 查询本周新增渠道的数量
+     */
+    Long findThisWeekCount();
+    /**
+     * 查询所有渠道数
+     */
+    long findCount();
 }

@@ -55,11 +55,15 @@ public interface ManageURIConstant {
 		String REQUEST_MAPPING = "/member";
 		//查询本周的会员/member
 		String FindThisWeek = "/findthisweek";
+		String FINDTHISWEEKCOUNT = "/findthisweekcount";
 		String REQUEST_MAPPING_SHOW = "/list";
+		String REQUEST_MAPPING_COUNT = "/count";
 	}
 
 	interface Channel{
 		String REQUEST_MAPPING = "/channel";
+		String REQUEST_MAPPING_FindThisWeek = "/findthisweek";
+		String REQUEST_MAPPING_SHOW = "/listthisweek";
 	}
 
 	interface ManageUser{
@@ -84,6 +88,8 @@ public interface ManageURIConstant {
 	
     interface Product{
       	 String REQUEST_MAPPING   = "/product";
+		 String REQUEST_MAPPING_THISWEEK = "/thisweek";
+		 String REQUEST_MAPPING_FINDTHISWEEK = "/findthisweek";
       	 String REQUEST_MAPPING_SAVE= "/add";
       	 String REQUEST_MAPPING_UPDATE= "/update/{id}";
       	 String REQUEST_MAPPING_DEL="/del/{id}";
@@ -112,5 +118,8 @@ public interface ManageURIConstant {
 		  String REQUEST_MAPPING_UPDATE_BY_ID ="/update/{id}";
 		  String REQUEST_MAPPING_ADD ="/add";
 		  String REQUEST_MAPPING_UPDATE ="/update";
-	  } 
+	  }
+	interface Supplier{
+		String REQUEST_MAPPING="";
+	}
 }

@@ -1,29 +1,9 @@
 package com.ishare.mall.biz.restful.product;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.dto.page.PageDTO;
-import com.ishare.mall.common.base.dto.product.FetchProductDTO;
-import com.ishare.mall.common.base.dto.product.ProductDTO;
-import com.ishare.mall.common.base.dto.product.ProductDetailDTO;
-import com.ishare.mall.common.base.dto.product.ProductListDTO;
-import com.ishare.mall.common.base.dto.product.ProductStyleDTO;
+import com.ishare.mall.common.base.dto.product.*;
 import com.ishare.mall.common.base.enumeration.Gender;
 import com.ishare.mall.common.base.enumeration.MemberType;
 import com.ishare.mall.common.base.general.Response;
@@ -40,6 +20,21 @@ import com.ishare.mall.core.service.product.ProductService;
 import com.ishare.mall.core.service.product.ProductStyleService;
 import com.ishare.mall.core.service.product.ProductTypeService;
 import com.ishare.mall.core.utils.mapper.MapperUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by YinLin on 2015/9/1.
@@ -401,6 +396,55 @@ public class ProductResource {
 		}
         return response;
     }
+
+	/**
+	 * 获取所有本周新增的product
+	 *
+	 * @return Page<ProductDTO>
+	 */
+	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_ALL_THISWEEK, method = RequestMethod.POST,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json", "application/xml"},
+			consumes = {"application/json", "application/xml"})
+	public Response findAllThisWeek(@RequestBody ProductDTO productDTO) {
+		List<ProductDTO> listProductList = new ArrayList<>();
+		int offset = productDTO.getOffset();
+		int limit = productDTO.getLimit();
+		Response response = new Response();
+		PageRequest pageRequest = new PageRequest(offset - 1 < 0 ? 0 : offset - 1, limit <= 0 ? 15 : limit,Sort.Direction.DESC, "id");
+		Page<Product> result;
+		try {
+			result = productService.findAllThisWeek(pageRequest);
+			PageDTO<ProductDTO> pageDTO = new PageDTO<ProductDTO>();
+			if(result != null && result.getContent() != null && result.getContent().size()>0){
+				List<Product> listProduct = result.getContent();
+				for (Product product:listProduct){
+					ProductDTO productDetailDTO = new ProductDTO();
+					BeanUtils.copyProperties(product, productDetailDTO);
+					listProductList.add(productDetailDTO);
+					pageDTO.setContent(listProductList);
+					pageDTO.setTotalPages(result.getTotalPages());
+					pageDTO.setITotalDisplayRecords(result.getTotalElements());
+					pageDTO.setITotalRecords(result.getTotalElements());
+					response.setData(pageDTO);
+				}
+			}else {
+				pageDTO.setContent(listProductList);
+				pageDTO.setTotalPages(0);
+				pageDTO.setITotalDisplayRecords(0L);
+				pageDTO.setITotalRecords(0L);
+				response.setData(pageDTO);
+			}
+		} catch (ProductServiceException e) {
+			log.error(e.getMessage(), e);
+			response.setMessage("系统错误");
+			response.setSuccess(false);
+			return response;
+		}
+		return response;
+	}
+
+
     /**
      * 根据条件查询product
      *
@@ -483,5 +527,31 @@ public class ProductResource {
 		return response;
 	}
 
-    
+	/**
+	 * 所有product数量
+	 */
+
+	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_COUNT, method = RequestMethod.GET,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"})
+	public Response findCount(){
+		log.debug("findAll start");
+		Long count = productService.findcount();
+		Response response = new Response();
+		response.setData(count);
+		return response;
+	}
+	/**
+	 * 本周新增的product的数量 findThisWeekcount
+	 */
+	@RequestMapping(value = APPURIConstant.Product.REQUEST_MAPPING_FIND_ALL_THISWEEK_COUNT, method = RequestMethod.GET,
+			headers = "Accept=application/xml, application/json",
+			produces = {"application/json"})
+	public Response findThisWeekCount(){
+		log.debug("findAll start");
+		Long count = productService.findThisWeekcount();
+		Response response = new Response();
+		response.setData(count);
+		return response;
+	}
 }

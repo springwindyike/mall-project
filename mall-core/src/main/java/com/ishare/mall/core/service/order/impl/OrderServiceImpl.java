@@ -392,7 +392,7 @@ public class OrderServiceImpl implements OrderService {
 			Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 			Specification<Order> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), Order.class);
 
-			return orderRepository.findAll(spec,pageRequest);
+			return orderRepository.findAll(spec, pageRequest);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("搜索订单失败");
@@ -428,7 +428,7 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 			Specification<OrderRefund> spec = DynamicSpecifications.bySearchFilter(filters == null ? null : filters.values(), OrderRefund.class);
-			return orderRefundRepository.findAll(spec,pageRequest);
+			return orderRefundRepository.findAll(spec, pageRequest);
 		}catch (OrderServiceException e){
 			log.error("error",e.getStackTrace());
 			throw new OrderServiceException(e);
@@ -457,5 +457,8 @@ public class OrderServiceImpl implements OrderService {
 			log.error(e.getMessage(), e);
 			throw new OrderServiceException("订单编辑失败");
 		}
+	}
+	public long findcount(){
+		return orderRepository.count();
 	}
 }

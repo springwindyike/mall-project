@@ -75,6 +75,11 @@
 <aside class="Hui-aside">
 	<input runat="server" id="divScrollValue" type="hidden" value="" />
 	<div class="menu_dropdown bk_2">
+
+		<dl id="menu-article">
+			<dt><i class="Hui-iconfont">&#xe616;</i> <a _href="welcome.dhtml" href="javascript:void(0)">欢迎首页</a><i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		</dl>
+
 		<dl id="menu-article">
 			<dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
@@ -202,6 +207,7 @@
 				<li class="active"><span title="我的桌面" data-href="welcome.jsp">我的桌面</span><em></em></li>
 			</ul>
 		</div>
+
 		<div class="Hui-tabNav-more btn-group"><a id="js-tabNav-prev" class="btn radius btn-default size-S"
 												  href="javascript:"><i class="Hui-iconfont">&#xe6d4;</i></a><a
 				id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:"><i class="Hui-iconfont">

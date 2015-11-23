@@ -3,15 +3,12 @@ package com.ishare.mall.manage.controller;
 import com.ishare.mall.common.base.constant.uri.APPURIConstant;
 import com.ishare.mall.common.base.constant.uri.CenterURIConstant;
 import com.ishare.mall.common.base.constant.uri.ManageURIConstant;
-import com.ishare.mall.common.base.constant.view.CenterViewConstant;
 import com.ishare.mall.common.base.constant.view.ManageViewConstant;
 import com.ishare.mall.common.base.dto.channel.ChannelDTO;
 import com.ishare.mall.common.base.dto.channel.ChannelTokenResultDTO;
 import com.ishare.mall.common.base.dto.manageuser.CurrentManageUserDTO;
-import com.ishare.mall.common.base.dto.member.CurrentMemberDTO;
 import com.ishare.mall.common.base.dto.page.PageDTO;
 import com.ishare.mall.common.base.dto.validform.ValidformRespDTO;
-import com.ishare.mall.common.base.exception.service.channel.ChannelServiceException;
 import com.ishare.mall.common.base.general.Response;
 import com.ishare.mall.manage.annoation.CurrentManageUser;
 import com.ishare.mall.manage.controller.base.BaseController;
@@ -22,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.channels.Channel;
-import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -47,6 +41,7 @@ public class ChannelController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
+    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
     /**
      * 分页查询
      * @param request
@@ -277,5 +272,52 @@ public class ChannelController extends BaseController {
             throw new Exception("get response error");
         }
         return response.getData();
+    }
+
+
+
+    @RequestMapping(value = ManageURIConstant.Channel.REQUEST_MAPPING_FindThisWeek, method = RequestMethod.GET)
+    @ResponseBody
+    public PageDTO findInThisWeek(HttpServletRequest request, Model model) throws Exception {
+        log.debug("hr==");
+        ChannelDTO channelDTO = new ChannelDTO();
+        int displayLength = Integer.parseInt(request.getParameter("length"))==0?1:Integer.parseInt(request.getParameter("length"));
+        int displayStart = Integer.parseInt(request.getParameter("start"));
+        int currentPage = displayStart/displayLength+1;
+        System.out.println(displayLength+" "+displayStart+" "+currentPage);
+        channelDTO.setLimit(displayLength);
+        channelDTO.setOffset(currentPage);
+        ResponseEntity<Response<PageDTO<ChannelDTO>>> resultDTO = null;
+        HttpEntity<ChannelDTO> requestDTO = new HttpEntity<ChannelDTO>(channelDTO);
+        try {
+            resultDTO = restTemplate.exchange(this.buildBizAppURI(APPURIConstant.Channel.REQUEST_MAPPING, ManageURIConstant.Channel.REQUEST_MAPPING_FindThisWeek),
+                    HttpMethod.POST, requestDTO, new ParameterizedTypeReference<Response<PageDTO<ChannelDTO>>>() {
+                    });
+        } catch (Exception e) {
+            log.debug("error");
+            e.printStackTrace();
+        }
+        Response response = resultDTO.getBody();
+        if(response != null) {
+            if(response.isSuccess()){
+                PageDTO pageDTO = (PageDTO)response.getData();
+                model.addAttribute("pageDTO",pageDTO);
+                return pageDTO;
+            }else {
+                throw new Exception(response.getMessage());
+            }
+        }else{
+            throw new Exception("get response error");
+        }
+    }
+
+    /**
+     * 返回到本周新增会员界面
+     * @return
+     */
+    @RequestMapping(value = ManageURIConstant.Channel.REQUEST_MAPPING_SHOW, method = RequestMethod.GET)
+    public String list() {
+        System.out.println("******");
+        return ManageViewConstant.Channel.LIST_THISWEEKMEMBER;
     }
 }

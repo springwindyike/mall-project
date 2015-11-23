@@ -88,8 +88,22 @@ public interface MemberService {
 	 */
 	List<Member> findAll();
 	/**
+	 * 查询所有实体（分页）
+	 * @return
+	 */
+	Page<Member> findAll(PageRequest pageRequest);
+	/**
 	 * 查询所有本周新增会员
 	 * @return
 	 */
 	public Page<Member> findAllThisWeek(PageRequest pageRequest);
+	/**
+	 * 查询实体数量
+	 *  @return
+	 */
+	Long findCount();
+	/**
+	 * 查询本周新增的会员数量
+	 */
+	Long findThisWeekCount();
 }

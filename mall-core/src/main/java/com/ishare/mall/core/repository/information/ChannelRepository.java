@@ -1,14 +1,15 @@
 package com.ishare.mall.core.repository.information;
 
-import java.util.List;
-
+import com.ishare.mall.core.model.information.Channel;
+import com.ishare.mall.core.model.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-import com.ishare.mall.core.model.information.Channel;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by YinLin on 2015/8/12.
@@ -28,4 +29,12 @@ public interface ChannelRepository extends JpaRepository<Channel, Integer>, JpaS
 
     @Query("SELECT c FROM Channel c WHERE c.name like ?1 or c.phone like ?2 or c.industry like ?3")
     Page<Channel> getChannelpage(Pageable pageable,String name, String phone, String industry);
+    @Query("SELECT  c from Channel c where c.createTime >=?1")
+    Page<Channel> findThisWeek(Date date,Pageable pageable);
+    @Query("SELECT m FROM Channel m")
+    Page<Channel> findAll(Pageable pageable);
+    @Query("SELECT  count(*) from Channel")
+    Long findCount();
+    @Query("SELECT Count(*) from Channel m where m.createTime >= ?1")
+    Long findThisWeekCount(Date date);
 }

@@ -47,11 +47,13 @@ public interface ManageViewConstant {
 		String SUCCESS = "S";
 		String FORWARD_TO_ADD_PAGE = "channel/add";
 		String FORWARD_TO_UPDATE_PAGE = "channel/update";
+		String LIST_THISWEEKMEMBER="channel/thisweekadd";
 	}
 	
 	interface Product {
 		 String ADD_PRODUCT ="product/add";
       	 String LIST_PRODUCT ="product/list";
+		 String LIST_PRODUCT_THISWEEK="product/thisweeklist";
       	 String UPDATE_PRODUCT= "product/update";
 	}
 	

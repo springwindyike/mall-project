@@ -21,10 +21,14 @@ public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpe
 
 	@Query("SELECT  m FROM Member m WHERE (m.account like ?1 or m.name like ?2 or m.mobile like ?3) and m.channel.id = ?4 and m.use = true")
 	Page<Member> findBycondition(String account, String name, String mobile, Integer channelId, Pageable pageable);
+	@Query("SELECT m FROM Member m")
+	Page<Member> findAll(Pageable pageable);
 
-	List<Member> findAll();
-
-	@Query("SELECT  m from Member m where m.createTime >= ?1")
+	@Query("SELECT  m from Member m where m.createTime <= ?1")
 	Page<Member> findThisWeek(Date date, Pageable pageable);
 
+	@Query("SELECT  count(*) from Member")
+	Long findCount();
+	@Query("SELECT Count(*) from Member m where m.createTime >= ?1")
+	Long findThisWeekCount(Date date);
 }

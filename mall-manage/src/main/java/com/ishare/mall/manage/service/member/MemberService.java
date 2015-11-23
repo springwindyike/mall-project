@@ -10,9 +10,14 @@ import java.util.List;
  */
 public interface MemberService {
     /**
-     * 当前会员数量
+     * 获取当前所有会员
      */
-    public abstract List<MemberDTO> findAll();
+    List<MemberDTO> findAll();
 
 //    List<MemberDTO> findThisWeek();
+    Long findCount();
+    /**
+     * 获取本周新增会员数量
+     */
+    Long findThisWeekCount();
 }

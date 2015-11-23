@@ -46,7 +46,7 @@ if (cookie_skin) {
   </div>
   <div class="fixed-empty"></div>
   <div class="info-panel">
-    <dl class="member">
+    <dl class="member" onclick="javascript:window.location.href='${pageContext.request.contextPath}/manageUser/forward2ManageUsreList.dhtml'">
       <dt>
         <div class="ico"><i></i><sub title="会员总数"><span><em id="statistics_member">${memberNum}</em></span></sub></div>
         <h3>会员</h3>
@@ -54,24 +54,25 @@ if (cookie_skin) {
       </dt>
       <dd>
         <ul>
-          <li class="w50pre normal"><a href="${pageContext.request.contextPath}/member/list.dhtml">本周新增<sub><em id="statistics_week_add_member"></em></sub></a></li>
+          <li class="w50pre normal"><a href="${pageContext.request.contextPath}/member/list.dhtml">本周新增<sub><em id="statistics_week_add_member">${memberThisWeekNum}</em></sub></a></li>
           <li class="w50pre none"><a href="index.php?act=predeposit&op=pd_cash_list">预存款提现<sub><em id="statistics_cashlist">0</em></sub></a></li>
         </ul>
       </dd>
     </dl>
     <dl class="shop">
       <dt>
-        <div class="ico"><i></i><sub title="新增店铺数"><span><em id="statistics_store"></em></span></sub></div>
-        <h3>店铺</h3>
-        <h5>新开店铺审核</h5>
+        <div class="ico"><i></i><sub title="渠道商数"><span><em id="statistics_store">${channelNum}</em></span></sub></div>
+        <h3>渠道商</h3>
+        <h5>渠道商审核/申请</h5>
       </dt>
       <dd>
         <ul>
-          <li class="w20pre none"><a href="index.php?act=store&op=store_joinin">开店审核<sub><em id="statistics_store_joinin">0</em></sub></a></li>
-          <li class="w20pre none"><a href="index.php?act=store&op=store_bind_class_applay_list&state=0">类目申请<sub><em id="statistics_store_bind_class_applay">0</em></sub></a></li>
-          <li class="w20pre none"><a href="index.php?act=store&op=reopen_list&re_state=1">续签申请<sub><em id="statistics_store_reopen_applay">0</em></sub></a></li>
-          <li class="w20pre none"><a href="index.php?act=store&op=store&store_type=expired">已到期<sub><em id="statistics_store_expired">0</em></sub></a></li>
-          <li class="w20pre none"><a href="index.php?act=store&op=store&store_type=expire">即将到期<sub><em id="statistics_store_expire">0</em></sub></a></li>
+          <li class="w25pre normal"><a href="${pageContext.request.contextPath}/channel/listthisweek.dhtml">本周新增<sub><em id="statistics_store_joinin">${channelThisWeekNum}</em></sub></a></li>
+          <li class="w33pre none"><a href="index.php?act=store&op=store_bind_class_applay_list&state=0">审核<sub><em id="statistics_store_bind_class_applay">0</em></sub></a></li>
+          <li class="w34pre none"><a href="index.php?act=store&op=store_bind_class_applay_list&state=0">申请<sub><em id="statistics_store_bind_class_applay">0</em></sub></a></li>
+          <%--<li class="w20pre none"><a href="index.php?act=store&op=reopen_list&re_state=1">续签申请<sub><em id="statistics_store_reopen_applay">0</em></sub></a></li>--%>
+          <%--<li class="w20pre none"><a href="index.php?act=store&op=store&store_type=expired">已到期<sub><em id="statistics_store_expired">0</em></sub></a></li>--%>
+          <%--<li class="w20pre none"><a href="index.php?act=store&op=store&store_type=expire">即将到期<sub><em id="statistics_store_expire">0</em></sub></a></li>--%>
         </ul>
       </dd>
     </dl>
@@ -79,13 +80,13 @@ if (cookie_skin) {
 
     <dl class="goods">
       <dt>
-        <div class="ico"><i></i><sub title="商品总数"><span><em id="statistics_goods"></em></span></sub></div>
+        <div class="ico"><i></i><sub title="商品总数"><span><em id="statistics_goods">${goodsNum}</em></span></sub></div>
         <h3>商品</h3>
         <h5>新增商品/品牌申请审核</h5>
       </dt>
       <dd>
         <ul>
-          <li class="w25pre normal"><a href="index.php?act=goods&op=goods">本周新增<sub title=""><em id="statistics_week_add_product"></em></sub></a></li>
+          <li class="w25pre normal"><a href="${pageContext.request.contextPath}/product/thisweek.dhtml">本周新增<sub title=""><em id="statistics_week_add_product">${productThisWeekCount}</em></sub></a></li>
           <li class="w25pre none"><a href="http://10.100.100.15/admin/index.php?act=goods&op=goods&type=waitverify&search_verify=10">商品审核<sub><em id="statistics_product_verify">0</em></sub></a></li>
           <li class="w25pre none"><a href="index.php?act=inform&op=inform_list">举报<sub><em id="statistics_inform_list">0</em></sub></a></li>
           <li class="w25pre none"><a href="index.php?act=brand&op=brand_apply">品牌申请<sub><em id="statistics_brand_apply">0</em></sub></a></li>
@@ -94,7 +95,7 @@ if (cookie_skin) {
     </dl>
     <dl class="trade">
       <dt>
-        <div class="ico"><i></i><sub title="订单总数"><span><em id="statistics_order"></em></span></sub></div>
+        <div class="ico"><i></i><sub title="订单总数"><span><em id="statistics_order">${orderMum}</em></span></sub></div>
         <h3>交易</h3>
         <h5>交易订单及投诉/举报</h5>
       </dt>
@@ -126,22 +127,22 @@ if (cookie_skin) {
       </dd>
     </dl>
 
-        <dl class="cms">
+    <dl class="供应商">
       <dt>
-        <div class="ico"><i></i></div>
-        <h3>CMS</h3>
-        <h5>资讯文章/图片画报/会员评论</h5>
+      <div class="ico"><i></i><sub title="供应商总数"><span><em id="statistics_supplier">${goodsNum}</em></span></sub></div>
+      <h3>供应商</h3>
+      <h5>本周新增/供应商申请审核</h5>
       </dt>
       <dd>
         <ul>
-          <li class="w33pre none"><a href="http://10.100.100.15/admin/index.php?act=cms_article&op=cms_article_list_verify">文章审核<sub><em id="statistics_cms_article_verify">0</em></sub></a></li>
-          <li class="w33pre none"><a href="http://10.100.100.15/admin/index.php?act=cms_picture&op=cms_picture_list_verify">画报审核<sub><em id="statistics_cms_picture_verify">0</em></sub></a></li>
-          <li class="w34pre none"><a href="http://10.100.100.15/admin/index.php?act=cms_comment&op=comment_manage">评论<sub></sub></a></li>
+          <li class="w25pre normal"><a href="${pageContext.request.contextPath}/product/thisweek.dhtml">本周新增<sub title=""><em id="statistics_week_add_product">${productThisWeekCount}</em></sub></a></li>
+          <li class="w33pre none"><a href="http://10.100.100.15/admin/index.php?act=cms_picture&op=cms_picture_list_verify">审核<sub><em id="statistics_cms_picture_verify">0</em></sub></a></li>
+          <li class="w34pre none"><a href="http://10.100.100.15/admin/index.php?act=cms_comment&op=comment_manage">申请<sub></sub></a></li>
         </ul>
       </dd>
     </dl>
-            <dl class="circle">
-      <dt>
+    <dl class="">
+     <dt>
         <div class="ico"><i></i></div>
         <h3>圈子</h3>
         <h5>申请开通/圈内话题及举报</h5>

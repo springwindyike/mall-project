@@ -1,7 +1,9 @@
 package com.ishare.mall.core.repository.product;
 
+import java.util.Date;
 import java.util.List;
 
+import com.ishare.mall.core.model.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,6 +30,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
 	@Query("SELECT p FROM Product p WHERE p.id=?1")
 	Page<Product> findById(Integer productId,Pageable pageable);
 	
-	  @Query("SELECT p FROM Product p WHERE p.brand.id=?1")
+	@Query("SELECT p FROM Product p WHERE p.brand.id=?1")
 	    List<Product> findByBrandId(Integer brandId);
+
+	@Query("SELECT  m from Product m where m.createTime <= ?1")
+	Page<Product> findThisWeek(Date date, Pageable pageable);
+
+	@Query("SELECT  count(*) from Product m where m.createTime <= ?1")
+	long findThisWeekcount(Date date);
 }

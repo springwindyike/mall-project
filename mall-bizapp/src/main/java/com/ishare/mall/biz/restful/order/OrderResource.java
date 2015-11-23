@@ -841,4 +841,22 @@ public class OrderResource {
 		if (state == CodeConstant.Refund.MANAGE_NOT_CONFIRM) return CodeConstant.Refund.MANAGE_NOT_CONFIRM_STRING;
 		return CodeConstant.Refund.BLANK;
 	}
+	/**
+	 * 所有order数量
+	 */
+
+	 @RequestMapping(value = APPURIConstant.Order.REQUEST_MAPPOMG_COUNT, method = RequestMethod.GET,
+            headers = "Accept=application/xml, application/json",
+            produces = {"application/json"})
+    public Response findCount(){
+        log.debug("findAll start");
+        Long count = orderService.findcount();
+        Response response = new Response();
+        response.setData(count);
+        return response;
+    }
+
+
+
+
 }

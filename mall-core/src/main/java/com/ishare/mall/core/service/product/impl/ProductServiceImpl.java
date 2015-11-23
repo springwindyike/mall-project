@@ -1,8 +1,20 @@
 package com.ishare.mall.core.service.product.impl;
 
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
+import com.ishare.mall.common.base.dto.product.FetchProductDTO;
+import com.ishare.mall.common.base.enumeration.ValueType;
+import com.ishare.mall.core.exception.OrderServiceException;
+import com.ishare.mall.core.exception.ProductServiceException;
+import com.ishare.mall.core.model.product.*;
+import com.ishare.mall.core.repository.information.*;
+import com.ishare.mall.core.repository.member.MemberRepository;
+import com.ishare.mall.core.repository.product.ProductCommonRepository;
+import com.ishare.mall.core.repository.product.ProductRepository;
+import com.ishare.mall.core.repository.product.ProductTypeRepository;
+import com.ishare.mall.core.service.information.AttributeService;
+import com.ishare.mall.core.service.product.ProductService;
+import com.ishare.mall.core.utils.filter.DynamicSpecifications;
+import com.ishare.mall.core.utils.filter.SearchFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,32 +25,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Lists;
-import com.ishare.mall.common.base.dto.product.FetchProductDTO;
-import com.ishare.mall.common.base.enumeration.ValueType;
-import com.ishare.mall.core.exception.OrderServiceException;
-import com.ishare.mall.core.exception.ProductServiceException;
-import com.ishare.mall.core.model.product.Attribute;
-import com.ishare.mall.core.model.product.Fetch;
-import com.ishare.mall.core.model.product.Product;
-import com.ishare.mall.core.model.product.ProductAttribute;
-import com.ishare.mall.core.model.product.ProductCommon;
-import com.ishare.mall.core.model.product.ProductIntroImage;
-import com.ishare.mall.core.model.product.ProductPhotoImage;
-import com.ishare.mall.core.repository.information.BrandRepository;
-import com.ishare.mall.core.repository.information.ChannelRepository;
-import com.ishare.mall.core.repository.information.FetchRepository;
-import com.ishare.mall.core.repository.information.ProductAttributeRepository;
-import com.ishare.mall.core.repository.information.ProductIntroImageRepository;
-import com.ishare.mall.core.repository.information.ProductPhotoImageRepository;
-import com.ishare.mall.core.repository.member.MemberRepository;
-import com.ishare.mall.core.repository.product.ProductRepository;
-import com.ishare.mall.core.repository.product.ProductCommonRepository;
-import com.ishare.mall.core.repository.product.ProductTypeRepository;
-import com.ishare.mall.core.service.information.AttributeService;
-import com.ishare.mall.core.service.product.ProductService;
-import com.ishare.mall.core.utils.filter.DynamicSpecifications;
-import com.ishare.mall.core.utils.filter.SearchFilter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liaochenglei on 2015/9/22.
@@ -286,6 +276,24 @@ public class ProductServiceImpl implements ProductService {
 			throw new ProductServiceException("查询产品失败");
 		}
 	}
+	@Override
+	public Page<Product> findAllThisWeek(PageRequest pageRequest)
+			throws ProductServiceException{
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MINUTE, 0);
+		try {
+			Page<Product> page = productRepository.findThisWeek(cal.getTime(), pageRequest);
+			return page;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ProductServiceException("查询产品失败");
+		}
+	}
 
 	@Override
 	public Page<Product> findById(Integer productId, PageRequest pageRequest)
@@ -318,4 +326,20 @@ public class ProductServiceImpl implements ProductService {
 			throw new OrderServiceException("搜索产品失败");
 		}
 	}
+	@Override
+	public long findcount(){
+		return productRepository.count();
+	}
+
+	public long findThisWeekcount(){
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MINUTE, 0);
+		return productRepository.findThisWeekcount(cal.getTime());
+	}
+
 }
